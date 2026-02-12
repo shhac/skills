@@ -54,6 +54,8 @@ For each stow package, check if `os-{current_os}/` has a directory with the same
 
 Example: `gpg/` has base config. `os-macos/gpg/` has macOS-specific config (e.g., `pinentry-program` set to `pinentry-mac`). On macOS, only `os-macos/gpg/` is stowed.
 
+If OS-specific package directories contain files that should be ignored by stow (e.g., README.md), place a `.stow-local-ignore` in the `os-macos/` directory — stow only reads this file from its `-d` directory.
+
 ### Machine-Specific Overrides
 
 Use the `.local` file pattern — tracked configs source/include an untracked `.local` counterpart:
@@ -91,12 +93,13 @@ brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
 
 **Shell configs:**
 - Check for `~/.zshrc`, `~/.zsh/`, `~/.zprofile`, `~/.zshenv`, `~/.bashrc`, `~/.bash_profile`
+- Fish: `~/.config/fish/config.fish`, `~/.config/fish/conf.d/`, `~/.config/fish/functions/`
 - Detect framework: Oh My Zsh (`~/.oh-my-zsh/`), Prezto, Starship, plain zsh
 - If Oh My Zsh: note custom themes in `~/.oh-my-zsh/custom/themes/` and custom plugins in `~/.oh-my-zsh/custom/plugins/` — these are user content worth tracking. Do NOT track OMZ core (it's managed by its own installer).
 
 **Git:**
 - Read `~/.gitconfig` (note: may contain `[user]` with name/email — fine to track)
-- Check for conditional includes (`[includeIf]` sections) — these reference paths that may need adjustment on other machines
+- Check for conditional includes (`[includeIf]` sections) — these reference paths that may need adjustment on other machines. Suggest moving `[includeIf]` blocks to `~/.gitconfig.local` since they reference machine-specific paths
 - Check for `~/.gitignore_global` or equivalent
 
 **SSH:**
@@ -114,13 +117,14 @@ brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
 **Terminal emulator:**
 - Ghostty: `~/.config/ghostty/config`
 - iTerm2: check for plist or JSON profile exports
-- Alacritty: `~/.config/alacritty/alacritty.yml`
+- Alacritty: `~/.config/alacritty/alacritty.toml` (current, since v0.13) or `~/.config/alacritty/alacritty.yml` (legacy)
 - Kitty: `~/.config/kitty/kitty.conf`
 
 **Editor configs:**
 - Neovim: `~/.config/nvim/`
 - Vim: `~/.vimrc`
 - VS Code: `~/Library/Application Support/Code/User/settings.json`, `keybindings.json`
+- Note: VS Code/Cursor settings live in `~/Library/Application Support/` (path with spaces). These can't be managed cleanly with stow — handle with direct symlinks in setup.sh instead.
 
 **Other common configs:**
 - tmux: `~/.tmux.conf` or `~/.config/tmux/tmux.conf`
@@ -128,6 +132,7 @@ brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
 - ripgrep: `~/.ripgreprc`
 - bat: `~/.config/bat/config`
 - Any `~/.config/` subdirectories for tools installed via Homebrew
+- Check `$XDG_CONFIG_HOME` (default: `~/.config/`). Adjust stow targets if user has a non-standard XDG location.
 
 **macOS defaults:**
 - Ask the user if they want to capture macOS system preferences
@@ -143,7 +148,14 @@ Before proposing anything to track, scan discovered files for secrets:
   - `~/.config/graphite/user_config` (contains auth) — exclude
   - `~/.netrc` — exclude
   - `~/.aws/credentials` — exclude (but `~/.aws/config` is safe)
-  - Any file containing what looks like a base64-encoded token or `ghp_`, `gho_`, `sk-`, `npm_` prefixed strings
+  - `~/.docker/config.json` (Docker registry auth) — exclude
+  - `~/.kube/config` (Kubernetes tokens/certs) — exclude
+  - `~/.config/gh/hosts.yml` (GitHub CLI OAuth tokens) — exclude
+  - `~/.config/gcloud/` (Google Cloud credentials) — exclude
+  - `~/.boto`, `~/.s3cfg` (S3 credentials) — exclude
+  - Any file containing what looks like a base64-encoded token or prefixed strings: `ghp_`, `gho_`, `ghs_`, `github_pat_`, `sk-`, `npm_`, `xoxb-`, `xoxp-`, `xoxe-`, `AKIA`, `AIza`, `glpat-`, `pypi-`, `sk_live_`, `pk_live_`, `rk_live_`, `SG.`, `dop_v1_`
+- Scan file contents for `-----BEGIN.*PRIVATE KEY-----` headers — this catches embedded private keys regardless of filename
+- In shell configs, scan for `export` statements where the variable name contains KEY, SECRET, TOKEN, PASSWORD, or CREDENTIAL — these often contain inline secrets
 - If a file contains both safe config and embedded secrets, note it for the user and suggest the `.local` file pattern to split them
 
 #### Step 3: Present Findings
@@ -198,7 +210,7 @@ Ask the user:
    - `.local` override files (`*.local`, `.local/`)
    - Backup directory (`.dotfiles-backup/`)
    - OS artifacts (`.DS_Store`)
-6. Generate `.stow-local-ignore` (skip `README.md`, `setup.sh`, `Brewfile`, `os-*`, `.git`, `.gitignore`)
+6. Generate `.stow-local-ignore` (skip `README.md`, `setup.sh`, `os-*`, `.git`, `.gitignore`)
 7. Generate `README.md` with repo overview and usage instructions
 8. If macOS defaults selected, generate `os-macos/defaults.sh`
 9. Ensure tracked shell configs include the `.local` sourcing pattern at the end
@@ -296,6 +308,7 @@ After setup completes, present a next-steps checklist:
       Then set trust: `gpg --edit-key <KEY_ID>` → `trust` → `5` → `quit`
 - [ ] Copy SSH keys to ~/.ssh/ and `chmod 600 ~/.ssh/id_*`
       (or generate new: `ssh-keygen -t ed25519`)
+      (if using encrypted secrets with transcrypt, keys are already in place after unlock)
 - [ ] Sign into Mac App Store (for `mas` packages in Brewfile)
 - [ ] Authenticate services:
   - [ ] `gh auth login` (GitHub CLI)
@@ -306,6 +319,17 @@ After setup completes, present a next-steps checklist:
 
 Ask me to help with any of these!
 ```
+
+---
+
+### Workflow D: Unstow / Restore
+
+If the user wants to revert to their pre-stow state:
+
+1. Un-stow all packages: `stow -D -d $DOTFILES_DIR -t $HOME <package>` for each
+2. If `~/.dotfiles-backup/` exists, offer to restore backed-up files
+3. List any files that were in the backup and confirm before restoring
+4. Print what was restored vs what was removed
 
 ---
 
@@ -337,6 +361,7 @@ Supports subcommands:
 ./setup.sh stow         # Stow all packages only
 ./setup.sh macos        # macOS defaults only
 ./setup.sh capture      # Capture current state back to repo
+./setup.sh restore      # Un-stow all packages and restore backups
 ```
 
 ### Execution Order (Full Install)
@@ -373,6 +398,8 @@ Phase 5: System Preferences (opt-in)
 
 Phase 6: Post-install
   7. Change default shell to brew zsh (if not already)
+     - Ensure brew's zsh is in /etc/shells: sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells'
+     - Then: chsh -s $(brew --prefix)/bin/zsh
   8. Print next-steps checklist
 ```
 
@@ -383,8 +410,14 @@ Before stowing, handle existing non-symlink files:
 ```bash
 backup_if_needed() {
   local target="$1"
-  if [ -e "$target" ] && [ ! -L "$target" ]; then
-    local backup_path="$BACKUP_DIR/$target"
+  if [ -L "$target" ]; then
+    # Existing symlink (possibly from another dotfiles manager)
+    local link_target="$(readlink "$target")"
+    echo "  Replacing symlink: $target → $link_target"
+    rm "$target"
+  elif [ -e "$target" ]; then
+    local rel_path="${target#$HOME/}"
+    local backup_path="$BACKUP_DIR/$rel_path"
     mkdir -p "$(dirname "$backup_path")"
     mv "$target" "$backup_path"
     echo "  Backed up: $target → $backup_path"
@@ -406,20 +439,26 @@ Every operation is safe to re-run:
 ```bash
 # Critical (stop): Can't install Homebrew, stow has unresolvable conflicts
 # Non-critical (warn + continue): Individual brew packages, missing optional tools
+
+# Since setup.sh uses set -euo pipefail, non-fatal sections must trap errors:
+# brew bundle install ... || echo "⚠ Some packages failed (continuing)"
+# stow ... || echo "⚠ Stow failed for $package (continuing)"
 ```
 
 ---
 
 ## Security Rules
 
-**NEVER track or commit:**
+**NEVER track or commit** (unless encrypted with transcrypt — see Encrypted Secrets section):
 - Private keys (SSH, GPG, TLS)
 - Auth tokens, API keys, credentials
 - `.env` files, environment secrets
 - Session data, cookies, browser profiles
 - Keyrings and trust databases
 - Files matching: `id_*`, `*.key`, `*.pem`, `*.p12`, `private-keys-v1.d/`, `*.kbx`, `trustdb.gpg`, `.env*`
-- Files containing: `ghp_*`, `gho_*`, `sk-*`, `npm_*`, `token`, `secret`, `password` values
+- Files containing token prefixes: `ghp_`, `gho_`, `ghs_`, `github_pat_`, `sk-`, `npm_`, `xoxb-`, `xoxp-`, `xoxe-`, `AKIA`, `AIza`, `glpat-`, `pypi-`, `sk_live_`, `pk_live_`, `rk_live_`, `SG.`, `dop_v1_`
+- Files containing: `token`, `secret`, `password` values
+- Files containing `-----BEGIN.*PRIVATE KEY-----` headers
 
 **For files with mixed content** (safe config + embedded secrets):
 - Suggest splitting into tracked config + gitignored `.local` override
@@ -429,24 +468,88 @@ Every operation is safe to re-run:
 
 ---
 
+## Encrypted Secrets (Optional)
+
+This section is entirely optional. Users who don't want encryption skip it — the skill works exactly as before. Present this as a choice during Workflow A (Step 3).
+
+### Tool: transcrypt
+
+[transcrypt](https://github.com/elasticdog/transcrypt) provides transparent, password-based encryption in git via clean/smudge filters. Files are decrypted in the working tree (so stow sees plaintext) and encrypted in git objects (safe to push).
+
+**Install:** `brew install transcrypt`
+**Deps:** bash + OpenSSL (pre-installed on macOS/Linux)
+
+### Initialization (one-time per repo)
+
+```bash
+cd ~/.dotfiles
+transcrypt -c aes-256-cbc -p 'master-password'
+```
+
+### Marking Files as Encrypted
+
+Add patterns to `.gitattributes` in the repo root:
+
+```
+# Encrypted secrets
+ssh/.ssh/id_ed25519 filter=crypt diff=crypt merge=crypt
+ssh/.ssh/id_ed25519.pub filter=crypt diff=crypt merge=crypt
+gpg/.gnupg/private-keys-v1.d/** filter=crypt diff=crypt merge=crypt
+*.npmrc filter=crypt diff=crypt merge=crypt
+```
+
+**Critical:** Ensure a file's `.gitattributes` pattern exists BEFORE running `git add` — otherwise it commits in plaintext.
+
+### What This Enables
+
+- SSH private keys CAN be tracked (encrypted)
+- GPG secret keys CAN be tracked (encrypted)
+- `.npmrc` with auth tokens CAN be tracked (encrypted)
+- Any file matched in `.gitattributes` is auto-encrypted on commit
+
+If using encrypted secrets, remove the corresponding patterns from `.gitignore` (e.g., `id_*`, `*.kbx`, `private-keys-v1.d/`).
+
+### Workflow Integration
+
+- **Create/Capture:** After `git add`, transcrypt auto-encrypts on commit. No manual step needed.
+- **Apply (fresh machine):** After `git clone`, run `transcrypt -c aes-256-cbc -p 'password'` to unlock. Then stow as normal — files are decrypted in the working tree.
+- **setup.sh:** Add a transcrypt unlock step between clone and stow. Prompt for the password if encrypted files are detected (check for `.gitattributes` with `filter=crypt` patterns).
+
+### Caveats
+
+- **Password strength matters** — recommend a strong passphrase, store it in a password manager
+- **Unrecoverable if lost** — if the password is lost, encrypted files cannot be recovered
+- **Lock operation:** `transcrypt --flush-credentials` encrypts files in the working tree — symlinks would then point to ciphertext. Document this as an intentional "lock" for when the machine is untrusted.
+- **Validate before adding:** When adding a new secret file, always confirm its `.gitattributes` pattern exists before `git add`
+
+---
+
 ## `.gitignore` Template
 
+If using transcrypt for encrypted secrets, remove patterns for files that are encrypted instead.
+
 ```gitignore
-# Secrets & keys
+# Secrets & keys (remove entries for files encrypted with transcrypt)
 id_*
 *.key
 *.pem
 *.p12
+*.pfx
 private-keys-v1.d/
 *.kbx
 trustdb.gpg
 openpgp-revocs.d/
+secring.gpg
 S.gpg-agent*
 .npmrc
 .netrc
 .env*
+known_hosts*
+authorized_keys
+random_seed
+credentials
 
-# Machine-specific overrides
+# Machine-specific overrides (e.g., .zshrc.local, .gitconfig.local)
 *.local
 .local/
 
@@ -467,4 +570,13 @@ S.gpg-agent*
 ^setup\.sh
 ^os-.*
 ^LICENSE
+```
+
+## `.gitattributes` Template (for transcrypt)
+
+```
+# Uncomment patterns for files you want encrypted with transcrypt
+# ssh/.ssh/id_* filter=crypt diff=crypt merge=crypt
+# gpg/.gnupg/private-keys-v1.d/** filter=crypt diff=crypt merge=crypt
+# *.npmrc filter=crypt diff=crypt merge=crypt
 ```
