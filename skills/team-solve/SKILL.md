@@ -38,16 +38,44 @@ You are the **team lead** orchestrating an investigate-then-solve workflow.
    - Each teammate's prompt should include:
      - The specific problems to investigate
      - Instruction to **research only, do not make changes**
-     - Instruction to report findings and proposed approach via `SendMessage`
+     - Instruction to report findings via `SendMessage` using the format below
    - Spawn all investigators in parallel
 4. **Do NOT shut down investigators when they report back** — they retain context for Phase 4
+
+#### Investigator Report Format
+
+Each investigator should structure their findings as:
+
+```
+## Track: {description}
+
+### Findings
+- {what was discovered, root causes, relevant code paths}
+
+### Proposed Approach
+- {what to change, which files, how}
+
+### Risks & Edge Cases
+- {what could go wrong with this approach}
+- {what adjacent code/features could be affected}
+- {what happens if data is unexpected or flow is interrupted}
+
+### Confidence: {high/medium/low}
+{brief justification}
+
+### Dependencies
+- {does this approach depend on or conflict with other tracks?}
+```
 
 ### Phase 3: Discussion Checkpoint
 
 1. Once all investigators have reported, synthesize findings for the user:
    - Key findings per track
-   - Proposed approaches
+   - Proposed approaches and confidence levels
    - Any conflicts or dependencies between tracks
+   - **Ripple effects** — consider across all tracks:
+     - *"What happens to..."* — documentation, adjacent features, API consumers, shared state, caching
+     - *"What happens if..."* — unexpected data, interrupted flows, concurrent access, rollback
    - Whether implementation can be parallelized (total file separation) or must be serial
 2. Ask the user: "Ready to implement, or want to revise the approach?"
 3. Incorporate any feedback before proceeding
