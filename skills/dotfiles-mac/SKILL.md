@@ -308,7 +308,7 @@ After setup completes, present a next-steps checklist:
       Then set trust: `gpg --edit-key <KEY_ID>` → `trust` → `5` → `quit`
 - [ ] Copy SSH keys to ~/.ssh/ and `chmod 600 ~/.ssh/id_*`
       (or generate new: `ssh-keygen -t ed25519`)
-      (if using encrypted secrets with transcrypt, keys are already in place after unlock)
+      (if using encrypted secrets with age, keys are already in place after decryption)
 - [ ] Sign into Mac App Store (for `mas` packages in Brewfile)
 - [ ] Authenticate services:
   - [ ] `gh auth login` (GitHub CLI)
@@ -378,29 +378,36 @@ Phase 2: Packages
   3. brew bundle install --file=os-macos/Brewfile --no-lock
      - Non-fatal: individual failures warn but continue
 
-Phase 3: Frameworks
-  4. Oh My Zsh (if shell/ stow package uses it)
+Phase 3: Decrypt Secrets (if age-encrypted files exist)
+  4. Find all .age files in stow packages
+     - If none found, skip this phase
+     - Prompt for master passphrase once
+     - Decrypt each .age file to its non-.age counterpart
+     - Unset passphrase from environment after decryption
+
+Phase 4: Frameworks
+  5. Oh My Zsh (if shell/ stow package uses it)
      - Install if ~/.oh-my-zsh/ doesn't exist
      - Stow custom themes/plugins into place
 
-Phase 4: Configuration
-  5. Stow all packages
+Phase 5: Configuration
+  6. Stow all packages
      - For each directory that isn't os-*, .git, or special files:
        - Check for os-macos/ override → stow that instead if present
        - Backup conflicting real files to ~/.dotfiles-backup/<timestamp>/
        - stow --no-folding -d $DOTFILES_DIR -t $HOME <package>
      - Skip packages the user has excluded (via env var or config)
 
-Phase 5: System Preferences (opt-in)
-  6. macOS defaults (only if explicitly requested or --with-defaults flag)
+Phase 6: System Preferences (opt-in)
+  7. macOS defaults (only if explicitly requested or --with-defaults flag)
      - Source os-macos/defaults.sh
      - killall affected apps at the end (Dock, Finder, SystemUIServer)
 
-Phase 6: Post-install
-  7. Change default shell to brew zsh (if not already)
+Phase 7: Post-install
+  8. Change default shell to brew zsh (if not already)
      - Ensure brew's zsh is in /etc/shells: sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells'
      - Then: chsh -s $(brew --prefix)/bin/zsh
-  8. Print next-steps checklist
+  9. Print next-steps checklist
 ```
 
 ### Backup Strategy
@@ -449,7 +456,7 @@ Every operation is safe to re-run:
 
 ## Security Rules
 
-**NEVER track or commit** (unless encrypted with transcrypt — see Encrypted Secrets section):
+**NEVER track or commit** (unless encrypted with age — see Encrypted Secrets section):
 - Private keys (SSH, GPG, TLS)
 - Auth tokens, API keys, credentials
 - `.env` files, environment secrets
@@ -472,64 +479,89 @@ Every operation is safe to re-run:
 
 This section is entirely optional. Users who don't want encryption skip it — the skill works exactly as before. Present this as a choice during Workflow A (Step 3).
 
-### Tool: transcrypt
+### Tool: age
 
-[transcrypt](https://github.com/elasticdog/transcrypt) provides transparent, password-based encryption in git via clean/smudge filters. Files are decrypted in the working tree (so stow sees plaintext) and encrypted in git objects (safe to push).
+[age](https://age-encryption.org/) provides simple, modern file encryption using scrypt KDF and ChaCha20-Poly1305 (AEAD). Designed by Filippo Valsorda (Go security lead).
 
-**Install:** `brew install transcrypt`
-**Deps:** bash + OpenSSL (pre-installed on macOS/Linux)
+**Install:** `brew install age`
+**Security:** scrypt KDF (adjustable work factor) → ChaCha20-Poly1305 authenticated encryption
 
-### Initialization (one-time per repo)
+### How It Works with Stow
+
+Unlike transparent git encryption, age uses an explicit encrypt/decrypt model:
+
+- Encrypted files have `.age` extension and ARE committed to git
+- Decrypted counterparts are gitignored
+- `setup.sh` finds `.age` files, prompts for password, decrypts them (strips `.age` extension), then stows
+
+```
+ssh/
+  .ssh/
+    config              # plaintext (stowed normally)
+    id_ed25519.age      # encrypted (committed to git)
+    id_ed25519          # decrypted (gitignored, created by setup.sh)
+```
+
+### Commands
 
 ```bash
-cd ~/.dotfiles
-transcrypt -c aes-256-cbc -p 'master-password'
+# Encrypt a file
+AGE_PASSPHRASE="pw" age -e -j batchpass -o file.age file
+
+# Decrypt a file
+AGE_PASSPHRASE="pw" age -d -j batchpass -o file file.age
 ```
 
-### Marking Files as Encrypted
-
-Add patterns to `.gitattributes` in the repo root:
-
-```
-# Encrypted secrets
-ssh/.ssh/id_ed25519 filter=crypt diff=crypt merge=crypt
-ssh/.ssh/id_ed25519.pub filter=crypt diff=crypt merge=crypt
-gpg/.gnupg/private-keys-v1.d/** filter=crypt diff=crypt merge=crypt
-*.npmrc filter=crypt diff=crypt merge=crypt
-```
-
-**Critical:** Ensure a file's `.gitattributes` pattern exists BEFORE running `git add` — otherwise it commits in plaintext.
+Always use `-j batchpass` with the `AGE_PASSPHRASE` env var — never `age -p` (which is interactive/TTY only and unsuitable for scripting). The batchpass plugin ships with `brew install age`.
 
 ### What This Enables
 
-- SSH private keys CAN be tracked (encrypted)
-- GPG secret keys CAN be tracked (encrypted)
-- `.npmrc` with auth tokens CAN be tracked (encrypted)
-- Any file matched in `.gitattributes` is auto-encrypted on commit
+- SSH private keys CAN be tracked (as `.age` files)
+- GPG secret keys CAN be tracked (as `.age` files)
+- `.npmrc` with auth tokens CAN be tracked (as `.age` files)
+- Any sensitive file can be encrypted and committed alongside its plaintext config
 
-If using encrypted secrets, remove the corresponding patterns from `.gitignore` (e.g., `id_*`, `*.kbx`, `private-keys-v1.d/`).
+If using encrypted secrets, add the decrypted filenames to `.gitignore` (e.g., `id_ed25519`, `private-keys-v1.d/`). The `.age` versions stay tracked.
 
 ### Workflow Integration
 
-- **Create/Capture:** After `git add`, transcrypt auto-encrypts on commit. No manual step needed.
-- **Apply (fresh machine):** After `git clone`, run `transcrypt -c aes-256-cbc -p 'password'` to unlock. Then stow as normal — files are decrypted in the working tree.
-- **setup.sh:** Add a transcrypt unlock step between clone and stow. Prompt for the password if encrypted files are detected (check for `.gitattributes` with `filter=crypt` patterns).
+- **Create (Workflow A):** Ask user if they want to encrypt secrets. If yes, encrypt selected files with `age -e -j batchpass`, add `.age` extension. Add decrypted filenames to `.gitignore`. Commit `.age` files.
+- **Capture (Workflow B):** For files that have `.age` counterparts in the repo, prompt for password, re-encrypt current versions: `AGE_PASSPHRASE="pw" age -e -j batchpass -o file.age file`. Commit updated `.age` files.
+- **Apply (Workflow C / setup.sh):** After `brew bundle` (so `age` is installed), find all `.age` files, prompt for password once, decrypt each to its non-`.age` counterpart (see setup.sh integration below). Then stow as normal — stow sees the decrypted files.
+
+### setup.sh Integration
+
+Add an age decrypt phase between brew bundle (Phase 2) and stow (Phase 4). Only runs if `.age` files exist in the repo:
+
+```bash
+# Phase 3: Decrypt secrets (if any)
+age_files=$(find "$DOTFILES_DIR" -name '*.age' -not -path '*/.git/*')
+if [ -n "$age_files" ]; then
+  echo "Encrypted secrets found. Enter master passphrase to decrypt."
+  read -sp "Passphrase: " AGE_PASSPHRASE; echo
+  export AGE_PASSPHRASE
+  for f in $age_files; do
+    age -d -j batchpass -o "${f%.age}" "$f"
+    echo "  Decrypted: ${f%.age}"
+  done
+  unset AGE_PASSPHRASE
+fi
+```
 
 ### Caveats
 
 - **Password strength matters** — recommend a strong passphrase, store it in a password manager
 - **Unrecoverable if lost** — if the password is lost, encrypted files cannot be recovered
-- **Lock operation:** `transcrypt --flush-credentials` encrypts files in the working tree — symlinks would then point to ciphertext. Document this as an intentional "lock" for when the machine is untrusted.
-- **Validate before adding:** When adding a new secret file, always confirm its `.gitattributes` pattern exists before `git add`
+- **Non-deterministic encryption** — each encryption produces different ciphertext. This is normal (age uses a random salt). Only re-encrypt when content actually changes, otherwise git sees a diff on every encryption even if the plaintext is identical.
+- **Always use `-j batchpass`** — `age -p` prompts interactively on TTY and cannot be scripted. The batchpass plugin reads `AGE_PASSPHRASE` from the environment.
+- **Unset passphrase after use** — always `unset AGE_PASSPHRASE` when done to avoid leaking the passphrase to child processes
 
 ---
 
 ## `.gitignore` Template
 
-If using transcrypt for encrypted secrets, remove patterns for files that are encrypted instead.
-
 ```gitignore
-# Secrets & keys (remove entries for files encrypted with transcrypt)
+# Secrets & keys
 id_*
 *.key
 *.pem
@@ -548,6 +580,13 @@ known_hosts*
 authorized_keys
 random_seed
 credentials
+
+# Decrypted secrets (age)
+# When using age encryption, the .age files are committed and
+# decrypted counterparts are gitignored. Add specific filenames here:
+# id_ed25519
+# id_ed25519.pub
+# private-keys-v1.d/*
 
 # Machine-specific overrides (e.g., .zshrc.local, .gitconfig.local)
 *.local
@@ -570,13 +609,4 @@ credentials
 ^setup\.sh
 ^os-.*
 ^LICENSE
-```
-
-## `.gitattributes` Template (for transcrypt)
-
-```
-# Uncomment patterns for files you want encrypted with transcrypt
-# ssh/.ssh/id_* filter=crypt diff=crypt merge=crypt
-# gpg/.gnupg/private-keys-v1.d/** filter=crypt diff=crypt merge=crypt
-# *.npmrc filter=crypt diff=crypt merge=crypt
 ```
