@@ -34,6 +34,12 @@ Debug problems by investigating multiple hypotheses in parallel. Spawns investig
 
 **Workflow:** Hypothesize → Investigate → Compare → Fix (optional)
 
+### dotfiles-mac
+
+Create, update, or apply a macOS dotfiles repo using GNU Stow and plain git. Audits your system (Homebrew, shell, git, SSH, GPG, app configs, Claude/AI configs, macOS defaults), lets you pick what to track, and generates a stow-based repo with an idempotent setup script.
+
+**Workflows:** Create new repo, Update/capture current state, Apply to a new machine
+
 ## License
 
 [MIT](LICENSE)
