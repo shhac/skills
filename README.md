@@ -20,6 +20,16 @@ Investigate and solve problems using a team of specialist agents. Decomposes a p
 3. **Implement** — investigators solve their own problems
 4. **Validate** — fresh teammate verifies everything
 
+### orchestrate-subagents
+
+Activate orchestrator mode for complex multi-task work using sub-agents. Delegates aggressively, coordinates via `.ai-cache/` files, and keeps the main context window clean.
+
+**Workflow:**
+1. **Analyze** — break work into delegatable units
+2. **Spawn** — launch sub-agents with clear prompts
+3. **Coordinate** — inter-agent communication via `.ai-cache/` files
+4. **Collect** — receive summaries, verify commits, report to user
+
 ## License
 
 [MIT](LICENSE)
