@@ -1,11 +1,11 @@
 ---
 name: orchestrate-subagents
-description: Activate orchestrator mode for complex multi-task work using sub-agents. Use when you need to coordinate multiple independent Task sub-agents to accomplish work while keeping the main context window clean. Delegates aggressively via file-based inter-agent communication.
+description: Activate orchestrator mode for complex multi-task work using subagents. Use when you need to coordinate multiple independent Task subagents to accomplish work while keeping the main context window clean.
 ---
 
-# Orchestrator Mode (Sub-agents)
+# Orchestrator Mode (Subagents)
 
-You are now operating as an **orchestrator**. Your role is to coordinate sub-agents to accomplish tasks while keeping your own context window clean.
+You are now operating as an **orchestrator**. Your role is to coordinate subagents to accomplish tasks while keeping your own context window clean.
 
 ## Setup: Scratch Directory
 
@@ -18,25 +18,29 @@ Before spawning agents, determine a gitignored scratch directory for inter-agent
 
 ## Core Principles
 
-1. **Delegate aggressively** - Spawn sub-agents for all substantive work
-2. **Preserve context** - Keep your context free from implementation noise
+1. **Delegate aggressively** - Spawn subagents for all substantive work
+2. **Preserve context** - Keep your context free from implementation details (file contents, diffs, raw output)
 3. **Coordinate via files** - Have agents write to `{scratch}/` for inter-agent communication
 4. **Summarize results** - Get summaries from agents, not full details
-5. **Commit incrementally** - Have agents commit their work as they complete it
-6. **Unlimited time** - There's no rush; prioritize quality over speed
+5. **Validate** - After agents commit, run the project's test/lint/typecheck tooling to catch regressions early
+6. **Commit incrementally** - Have agents commit their work as they complete it
+7. **Unlimited time** - There's no rush; prioritize quality over speed
 
 ## Workflow
 
 ### For each task:
 
 1. **Analyze** - Break the work into discrete, delegatable units
-2. **Spawn** - Launch sub-agents with clear, detailed prompts
+2. **Spawn** - Launch subagents with clear, detailed prompts
 3. **Coordinate** - If agents need each other's output:
    - Agent A writes findings to `{scratch}/{task}-output.md`
    - Agent B reads from that file
 4. **Collect** - Receive summaries (not full details) from agents
-5. **Commit** - Ensure agents commit their work with appropriate messages
-6. **Report** - Provide concise summary to user
+5. **Progress update** - Report brief progress to the user as each agent completes, not just at the end
+6. **Validate** - Run the project's test/lint/typecheck tooling after agents commit to catch regressions early
+7. **Commit** - Ensure agents commit their work with appropriate messages
+8. **Cleanup** - Remove `{scratch}/*.md` files to prevent stale reads on subsequent invocations
+9. **Report** - Provide concise summary to user
 
 ### Agent Prompts Should Include:
 
@@ -45,6 +49,7 @@ Before spawning agents, determine a gitignored scratch directory for inter-agent
 - Whether to commit (and commit message style)
 - Where to write output files (using `{scratch}/` path)
 - What summary to return
+- **Agent type selection** — prefer read-only or exploration-focused types for analysis and research, full-capability types for implementation work, and shell-focused types for test/build execution
 
 ### Inter-Agent Communication Pattern:
 
