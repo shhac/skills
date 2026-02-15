@@ -1,6 +1,6 @@
 ---
 name: dotfiles-mac
-description: Create, update, or apply a macOS dotfiles repo. Use when the user wants to back up their system configuration, set up a new Mac from dotfiles, capture current configs into an existing dotfiles repo, or manage dotfiles with GNU Stow. Covers Homebrew, shell, git, SSH, GPG, app configs, and macOS defaults.
+description: Create, update, or apply a macOS dotfiles repo. Use when the user wants to back up their system configuration, set up a new Mac from dotfiles, capture current configs into an existing dotfiles repo, or manage dotfiles with GNU Stow.
 ---
 
 # Dotfiles Mac
@@ -86,6 +86,10 @@ If unclear, ask the user which workflow they want.
 
 Scan the user's machine to discover what's worth tracking. Run these in parallel where possible:
 
+**Existing dotfiles managers:**
+- Check for chezmoi (`~/.local/share/chezmoi/`), yadm (`~/.local/share/yadm/`), or bare git repos in `$HOME` (`~/.cfg/`, `~/.dotfiles.git/`)
+- If detected, warn the user before proceeding — creating a competing dotfiles system can cause conflicts
+
 **Homebrew:**
 ```bash
 brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
@@ -95,16 +99,17 @@ brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
 - Check for `~/.zshrc`, `~/.zsh/`, `~/.zprofile`, `~/.zshenv`, `~/.bashrc`, `~/.bash_profile`
 - Fish: `~/.config/fish/config.fish`, `~/.config/fish/conf.d/`, `~/.config/fish/functions/`
 - Detect framework: Oh My Zsh (`~/.oh-my-zsh/`), Prezto, Starship, plain zsh
+- For fish or bash users, skip zsh-specific sections (Oh My Zsh, zsh plugins) and adapt shell configuration steps accordingly
 - If Oh My Zsh: note custom themes in `~/.oh-my-zsh/custom/themes/` and custom plugins in `~/.oh-my-zsh/custom/plugins/` — these are user content worth tracking. Do NOT track OMZ core (it's managed by its own installer).
 
 **Git:**
-- Read `~/.gitconfig` (note: may contain `[user]` with name/email — fine to track)
+- Read `~/.gitconfig` (may contain `[user]` with name/email — fine to track)
 - Check for conditional includes (`[includeIf]` sections) — these reference paths that may need adjustment on other machines. Suggest moving `[includeIf]` blocks to `~/.gitconfig.local` since they reference machine-specific paths
 - Check for `~/.gitignore_global` or equivalent
 
 **SSH:**
 - Read `~/.ssh/config` (track this)
-- Note: NEVER track `~/.ssh/id_*`, `~/.ssh/*.pub`, `~/.ssh/known_hosts`, `~/.ssh/authorized_keys`
+- NEVER track `~/.ssh/id_*`, `~/.ssh/*.pub`, `~/.ssh/known_hosts`, `~/.ssh/authorized_keys`
 
 **GPG:**
 - Read `~/.gnupg/gpg.conf`, `~/.gnupg/gpg-agent.conf` (track these)
@@ -124,7 +129,11 @@ brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
 - Neovim: `~/.config/nvim/`
 - Vim: `~/.vimrc`
 - VS Code: `~/Library/Application Support/Code/User/settings.json`, `keybindings.json`
-- Note: VS Code/Cursor settings live in `~/Library/Application Support/` (path with spaces). These can't be managed cleanly with stow — handle with direct symlinks in setup.sh instead.
+- VS Code/Cursor settings live in `~/Library/Application Support/` (path with spaces). These can't be managed cleanly with stow — handle with direct symlinks in setup.sh instead:
+  ```bash
+  ln -sf "$DOTFILES_DIR/vscode/.config/Code/User/settings.json" \
+    "$HOME/Library/Application Support/Code/User/settings.json"
+  ```
 
 **Other common configs:**
 - tmux: `~/.tmux.conf` or `~/.config/tmux/tmux.conf`
@@ -132,7 +141,7 @@ brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
 - ripgrep: `~/.ripgreprc`
 - bat: `~/.config/bat/config`
 - Any `~/.config/` subdirectories for tools installed via Homebrew
-- Check `$XDG_CONFIG_HOME` (default: `~/.config/`). Adjust stow targets if user has a non-standard XDG location.
+- Check `$XDG_CONFIG_HOME` (default: `~/.config/`). If set to a non-default path, use it as the stow target (`-t $XDG_CONFIG_HOME`) for packages that install into `~/.config/`.
 
 **macOS defaults:**
 - Ask the user if they want to capture macOS system preferences
@@ -153,7 +162,7 @@ Before proposing anything to track, scan discovered files for secrets:
   - `~/.config/gh/hosts.yml` (GitHub CLI OAuth tokens) — exclude
   - `~/.config/gcloud/` (Google Cloud credentials) — exclude
   - `~/.boto`, `~/.s3cfg` (S3 credentials) — exclude
-  - Any file containing what looks like a base64-encoded token or prefixed strings: `ghp_`, `gho_`, `ghs_`, `github_pat_`, `sk-`, `npm_`, `xoxb-`, `xoxp-`, `xoxe-`, `AKIA`, `AIza`, `glpat-`, `pypi-`, `sk_live_`, `pk_live_`, `rk_live_`, `SG.`, `dop_v1_`
+  - Any file containing token prefixes listed in the Security Rules section below
 - Scan file contents for `-----BEGIN.*PRIVATE KEY-----` headers — this catches embedded private keys regardless of filename
 - In shell configs, scan for `export` statements where the variable name contains KEY, SECRET, TOKEN, PASSWORD, or CREDENTIAL — these often contain inline secrets
 - If a file contains both safe config and embedded secrets, note it for the user and suggest the `.local` file pattern to split them
@@ -292,10 +301,13 @@ The user has a dotfiles repo and wants to apply it to a new or existing machine.
 1. Read the repo to understand what will be applied
 2. Check for conflicts: existing files at target locations that aren't symlinks to the repo
 3. Present a summary of what will happen
+4. Ask the user: "Proceed with applying these changes?" — never run setup.sh without explicit confirmation
 
 #### Step 2: Run Setup
 
 Execute `setup.sh` or walk through it step by step if the user prefers. See Setup Script section for the execution order.
+
+If setup.sh fails partway through: the script uses `set -euo pipefail` so it stops on error. Some steps may have already completed (packages installed, some stow links created). Since each phase is idempotent, it's safe to fix the issue and re-run the script. Watch for stow conflicts or partial symlinks that may need manual cleanup before re-running.
 
 #### Step 3: Post-Apply Checklist
 
