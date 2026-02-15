@@ -1,6 +1,6 @@
 ---
 name: team-solve
-description: Investigate and solve problems using a team of specialist agents. Use when facing complex, multi-faceted problems that benefit from parallel research and structured implementation. Decomposes problems into investigation tracks, runs parallel research, then implements solutions serially with fresh validation.
+description: Investigate and solve problems using a team of specialist agents. Use when facing complex, multi-faceted problems that benefit from parallel research and structured implementation.
 ---
 
 # Team Solve
@@ -13,14 +13,6 @@ Investigate and solve one or more problems using parallel research, then serial 
 - A codebase change that benefits from researching several areas at once
 - Work that can be decomposed into independent investigation tracks
 - Situations where you want structured evidence-gathering before making changes
-
-## Workflow
-
-1. **Decompose** — break the problem into 2-5 investigation tracks
-2. **Investigate** — parallel teammates each research their track
-3. **Discuss** — review findings with the user, revise approach if needed
-4. **Implement** — investigators implement their changes, one at a time
-5. **Validate** — fresh teammate verifies everything
 
 ---
 
@@ -40,7 +32,7 @@ You are the **team lead** orchestrating an investigate-then-solve workflow.
 
 ### Phase 2: Parallel Investigation
 
-Investigations run **in parallel** — this is where the team structure pays off.
+Investigations run **in parallel**.
 
 1. Create a team with `TeamCreate`
 2. Create tasks for each investigation track with `TaskCreate`
@@ -66,9 +58,13 @@ Include the following in each investigator's prompt:
 > 1. **Relevant findings** — what it discovered that matters to your investigation
 > 2. **Red herrings** (1-2 sentences) — anything that *looks* related but *isn't*, and why. Calling these out early prevents wasted cycles re-exploring dead ends.
 >
+> Report red herrings even when your main findings are conclusive — they prevent other agents from re-exploring the same dead ends.
+>
 > After receiving a subagent's report, decide whether to:
 > - **Use its findings directly** — if the summary gives you enough to proceed
-> - **Dive in yourself** — if the subagent found something promising and you want full, first-hand context in that area before drawing conclusions
+> - **Dive in yourself** — if the subagent found something promising and you want full, first-hand context in that area before drawing conclusions. Examples: conflicting evidence that needs direct examination, low confidence in the subagent's assessment, or complex state/flow where first-hand context matters.
+>
+> When choosing subagent types, prefer read-only or exploration-focused types for open-ended codebase searches, and full-capability types for targeted analysis that needs deeper tool access.
 
 #### Investigator Report Format
 
@@ -88,6 +84,9 @@ Each investigator should structure their report as:
 - {what adjacent code/features could be affected}
 - {what happens if data is unexpected or flow is interrupted}
 
+### Red Herrings
+- {things explored that weren't relevant, and why}
+
 ### Confidence: {high/medium/low}
 {brief justification}
 
@@ -102,7 +101,7 @@ Each investigator should structure their report as:
    - Key findings per track
    - Proposed approaches and confidence levels
    - Any conflicts or dependencies between tracks
-   - **Ripple effects** — consider across all tracks:
+   - **Ripple effects** — Evaluate across all tracks:
      - *"What happens to..."* — documentation, adjacent features, API consumers, shared state, caching
      - *"What happens if..."* — unexpected data, interrupted flows, concurrent access, rollback
    - Recommended implementation order (dependencies first, then highest-risk, then the rest)
@@ -120,19 +119,28 @@ Implementations happen **one track at a time**. This prevents:
    - Message the original investigator to begin implementation via `SendMessage`
    - Assign their implementation task via `TaskUpdate`
    - Include the subagent guidance for implementation below in your message
+   - When starting subsequent tracks, forward the previous track's "what changed" summary so the investigator has implementation context, not just investigation context
    - **Wait for completion before starting the next track**
    - After each track completes, have the teammate report what changed
+   - Run relevant tests/checks as a quick sanity check before moving to the next track
 2. **Parallel exception**: Only consider parallel implementation if tracks have **zero file overlap** AND the codebase has no shared build/test pipeline that could produce confusing interleaved failures. If you think parallel is safe, explain why and ask the user.
+3. **Partial failures**:
+   - If an investigator reported low confidence or found nothing actionable, discuss with the user before implementing — options are to drop the track, merge it into another, or investigate further
+   - If implementation fails mid-track, stop and discuss with the user whether to roll back or adjust the approach before continuing to the next track
 
 #### Subagent Guidance for Implementation
 
 Include the following when sending implementation instructions:
 
-> **Use subagents for repetitive or mechanical edits.** If you need to make similar changes across many files (e.g., updating imports, renaming across test files, applying a pattern to multiple modules), spawn a subagent to handle batches. This keeps your main context focused on the implementation logic rather than filling up with repetitive diffs.
+> **Use subagents to keep your main context focused on implementation logic.** Spawn subagents for:
+> - **Repetitive edits** — similar changes across many files (updating imports, renaming across test files, applying a pattern to multiple modules)
+> - **Impact analysis** — finding all callers of a function before changing its signature, checking all consumers of an API
+> - **Exploratory reading** — checking whether a module's assumptions break with your change, verifying edge cases in adjacent code
+> - **Background test runs** — running tests while you continue working on the next change
 
 ### Phase 5: Validation
 
-1. Spawn a fresh `general-purpose` teammate named `validator` with instructions to:
+1. Spawn a fresh `general-purpose` teammate named `validator`. The validator's spawn prompt must include: the original problems from Phase 1, the agreed implementation approach from Phase 3, and risk areas flagged by investigators. Instruct the validator to:
    - Detect the project's test/lint/typecheck tooling and run appropriate checks
    - Review all changed files for correctness and consistency
    - Check that each problem from Phase 1 is actually addressed
@@ -147,7 +155,6 @@ Include the following when sending implementation instructions:
 
 - **Investigate in parallel, implement in series** — research benefits from parallelism; implementation benefits from sequencing
 - **Subagents are cheap, context is expensive** — teammates should offload research tangents and repetitive edits to subagents rather than doing everything inline
-- **Keep investigators alive** between phases — their context is valuable for implementation
 - **3-5 teammates max** — if more problems than that, group into themes
 - **Never `git add .`** — teammates must add specific files
 - **Validator is always fresh** — do not reuse an investigator as validator
