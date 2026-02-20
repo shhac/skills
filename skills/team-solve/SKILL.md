@@ -20,6 +20,40 @@ Investigate and solve one or more problems using parallel research, then serial 
 
 You are the **team lead** orchestrating an investigate-then-solve workflow.
 
+### Coordination Protocol
+
+Messages between teammates are **asynchronous** — a message sent now may not be read until the recipient finishes their current work. You cannot rely on message timing for coordination. Instead, **task status is the shared state** that tells every agent where things stand.
+
+#### Task Status as Position Marker
+
+When a teammate receives a message, they determine where it sits in the conversation by checking their task status — not by assuming it arrived "just now."
+
+| Status | Who sets it | Meaning |
+|--------|------------|---------|
+| `pending` | Lead | Not started, waiting for assignment |
+| `in_progress` | Teammate | Working, or finished and **parked** waiting for lead to acknowledge |
+| `completed` | **Lead only** | Lead has read the teammate's report — this IS the acknowledgment |
+
+**The lead marks tasks `completed` — not the teammate.** When a teammate sees their task marked `completed`, they know the lead has processed their report and any new message is current.
+
+#### Teammate Protocol
+
+Include these rules in every teammate's spawn prompt:
+
+1. Mark your task `in_progress` when you begin work
+2. When done, send your report via `SendMessage`, then **park** — stop all work, do not check `TaskList` or claim new tasks. Just wait.
+3. Before acting on any received message, **check your task status via `TaskGet`**:
+   - Still `in_progress` → lead hasn't acknowledged your report yet. This message may pre-date your report. Reply with your current state instead of re-executing.
+   - `completed` → lead has processed your report. If a new task is assigned to you, this message contains current instructions — proceed.
+4. Wait for all spawned subagents to finish before sending your report. Do not leave background work running.
+
+#### Lead Protocol
+
+1. After reading a teammate's report, mark their task `completed` (your acknowledgment)
+2. Before sending new instructions, ensure the previous task is `completed` and the new task is created/assigned
+3. Verify phase completion via `TaskList` — check that all relevant tasks show the expected status, don't track messages mentally
+4. Between implementation tracks, run `git status` to confirm a clean working tree before proceeding
+
 ### Phase 1: Problem Decomposition
 
 1. Parse the user's input to identify distinct problems or themes
@@ -40,6 +74,7 @@ Investigations run **in parallel**.
    - Each teammate's prompt must include:
      - The specific problems to investigate
      - Instruction to **research only, do not make changes**
+     - The **Teammate Protocol** from the Coordination Protocol above (copy it into their prompt verbatim)
      - The subagent guidance below (copy it into their prompt)
      - Instruction to report findings via `SendMessage` using the report format below
    - **Spawn all investigators in parallel** — do not wait for one to finish before starting the next
@@ -96,8 +131,8 @@ Each investigator should structure their report as:
 
 ### Phase 3: Discussion Checkpoint
 
-1. As investigators report back, give the user brief progress updates — don't wait silently for all of them
-2. Once all investigators have reported, synthesize findings:
+1. As investigators report back, mark each investigation task `completed` (acknowledging the report) and give the user brief progress updates
+2. Once all investigation tasks show `completed` in `TaskList`, synthesize findings:
    - Key findings per track
    - Proposed approaches and confidence levels
    - Any conflicts or dependencies between tracks
@@ -115,14 +150,14 @@ Implementations happen **one track at a time**. This prevents:
 - Confusing build/test failures caused by concurrent changes in flight
 - File conflicts when teammates touch shared code
 
-1. For each track (in the order agreed with the user):
-   - Message the original investigator to begin implementation via `SendMessage`
-   - Assign their implementation task via `TaskUpdate`
-   - Include the subagent guidance for implementation below in your message
-   - When starting subsequent tracks, forward the previous track's "what changed" summary so the investigator has implementation context, not just investigation context
-   - **Wait for completion before starting the next track**
-   - After each track completes, have the teammate report what changed
-   - Run relevant tests/checks as a quick sanity check before moving to the next track
+1. For each track (in the order agreed with the user), follow the **Lead Protocol**:
+   a. Create an implementation task for this track and assign it to the original investigator
+   b. Send the investigator an implementation message with: the work to do, the subagent guidance below, and (for subsequent tracks) the previous track's "what changed" summary
+   c. **Wait** — the investigator will work, send a report, and park
+   d. Read the report. Mark the implementation task `completed` (your acknowledgment).
+   e. Run `git status` to confirm a clean working tree — no uncommitted changes, no leftover files
+   f. Run relevant tests/checks as a quick sanity check
+   g. Only then proceed to the next track
 2. **Parallel exception**: Only consider parallel implementation if tracks have **zero file overlap** AND the codebase has no shared build/test pipeline that could produce confusing interleaved failures. If you think parallel is safe, explain why and ask the user.
 3. **Partial failures**:
    - If an investigator reported low confidence or found nothing actionable, discuss with the user before implementing — options are to drop the track, merge it into another, or investigate further
@@ -137,25 +172,33 @@ Include the following when sending implementation instructions:
 > - **Impact analysis** — finding all callers of a function before changing its signature, checking all consumers of an API
 > - **Exploratory reading** — checking whether a module's assumptions break with your change, verifying edge cases in adjacent code
 > - **Background test runs** — running tests while you continue working on the next change
+>
+> **Important:** Wait for all subagents to complete before reporting your track as done. Do not leave background work running when you report completion.
 
 ### Phase 5: Validation
 
-1. Spawn a fresh `general-purpose` teammate named `validator`. The validator's spawn prompt must include: the original problems from Phase 1, the agreed implementation approach from Phase 3, and risk areas flagged by investigators. Instruct the validator to:
+1. Before spawning the validator, verify via `TaskList` that all implementation tasks are `completed`, and run `git status` to confirm a clean working tree
+2. Spawn a fresh `general-purpose` teammate named `validator`. The validator's spawn prompt must include: the **Teammate Protocol** from the Coordination Protocol (verbatim), the original problems from Phase 1, the agreed implementation approach from Phase 3, risk areas flagged by investigators, and the list of all changed files (or a `git diff` range). Instruct the validator to:
    - Detect the project's test/lint/typecheck tooling and run appropriate checks
    - Review all changed files for correctness and consistency
    - Check that each problem from Phase 1 is actually addressed
    - Look for unintended side effects or regressions
    - Report pass/fail with details via `SendMessage`
-2. If validation fails:
+3. If validation fails:
    - Route failures back to the responsible investigator for fixes
    - Re-run validation after fixes
-3. Once validation passes, shut down all teammates and report results to the user
+4. Once validation passes, send shutdown requests to all teammates and **wait for each to confirm** before reporting final results to the user
 
 ### Rules
 
 - **Investigate in parallel, implement in series** — research benefits from parallelism; implementation benefits from sequencing
+- **Task status is the source of truth** — coordinate through `TaskUpdate` status, not message timing. Always check `TaskList` to verify state.
+- **Teammates park after reporting** — after sending a report, stop and wait. Do not self-assign new work or act on queued messages without checking task status first.
+- **Lead owns `completed`** — only the lead marks tasks `completed`. This is the acknowledgment that closes the loop.
 - **Subagents are cheap, context is expensive** — teammates should offload research tangents and repetitive edits to subagents rather than doing everything inline
+- **Finish subagents before reporting** — wait for all spawned subagents to complete before sending your report
 - **3-5 teammates max** — if more problems than that, group into themes
 - **Never `git add .`** — teammates must add specific files
 - **Validator is always fresh** — do not reuse an investigator as validator
 - If a teammate goes idle, that's normal — send them a message when it's their turn
+- **Unresponsive teammate?** — if a teammate hasn't reported within a reasonable timeframe, check their task status and `git status`. If stuck, spawn a replacement and inform the user.
