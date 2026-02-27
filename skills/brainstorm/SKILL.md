@@ -103,7 +103,8 @@ Proposals are developed **in parallel** and **independently** — no cross-polli
      - The subagent guidance below (copy it into their prompt)
      - Instruction to report their proposal via `SendMessage` using the proposal format below
    - **Spawn all proposers in parallel**
-4. **Do NOT shut down proposers when they report back** — they are needed for Phase 3 and 4
+4. As proposers report back, mark each proposal task `completed` (acknowledging the report) and give the user brief progress updates
+5. **Do NOT shut down proposers when they report back** — they are needed for Phase 3 and 4
 
 #### Subagent Guidance for Proposers
 
@@ -119,7 +120,7 @@ Include the following in each proposer's prompt:
 > 1. **Relevant findings** — what it discovered that matters to your proposal
 > 2. **Dead ends** (1-2 sentences) — approaches that *look* viable but *aren't*, and why
 >
-> When choosing subagent types, prefer read-only or exploration-focused types for codebase searches, and full-capability types for tasks needing deeper tool access.
+> When choosing subagent types, prefer read-only or exploration-focused types for codebase searches, and full-capability types for targeted analysis needing deeper tool access (e.g., running commands to test feasibility) — but no changes to files.
 
 #### Proposal Format
 
@@ -166,6 +167,7 @@ Each proposer reviews **all other proposals** — not just votes, but substantiv
    - The evaluation criteria from Phase 1
    - The review instructions and format below
 4. **Send all review messages in parallel** — proposers review simultaneously
+5. As reviewers report back, mark each review task `completed` (acknowledging the report) and give the user brief progress updates
 
 #### Review Instructions
 
@@ -217,6 +219,7 @@ Proposers get one chance to strengthen their proposal based on peer feedback.
    - Their own self-reflection from Phase 3
    - The revision instructions below
 4. **Send all revision messages in parallel**
+5. As revised proposals come back, mark each revision task `completed` (acknowledging the report) and give the user brief progress updates
 
 #### Revision Instructions
 
