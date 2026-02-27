@@ -41,11 +41,13 @@ When a teammate receives a message, they determine where it sits in the conversa
 Include these rules in every teammate's spawn prompt:
 
 1. Mark your task `in_progress` when you begin work
-2. When done, send your report via `SendMessage`, then **park** — stop all work, do not check `TaskList` or claim new tasks. Just wait.
-3. Before acting on any received message, **check your task status via `TaskGet`**:
+2. **Read your task with `TaskGet`** — the task description contains everything you need (implementation details, prior track summaries, etc.). Do NOT search the filesystem or other agents' files for this content.
+3. If your task description is missing required content (e.g., an implementation task with no details), tell the lead immediately and park. Do not improvise.
+4. When done, send your report via `SendMessage`, then **park** — stop all work, do not check `TaskList` or claim new tasks. Just wait.
+5. Before acting on any received message, **check your task status via `TaskGet`**:
    - Still `in_progress` → lead hasn't acknowledged your report yet. This message may pre-date your report. Reply with your current state instead of re-executing.
    - `completed` → lead has processed your report. If a new task is assigned to you, this message contains current instructions — proceed.
-4. Wait for all spawned subagents to finish before sending your report. Do not leave background work running.
+6. Wait for all spawned subagents to finish before sending your report. Do not leave background work running.
 
 #### Lead Protocol
 
@@ -151,8 +153,8 @@ Implementations happen **one track at a time**. This prevents:
 - File conflicts when teammates touch shared code
 
 1. For each track (in the order agreed with the user), follow the **Lead Protocol**:
-   a. Create an implementation task for this track and assign it to the original investigator
-   b. Send the investigator an implementation message with: the work to do, the subagent guidance below, and (for subsequent tracks) the previous track's "what changed" summary
+   a. Create an implementation task for this track. **Include in the task description:** the work to do, the subagent guidance below, and (for subsequent tracks) the previous track's "what changed" summary
+   b. Assign the task to the original investigator and send them a message saying their implementation task is ready — the task description contains everything they need
    c. **Wait** — the investigator will work, send a report, and park
    d. Read the report. Mark the implementation task `completed` (your acknowledgment).
    e. Run `git status` to confirm a clean working tree — no uncommitted changes, no leftover files
@@ -197,6 +199,8 @@ Include the following when sending implementation instructions:
 - **Lead owns `completed`** — only the lead marks tasks `completed`. This is the acknowledgment that closes the loop.
 - **Subagents are cheap, context is expensive** — teammates should offload research tangents and repetitive edits to subagents rather than doing everything inline
 - **Finish subagents before reporting** — wait for all spawned subagents to complete before sending your report
+- **Tasks carry the content** — implementation tasks must include the full details (work to do, prior track summaries, subagent guidance) in the task description. Teammates should `TaskGet` their assigned task to find everything they need. Do NOT search the filesystem for instructions.
+- **Missing content? Park and ask.** — if a teammate receives a task but the description doesn't contain the details they need, they should immediately tell the lead and stop. Do not improvise by searching elsewhere.
 - **3-5 teammates max** — if more problems than that, group into themes
 - **Never `git add .`** — teammates must add specific files
 - **Validator is always fresh** — do not reuse an investigator as validator
