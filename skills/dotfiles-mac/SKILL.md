@@ -92,7 +92,7 @@ Scan the user's machine to discover what's worth tracking. Run these in parallel
 
 **Homebrew:**
 ```bash
-brew bundle dump --force --describe --file=/tmp/dotfiles-audit-Brewfile
+brew bundle dump --force --describe --file="$(mktemp /tmp/dotfiles-audit-Brewfile.XXXXXX)"
 ```
 
 **Shell configs:**
@@ -250,7 +250,7 @@ For each tracked category, compare current system files with repo contents:
 
 **Brewfile:**
 ```bash
-brew bundle dump --force --describe --file=/tmp/dotfiles-capture-Brewfile
+brew bundle dump --force --describe --file="$(mktemp /tmp/dotfiles-capture-Brewfile.XXXXXX)"
 ```
 Then diff against the tracked `os-macos/Brewfile`. Show added/removed packages.
 

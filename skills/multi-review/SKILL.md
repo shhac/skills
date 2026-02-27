@@ -32,6 +32,8 @@ You are the **review lead** orchestrating a multi-perspective code review.
 2. If unclear, ask the user what they want reviewed
 3. Consider the scope of changes when deciding which reviewers to spawn. For small or focused changes, fewer reviewers may be appropriate. For infrastructure or cross-cutting changes, consider adding relevant lenses beyond the default 5.
 4. Gather the diff and list of changed files — you'll include this in each reviewer's prompt wrapped in boundary delimiters (see Content Isolation in Phase 2)
+   - **Prefer inlining** the diff directly in each reviewer's prompt. This avoids file coordination and works for most changes.
+   - **If the diff is too large to inline**, write it to a temp file using `mktemp` for a unique path (e.g., `mktemp /tmp/multi-review-diff.XXXXXX`), then have reviewers read from that path. Clean up the temp file in Phase 3 after all reviewers finish.
 
 ### Phase 2: Spawn Reviewers
 

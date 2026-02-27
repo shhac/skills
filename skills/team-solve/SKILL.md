@@ -180,7 +180,7 @@ Include the following when sending implementation instructions:
 ### Phase 5: Validation
 
 1. Before spawning the validator, verify via `TaskList` that all implementation tasks are `completed`, and run `git status` to confirm a clean working tree
-2. Spawn a fresh `general-purpose` teammate named `validator`. The validator's spawn prompt must include: the **Teammate Protocol** from the Coordination Protocol (verbatim), the original problems from Phase 1, the agreed implementation approach from Phase 3, risk areas flagged by investigators, and the list of all changed files (or a `git diff` range). Instruct the validator to:
+2. Spawn a fresh `general-purpose` teammate named `validator`. The validator's spawn prompt must include: the **Teammate Protocol** from the Coordination Protocol (verbatim), the original problems from Phase 1, the agreed implementation approach from Phase 3, risk areas flagged by investigators, and the list of all changed files (or a `git diff` range). Prefer inlining the diff directly in the spawn prompt; if too large, write it to a temp file using `mktemp` (e.g., `mktemp /tmp/team-solve-diff.XXXXXX`) and have the validator read from that path. Instruct the validator to:
    - Detect the project's test/lint/typecheck tooling and run appropriate checks
    - Review all changed files for correctness and consistency
    - Check that each problem from Phase 1 is actually addressed
