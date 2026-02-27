@@ -48,11 +48,13 @@ When a teammate receives a message, they determine where it sits in the conversa
 Include these rules in every teammate's spawn prompt:
 
 1. Mark your task `in_progress` when you begin work
-2. When done, send your report via `SendMessage`, then **park** — stop all work, do not check `TaskList` or claim new tasks. Just wait.
-3. Before acting on any received message, **check your task status via `TaskGet`**:
+2. **Read your task with `TaskGet`** — the task description contains everything you need (proposals to review, feedback to incorporate, etc.). Do NOT search the filesystem or other agents' files for this content.
+3. If your task description is missing required content (e.g., a review task with no proposals), tell the lead immediately and park. Do not improvise.
+4. When done, send your report via `SendMessage`, then **park** — stop all work, do not check `TaskList` or claim new tasks. Just wait.
+5. Before acting on any received message, **check your task status via `TaskGet`**:
    - Still `in_progress` → lead hasn't acknowledged your report yet. This message may pre-date your report. Reply with your current state instead of re-executing.
    - `completed` → lead has processed your report. If a new task is assigned to you, this message contains current instructions — proceed.
-4. Wait for all spawned subagents to finish before sending your report. Do not leave background work running.
+6. Wait for all spawned subagents to finish before sending your report. Do not leave background work running.
 
 #### Lead Protocol
 
@@ -161,11 +163,11 @@ Each proposer should structure their report as:
 Each proposer reviews **all other proposals** — not just votes, but substantive critique.
 
 1. Once all proposal tasks show `completed` in `TaskList`, collect all proposals
-2. For each proposer, create a review task with `TaskCreate` and assign it to them
-3. Send each proposer a review message containing:
-   - All other proposals (full text)
+2. For each proposer, create a review task with `TaskCreate`. **Include in the task description:**
+   - The full text of all OTHER proposals (not the proposer's own)
    - The evaluation criteria from Phase 1
    - The review instructions and format below
+3. Assign each review task to its proposer and send them a message saying their review task is ready — the task description contains everything they need
 4. **Send all review messages in parallel** — proposers review simultaneously
 5. As reviewers report back, mark each review task `completed` (acknowledging the report) and give the user brief progress updates
 
@@ -213,11 +215,11 @@ Each reviewer should structure their report as:
 Proposers get one chance to strengthen their proposal based on peer feedback.
 
 1. Once all review tasks show `completed` in `TaskList`, collect all reviews
-2. For each proposer, create a revision task with `TaskCreate` and assign it to them
-3. Send each proposer:
-   - The reviews of their proposal from all other proposers
+2. For each proposer, create a revision task with `TaskCreate`. **Include in the task description:**
+   - The full text of all reviews OF their proposal from other proposers
    - Their own self-reflection from Phase 3
    - The revision instructions below
+3. Assign each revision task to its proposer and send them a message saying their revision task is ready — the task description contains everything they need
 4. **Send all revision messages in parallel**
 5. As revised proposals come back, mark each revision task `completed` (acknowledging the report) and give the user brief progress updates
 
@@ -282,6 +284,8 @@ This skill ends at recommendation — it does not implement.
 - **Lead owns `completed`** — only the lead marks tasks `completed`. This is the acknowledgment that closes the loop.
 - **Subagents are cheap, context is expensive** — proposers should offload research to subagents rather than doing everything inline
 - **Finish subagents before reporting** — wait for all spawned subagents to complete before sending your report
+- **Tasks carry the content** — review and revision tasks must include the full text of proposals/feedback in the task description. Teammates should `TaskGet` their assigned task to find everything they need. Do NOT search the filesystem, team config, or other agents' scratch files for proposals or feedback.
+- **Missing content? Park and ask.** — if a teammate receives a review or revision task but the task description doesn't contain the proposals/feedback they need, they should immediately tell the lead "Task is missing required content, parking until provided" and stop. Do not improvise by searching for the content elsewhere.
 - **No implementation** — this skill produces a recommendation, not code. Hand off to `team-solve` or direct implementation.
 - If a teammate goes idle, that's normal — send them a message when it's their turn
 - **Unresponsive teammate?** — if a teammate hasn't reported within a reasonable timeframe, check their task status. If stuck, spawn a replacement and inform the user.
