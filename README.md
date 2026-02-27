@@ -2,6 +2,8 @@
 
 A collection of reusable Claude Code skills, distributed via [skills.sh](https://skills.sh).
 
+**Website:** [skills.paulie.app](https://skills.paulie.app/)
+
 ## Installation
 
 ```bash
