@@ -28,6 +28,12 @@ Review code changes from multiple specialist perspectives in parallel. Spawns fi
 
 **Reviewers:** Security, Performance, Correctness, Test Coverage, Edge & Ripple
 
+### brainstorm
+
+Brainstorm competing solutions to a problem using parallel agents. Each proposer independently designs an approach, then all proposers peer-review each other's work. Revised proposals are compared in a structured trade-off matrix.
+
+**Workflow:** Frame → Propose → Peer Review → Revise → Compare → Handoff
+
 ### competing-hypotheses
 
 Debug problems by investigating multiple hypotheses in parallel. Spawns investigator agents each pursuing a different theory, gathering evidence and counter-evidence, then compares findings to identify the most likely root cause.
