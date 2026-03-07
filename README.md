@@ -42,6 +42,12 @@ Debug problems by investigating multiple hypotheses in parallel. Spawns investig
 
 **Workflow:** Hypothesize → Investigate → Compare → Fix (optional)
 
+### sync-fork
+
+Sync a forked repository with its upstream. Resets shared branches to upstream, re-merges local-only work, and cleans up branches already merged upstream. Auto-detects remotes or asks when ambiguous.
+
+**Workflow:** Identify Remotes → Assess Divergence → Reset & Re-merge → Clean Up
+
 ### dotfiles-mac
 
 Create, update, or apply a macOS dotfiles repo using GNU Stow and plain git. Audits your system (Homebrew, shell, git, SSH, GPG, app configs, Claude/AI configs, macOS defaults), lets you pick what to track, and generates a stow-based repo with an idempotent setup script.
