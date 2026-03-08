@@ -50,6 +50,19 @@ For each shared branch (in order: default branch first, then others):
    - Merge branches in dependency order if any branch builds on another.
 4. `git push <fork> <branch> --force-with-lease` to update the fork.
 
+### Phase 2.5: Rebase Fork-Only Branches (if merge conflicts occurred)
+
+If any merge conflicts occurred during Phase 2, ask the user if they'd like to rebase the fork-only branches onto the updated shared branch. This prevents the same conflicts from recurring on the next sync.
+
+If the user confirms:
+
+1. For each fork-only branch that caused a merge conflict:
+   - Check out the branch locally.
+   - `git rebase <shared-branch>` to replay its commits on top of the updated shared branch.
+   - If rebase conflicts occur, resolve them. Show the user what you resolved.
+   - `git push <fork> <branch> --force-with-lease` to update the fork.
+2. Switch back to the default shared branch when done.
+
 ### Phase 3: Clean Up
 
 1. Delete remote branches (`git push <fork> --delete <branch>`) that are fully merged into upstream.
