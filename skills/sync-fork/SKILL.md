@@ -19,13 +19,9 @@ If upstream hasn't advanced (i.e., `upstream/main` is already an ancestor of `fo
 
 When auto-detecting with exactly two remotes, use heuristics to guess which is the fork and which is upstream (e.g., a remote named `origin` is more likely the fork; a remote whose URL org differs from the other is more likely upstream). Present your guess and ask the user to confirm.
 
-## Instructions for Claude
+## Diagram legend
 
-You are syncing a fork with its upstream. **Before starting**, read the example files in the `examples/` directory adjacent to this skill file. These cover the supported branch topologies and their rebase strategies: independent branches, linear chains, fan-out, deep chains, promoted branches, and multi-target branches.
-
-### Diagram legend
-
-Used in examples and this file:
+Used in reference files adjacent to this skill:
 
 ```
 ───       flow (left-to-right = time)
@@ -34,6 +30,16 @@ Used in examples and this file:
 ──┘       merge point (branch merges into line above)
 ●         notable state on the line
 ```
+
+## Instructions for Claude
+
+You are syncing a fork with its upstream. Follow the phases below in order.
+
+This skill uses **incremental discovery** — the main flow below covers the common case. When you encounter a specific situation (a topology, an edge case), you will be directed to read the relevant reference file at that point. **Do not read all reference files upfront.** Read them only when triggered.
+
+Reference files live in two directories adjacent to this skill:
+- `examples/` — branch topology diagrams and rebase strategies
+- `edge-cases/` — handling for unusual situations
 
 ### Phase 0: Pre-flight
 
@@ -55,19 +61,21 @@ Used in examples and this file:
 
 2. **No-op check.** For each shared branch, check `git merge-base --is-ancestor <upstream>/<branch> <fork>/<branch>`. If upstream is already an ancestor of fork for ALL shared branches, the sync is a no-op — upstream hasn't advanced. Tell the user and stop.
 
-3. Identify **shared branches** — branches that exist on both remotes (e.g., both have `main`, or both have `main` and `develop`). These are the branches that will be reset to upstream.
+3. Identify **shared branches** — branches that exist on both remotes. These will be reset to upstream.
 
 4. For each shared branch, show the user:
    - **Commits on upstream not in fork** (`git log --oneline <fork>/<branch>..<upstream>/<branch>`)
    - **Commits on fork not in upstream** (`git log --oneline <upstream>/<branch>..<fork>/<branch>`)
-   - **History rewrite warning.** If BOTH sides have commits the other doesn't, upstream may have rewritten history (force-pushed, rebased). Flag this: *"Upstream appears to have rewritten history on `<branch>`. Commits unique to your fork will be discarded by the reset."*
+   - ⚠️ If BOTH sides have commits the other doesn't → **STOP and read `edge-cases/history-rewrite.md`** before proceeding.
 
-5. **Check for upstream reverts.** Scan upstream's new commits for revert commits (`git log --oneline --grep="^Revert" <fork>/<branch>..<upstream>/<branch>`). If found, warn the user: *"Upstream has revert commits. If any fork-only branches contain the original reverted changes, rebasing will silently re-apply them. Review these before proceeding."*
+5. Check upstream's new commits for reverts: `git log --oneline --grep="^Revert" <fork>/<branch>..<upstream>/<branch>`
+   - ⚠️ If revert commits found → **STOP and read `edge-cases/upstream-reverts.md`** before proceeding.
 
 6. Identify fork-only branches:
-   - **Fully merged into upstream** — detect using two methods:
-     1. `git branch -r --merged <upstream>/<default-branch> | grep <fork>/` — catches exact merges.
-     2. For remaining branches, check `git log --oneline --cherry-pick --right-only <upstream>/<default-branch>...<fork>/<branch>`. If empty, all of the branch's patches have equivalents in upstream (handles squash-merges and cherry-picks). See `examples/promoted-branch.md`.
+   - **Fully merged into upstream:** `git branch -r --merged <upstream>/<default-branch> | grep <fork>/` — these can be deleted.
+   - For remaining branches, check patch equivalence: `git log --oneline --cherry-pick --right-only <upstream>/<default-branch>...<fork>/<branch>`. If empty, all patches have equivalents in upstream.
+     - ⚠️ If a branch appears partially promoted (some but not all commits matched) → **read `edge-cases/partial-promotion.md`**.
+     - For fully promoted branches → **read `examples/promoted-branch.md`** for the full handling strategy.
    - **Have commits not in upstream** — branches where the above check returns commits. These have local-only work to preserve.
 
 7. Present a summary table and proposed plan. Wait for user confirmation before proceeding.
@@ -83,11 +91,9 @@ For each shared branch (in order: default branch first, then others):
 
 ### Phase 3: Rebase Fork-Only Branches
 
-Fork-only branches may depend on each other (e.g., stacked PRs). Rebase must respect this dependency graph.
-
 #### 3a. Build the dependency graph
 
-For each fork-only branch, find its **parent** — the closest ancestor among shared branches and other fork-only branches. This runs AFTER Phase 2 (shared branches are at upstream state) but BEFORE any rebases (fork-only branches are at their current state):
+For each fork-only branch, find its **parent** — the closest ancestor among shared branches and other fork-only branches. This runs AFTER Phase 2 (shared branches are at upstream state) but BEFORE any rebases (fork-only branches are still at their pre-sync state):
 
 ```bash
 for branch in "${fork_only_branches[@]}"; do
@@ -107,11 +113,26 @@ for branch in "${fork_only_branches[@]}"; do
 done
 ```
 
-This produces a forest of trees rooted at shared branches. Topologically sort it (parents before children) to get the rebase and merge order.
+Topologically sort the result (parents before children) to get the rebase and merge order.
 
-**Orphaned branches.** If no ancestor is found for a branch (no candidate passes `--is-ancestor`), the branch is disconnected from all known branches. Report this to the user and ask how to proceed — rebase onto the default shared branch, or skip it.
+- ⚠️ If no ancestor found for a branch → **read `edge-cases/orphaned-branches.md`**.
 
-#### 3b. Save pre-rebase refs as backup branches
+#### 3b. MANDATORY: Read the matching topology reference
+
+**You MUST read the applicable example file before continuing.** Match the dependency graph you just built to the correct topology and read that file now:
+
+| Topology detected | Read this file |
+|---|---|
+| All branches root directly on a shared branch, no dependencies between them | `examples/independent-branches.md` |
+| One branch depends on another (B based on A) | `examples/linear-chain.md` |
+| Multiple branches depend on the same parent (B and C both based on A) | `examples/fan-out.md` |
+| Three or more branches in a chain (A → B → C) | `examples/deep-chain.md` |
+| Branches root on different shared branches | `examples/multi-target.md` |
+| Mixed (combination of above) | Read ALL applicable files |
+
+If the graph has any dependencies between fork-only branches, you **must** understand the `--onto` rebase strategy from the relevant file before proceeding. Getting this wrong causes duplicate commits and false conflicts.
+
+#### 3c. Save pre-rebase refs as backup branches
 
 Before rebasing anything, create a backup branch for every fork-only branch:
 
@@ -121,33 +142,33 @@ git branch sync-fork/pre-rebase/<branch> <branch>
 
 These serve double duty: backup for rollback, and old-ref storage for `--onto` when rebasing chained branches (the backup branch tip IS the old ref).
 
-#### 3c. Rebase in topological order
+#### 3d. Rebase in topological order
 
 For each fork-only branch (parents first, children last):
 
-1. **Check for merge commits** in the branch: `git log --merges sync-fork/pre-rebase/<parent>..<branch>` (using the backup ref for the parent's old position, or the shared branch directly if parent is shared). If merge commits exist, ask the user: *"Branch `<branch>` contains merge commits. Options: (a) use `--rebase-merges` to preserve merge topology, (b) choose a different base to linearize cleanly, or (c) skip this branch."*
+1. **Check for merge commits:** `git log --merges sync-fork/pre-rebase/<parent>..<branch>`
+   - ⚠️ If merge commits found → **read `edge-cases/merge-commits-in-branches.md`** before rebasing this branch.
 
 2. **Rebase:**
-   - **If parent is a shared branch:** `git rebase <shared-branch> <branch>`
-   - **If parent is another fork-only branch:** `git rebase --onto <parent> sync-fork/pre-rebase/<parent> <branch>`
-     - This replays only the branch's own commits (between the backup of its parent's old tip and the branch tip) onto the rebased parent — avoiding duplicate commits from the parent's history.
-   - Add `--empty=drop` to automatically discard commits that become empty (their changes are already in upstream via cherry-pick or squash-merge). If Git version is below 2.26, use `git rebase --skip` when prompted about empty commits.
+   - **If parent is a shared branch:** `git rebase --empty=drop <shared-branch> <branch>`
+   - **If parent is another fork-only branch:** `git rebase --empty=drop --onto <parent> sync-fork/pre-rebase/<parent> <branch>`
+   - `--empty=drop` automatically discards commits already in upstream. If Git < 2.26, omit the flag and use `git rebase --skip` when prompted.
    - If rebase conflicts occur, resolve them. Show the user what you resolved and why.
 
-3. **Check for empty result.** If ALL commits were dropped (branch now points to same commit as its parent), warn the user: *"Branch `<branch>` appears to be fully absorbed by upstream — all commits were empty after rebase. Consider deleting it."*
+3. **Check for empty result.** If ALL commits were dropped (branch now points to same commit as its parent), warn the user: *"Branch `<branch>` appears fully absorbed by upstream. Consider deleting it."*
 
 4. `git push <fork> <branch> --force-with-lease` to update the fork.
 
 ### Phase 4: Re-merge into Shared Branches
 
-The fork's shared branches are maintained as "upstream + local patches." This phase replays the merge commits on top of the upstream-aligned shared branch, so fork/main = upstream/main + fork-only work.
+The fork's shared branches are maintained as "upstream + local patches." This phase replays merge commits on top, so fork/main = upstream/main + fork-only work.
 
 For each shared branch that has fork-only branches targeting it:
 
 1. Check out the shared branch locally.
-2. Merge each rebased fork-only branch with `--no-ff` in **topological order** (parents before children) to preserve merge commits.
-   - These merges should be clean since the branches were just rebased. If a conflict occurs, resolve it and show the user what you resolved.
-   - After merging a parent branch (e.g., A), merging a child branch (e.g., B which is based on A) will only bring in B's unique commits since A's content is already in the shared branch.
+2. Merge each rebased fork-only branch with `--no-ff` in **topological order** (parents before children).
+   - These merges should be clean since branches were just rebased. If a conflict occurs, resolve it and show the user what you resolved.
+   - After merging a parent (e.g., A), merging its child (e.g., B) only brings in B's unique commits.
 3. `git push <fork> <branch> --force-with-lease` to update the fork.
 
 ### Phase 5: Clean Up
