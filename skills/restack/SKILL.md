@@ -91,8 +91,17 @@ Based on user intent and status, pick the appropriate flow:
 
 → **Read `references/trunk-advance.md`** for the basic cascade pattern.
 
-For deeper stacks (3+ branches), also read `references/deep-chain.md`.
-For branches with multiple children, also read `references/fan-out.md`.
+Then **read the matching topology reference** based on the graph structure:
+
+| Topology detected | Read this file |
+|---|---|
+| Linear stack (A→B, no branching) | `trunk-advance.md` is sufficient |
+| Three or more branches in a chain (A→B→C→D) | `references/deep-chain.md` |
+| Multiple branches off the same parent (B,C on A) | `references/fan-out.md` |
+| Fan-out with depth (A→B,C and C→D→E) | `references/deep-fan.md` |
+| Fan-out, reconverge, fan-out again (hourglass) | `references/fan-deep-fan.md` |
+| Multiple independent stacks side by side | `references/independent-stacks.md` |
+| Mixed (combination of above) | Read ALL applicable files |
 
 1. Run the restack command to see the plan:
    ```bash
