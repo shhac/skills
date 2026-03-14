@@ -13,8 +13,7 @@ import argparse
 import json
 import subprocess
 import sys
-from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from dataclasses import dataclass, asdict
 from graphlib import TopologicalSorter, CycleError
 from pathlib import Path
 from typing import Optional, List, Dict, Tuple
@@ -586,10 +585,11 @@ def cmd_restack(args: argparse.Namespace) -> None:
 
     # Determine which branches need restacking
     if args.branch:
-        # Restack specific branch and its descendants
+        # Restack only descendants of the specified branch (not the branch itself).
+        # This is the mid-stack edit case: the user already changed the branch,
+        # so we cascade the change to its children.
         target = args.branch
         to_restack = _descendants_of(target, graph.parents, graph.order)
-        to_restack = [target] + to_restack
     else:
         # Restack everything that needs it
         to_restack = []
@@ -625,18 +625,40 @@ def cmd_restack(args: argparse.Namespace) -> None:
         "parents": graph.parents,
     })
 
-    # Output the plan
+    # Output the plan with rebase strategy for each branch
     plan_lines = []
+    plan_details = []
     for branch in to_restack:
         parent = graph.parents.get(branch, trunk)
         if parent == trunk or parent not in graph.parents:
             plan_lines.append(f"{branch} onto {parent}")
+            plan_details.append({
+                "branch": branch, "parent": parent, "strategy": "rebase",
+            })
+        elif args.branch and parent == args.branch:
+            # Immediate child of an edited branch — use merge-base as cut point
+            # because backup ref captures post-edit state (not pre-edit)
+            mb = git_merge_base(parent, branch)
+            plan_lines.append(f"{branch} onto {parent} (--onto merge-base {mb[:8] if mb else '?'})")
+            plan_details.append({
+                "branch": branch, "parent": parent,
+                "strategy": "onto-merge-base", "merge_base": mb,
+            })
         else:
             plan_lines.append(f"{branch} onto {parent} (--onto)")
+            plan_details.append({
+                "branch": branch, "parent": parent, "strategy": "onto-backup",
+            })
 
     if args.json:
-        print(json.dumps({"to_restack": to_restack, "plan": plan_lines}))
+        print(json.dumps({
+            "to_restack": to_restack,
+            "plan": plan_details,
+            "edited_branch": args.branch,
+        }))
     else:
+        if args.branch:
+            print(f"edited branch: {args.branch}")
         print(f"branches to restack: {','.join(to_restack)}")
         for line in plan_lines:
             print(f"  rebase: {line}")

@@ -44,6 +44,10 @@ If the user has a naming convention (e.g., `paul/*` branches), use `--prefix`. O
 
 ## Instructions for Claude
 
+You are managing stacked branches. Follow the steps below. This skill uses **incremental discovery** — read reference files only when triggered by specific conditions.
+
+Reference files live in `references/` adjacent to this skill.
+
 ### Step 1: Determine Context
 
 1. **Check for interrupted operation.** Look for branches matching `restack/pre-rebase/*`. If found, a previous restack was interrupted. Show the user what backups exist and offer to restore or clean up (`python3 <script> cleanup`).
@@ -53,6 +57,11 @@ If the user has a naming convention (e.g., `paul/*` branches), use `--prefix`. O
 3. **Identify branches.** If the user specified branches, use those. Otherwise, detect from context:
    - If the user has a branch prefix in their git config or CLAUDE.md, use `--prefix`
    - Otherwise, let the script auto-discover all local branches ahead of trunk
+
+4. **Guard working tree.** If there are uncommitted changes:
+   ```bash
+   git stash push -m "restack: uncommitted changes"
+   ```
 
 ### Step 2: Assess State
 
@@ -67,23 +76,27 @@ This outputs a tree showing each stack with per-branch state:
 - `landed` — all patches are in trunk (PR was merged)
 - `orphaned` — no detectable parent
 
+**Incremental discovery triggers from status output:**
+- ⚠️ If `ambiguous` entries appear → **read `references/ambiguous-graph.md`**
+- ⚠️ If `landed` branches appear → **read `references/landed-branch.md`**
+- ⚠️ If `orphaned` branches appear → ask the user what to do (rebase onto trunk, skip, or specify parent)
+
 If the user ran `/restack` with no arguments, present this status and ask what they'd like to do.
 
-### Step 3: Handle Ambiguities
+### Step 3: Execute
 
-If the status output shows `ambiguous` entries, the script couldn't determine the stacking order for some branches (they fork from the same commit).
+Based on user intent and status, pick the appropriate flow:
 
-Draw an ASCII diagram showing both possible orderings and ask the user which is correct. Then re-run with the explicit `--branches` list in the intended order.
+#### Restack (trunk advanced)
 
-### Step 4: Execute
+→ **Read `references/trunk-advance.md`** for the basic cascade pattern.
 
-Based on user intent and status:
-
-#### Restack (trunk advanced or mid-stack edit)
+For deeper stacks (3+ branches), also read `references/deep-chain.md`.
+For branches with multiple children, also read `references/fan-out.md`.
 
 1. Run the restack command to see the plan:
    ```bash
-   python3 <script> restack [--trunk <trunk>] [--branches <list>] [--branch <specific>]
+   python3 <script> restack [--trunk <trunk>] [--branches <list>]
    ```
    This creates backup refs and outputs the rebase plan.
 
@@ -91,7 +104,8 @@ Based on user intent and status:
 
 3. Execute the rebases in topological order (the `order` from the output):
    - **If parent is trunk:** `git rebase --empty=drop <trunk> <branch>`
-   - **If parent is another stacked branch:** `git rebase --empty=drop --onto <parent> restack/pre-rebase/<parent> <branch>`
+   - **If parent is another stacked branch (strategy: `onto-backup`):** `git rebase --empty=drop --onto <parent> restack/pre-rebase/<parent> <branch>`
+   - The backup ref `restack/pre-rebase/<parent>` captures the parent's pre-rebase tip — this is the correct `--onto` cut point.
 
 4. If a rebase conflicts, resolve the conflict, then `git rebase --continue`. Continue with the next branch in the cascade.
 
@@ -99,49 +113,65 @@ Based on user intent and status:
 
 6. After all rebases complete, clean up: `python3 <script> cleanup`
 
-#### Sync (fetch trunk + detect landed + restack)
+#### Mid-stack edit (user amended a branch)
 
-1. Fetch the remote:
+→ **Read `references/mid-stack-edit.md`** for the cascade pattern.
+
+The `--branch` flag restacks only the descendants of the edited branch (not the branch itself, since the user already changed it).
+
+1. Run:
    ```bash
-   git fetch origin
+   python3 <script> restack --branch <edited-branch> [--trunk <trunk>]
    ```
 
-2. Update local trunk:
+2. The plan output shows the rebase strategy for each branch:
+   - **Immediate children of the edited branch (strategy: `onto-merge-base`):** Use the merge-base as the cut point, NOT the backup ref. This is because the backup captures the post-edit state:
+     ```bash
+     git rebase --empty=drop --onto <parent> <merge-base> <child>
+     ```
+     Any of the parent's old commits that get replayed are dropped by `--empty=drop`.
+   - **Deeper descendants (strategy: `onto-backup`):** Use the normal backup ref approach.
+
+3. Execute in topological order, resolve conflicts, push, clean up.
+
+#### Sync (fetch trunk + detect landed + restack)
+
+→ **Read `references/landed-branch.md`** for landed branch handling.
+
+1. Fetch the remote and update local trunk:
    ```bash
+   git fetch origin
    git checkout <trunk> && git merge --ff-only origin/<trunk>
    ```
 
-3. Run the sync command to analyze:
+2. Run the sync command to analyze:
    ```bash
    python3 <script> sync [--trunk <trunk>] [--branches <list>]
    ```
 
-4. If landed branches are detected, confirm with the user before deleting them:
+3. If landed branches are detected, confirm with the user before deleting them:
    - Delete local: `git branch -D <branch>`
    - Delete remote: `git push origin --delete <branch>`
+   - ⚠️ If a mid-stack branch landed (not the bottom of the stack) → **read `references/mid-stack-landing.md`**
 
-5. If remaining branches need restacking, proceed with the restack flow above.
-
-#### Mid-stack edit
-
-When the user has changed a branch in the middle of a stack (amended, added commits, etc.), use `--branch <changed-branch>` to restack only that branch's descendants:
-
-```bash
-python3 <script> restack --branch <changed-branch> [--trunk <trunk>]
-```
-
-Then execute the rebases for the descendants only.
+4. After landed branches are cleaned up, re-run status. If remaining branches need restacking, proceed with the restack flow above.
 
 ### Rebase Strategy Reference
 
-The `--onto` rebase for stacked branches:
+Two `--onto` strategies depending on context:
 
+**Strategy: `onto-backup`** (normal restack — parent was rebased by this operation):
 ```bash
-# After rebasing parent-branch, rebase child onto it:
-git rebase --empty=drop --onto <parent-branch> restack/pre-rebase/<parent-branch> <child-branch>
+git rebase --empty=drop --onto <parent> restack/pre-rebase/<parent> <child>
 ```
+The backup ref is the parent's pre-rebase tip. Takes only the child's unique commits.
 
-This says: "take the commits unique to child (between old parent tip and child tip), replay them onto the new parent tip." The backup ref `restack/pre-rebase/<parent-branch>` is the old parent tip before it was rebased.
+**Strategy: `onto-merge-base`** (mid-stack edit — parent was changed outside this operation):
+```bash
+mb=$(git merge-base <parent> <child>)
+git rebase --empty=drop --onto <parent> $mb <child>
+```
+Uses the merge-base because the backup ref would capture the post-edit state. Any parent commits that get replayed are dropped as empty.
 
 Without `--onto`, a plain `git rebase <parent>` would replay ALL commits from the merge-base, including the parent's old commits that now have new SHAs — causing duplicates and conflicts.
 
@@ -153,4 +183,4 @@ Without `--onto`, a plain `git rebase <parent>` would replay ALL commits from th
 - **Clean up after success.** Run `python3 <script> cleanup` to remove backup refs.
 - **Don't delete landed branches** without user confirmation.
 - **Handle conflicts inline.** When a rebase conflicts, resolve it yourself (`git rebase --continue`), then continue the cascade. Only involve the user if the conflict is genuinely ambiguous.
-- **Preserve the user's working state.** If they have uncommitted changes, stash before starting (`git stash push -m "restack: uncommitted changes"`) and pop after.
+- **Preserve the user's working state.** Stash before starting, restore the original branch and pop stash after.
