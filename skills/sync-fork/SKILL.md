@@ -31,6 +31,17 @@ Used in reference files adjacent to this skill:
 ●         notable state on the line
 ```
 
+## Helper script
+
+This skill includes `scripts/sync_fork.py` — a deterministic Python helper for branch analysis. It handles classification, divergence checking, and dependency graph building so these operations produce consistent results. Requires Python 3.9+ (stdlib only).
+
+Locate the script relative to this skill file. Invoke it as:
+```bash
+python3 <skill-dir>/scripts/sync_fork.py <subcommand> [options]
+```
+
+Subcommands: `classify`, `divergence`, `graph`, `plan`, `state`. Run with `--help` for full usage. Default output is compact key-value (LLM-friendly). Add `--json` for structured output.
+
 ## Instructions for Claude
 
 You are syncing a fork with its upstream. Follow the phases below in order.
@@ -45,15 +56,17 @@ Reference files live in two directories adjacent to this skill:
 
 1. **Check for interrupted previous run.** Look for branches matching `sync-fork/*`. If found, a previous sync was interrupted. Show the user what backup branches exist and ask: restore from backups, or clean up (`git branch --list 'sync-fork/*' | xargs git branch -D`) and start fresh?
 
-2. **Save current branch.** Record `git symbolic-ref --short HEAD` (or the detached commit) so we can restore it at the end.
+2. **Check for state file.** Run `python3 <script> state read`. If a state file exists, a previous sync was interrupted mid-phase. Show the user which phase was reached and ask: resume from that phase, or delete the state file (`python3 <script> state delete`) and start fresh?
 
-3. **Guard dirty working tree.** Run `git status --porcelain`. If there are uncommitted changes, stash them:
+3. **Save current branch.** Record `git symbolic-ref --short HEAD` (or the detached commit) so we can restore it at the end.
+
+4. **Guard dirty working tree.** Run `git status --porcelain`. If there are uncommitted changes, stash them:
    ```bash
    git stash push -m "sync-fork: uncommitted changes"
    ```
    This will be popped at the end. Stash is branch-independent, so it survives the checkout/reset operations that follow.
 
-4. **Identify remotes.** Run `git remote -v` and resolve which remote is the fork and which is upstream using the rules in the Usage section above. Confirm with the user if there was any ambiguity.
+5. **Identify remotes.** Run `git remote -v` and resolve which remote is the fork and which is upstream using the rules in the Usage section above. Confirm with the user if there was any ambiguity.
 
 ### Phase 1: Assess Divergence
 
@@ -61,61 +74,84 @@ Reference files live in two directories adjacent to this skill:
 
 2. **No-op check.** For each shared branch, check `git merge-base --is-ancestor <upstream>/<branch> <fork>/<branch>`. If upstream is already an ancestor of fork for ALL shared branches, the sync is a no-op — upstream hasn't advanced. Tell the user and stop.
 
-3. Identify **shared branches** — branches that exist on both remotes. These will be reset to upstream.
+3. **Classify branches.** Run the helper script:
+   ```bash
+   python3 <script> --fork <fork> --upstream <upstream> classify
+   ```
+   This identifies shared branches, fork-only branches (merged, promoted, partially promoted, active), and reports them in a compact format.
 
-4. For each shared branch, show the user:
-   - **Commits on upstream not in fork** (`git log --oneline <fork>/<branch>..<upstream>/<branch>`)
-   - **Commits on fork not in upstream** (`git log --oneline <upstream>/<branch>..<fork>/<branch>`)
-   - ⚠️ If BOTH sides have commits the other doesn't → **STOP and read `edge-cases/history-rewrite.md`** before proceeding.
+   - ⚠️ If `fork-only-partial` entries appear → **read `edge-cases/partial-promotion.md`**.
+   - ⚠️ If `fork-only-promoted` entries appear → **read `examples/promoted-branch.md`** for the full handling strategy.
 
-5. Check upstream's new commits for reverts: `git log --oneline --grep="^Revert" <fork>/<branch>..<upstream>/<branch>`
-   - ⚠️ If revert commits found → **STOP and read `edge-cases/upstream-reverts.md`** before proceeding.
+4. **Check divergence.** Run the helper script:
+   ```bash
+   python3 <script> --fork <fork> --upstream <upstream> divergence
+   ```
+   This shows per-branch commit counts and flags.
 
-6. Identify fork-only branches:
-   - **Fully merged into upstream:** `git branch -r --merged <upstream>/<default-branch> | grep <fork>/` — these can be deleted.
-   - For remaining branches, check patch equivalence: `git log --oneline --cherry-pick --right-only <upstream>/<default-branch>...<fork>/<branch>`. If empty, all patches have equivalents in upstream.
-     - ⚠️ If a branch appears partially promoted (some but not all commits matched) → **read `edge-cases/partial-promotion.md`**.
-     - For fully promoted branches → **read `examples/promoted-branch.md`** for the full handling strategy.
-   - **Have commits not in upstream** — branches where the above check returns commits. These have local-only work to preserve.
+   - ⚠️ If any branch shows `rewrite=true` → **STOP and read `edge-cases/history-rewrite.md`** before proceeding.
+   - ⚠️ If any branch shows `reverts>0` → **STOP and read `edge-cases/upstream-reverts.md`** before proceeding.
 
-7. Present a summary table and proposed plan. Wait for user confirmation before proceeding.
+5. **Dry-run plan.** Run:
+   ```bash
+   python3 <script> --fork <fork> --upstream <upstream> plan
+   ```
+   Present the full plan to the user. Wait for confirmation before proceeding.
 
-### Phase 2: Reset Shared Branches
+### Phase 2: Create All Backups and Reset Shared Branches
+
+Create all backups upfront (both pre-reset and pre-rebase) before any destructive operations. This consolidates recovery points into a single step.
+
+#### 2a. Create all backup branches
+
+```bash
+# Pre-reset backups for shared branches
+for branch in <shared_branches>; do
+  git branch sync-fork/pre-reset/$branch <fork>/$branch
+done
+
+# Pre-rebase backups for fork-only active branches
+for branch in <fork_only_active>; do
+  git branch sync-fork/pre-rebase/$branch <fork>/$branch
+done
+```
+
+These backups serve triple duty:
+- Recovery points if anything goes wrong
+- Old-ref storage for `--onto` rebases (the `sync-fork/pre-rebase/<parent>` tip IS the old ref)
+- Correct ancestry refs for the dependency graph (shared branches are about to be reset)
+
+#### 2b. Reset shared branches
 
 For each shared branch (in order: default branch first, then others):
 
-1. Create a backup branch: `git branch sync-fork/pre-reset/<branch> <fork>/<branch>`
-2. Check out the branch locally. (If no local tracking branch exists, `git checkout` will auto-create one.)
-3. `git reset --hard <upstream>/<branch>` to align with upstream.
-4. `git push <fork> <branch> --force-with-lease` to update the fork.
+1. Check out the branch locally. (If no local tracking branch exists, `git checkout` will auto-create one.)
+2. `git reset --hard <upstream>/<branch>` to align with upstream.
+3. `git push <fork> <branch> --force-with-lease` to update the fork.
+
+#### 2c. Save state
+
+Write state after resets complete so an interrupted run can resume from Phase 3:
+```bash
+python3 <script> state write --data '<JSON with phase, remotes, classification, backups>'
+```
 
 ### Phase 3: Rebase Fork-Only Branches
 
 #### 3a. Build the dependency graph
 
-For each fork-only branch, find its **parent** — the closest ancestor among shared branches and other fork-only branches. This runs AFTER Phase 2 (shared branches are at upstream state) but BEFORE any rebases (fork-only branches are still at their pre-sync state):
+Run the helper script to build the dependency graph. It uses the `sync-fork/pre-reset/*` backup refs for shared branch ancestry checks (since shared branches now point to upstream):
 
 ```bash
-for branch in "${fork_only_branches[@]}"; do
-  best_parent=""
-  best_distance=999999
-  for candidate in "${shared_branches[@]}" "${fork_only_branches[@]}"; do
-    [ "$candidate" = "$branch" ] && continue
-    if git merge-base --is-ancestor "$candidate" "$branch"; then
-      distance=$(git rev-list --count "$candidate".."$branch")
-      if [ "$distance" -lt "$best_distance" ]; then
-        best_distance=$distance
-        best_parent=$candidate
-      fi
-    fi
-  done
-  # branch's parent is best_parent
-done
+python3 <script> --fork <fork> --upstream <upstream> graph \
+  --branches <comma-separated-fork-only-active> \
+  --shared <comma-separated-shared> \
+  --backup-prefix sync-fork/pre-reset
 ```
 
-Topologically sort the result (parents before children) to get the rebase and merge order.
+The output provides: parent map, topological order, orphaned branches, and merge targets.
 
-- ⚠️ If no ancestor found for a branch → **read `edge-cases/orphaned-branches.md`**.
+- ⚠️ If `orphaned` is not `(none)` → **read `edge-cases/orphaned-branches.md`**.
 
 #### 3b. MANDATORY: Read the matching topology reference
 
@@ -132,19 +168,9 @@ Topologically sort the result (parents before children) to get the rebase and me
 
 If the graph has any dependencies between fork-only branches, you **must** understand the `--onto` rebase strategy from the relevant file before proceeding. Getting this wrong causes duplicate commits and false conflicts.
 
-#### 3c. Save pre-rebase refs as backup branches
+#### 3c. Rebase in topological order
 
-Before rebasing anything, create a backup branch for every fork-only branch:
-
-```bash
-git branch sync-fork/pre-rebase/<branch> <branch>
-```
-
-These serve double duty: backup for rollback, and old-ref storage for `--onto` when rebasing chained branches (the backup branch tip IS the old ref).
-
-#### 3d. Rebase in topological order
-
-For each fork-only branch (parents first, children last):
+For each fork-only branch (parents first, children last — use the `order` from the graph output):
 
 1. **Check for merge commits:** `git log --merges sync-fork/pre-rebase/<parent>..<branch>`
    - ⚠️ If merge commits found → **read `edge-cases/merge-commits-in-branches.md`** before rebasing this branch.
@@ -159,14 +185,19 @@ For each fork-only branch (parents first, children last):
 
 4. `git push <fork> <branch> --force-with-lease` to update the fork.
 
+5. **Update state** after each successful rebase (add to `completed_rebases` list).
+
 ### Phase 4: Re-merge into Shared Branches
 
 The fork's shared branches are maintained as "upstream + local patches." This phase replays merge commits on top, so fork/main = upstream/main + fork-only work.
 
-For each shared branch that has fork-only branches targeting it:
+For each shared branch that has fork-only branches targeting it (use the `target` map from the graph output):
 
 1. Check out the shared branch locally.
-2. Merge each rebased fork-only branch with `--no-ff` in **topological order** (parents before children).
+2. Merge each rebased fork-only branch with `--no-ff` in **topological order** (parents before children). Use the message format:
+   ```bash
+   git merge --no-ff <branch> -m "sync-fork: merge <branch> into <shared-branch>"
+   ```
    - These merges should be clean since branches were just rebased. If a conflict occurs, resolve it and show the user what you resolved.
    - After merging a parent (e.g., A), merging its child (e.g., B) only brings in B's unique commits.
 3. `git push <fork> <branch> --force-with-lease` to update the fork.
@@ -175,10 +206,11 @@ For each shared branch that has fork-only branches targeting it:
 
 1. Delete remote branches (`git push <fork> --delete <branch>`) that are fully merged into upstream.
 2. Delete all backup branches: `git branch --list 'sync-fork/*' | xargs git branch -D`
-3. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
-4. If changes were stashed in Phase 0, restore them: `git stash pop`.
-5. List any local tracking branches that can be pruned.
-6. Show the user a final summary of what was synced, rebased, merged, deleted, and what branches remain.
+3. Delete state file: `python3 <script> state delete`
+4. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
+5. If changes were stashed in Phase 0, restore them: `git stash pop`.
+6. List any local tracking branches that can be pruned.
+7. Show the user a final summary of what was synced, rebased, merged, deleted, and what branches remain.
 
 ### Rules
 
