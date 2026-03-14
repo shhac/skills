@@ -56,7 +56,7 @@ Reference files live in two directories adjacent to this skill:
 
 ### Phase 0: Pre-flight
 
-1. **Check for interrupted previous run.** Look for branches matching `sync-fork/*`. If found, a previous sync was interrupted. Show the user what backup branches exist and ask: restore from backups, or clean up (`git branch --list 'sync-fork/*' | xargs git branch -D`) and start fresh?
+1. **Check for interrupted previous run.** Look for branches matching `sync-fork/*`. If found, a previous sync was interrupted. Show the user what backup branches exist and ask: restore from backups, or clean up (`git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`) and start fresh?
 
 2. **Check for state file.** Run `python3 <script> state read`. If a state file exists, a previous sync was interrupted mid-phase. Show the user which phase was reached and ask: resume from that phase, or delete the state file (`python3 <script> state delete`) and start fresh?
 
@@ -91,7 +91,7 @@ Reference files live in two directories adjacent to this skill:
    ```
    This shows per-branch commit counts and flags.
 
-   - ⚠️ If any branch shows `rewrite=true` → **STOP and read `edge-cases/history-rewrite.md`** before proceeding.
+   - ⚠️ If any branch shows `rewrite=true` AND `fork_merges_only=false` → **STOP and read `edge-cases/history-rewrite.md`** before proceeding. (When `fork_merges_only=true`, the fork-only commits are just merge commits from previous syncs — this is normal, not a history rewrite.)
    - ⚠️ If any branch shows `reverts>0` → **STOP and read `edge-cases/upstream-reverts.md`** before proceeding.
 
 5. **Dry-run plan.** Run:
@@ -207,7 +207,7 @@ For each shared branch that has fork-only branches targeting it (use the `target
 ### Phase 5: Clean Up
 
 1. Delete remote branches (`git push <fork> --delete <branch>`) that are fully merged into upstream.
-2. Delete all backup branches: `git branch --list 'sync-fork/*' | xargs git branch -D`
+2. Delete all backup branches: `git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`
 3. Delete state file: `python3 <script> state delete`
 4. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
 5. If changes were stashed in Phase 0, restore them: `git stash pop`.
@@ -221,4 +221,4 @@ For each shared branch that has fork-only branches targeting it (use the `target
 - **Preserve local-only work** — the point is to keep branches that upstream hasn't accepted while aligning with upstream's current state.
 - **Don't delete branches that have unmerged work** — only clean up branches whose content is already in upstream (even if commit SHAs differ due to squash-merging).
 - **Don't touch branches unrelated to the fork sync** — leave feature branches that aren't targeting a shared branch alone.
-- **Backup branches use the `sync-fork/` prefix** — these are temporary and cleaned up at the end. If a sync is interrupted, they survive for recovery. Clean up manually with `git branch --list 'sync-fork/*' | xargs git branch -D`.
+- **Backup branches use the `sync-fork/` prefix** — these are temporary and cleaned up at the end. If a sync is interrupted, they survive for recovery. Clean up manually with `git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`.

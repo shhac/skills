@@ -12,7 +12,7 @@ import argparse
 import json
 import subprocess
 import sys
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 from graphlib import TopologicalSorter
 from pathlib import Path
 from typing import Optional, List, Dict
@@ -74,12 +74,6 @@ def remote_branches(remote: str) -> List[str]:
     return branches
 
 
-def local_branches_matching(pattern: str) -> List[str]:
-    """List local branches matching a pattern."""
-    lines = git_lines("branch", "--list", pattern)
-    return [line.strip().lstrip("* ") for line in lines]
-
-
 # ---------------------------------------------------------------------------
 # Data structures
 # ---------------------------------------------------------------------------
@@ -111,6 +105,7 @@ class BranchDivergence:
     upstream_only: int
     fork_only: int
     rewrite: bool
+    fork_merges_only: bool  # True if all fork-only commits are merges (normal Phase 4 state)
     reverts: List[str]
 
     def to_dict(self) -> dict:
@@ -150,22 +145,31 @@ def classify_branches(fork: str, upstream: str) -> Classification:
     active = []
 
     for branch in fork_only:
-        # Check if tip is ancestor of upstream default (exact merge / fast-forward)
-        if git_test("merge-base", "--is-ancestor",
-                     f"{fork}/{branch}", f"{upstream}/{default_branch}"):
+        # Check against each shared branch (not just default) for multi-target support
+        is_merged = False
+        is_promoted = False
+        for target in shared:
+            if git_test("merge-base", "--is-ancestor",
+                         f"{fork}/{branch}", f"{upstream}/{target}"):
+                is_merged = True
+                break
+        if is_merged:
             merged.append(branch)
             continue
 
-        # Check patch equivalence via cherry-pick
-        cherry_lines = git_lines(
-            "log", "--oneline", "--cherry-pick", "--right-only",
-            f"{upstream}/{default_branch}...{fork}/{branch}",
-        )
-        if not cherry_lines:
+        for target in shared:
+            cherry_lines = git_lines(
+                "log", "--oneline", "--cherry-pick", "--right-only",
+                f"{upstream}/{target}...{fork}/{branch}",
+            )
+            if not cherry_lines:
+                is_promoted = True
+                break
+        if is_promoted:
             promoted.append(branch)
             continue
 
-        # Check for partial promotion via cherry-mark
+        # Check for partial promotion via cherry-mark (against default branch)
         mark_lines = git_lines(
             "log", "--oneline", "--cherry-mark", "--right-only",
             f"{upstream}/{default_branch}...{fork}/{branch}",
@@ -195,8 +199,17 @@ def compute_divergence(
     results = []
     for branch in shared:
         upstream_only = git_count(f"{fork}/{branch}..{upstream}/{branch}")
-        fork_only = git_count(f"{upstream}/{branch}..{fork}/{branch}")
-        rewrite = upstream_only > 0 and fork_only > 0
+        fork_only_count = git_count(f"{upstream}/{branch}..{fork}/{branch}")
+        rewrite = upstream_only > 0 and fork_only_count > 0
+
+        # Check if fork-only commits are all merges (normal Phase 4 state,
+        # not a real history rewrite)
+        fork_merges_only = False
+        if rewrite and fork_only_count > 0:
+            total = git_count(f"{upstream}/{branch}..{fork}/{branch}")
+            merges = git_count(
+                "--merges", f"{upstream}/{branch}..{fork}/{branch}")
+            fork_merges_only = (total > 0 and total == merges)
 
         revert_lines = git_lines(
             "log", "--oneline", "--grep=^Revert",
@@ -207,8 +220,9 @@ def compute_divergence(
         results.append(BranchDivergence(
             branch=branch,
             upstream_only=upstream_only,
-            fork_only=fork_only,
+            fork_only=fork_only_count,
             rewrite=rewrite,
+            fork_merges_only=fork_merges_only,
             reverts=reverts,
         ))
     return results
@@ -386,8 +400,6 @@ def _resolve_targets(
             current = parents[current]
         if current in shared_set:
             targets[branch] = current
-        elif parents.get(current) in shared_set:
-            targets[branch] = parents[current]
 
     return targets
 
@@ -419,6 +431,7 @@ def format_compact_divergence(divs: List[BranchDivergence]) -> str:
             f"{d.branch}: upstream_only={d.upstream_only},"
             f"fork_only={d.fork_only},"
             f"rewrite={str(d.rewrite).lower()},"
+            f"fork_merges_only={str(d.fork_merges_only).lower()},"
             f"reverts={reverts_count}"
         )
     return "\n".join(lines)
@@ -436,6 +449,8 @@ def format_compact_graph(graph: DependencyGraph) -> str:
     if graph.targets:
         pairs = [f"{b}={t}" for b, t in graph.targets.items()]
         lines.append(f"target: {','.join(pairs)}")
+    else:
+        lines.append("target: (none)")
     return "\n".join(lines)
 
 
