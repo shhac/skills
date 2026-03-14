@@ -20,10 +20,12 @@ B has been amended to B'. C is still based on old B.
    ```bash
    python3 <script> restack --branch B
    ```
-3. C gets rebased onto new B via `--onto`:
+3. C is an **immediate child** of the edited branch, so the merge-base strategy is used (not the backup ref, which would capture B's post-edit state):
    ```bash
-   git rebase --empty=drop --onto B restack/pre-rebase/B C
+   mb=$(git merge-base B C)
+   git rebase --empty=drop --onto B $mb C
    ```
+   This replays commits from the merge-base to C onto new B. Any of old-B's commits that get replayed are dropped by `--empty=drop` since they'll produce empty diffs against new B's equivalent changes.
 
 ## After
 
@@ -38,4 +40,10 @@ C' contains only its unique commits, replayed on top of the amended B'.
 
 ## Deep Stacks
 
-If the stack is deeper (A→B→C→D), amending B causes a cascade: C rebases onto new B, then D rebases onto new C. The topological order ensures each branch is rebased only after its parent.
+If the stack is deeper (A→B→C→D), amending B causes a cascade: C rebases onto new B (using merge-base strategy, since C is an immediate child of the edited branch), then D rebases onto new C (using the normal backup-ref strategy, since D is a deeper descendant — the backup of C was created before C was rebased). The topological order ensures each branch is rebased only after its parent.
+
+## Why Not the Backup Ref for Immediate Children?
+
+The backup ref (`restack/pre-rebase/B`) is created when the restack script runs — AFTER the user already amended B. So the backup captures B's post-edit tip, which is the same as B itself. Using it as the `--onto` cut point would be: `git rebase --onto B B C` — a no-op that doesn't actually replay C's commits onto the new B.
+
+The merge-base between B (post-edit) and C (still on old B) correctly identifies where they diverge, giving the right set of commits to replay.

@@ -577,20 +577,39 @@ def cmd_restack(args: argparse.Namespace) -> None:
 
     graph = build_graph(trunk, branches)
 
-    if graph.ambiguities:
-        print("error: ambiguous graph, resolve before restacking", file=sys.stderr)
-        print("", file=sys.stderr)
-        print(format_compact_graph(graph), file=sys.stderr)
-        sys.exit(1)
-
     # Determine which branches need restacking
     if args.branch:
+        # Validate --branch target exists in the graph
+        target = args.branch
+        if target not in graph.parents and target not in [trunk]:
+            all_known = list(graph.parents.keys()) + graph.orphaned
+            if target not in all_known:
+                print(f"error: branch '{target}' not found in graph", file=sys.stderr)
+                print(f"known branches: {','.join(sorted(all_known)) or '(none)'}", file=sys.stderr)
+                sys.exit(1)
+
         # Restack only descendants of the specified branch (not the branch itself).
         # This is the mid-stack edit case: the user already changed the branch,
         # so we cascade the change to its children.
-        target = args.branch
         to_restack = _descendants_of(target, graph.parents, graph.order)
+
+        # Only check ambiguities involving branches in scope
+        scoped = set(to_restack)
+        relevant_ambiguities = [
+            a for a in graph.ambiguities
+            if any(b in scoped for b in a.branches)
+        ]
+        if relevant_ambiguities:
+            print("error: ambiguous graph in scope, resolve before restacking", file=sys.stderr)
+            for a in relevant_ambiguities:
+                print(f"  {','.join(a.branches)} fork from {a.fork_point}", file=sys.stderr)
+            sys.exit(1)
     else:
+        if graph.ambiguities:
+            print("error: ambiguous graph, resolve before restacking", file=sys.stderr)
+            print("", file=sys.stderr)
+            print(format_compact_graph(graph), file=sys.stderr)
+            sys.exit(1)
         # Restack everything that needs it
         to_restack = []
         for branch in graph.order:
@@ -601,12 +620,7 @@ def cmd_restack(args: argparse.Namespace) -> None:
                 to_restack.append(branch)
                 to_restack.extend(_descendants_of(branch, graph.parents, graph.order))
         # Deduplicate preserving topological order
-        seen = set()
-        deduped = []
-        for b in to_restack:
-            if b not in seen:
-                seen.add(b)
-                deduped.append(b)
+        seen = set(to_restack)
         to_restack = [b for b in graph.order if b in seen]
 
     if not to_restack:
@@ -621,7 +635,7 @@ def cmd_restack(args: argparse.Namespace) -> None:
         "trunk": trunk,
         "to_restack": to_restack,
         "completed": [],
-        "backups": {b: git_rev(b) for b in to_restack},
+        "backups": {b: f"{BACKUP_PREFIX}/{b}" for b in to_restack},
         "parents": graph.parents,
     })
 
