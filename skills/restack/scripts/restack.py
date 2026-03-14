@@ -15,7 +15,6 @@ import subprocess
 import sys
 from dataclasses import dataclass, asdict
 from graphlib import TopologicalSorter, CycleError
-from pathlib import Path
 from typing import Optional, List, Dict, Tuple
 
 
@@ -493,37 +492,6 @@ def _to_dict(obj) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# State management (ephemeral, for interrupted operations)
-# ---------------------------------------------------------------------------
-
-def state_path() -> Path:
-    git_dir = git("rev-parse", "--git-dir")
-    return Path(git_dir) / "restack-state.json"
-
-
-def load_state() -> Optional[dict]:
-    p = state_path()
-    if not p.exists():
-        return None
-    try:
-        return json.loads(p.read_text())
-    except (json.JSONDecodeError, OSError):
-        return None
-
-
-def save_state(data: dict) -> None:
-    state_path().write_text(json.dumps(data, indent=2) + "\n")
-
-
-def delete_state() -> bool:
-    p = state_path()
-    if p.exists():
-        p.unlink()
-        return True
-    return False
-
-
-# ---------------------------------------------------------------------------
 # CLI commands
 # ---------------------------------------------------------------------------
 
@@ -630,15 +598,6 @@ def cmd_restack(args: argparse.Namespace) -> None:
     # Create backups
     backups = create_backups(to_restack)
 
-    # Save state for recovery
-    save_state({
-        "trunk": trunk,
-        "to_restack": to_restack,
-        "completed": [],
-        "backups": {b: f"{BACKUP_PREFIX}/{b}" for b in to_restack},
-        "parents": graph.parents,
-    })
-
     # Output the plan with rebase strategy for each branch
     plan_lines = []
     plan_details = []
@@ -732,17 +691,14 @@ def cmd_sync(args: argparse.Namespace) -> None:
 
 def cmd_cleanup(args: argparse.Namespace) -> None:
     deleted = delete_backups()
-    state_existed = delete_state()
 
     if args.json:
-        print(json.dumps({"deleted_backups": deleted, "state_deleted": state_existed}))
+        print(json.dumps({"deleted_backups": deleted}))
     else:
         if deleted:
             print(f"deleted backups: {','.join(deleted)}")
         else:
             print("no backups to delete")
-        if state_existed:
-            print("state file deleted")
 
 
 # ---------------------------------------------------------------------------
