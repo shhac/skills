@@ -48,6 +48,12 @@ Sync a forked repository with its upstream. Resets shared branches to upstream, 
 
 **Workflow:** Identify Remotes → Assess Divergence → Reset & Re-merge → Clean Up
 
+### restack
+
+Manage stacked branches without external tooling. Infers the dependency graph from git history, cascades rebases when trunk advances or a mid-stack branch changes, detects landed PRs, and cleans up. Lightweight alternative to Graphite — no account, no init, no metadata files.
+
+**Workflow:** Infer Graph → Show Status → Restack / Sync → Clean Up
+
 ### dotfiles-mac
 
 Create, update, or apply a macOS dotfiles repo using GNU Stow and plain git. Audits your system (Homebrew, shell, git, SSH, GPG, app configs, Claude/AI configs, macOS defaults), lets you pick what to track, and generates a stow-based repo with an idempotent setup script.
