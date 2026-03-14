@@ -19,6 +19,8 @@ If upstream hasn't advanced (i.e., `upstream/main` is already an ancestor of `fo
 
 When auto-detecting with exactly two remotes, use heuristics to guess which is the fork and which is upstream (e.g., a remote named `origin` is more likely the fork; a remote whose URL org differs from the other is more likely upstream). Present your guess and ask the user to confirm.
 
+**⚠️ Credential safety:** Remote URLs may contain embedded credentials (e.g., `https://user:token@github.com/...`). Before displaying any URL to the user, redact the userinfo portion: replace `user:token@` with `***@`. Never output raw credentials from `git remote -v` or `git remote get-url`.
+
 ## Diagram legend
 
 Used in reference files adjacent to this skill:
