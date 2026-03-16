@@ -39,7 +39,8 @@ For a character face, create crops for:
 - `head-full.png` — entire head including hat, ears, chin (wide crop)
 - `left-eye.png` — just the left eye with some surrounding face
 - `right-eye.png` — just the right eye (do NOT assume it's a mirror)
-- `nose-mouth.png` — nose and mouth together (they relate to each other)
+- `nose.png` — nose with surrounding context
+- `mouth.png` — mouth with surrounding context
 - `left-ear.png` — left ear with some head/hat context
 - `right-ear.png` — right ear
 - `hat.png` — hat in isolation
@@ -54,7 +55,8 @@ project-name/
 │   ├── head-full.png
 │   ├── left-eye.png
 │   ├── right-eye.png
-│   ├── nose-mouth.png
+│   ├── nose.png
+│   ├── mouth.png
 │   ├── left-ear.png
 │   ├── right-ear.png
 │   └── hat.png

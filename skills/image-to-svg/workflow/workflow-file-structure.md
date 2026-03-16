@@ -9,7 +9,8 @@
 │   ├── head-full.png         # Wide crop of entire head/subject
 │   ├── left-eye.png          # Tight crop per feature
 │   ├── right-eye.png
-│   ├── nose-mouth.png
+│   ├── nose.png
+│   ├── mouth.png
 │   ├── left-ear.png
 │   ├── right-ear.png
 │   ├── hat.png
@@ -36,12 +37,16 @@
 
 ## Where to Put the Project
 
-Use `~/Downloads/{project-name}/` or wherever the user's original image lives. Create a subdirectory named after the project:
+Create a project directory adjacent to the original image. Derive the name from the image filename:
 
 ```bash
-mkdir -p ~/Downloads/goblin-svg/{refs,parts}
-cp ~/Downloads/original-image.png ~/Downloads/goblin-svg/original.png
+# If the original is at ~/Downloads/goblin.png → project dir is ~/Downloads/goblin-svg/
+PROJECT_DIR="$(dirname "$ORIGINAL")/$(basename "$ORIGINAL" | sed 's/\.[^.]*$//')-svg"
+mkdir -p "$PROJECT_DIR"/{refs,parts}
+cp "$ORIGINAL" "$PROJECT_DIR/original.png"
 ```
+
+If the user specifies a different output location, use that instead.
 
 ## WIP Renders
 
@@ -61,6 +66,16 @@ rsvg-convert -w 512 -h 512 final.svg -o wip.png
 If `rsvg-convert` is not available and cannot be installed, fall back to opening the SVG in a browser for visual verification.
 
 **Always render after every change.** Don't make multiple changes before rendering — you won't know which change caused which effect.
+
+## Troubleshooting Render Failures
+
+If `rsvg-convert` fails, check for these common SVG errors:
+- **Missing namespace:** The root `<svg>` must include `xmlns="http://www.w3.org/2000/svg"`
+- **Unclosed tags:** Every `<g>`, `<path>`, `<circle>` etc. must be closed (`/>` or `</g>`)
+- **Invalid `d` attribute:** Path data must start with `M` or `m`. Common mistake: missing a space between coordinates or using commas inconsistently
+- **Malformed gradients:** `<linearGradient>` and `<radialGradient>` must be inside a `<defs>` block and referenced by `id`
+
+If the SVG is valid but renders blank, check that elements have either a `fill` or `stroke` attribute — SVG defaults to black fill with no stroke, but transparent/white elements on a white background appear invisible.
 
 ## Cleanup
 
