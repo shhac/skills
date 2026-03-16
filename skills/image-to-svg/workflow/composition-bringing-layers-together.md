@@ -76,11 +76,12 @@ When adjustments are needed:
 
 ## Final Verification
 
-1. Render the composite at target resolution
-2. Place it next to the original image
-3. Squint at both — does the overall impression match?
-4. Check individual features against their reference crops
-5. Verify at small size (emoji size) — does it still read clearly?
+1. Render the composite at target resolution: `rsvg-convert -w 512 -h 512 final.svg -o wip.png`
+2. Read both the rendered composite and the original image, then compare:
+   - Does the overall silhouette and color distribution match?
+   - Are features in the right positions relative to each other?
+   - Check individual features against their reference crops
+3. Render at a small size (64x64 or 128x128) — does it still read clearly? Features that looked fine at 512px may merge or disappear at icon size.
 
 ## Keep the Parts
 

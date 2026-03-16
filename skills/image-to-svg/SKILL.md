@@ -59,7 +59,7 @@ For each feature:
 3. **Consider what's hidden** — if this feature is partially obscured by another (head under hat, face under hair), the layer should still extend under the obscuring element. See "Handling Obscured Content" below.
 4. Build as a standalone SVG in `parts/`
 5. Apply the appropriate art style techniques — read `styles/styles-line-and-brush.md` for illustrated/cartoon styles, or `styles/styles-geometric.md` for flat/geometric styles, or `styles/styles-applying-to-lifelike.md` for photographic/realistic images. Read only the style file matching the style identified in Phase 1.
-6. Render, compare side-by-side with the reference crop, iterate
+6. Render and compare — see "Render-Compare Loop" below
 
 #### Agent Swarming
 
@@ -73,6 +73,24 @@ Spawn one agent per feature (or small group of related features). Each agent rec
 **All agents must use the same `viewBox` as the composite canvas** (e.g., `viewBox="0 0 512 512"`). Each agent positions its feature within the full canvas coordinates using the bounding box from the feature map. This ensures parts align without rescaling during composition.
 
 Features that interact (e.g., face + ears, hair + hat) should be noted but built independently — interactions are resolved in Phase 3. For tightly coupled features (ears + face contour, hair + hat brim), include the neighboring feature's bounding box so the agent knows where the boundary sits.
+
+#### Render-Compare Loop
+
+After every SVG change, render immediately and compare against the reference crop:
+
+```bash
+rsvg-convert -w 512 -h 512 parts/{feature}.svg -o parts/{feature}.png
+```
+
+If `rsvg-convert` is not installed, install it (`brew install librsvg` on macOS, `apt install librsvg2-bin` on Linux). If neither package manager is available, fall back to opening the SVG directly in a browser.
+
+**How to compare:** Read both the rendered PNG and the reference crop image, then evaluate:
+- Does the overall shape match? (outline, proportions, curvature)
+- Are colors correct? (hue, saturation, gradient direction)
+- Are details present? (highlights, shadows, stroke weight)
+- Does it match at the target display size, not just zoomed in?
+
+**When to stop iterating:** Move on when the feature is recognizably correct at target size — perfect pixel-matching is not the goal. Limit to 3 refinement passes per feature. If it's still wrong after 3 passes, note the remaining issues and move to composition where context from neighboring features often reveals the fix.
 
 #### Handling Obscured Content
 
