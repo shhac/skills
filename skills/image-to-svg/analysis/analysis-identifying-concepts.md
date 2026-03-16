@@ -31,12 +31,11 @@ Some elements interact:
 
 Plan to handle these interactions in the composite phase, not while building individual parts.
 
-### 4. Determine What's Actually Visible
+### 4. Determine What's Visible vs Hidden
 
-Don't build what you can't see:
-- If the top of the head is hidden by a hat, you don't need a complete head circle
-- If the body is cropped out, you don't need a neck
-- Focus effort on what's visible and contributes to the final result
+Distinguish between **cropped out** and **obscured by another layer**:
+- **Cropped out** (not in the image at all) — don't build it. If the body is cropped out below the chin, you don't need a neck.
+- **Obscured by another layer** (present but hidden) — build a simplified version that extends under the covering layer. If the top of the head is hidden by a hat, the head shape should still be a complete closed curve — this prevents hard edges or gaps if layers shift during compositing. The hidden portion doesn't need full detail, just shape continuity.
 
 ## Common Decomposition for a Character Face
 
