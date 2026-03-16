@@ -32,11 +32,11 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 3. **Create reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`.
 
-4. **Establish layer order.** Determine z-ordering (what's behind what) — this drives the composite in Phase 3.
+4. **Establish canvas and coordinate system.** Determine the composite canvas size (512x512 is standard for emoji/icons; use the original image's aspect ratio for other subjects). Estimate each feature's bounding box within this canvas — approximate x, y, width, height from the original image proportions. Record these in a brief feature map that swarmed agents will use as their coordinate reference. Also determine z-ordering (what's behind what) — this drives the composite in Phase 3.
 
 ### Phase 2: Build Each Feature
 
-Once the style is identified and reference crops are verified, **agent swarm the feature builds**. Each feature is independent — they can be built in parallel by separate agents, each working from its own reference crop.
+Once the style is identified, reference crops verified, and the feature map established, **agent swarm the feature builds**. Each feature is independent — they can be built in parallel by separate agents, each working from its own reference crop.
 
 Before starting each feature, read its reference sheet from `features/`:
 
@@ -67,10 +67,12 @@ Spawn one agent per feature (or small group of related features). Each agent rec
 - The reference crop for its feature(s)
 - The identified art style description
 - The relevant feature reference sheet
-- The target canvas size and approximate position within the final composite
+- The **composite canvas size and this feature's bounding box** from the feature map (Phase 1 step 4)
 - Instructions to write its standalone SVG to `parts/{feature-name}.svg`
 
-Features that interact (e.g., face + ears, hair + hat) should be noted but built independently — interactions are resolved in Phase 3.
+**All agents must use the same `viewBox` as the composite canvas** (e.g., `viewBox="0 0 512 512"`). Each agent positions its feature within the full canvas coordinates using the bounding box from the feature map. This ensures parts align without rescaling during composition.
+
+Features that interact (e.g., face + ears, hair + hat) should be noted but built independently — interactions are resolved in Phase 3. For tightly coupled features (ears + face contour, hair + hat brim), include the neighboring feature's bounding box so the agent knows where the boundary sits.
 
 #### Handling Obscured Content
 
