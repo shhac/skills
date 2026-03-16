@@ -38,7 +38,9 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 Once the style is identified, reference crops verified, and the feature map established, **agent swarm the feature builds**. Each feature is independent — they can be built in parallel by separate agents, each working from its own reference crop.
 
-Before starting each feature, read its reference sheet from `features/`:
+#### Character/face images
+
+For character or face images, read the relevant feature reference sheet from `features/` before building each element:
 
 | Feature | Reference file |
 |---|---|
@@ -51,7 +53,20 @@ Before starting each feature, read its reference sheet from `features/`:
 | Body | `features/features-body.md` |
 | Accessories | `features/features-accessories.md` |
 
-Only read the reference sheets for features that exist in the image. Skip features that aren't present.
+Only read the reference sheets for features that exist in the image.
+
+#### Non-character images (landscapes, logos, objects, abstract)
+
+The `features/` reference sheets are character-specific. For other subjects, decompose by visual layer instead:
+
+- **Logos/icons:** background shape, primary symbol, text (as traced paths — do not use `<text>` elements, since fonts won't match), secondary elements, border/frame
+- **Landscapes/scenes:** sky/background, distant elements, midground, foreground, focal subject, atmospheric effects (fog, light rays)
+- **Objects/products:** main silhouette, surface color regions, shadows, highlights, labels/text (traced as paths), surrounding context
+- **Abstract/patterns:** base layer, repeating motifs (use `<pattern>` or `<use>` where possible), accent elements, overlay effects
+
+The same principles apply: one crop per element, one standalone SVG per layer, same composite viewBox. Read `analysis/analysis-asking-questions.md` for each element — the shape, color, and position questions are universal.
+
+#### Building each feature
 
 For each feature:
 1. Study the cropped reference image in isolation
