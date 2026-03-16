@@ -12,17 +12,22 @@ Tight crops of individual features from the original image are essential. Withou
 ## How to Crop
 
 ### Tools
-```bash
-# ImageMagick (preferred — precise pixel control)
-magick original.png -crop WIDTHxHEIGHT+X+Y +repage refs/feature-name.png
 
-# macOS sips (simpler but less precise)
-sips -c HEIGHT WIDTH --cropOffset Y X original.png --out refs/feature-name.png
+Check which tools are available before cropping:
+
+```bash
+# Preferred: ImageMagick (cross-platform, precise pixel control)
+command -v magick && magick original.png -crop WIDTHxHEIGHT+X+Y +repage refs/feature-name.png
+
+# Fallback on macOS: sips (built-in, simpler but less precise)
+command -v sips && sips -c HEIGHT WIDTH --cropOffset Y X original.png --out refs/feature-name.png
 ```
+
+If neither is available, install ImageMagick (`brew install imagemagick` on macOS, `apt install imagemagick` on Linux).
 
 ### Getting Coordinates Right
 
-1. Check the image dimensions first: `sips -g pixelWidth -g pixelHeight original.png`
+1. Check the image dimensions first: `magick identify original.png` (or `sips -g pixelWidth -g pixelHeight original.png` on macOS)
 2. Estimate the center of the feature you want
 3. Crop generously on the first pass — too tight is worse than too loose
 4. Include some surrounding context (neighboring features help judge position)

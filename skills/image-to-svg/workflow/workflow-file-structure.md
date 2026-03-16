@@ -48,6 +48,9 @@ cp ~/Downloads/original-image.png ~/Downloads/goblin-svg/original.png
 Every time you modify an SVG, render it immediately and view it:
 
 ```bash
+# Check rsvg-convert is available
+command -v rsvg-convert || echo "Install with: brew install librsvg (macOS) or apt install librsvg2-bin (Linux)"
+
 # Render a standalone part
 rsvg-convert -w 200 -h 200 parts/left-eye.svg -o parts/left-eye.png
 
@@ -55,7 +58,7 @@ rsvg-convert -w 200 -h 200 parts/left-eye.svg -o parts/left-eye.png
 rsvg-convert -w 512 -h 512 final.svg -o wip.png
 ```
 
-Use `rsvg-convert` (from librsvg, installed via `brew install librsvg`) for reliable SVG-to-PNG rendering.
+If `rsvg-convert` is not available and cannot be installed, fall back to opening the SVG in a browser for visual verification.
 
 **Always render after every change.** Don't make multiple changes before rendering — you won't know which change caused which effect.
 
