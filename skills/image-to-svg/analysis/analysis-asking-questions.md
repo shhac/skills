@@ -60,6 +60,26 @@ Before drawing ANYTHING, interrogate the reference image. The goal is to replace
 - Do strokes from different features connect or overlap?
 - What gives the strokes their "character"? Thickness variation? Curvature?
 
+### For Architectural/Structural Elements
+- Are the lines truly straight, or is there subtle curvature or distortion (perspective, lens, style)?
+- What's the perspective — flat/orthographic, one-point, two-point? This determines how parallel lines converge.
+- Are surfaces flat-colored or textured? If textured, can it be approximated with a pattern or gradient?
+- Where are the hard edges (walls, rooflines) vs soft edges (shadows, reflections)?
+- Are windows/doors identical and repeating? Use `<use>` to define once and stamp.
+
+### For Natural/Organic Elements (landscapes, plants, animals)
+- Is this element a distinct shape or a mass of similar shapes? (e.g., a single tree vs a forest canopy)
+- How much simplification is appropriate? Count the number of meaningful color bands, not every leaf.
+- Where does this element's silhouette overlap with the layer behind it?
+- Does depth come from overlapping shapes, color change (atmospheric perspective), or size change?
+- For animals: what are the major body masses? (head, torso, limbs — same decomposition as characters, just different anatomy)
+
+### For Text and Typography
+- Is the text a key element or incidental? (logo text vs a background sign)
+- What's the approximate weight, style, and letter spacing?
+- Trace as filled paths — do not use `<text>` elements (the font won't be available)
+- Is the text on a curve, perspective-distorted, or flat?
+
 ## During Iteration
 
 After each render, compare with the reference crop and ask:
@@ -84,3 +104,7 @@ After each render, compare with the reference crop and ask:
 | "I need an outline everywhere" | Some edges are defined by color change alone, no stroke |
 | "I only need to draw what's visible" | Hidden portions still need shape continuity — the head extends under the hat, the face extends under the hair. Build complete shapes, not hard-cut fragments |
 | "The outline thickness varies dramatically" | Usually much more subtle than you think — check with the reference before exaggerating |
+| "Parallel lines stay parallel" | In perspective views, they converge — check vanishing points |
+| "The sky is one solid blue" | Almost always a gradient — lighter near the horizon, darker above |
+| "I need to trace every leaf/brick/tile" | Use repeating patterns (`<pattern>`) or representative shapes — suggest the texture, don't replicate every instance |
+| "Text can use a `<text>` element" | Fonts won't match — trace letterforms as `<path>` elements |

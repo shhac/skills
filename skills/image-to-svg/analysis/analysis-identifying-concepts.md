@@ -37,7 +37,9 @@ Distinguish between **cropped out** and **obscured by another layer**:
 - **Cropped out** (not in the image at all) — don't build it. If the body is cropped out below the chin, you don't need a neck.
 - **Obscured by another layer** (present but hidden) — build a simplified version that extends under the covering layer. If the top of the head is hidden by a hat, the head shape should still be a complete closed curve — this prevents hard edges or gaps if layers shift during compositing. The hidden portion doesn't need full detail, just shape continuity.
 
-## Common Decomposition for a Character Face
+## Common Decompositions by Subject
+
+### Character/Face
 
 | Element | Notes |
 |---------|-------|
@@ -51,3 +53,65 @@ Distinguish between **cropped out** and **obscured by another layer**:
 | Hair | Bangs, tufts, any visible hair |
 | Hat/accessory | Dome, brim, details, badges |
 | Eyebrows | If visible |
+
+### Landscape/Scene
+
+| Element | Notes |
+|---------|-------|
+| Sky / background | Usually a gradient; may include clouds, sun, stars |
+| Distant layer | Mountains, city skyline, treeline — simplified silhouettes, muted colors |
+| Midground | Main terrain, buildings, water — more detail than distant layer |
+| Foreground | Closest elements — most detail, strongest contrast |
+| Focal subject | The main point of interest (building, tree, figure) |
+| Atmospheric effects | Fog, light rays, reflections — often semi-transparent overlays |
+
+Depth comes from **overlapping silhouettes** and **color temperature** (distant = cooler/lighter, near = warmer/darker). Each depth layer is one SVG group.
+
+### Building/Architecture
+
+| Element | Notes |
+|---------|-------|
+| Primary structure | Main wall surfaces, roofline silhouette |
+| Windows/doors | Often repeating — define one, use `<use>` to stamp copies |
+| Structural details | Columns, beams, trim, gutters |
+| Surface materials | Brick, wood, stone — approximate with `<pattern>` or subtle color variation, not individual units |
+| Shadows | Cast shadows on walls, ground shadow — separate overlay shapes |
+| Surroundings | Ground plane, sky, neighboring structures |
+
+Respect the perspective: identify vanishing points early. Converging lines are critical — if the original has perspective, the SVG must too.
+
+### Object/Product
+
+| Element | Notes |
+|---------|-------|
+| Silhouette | The overall outline shape — this carries most of the recognition |
+| Surface regions | Flat-colored areas separated by material boundaries |
+| Shadows/shading | Cast shadows, ambient occlusion, surface curvature cues |
+| Highlights/reflections | Specular highlights, glossy reflections — often simple ellipses or gradients |
+| Labels/text | Trace as paths, not `<text>` elements |
+| Context | Ground plane, background, other objects in scene |
+
+### Animal
+
+| Element | Notes |
+|---------|-------|
+| Body mass | Torso/trunk — the largest shape |
+| Head | Shape, ears, facial features (eyes, nose/snout, mouth) |
+| Limbs | Legs, wings, fins — note which overlap the body |
+| Tail | Position, curvature, interaction with body |
+| Surface pattern | Fur, scales, feathers, spots, stripes — use `<pattern>` for repeating textures |
+| Accessories | Collars, saddles, tags — same as character accessories |
+
+Decompose like a character but with different anatomy. The same z-order principle applies: back limbs → body → front limbs → head.
+
+### Logo/Icon
+
+| Element | Notes |
+|---------|-------|
+| Background shape | Circle, rounded rect, or none |
+| Primary symbol | The main graphic mark |
+| Text/wordmark | Trace letterforms as `<path>` — match weight and spacing |
+| Secondary elements | Taglines, borders, decorative elements |
+| Color regions | Logos often have very few — precision matters |
+
+Logos are usually geometric. Prefer SVG primitives (`<circle>`, `<rect>`, `<ellipse>`) over freehand paths where the shape is clearly geometric.
