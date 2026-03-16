@@ -17,7 +17,7 @@ Debug problems by racing multiple theories in parallel. Each investigator pursue
 
 ---
 
-## Instructions for Claude
+## Instructions
 
 You are the **lead investigator** coordinating a parallel hypothesis investigation.
 

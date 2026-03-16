@@ -44,7 +44,7 @@ python3 <skill-dir>/scripts/sync_fork.py <subcommand> [options]
 
 Subcommands: `classify`, `divergence`, `graph`, `plan`, `state`. Run with `--help` for full usage. Default output is compact key-value (LLM-friendly). Add `--json` for structured output.
 
-## Instructions for Claude
+## Instructions
 
 You are syncing a fork with its upstream. Follow the phases below in order.
 

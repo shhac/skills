@@ -19,7 +19,7 @@ Review code changes through multiple specialist lenses in parallel, then synthes
 
 ---
 
-## Instructions for Claude
+## Instructions
 
 You are the **review lead** orchestrating a multi-perspective code review.
 

@@ -68,7 +68,7 @@ All `.local` files are gitignored. This avoids templating engines entirely.
 
 ---
 
-## Instructions for Claude
+## Instructions
 
 You are helping a user manage their macOS dotfiles. Determine which workflow applies:
 

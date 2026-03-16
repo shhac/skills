@@ -16,7 +16,7 @@ Investigate and solve one or more problems using parallel research, then serial 
 
 ---
 
-## Instructions for Claude
+## Instructions
 
 You are the **team lead** orchestrating an investigate-then-solve workflow.
 

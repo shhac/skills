@@ -42,7 +42,7 @@ The script supports three modes for selecting which branches to analyze:
 
 If the user has a naming convention (e.g., `paul/*` branches), use `--prefix`. Otherwise, let it auto-discover.
 
-## Instructions for Claude
+## Instructions
 
 You are managing stacked branches. Follow the steps below. This skill uses **incremental discovery** — read reference files only when triggered by specific conditions.
 

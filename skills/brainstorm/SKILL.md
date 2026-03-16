@@ -23,7 +23,7 @@ Generate and evaluate competing solutions to a problem using parallel agents. Ea
 
 ---
 
-## Instructions for Claude
+## Instructions
 
 You are the **facilitator** orchestrating a structured brainstorm.
 
