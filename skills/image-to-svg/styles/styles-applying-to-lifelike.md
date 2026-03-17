@@ -1,5 +1,7 @@
 # Applying SVG Techniques to Lifelike Images
 
+**For curve construction techniques** (which SVG commands to use, how to build organic shapes from Beziers), see `styles/styles-curves-and-shapes.md`.
+
 Converting realistic or semi-realistic images to SVG requires different strategies than cartoon/illustration conversion.
 
 ## The Simplification Problem

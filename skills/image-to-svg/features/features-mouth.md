@@ -33,16 +33,18 @@
 
 ## SVG Construction
 
-Mouths are usually a stroke path, not a filled shape:
+For uniform-width mouth lines (most cartoon styles), a stroke path works:
 ```xml
 <path d="M startX startY Q controlX controlY, endX endY"
       fill="none" stroke="#3a3a3a" stroke-width="5" stroke-linecap="round"/>
 ```
 
+If the mouth line tapers at the ends (common in brush/hand-drawn styles), build it as a **filled tapered shape** instead — see `styles/styles-curves-and-shapes.md` for the centerline-to-filled-shape technique. A tapered mouth line is a thin filled path, not a stroked one.
+
 For teeth, layer white filled shapes behind the mouth line:
 ```xml
 <!-- Tooth shape -->
-<path d="M x1 y1 L x2 y2 L x3 y3" fill="white" stroke="#3a3a3a" stroke-width="2"/>
+<path d="M x1 y1 L x2 y2 L x3 y3 Z" fill="white" stroke="#3a3a3a" stroke-width="2"/>
 ```
 
 ## Common Mistakes

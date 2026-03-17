@@ -15,7 +15,7 @@ SVG `stroke-width` is uniform along a path. Real brush strokes taper, swell, and
       fill="none" stroke="#333" stroke-width="8" stroke-linecap="round"/>
 ```
 
-The `round` linecap gives natural tapering at the start and end points. This is the simplest technique and works well when the original has mostly uniform outlines.
+The `round` linecap gives rounded endpoints that visually soften the start and end. This is the simplest technique and works well when the original has mostly uniform outlines.
 
 **When to use:** The outline thickness looks consistent in the reference. The "character" comes from the path shape, not the line variation.
 
@@ -127,7 +127,7 @@ You can apply this manually in SVG by adding slight imperfections:
 
 ## Professional Workflow Note
 
-Design tools (Illustrator, Figma, Inkscape) convert strokes to filled shapes on SVG export. This is deliberate — filled shapes:
+Design tools can convert strokes to filled shapes (Illustrator's "Expand Appearance", Inkscape's "Stroke to Path", Figma's "Outline Stroke"). This is deliberate — filled shapes:
 - Scale predictably at any size
 - Render consistently across browsers
 - Support variable width and organic edges

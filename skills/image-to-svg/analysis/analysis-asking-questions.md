@@ -40,6 +40,8 @@ Before drawing ANYTHING, interrogate the reference image. The goal is to replace
 
 These bridge observation to technique — answering them tells you HOW to build what you see.
 
+**Scale depth to complexity.** Simple features (dots, basic strokes, flat shapes) need only the Shape Construction and Stroke vs. Filled Shape questions. The full Structural, Lighting, and Perspective analysis is for complex features with visible internal structure — don't over-analyze a nose that's just two dots.
+
 ### Shape Construction
 - Is this shape best built as a primitive (`circle`, `ellipse`, `rect`) or a custom path? **If there's any doubt, use a custom path.** Real objects rarely have mathematically perfect geometry.
 - If a custom path: is the outline smooth and continuous (cubic Beziers `C`/`S`) or angular/segmented (line segments `L` with rounded joins)?

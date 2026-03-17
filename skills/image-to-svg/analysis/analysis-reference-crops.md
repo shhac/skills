@@ -48,25 +48,7 @@ For a character face, create crops for:
 
 ### File Organization
 
-```
-project-name/
-├── original.png          # Original image (never modify)
-├── refs/                 # Reference crops
-│   ├── head-full.png
-│   ├── left-eye.png
-│   ├── right-eye.png
-│   ├── nose.png
-│   ├── mouth.png
-│   ├── left-ear.png
-│   ├── right-ear.png
-│   └── hat.png
-├── parts/                # Standalone SVGs for each feature
-│   ├── face.svg
-│   ├── left-eye.svg
-│   ├── right-eye.svg
-│   └── ...
-└── final.svg             # Composite result
-```
+See `workflow/workflow-file-structure.md` for the full project layout. Crops go in `refs/`, named `{feature-name}.png`.
 
 ## Verifying Crops
 

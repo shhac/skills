@@ -41,6 +41,7 @@ Before recreating an image, identify its style. The style determines which SVG t
 | Chibi/kawaii | thick uniform | very exaggerated | flat | minimal |
 | Pixel art | none (pixel grid) | geometric | flat | varies |
 | Watercolor | loose brush | organic | soft | moderate |
+| Photographic/rendered | none | realistic | continuous-tone | high |
 
 ## How to Identify Style in Practice
 
@@ -57,3 +58,13 @@ Once identified, the style tells you:
 - Whether to use flat `fill` or `radialGradient`/`linearGradient` for color
 - How many detail elements to include per feature
 - How geometric vs organic your paths should be
+
+### Style → Technique File Mapping
+
+| Identified Style | Read This File |
+|---|---|
+| Cartoon, hand-drawn illustration, manga/anime, chibi/kawaii, watercolor, sketchy | `styles/styles-line-and-brush.md` |
+| Corporate flat, flat design, pixel art, logo, icon, diagrammatic | `styles/styles-geometric.md` |
+| Photographic, semi-realistic, continuous-tone, rendered | `styles/styles-applying-to-lifelike.md` |
+
+**Always also read `styles/styles-curves-and-shapes.md`** — it covers how to construct shapes with the right SVG path commands and applies to every style.

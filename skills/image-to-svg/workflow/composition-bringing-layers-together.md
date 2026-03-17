@@ -28,16 +28,18 @@ Create `<g>` groups in z-order (back to front):
 ```
 
 ### 3. Position Each Layer
-Use `transform="translate(x, y)"` on each `<g>` to position the standalone SVG content within the composite canvas:
+
+If agents followed the shared-viewBox convention (all parts use the same `viewBox` and pre-positioned their features in canvas coordinates), **no transforms are needed** — just paste each group's content into the composite in z-order.
+
+#### Fallback: Repositioning Layers
+
+If parts were built at different scales or without shared coordinates, use transforms:
 ```xml
 <g id="left-eye" transform="translate(120, 200)">
   <!-- Content from left-eye.svg, positioned relative to the group origin -->
 </g>
 ```
 
-Or directly adjust the coordinates of each element to fit the composite canvas.
-
-### 4. Scale if Needed
 If standalone SVGs were built at a different size:
 ```xml
 <g id="left-eye" transform="translate(120, 200) scale(0.7)">
@@ -71,8 +73,8 @@ After initial compositing, check for these problems:
 
 When adjustments are needed:
 1. **If the feature itself is wrong** — go back to the standalone SVG, fix it, re-export
-2. **If the position is wrong** — adjust the `transform` or coordinates in the composite
-3. **If the interaction is wrong** — adjust z-order, add clipping, or modify the edges of interacting features
+2. **If the position is wrong** — adjust the `transform` or coordinates in the composite. Treat the largest or most central feature (face shape for characters, primary structure for objects) as the **anchor** — adjust other features relative to it, not the other way around.
+3. **If the interaction is wrong** — adjust z-order, add `<clipPath>` to clip features to a boundary (e.g., facial features clipped to face shape, interior details to object silhouette), or modify the edges of interacting features
 
 ## Final Verification
 

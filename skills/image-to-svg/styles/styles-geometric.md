@@ -1,5 +1,7 @@
 # Geometric & Diagrammatic Styles
 
+**For curve construction techniques** (which SVG commands to use, how to build custom paths when primitives aren't enough), see `styles/styles-curves-and-shapes.md`.
+
 ## When the Style is Geometric
 
 Some images use clean geometric shapes rather than organic brush work:

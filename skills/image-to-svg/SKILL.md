@@ -28,11 +28,15 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 1. **Identify the art style.** Read `styles/styles-identification.md` and classify the image (cartoon, geometric, lifelike, etc.). The identified style determines which techniques you'll use later.
 
-2. **Decompose into features.** Read `analysis/analysis-identifying-concepts.md`. Break the image into independent visual elements and establish a z-order (layer stack).
+2. **Build your observation framework.** Read `analysis/analysis-asking-questions.md`. Use these questions during decomposition and cropping to verify you're capturing the right details — especially the Construction and Structural questions for complex objects.
 
-3. **Create reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`.
+3. **Decompose into features.** Read `analysis/analysis-identifying-concepts.md`. Break the image into independent visual elements and establish a z-order (layer stack).
 
-4. **Establish canvas and coordinate system.** Determine the composite canvas size (512x512 is standard for emoji/icons; use the original image's aspect ratio for other subjects). Estimate each feature's bounding box within this canvas — approximate x, y, width, height from the original image proportions. Record these in a brief feature map that swarmed agents will use as their coordinate reference. Also determine z-ordering (what's behind what) — this drives the composite in Phase 3.
+4. **Handle transparency.** If the image has transparency (PNG with alpha, stickers, cutouts), note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
+
+5. **Create reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`.
+
+6. **Establish canvas and coordinate system.** Determine the composite canvas size (512x512 is standard for emoji/icons; use the original image's aspect ratio for other subjects). Estimate each feature's bounding box within this canvas — approximate x, y, width, height from the original image proportions. Record these in a brief feature map that swarmed agents will use as their coordinate reference. Also determine z-ordering (what's behind what) — this drives the composite in Phase 3.
 
 ### Phase 2: Build Each Feature
 
@@ -78,15 +82,17 @@ For each feature:
 6. **Always read `styles/styles-curves-and-shapes.md`** for curve construction techniques. This applies to all styles — it covers how to actually build shapes with the right SVG path commands, when to use filled shapes vs strokes, and how to construct organic curves. This is the bridge between "what should it look like" and "how do I build it in SVG."
 7. Render and compare — see "Render-Compare Loop" below
 
-**Prefer complex construction over simple geometry.** A filled shape built from cubic Beziers with proper width variation, per-panel lighting, and structural detail will always produce a more valuable result than a circle with a stroke. Only use SVG primitives (`<circle>`, `<rect>`, `<ellipse>`) when the reference image genuinely shows a perfect geometric shape. When in doubt, build the more complex version — the visual quality difference is substantial.
+**Prefer complex construction over simple geometry** (except for images identified as geometric/flat style — defer to `styles/styles-geometric.md` for those). A filled shape built from cubic Beziers with proper width variation, per-panel lighting, and structural detail will always produce a more valuable result than a circle with a stroke. Only use SVG primitives (`<circle>`, `<rect>`, `<ellipse>`) when the reference image genuinely shows a perfect geometric shape or the style is explicitly flat/geometric. When in doubt, build the more complex version — the visual quality difference is substantial.
 
 #### Agent Swarming
 
 Spawn one agent per feature (or small group of related features). Each agent receives:
 - The reference crop for its feature(s)
 - The identified art style description
-- The relevant feature reference sheet
-- The **composite canvas size and this feature's bounding box** from the feature map (Phase 1 step 4)
+- The relevant feature reference sheet (from `features/`)
+- The relevant style technique file (`styles/styles-line-and-brush.md`, `styles/styles-geometric.md`, or `styles/styles-applying-to-lifelike.md`)
+- The curve construction reference (`styles/styles-curves-and-shapes.md`) — **always included**
+- The **composite canvas size and this feature's bounding box** from the feature map (Phase 1 step 6)
 - Instructions to write its standalone SVG to `parts/{feature-name}.svg`
 
 **All agents must use the same `viewBox` as the composite canvas** (e.g., `viewBox="0 0 512 512"`). Each agent positions its feature within the full canvas coordinates using the bounding box from the feature map. This ensures parts align without rescaling during composition.
@@ -109,7 +115,7 @@ If `rsvg-convert` is not installed, install it (`brew install librsvg` on macOS,
 - Are details present? (highlights, shadows, stroke weight)
 - Does it match at the target display size, not just zoomed in?
 
-**When to stop iterating:** Move on when the feature is recognizably correct at target size — perfect pixel-matching is not the goal. Limit to 3 refinement passes per feature. If it's still wrong after 3 passes, note the remaining issues and move to composition where context from neighboring features often reveals the fix.
+**When to stop iterating:** Move on when the feature is recognizably correct at target size — perfect pixel-matching is not the goal. Limit to 3 refinement passes per feature (refinement = adjusting a shape that's already recognizable, not initial construction attempts). If it's still wrong after 3 passes, simplify the construction approach rather than shipping broken complexity — a clean simple shape beats a half-baked complex one. Move to composition where context from neighboring features often reveals the fix.
 
 #### Handling Obscured Content
 
