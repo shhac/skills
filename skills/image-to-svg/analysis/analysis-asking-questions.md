@@ -36,6 +36,42 @@ Before drawing ANYTHING, interrogate the reference image. The goal is to replace
 - How much extra do I need to draw beyond what's visible?
 - What's the simplest reasonable continuation of the shape into the hidden area?
 
+## Construction Questions
+
+These bridge observation to technique — answering them tells you HOW to build what you see.
+
+### Shape Construction
+- Is this shape best built as a primitive (`circle`, `ellipse`, `rect`) or a custom path? **If there's any doubt, use a custom path.** Real objects rarely have mathematically perfect geometry.
+- If a custom path: is the outline smooth and continuous (cubic Beziers `C`/`S`) or angular/segmented (line segments `L` with rounded joins)?
+- Does this edge have curvature that changes direction? (If yes, use cubic Bezier `C` — quadratic `Q` can't inflect.)
+- Are there scalloped or repeating curves along an edge? (Each scallop = one quadratic Bezier `Q` between anchor points.)
+
+### Stroke vs. Filled Shape
+- Does this stroke/outline taper or vary in width at all? If yes, it **must** be a filled shape, not a stroked path.
+- Is this mark a "line" (uniform width, use `stroke`) or a "mark" (has character, use filled shape)?
+- Would this element look better as a shape with carefully placed edges, or as a simple stroke with round caps?
+
+### Structural Questions
+- Does this object have visible internal structure? (Ribs, seams, joints, supports, mechanisms)
+- Are multiple surfaces visible? (Inside and outside? Top and side? Front and back?)
+- If multiple surfaces: how does each surface differ in color, lighting, and texture?
+- Does the object have panels or facets? How many are visible from this angle?
+- Are equal-in-reality features unequal in the image due to perspective? (Panel widths, rib spacing, element sizes)
+- What structural elements create the transition between surfaces? (Rims, edges, folds, seams)
+
+### Lighting & Depth
+- Where is the light coming from? Which surfaces face toward it?
+- Do adjacent panels or facets have different values? (They should if they face different directions.)
+- Are there shadows cast by structural elements onto adjacent surfaces? (Ribs onto fabric, rims onto interiors)
+- Is there a gradient across any curved surface? What direction does it run?
+- Is there reflected/bounced light on the shadow side?
+
+### Perspective
+- Is this object viewed straight-on or at an angle?
+- Which parts are foreshortened? (Circular things become ellipses; equal-spaced things become unequal)
+- Do parallel lines in reality converge in the image?
+- Which parts of the object are closest to the viewer? (These should have more detail and stronger contrast.)
+
 ## Feature-Specific Questions
 
 ### For Eyes (ask for EACH eye independently)

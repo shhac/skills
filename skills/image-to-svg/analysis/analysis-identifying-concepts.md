@@ -82,14 +82,20 @@ Respect the perspective: identify vanishing points early. Converging lines are c
 
 ### Object/Product
 
+Read `features/features-objects.md` for full guidance on complex object decomposition. The table below is a starting point — objects with visible internal structure need much deeper decomposition.
+
 | Element | Notes |
 |---------|-------|
-| Silhouette | The overall outline shape — this carries most of the recognition |
-| Surface regions | Flat-colored areas separated by material boundaries |
-| Shadows/shading | Cast shadows, ambient occlusion, surface curvature cues |
+| Structural parts | Break into physical components — not "silhouette" but "canopy panels, ribs, shaft, handle" etc. Each structural part that's visually distinct is its own feature. |
+| Visible surfaces | Each surface facing a different direction is a separate concern (exterior vs interior, top vs side, front vs back). Different surfaces have different lighting, color, and may show different structural elements. |
+| Structural elements | Ribs, seams, edges, joints, mechanisms — these create the visual rhythm. Build as tapered filled shapes, not stroked lines. |
+| Surface lighting | Each panel/facet gets its own fill value based on its angle to the light. Adjacent panels should differ in value. Curved surfaces get gradients. |
+| Shadows from structure | Thin shadow shapes where structural elements (ribs, rims, edges) cast onto adjacent surfaces |
 | Highlights/reflections | Specular highlights, glossy reflections — often simple ellipses or gradients |
 | Labels/text | Trace as paths, not `<text>` elements |
 | Context | Ground plane, background, other objects in scene |
+
+**The silhouette-first decomposition (outline → fill → shadows → highlights) works for simple or flat objects.** For anything with structural complexity — furniture, vehicles, tools, instruments, architecture, containers — decompose by physical structure instead.
 
 ### Animal
 

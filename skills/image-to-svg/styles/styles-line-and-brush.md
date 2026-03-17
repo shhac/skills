@@ -4,6 +4,8 @@
 
 SVG `stroke-width` is uniform along a path. Real brush strokes taper, swell, and vary. There are several techniques to work around this.
 
+**For curve construction techniques** (which SVG commands to use, how to build shapes from Beziers, the centerline-to-filled-shape pipeline), see `styles/styles-curves-and-shapes.md`. This file focuses on which *stroke technique* to apply; that file covers *how to construct the shapes*.
+
 ## Technique 1: Uniform Stroke with Round Caps
 
 **Best for:** Cartoon styles with thick uniform outlines
@@ -131,6 +133,8 @@ Design tools (Illustrator, Figma, Inkscape) convert strokes to filled shapes on 
 - Support variable width and organic edges
 
 When recreating artwork manually, **filled shapes for outlines** is the professional standard for anything beyond simple uniform strokes.
+
+**When in doubt, choose Technique 3 (filled tapered shapes).** It produces the highest quality output and handles every case. Techniques 1 and 5 are shortcuts — use them only when the reference clearly has uniform or nearly-uniform strokes. The extra effort of building filled shapes pays off dramatically in the final result.
 
 ## Anti-Patterns
 

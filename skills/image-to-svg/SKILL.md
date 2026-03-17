@@ -52,6 +52,7 @@ For character or face images, read the relevant feature reference sheet from `fe
 | Hair | `features/features-hair.md` |
 | Body | `features/features-body.md` |
 | Accessories | `features/features-accessories.md` |
+| Complex objects (held items, props) | `features/features-objects.md` |
 
 Only read the reference sheets for features that exist in the image.
 
@@ -61,7 +62,7 @@ The `features/` reference sheets are character-specific. For other subjects, dec
 
 - **Logos/icons:** background shape, primary symbol, text (as traced paths — do not use `<text>` elements, since fonts won't match), secondary elements, border/frame
 - **Landscapes/scenes:** sky/background, distant elements, midground, foreground, focal subject, atmospheric effects (fog, light rays)
-- **Objects/products:** main silhouette, surface color regions, shadows, highlights, labels/text (traced as paths), surrounding context
+- **Objects/products:** Read `features/features-objects.md` for detailed guidance on structural decomposition. Objects have internal structure, multiple visible surfaces, and perspective complexity that goes far beyond silhouette + fill. Decompose into structural parts (panels, ribs, joints, handles), not just color regions.
 - **Abstract/patterns:** base layer, repeating motifs (use `<pattern>` or `<use>` where possible), accent elements, overlay effects
 
 The same principles apply: one crop per element, one standalone SVG per layer, same composite viewBox. Read `analysis/analysis-asking-questions.md` for each element — the shape, color, and position questions are universal.
@@ -74,7 +75,10 @@ For each feature:
 3. **Consider what's hidden** — if this feature is partially obscured by another (head under hat, face under hair), the layer should still extend under the obscuring element. See "Handling Obscured Content" below.
 4. Build as a standalone SVG in `parts/`
 5. Apply the appropriate art style techniques — read `styles/styles-line-and-brush.md` for illustrated/cartoon styles, or `styles/styles-geometric.md` for flat/geometric styles, or `styles/styles-applying-to-lifelike.md` for photographic/realistic images. Read only the style file matching the style identified in Phase 1.
-6. Render and compare — see "Render-Compare Loop" below
+6. **Always read `styles/styles-curves-and-shapes.md`** for curve construction techniques. This applies to all styles — it covers how to actually build shapes with the right SVG path commands, when to use filled shapes vs strokes, and how to construct organic curves. This is the bridge between "what should it look like" and "how do I build it in SVG."
+7. Render and compare — see "Render-Compare Loop" below
+
+**Prefer complex construction over simple geometry.** A filled shape built from cubic Beziers with proper width variation, per-panel lighting, and structural detail will always produce a more valuable result than a circle with a stroke. Only use SVG primitives (`<circle>`, `<rect>`, `<ellipse>`) when the reference image genuinely shows a perfect geometric shape. When in doubt, build the more complex version — the visual quality difference is substantial.
 
 #### Agent Swarming
 
