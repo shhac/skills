@@ -71,16 +71,30 @@ magick refs/{feature}.png -fuzz 10% -trim -format \
 - Example: for a 300x280 crop, 5% margin = 15px horizontal, 14px vertical. If `top=3` → the top is clipped.
 
 ```bash
-# Quick pass/fail check for all crops at once:
+# Automated pass/fail check for all crops at once:
 for f in refs/*.png; do
-  echo -n "$(basename $f): "
-  magick "$f" -fuzz 10% -trim -format \
-    "L=%X T=%Y R=%[fx:page.width-w-page.x] B=%[fx:page.height-h-page.y]" info:
-  echo
+  name=$(basename "$f")
+  dims=$(magick identify -format "%w %h" "$f")
+  w=${dims% *}; h=${dims#* }
+  min_h=$((w * 5 / 100))  # 5% of width
+  min_v=$((h * 5 / 100))  # 5% of height
+  margins=$(magick "$f" -fuzz 10% -trim -format "%X %Y %[fx:page.width-w-page.x] %[fx:page.height-h-page.y]" info:)
+  read l t r b <<< "$margins"
+  l=${l%.*}; t=${t%.*}; r=${r%.*}; b=${b%.*}  # truncate to int
+  fail=""
+  [ "$l" -lt "$min_h" ] 2>/dev/null && fail="${fail} left=${l}"
+  [ "$t" -lt "$min_v" ] 2>/dev/null && fail="${fail} top=${t}"
+  [ "$r" -lt "$min_h" ] 2>/dev/null && fail="${fail} right=${r}"
+  [ "$b" -lt "$min_v" ] 2>/dev/null && fail="${fail} bottom=${b}"
+  if [ -n "$fail" ]; then
+    echo "FAIL $name:$fail (min_h=${min_h}px min_v=${min_v}px)"
+  else
+    echo "PASS $name: L=${l} T=${t} R=${r} B=${b}"
+  fi
 done
 ```
 
-Any crop with a margin of 0-5px on any side needs re-cropping. **Do not skip this step.**
+Any crop that prints `FAIL` needs re-cropping — extend the crop by at least 50% on the failing side. **Do not skip this step.**
 
 ### Step 2: Visual verification — ONE crop at a time
 

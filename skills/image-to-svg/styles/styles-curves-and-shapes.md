@@ -219,6 +219,15 @@ Each of these is its own filled path using the same curve techniques.
 ### Gradient Along Curved Surfaces
 SVG `linearGradient` and `radialGradient` can simulate light falling across curved surfaces. Orient the gradient to match the light direction established in the reference image.
 
+## Coordinate Precision
+
+**Use at most 2 decimal places for all coordinates** in path `d` attributes, `transform` values, and positional attributes (`x`, `y`, `cx`, `cy`, etc.). At a 512px canvas, 2 decimal places gives sub-pixel precision (0.01px) — more than enough. Extra decimals waste tokens without visible benefit.
+
+Good: `M 123.46,234.57 C 150.00,200.25 180.50,210.75 200.00,230.00`
+Bad: `M 123.456789,234.567891 C 150.000000,200.250000 180.500000,210.750000 200.000000,230.000000`
+
+This matters because agents re-read their own SVGs during the render-compare loop. Verbose coordinates make path data harder to scan and consume tokens that are better spent on reasoning.
+
 ## Anti-Patterns
 
 - **Using `stroke` for anything with width variation** — convert to a filled shape instead

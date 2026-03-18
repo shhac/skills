@@ -26,6 +26,12 @@ You are converting a raster image into an SVG recreation. Follow the phases belo
 
 This skill uses **incremental discovery** — reference files live in subdirectories adjacent to this skill (`analysis/`, `features/`, `styles/`, `workflow/`). Read them only when a specific phase or condition calls for them. **Do not read all reference files upfront.**
 
+### Phase 0: Environment Setup
+
+Read `workflow/workflow-dependencies.md` and run the dependency check script. Ensure required tools (`magick`, `rsvg-convert`, `xmllint`) are available. For optional tools (`vtracer`, `svgo`), check availability and note which enhancements are possible.
+
+If `vtracer` is not installed and Python is available, **ask the user** where they'd like the virtual environment before creating one. See the dependencies file for the three options (project-local, shared skill venv, user-specified).
+
 ### Phase 1: Analyze the Image
 
 **Initial analysis** — these are independent. Delegate to parallel subagents so each can focus fully on its concern:
@@ -51,6 +57,14 @@ This skill uses **incremental discovery** — reference files live in subdirecto
    - Record the feature map with measured coordinates, proportion ratios, relationships, and z-ordering. This map travels with every swarmed agent.
 
 7. **Write a subject brief.** In 2-3 sentences, describe the personality, expression, and overall vibe of the subject ("a cheeky, confident goblin with a big happy grin and a proud crossed-arms stance"). This qualitative description travels with every agent alongside the measurements — it gives agents a target for the *feeling* of the subject, not just the geometry. Without it, agents produce features that are technically correct but lack the character's personality.
+
+8. **Extract trace metadata from crops.** If `vtracer` is available, read `workflow/workflow-trace-metadata.md`. Auto-trace each feature crop in polygon mode and extract structured metadata: color palettes, sub-element positions/sizes, area percentages, and topology hints. This gives agents precise numeric data (~130 tokens per feature) instead of requiring them to eyeball colors and positions from the raster image. Add the trace metadata to each feature's entry in the feature map.
+
+   If `vtracer` is not available, fall back to ImageMagick color extraction:
+   ```bash
+   magick refs/{feature}.png -resize 200x200 -kmeans 10 -unique-colors txt: | tail -n +2 | tr -s ' ' | cut -d' ' -f3
+   ```
+   This gives accurate hex values but no spatial sub-element data.
 
 ### Phase 2: Build Each Feature (Agent Swarm)
 
@@ -131,6 +145,7 @@ If there are 5 features, spawn 5 agents. If there are 50 features, spawn 50 agen
 - The curve construction reference (`styles/styles-curves-and-shapes.md`) — **always included**
 - The verification pipeline (`workflow/workflow-verification.md`) — **always included**
 - The **feature map with measured coordinates, proportion anchors, and inter-feature relationships** from Phase 1 step 6
+- The **trace metadata** for this feature from Phase 1 step 8 (color palette, sub-element positions/sizes, topology) — if available
 
 **Describe features quantitatively, not qualitatively.** When briefing agents, text descriptions lose visual nuance — "wide grin" doesn't convey the exact curvature, "thick brim" is ambiguous. Instead use measurements: "mouth width = 55% of face width", "brim height = 5% of hat height, follows dome curvature". Adjectives fail; ratios survive.
 - Whether this feature is **expression-critical** (see above) — if so, the agent should run the full programmatic diff loop
@@ -146,21 +161,35 @@ Read `workflow/workflow-verification.md` for the full verification pipeline. The
 
 After every SVG change:
 
-1. **Render** the SVG to PNG:
+1. **Validate** the SVG XML before rendering:
+   ```bash
+   xmllint --noout parts/{feature}.svg
+   ```
+   This catches unclosed tags, malformed attributes, and missing namespaces with clear error messages — far more helpful than `rsvg-convert`'s cryptic failures.
+
+2. **Render** the SVG to PNG:
    ```bash
    rsvg-convert -w 512 -h 512 parts/{feature}.svg -o parts/{feature}.png
    ```
    If `rsvg-convert` is not installed, install it (`brew install librsvg` on macOS, `apt install librsvg2-bin` on Linux).
 
-2. **Programmatic diff** — generate a visual diff image and numerical score comparing the rendered feature against the reference crop. See `workflow/workflow-verification.md` for ImageMagick commands. The diff image highlights exactly WHERE the SVG diverges — red areas show the biggest differences.
+3. **Programmatic diff** — generate a visual diff image and numerical score comparing the rendered feature against the reference crop. See `workflow/workflow-verification.md` for ImageMagick commands. The diff image highlights exactly WHERE the SVG diverges — red areas show the biggest differences.
 
-3. **Read the diff image** — use the highlighted differences to direct your corrections. This is far more effective than comparing two similar-looking images: ImageMagick finds the errors precisely, you interpret them and know how to fix the SVG.
+4. **Read the diff image** — use the highlighted differences to direct your corrections. This is far more effective than comparing two similar-looking images: ImageMagick finds the errors precisely, you interpret them and know how to fix the SVG.
 
-4. **Visual sanity check** — also read both the rendered PNG and reference crop for qualitative assessment (colors, overall feel, details).
+5. **Visual sanity check** — also read both the rendered PNG and reference crop for qualitative assessment (colors, overall feel, details).
 
-5. **Iterate** — fix the top issue highlighted by the diff, re-render, re-diff. Repeat.
+6. **Iterate** — fix the top issue highlighted by the diff, re-render, re-diff. Repeat.
 
-**When to stop iterating:** Limit to 3-5 refinement passes for normal features. For **expression-critical features** (mouth, eyes, overall proportions), continue up to 10 passes — these define the character and are worth the extra iteration. Track the diff score: if it stops improving, either the remaining differences are acceptable or a fundamentally different construction approach is needed.
+**When to stop iterating:** Limit to 3-5 refinement passes for normal features. For **expression-critical features** (mouth, eyes, overall proportions), continue up to 10 passes — these define the character and are worth the extra iteration.
+
+**Convergence targets (RMSE, normalized 0-1):**
+- Expression-critical features: target RMSE < 0.15
+- Standard features: RMSE < 0.25 is acceptable
+- Background/simple fills: RMSE < 0.30 is acceptable
+- Stop when two consecutive iterations improve by less than 0.02 — diminishing returns
+
+These are guidelines, not hard gates. A feature at RMSE 0.18 that looks right is done; a feature at 0.12 that looks wrong needs a different approach. Trust the diff image over the number.
 
 #### Handling Obscured Content
 
@@ -205,12 +234,24 @@ Read `workflow/composition-bringing-layers-together.md`.
 4. **Identify the top 3 discrepancies** from the diff — usually proportion errors (head too small, features shifted), expression mismatches (mouth curvature, gaze direction), or interaction issues (hat sitting wrong, limbs overlapping incorrectly).
 5. **Fix each discrepancy** — either send targeted corrections back to the feature agent, or fix directly in the composite SVG. Re-render and re-diff after each fix.
 6. **Repeat** until the composite diff stabilizes — at least 2 composite iterations, more if expression-critical features are off.
-7. **Final small-size check** — render at 64x64 or 128x128 to verify it reads clearly at icon size.
+7. **Final small-size check:**
+   ```bash
+   rsvg-convert -w 64 -h 64 final.svg -o /tmp/small-check-64.png
+   rsvg-convert -w 128 -h 128 final.svg -o /tmp/small-check-128.png
+   ```
+   Read both renders — does it still read clearly at icon size? Features that looked fine at 512px may merge or disappear.
 
 ### Phase 5: Deliver
 
 Read `workflow/workflow-file-structure.md` for the expected project layout.
 
-- Keep the `parts/` directory with standalone SVGs for future edits
-- Provide the final composite SVG
-- Render a PNG at the target resolution for comparison
+1. **Optimize the final SVG.** If `svgo` is available, run it with `cleanupIds` disabled to preserve named groups:
+   ```bash
+   svgo final.svg -o final.svg \
+     --config='{"plugins":[{"name":"preset-default","params":{"overrides":{"cleanupIds":false,"collapseGroups":false,"convertShapeToPath":false}}}]}'
+   ```
+   This typically reduces file size by 25-40% (numeric precision, default attributes, path command optimization) without changing the visual output. If `svgo` is not available, skip this step — the SVG is still valid.
+
+2. Keep the `parts/` directory with standalone SVGs for future edits
+3. Provide the final composite SVG
+4. Render a PNG at the target resolution for comparison

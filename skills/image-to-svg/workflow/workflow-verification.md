@@ -84,9 +84,13 @@ Feature map:
 
 After each SVG iteration, run this pipeline instead of (or in addition to) visual comparison.
 
-### Step 1: Render the feature SVG
+### Step 1: Validate and render the feature SVG
 
 ```bash
+# Validate XML first — catches malformed markup with clear errors
+xmllint --noout parts/{feature}.svg
+
+# Then render
 rsvg-convert -w 512 -h 512 parts/{feature}.svg -o parts/{feature}.png
 ```
 
@@ -112,9 +116,20 @@ magick refs/{feature}.png -resize {w}x{h}! /tmp/{feature}-ref-resized.png
 # Visual diff — red highlights show differences
 magick compare /tmp/{feature}-ref-resized.png /tmp/{feature}-rendered-crop.png /tmp/{feature}-diff.png
 
-# Numerical similarity score (lower = more similar)
+# Numerical similarity score (lower = more similar, normalized 0-1)
 magick compare -metric RMSE /tmp/{feature}-ref-resized.png /tmp/{feature}-rendered-crop.png null: 2>&1
+
+# Structural similarity (higher = more similar, 0-1) — better correlates with human perception
+magick compare -metric SSIM /tmp/{feature}-ref-resized.png /tmp/{feature}-rendered-crop.png null: 2>&1
 ```
+
+**Convergence targets:**
+- Expression-critical features: RMSE < 0.15
+- Standard features: RMSE < 0.25
+- Background/simple fills: RMSE < 0.30
+- Stop when two consecutive iterations improve by less than 0.02
+
+These are guidelines — a feature at RMSE 0.18 that looks right is done. Trust the diff image over the number.
 
 ### Step 5: Read the diff image
 
@@ -126,7 +141,7 @@ Read `/tmp/{feature}-diff.png`. Red/bright areas show where the SVG diverges fro
 
 ### Step 6: Iterate
 
-Fix the top issue from the diff, re-render, re-diff. Track whether the RMSE score is decreasing. If it stops improving after a fix, the remaining differences may be acceptable or require a different construction approach.
+Fix the top issue from the diff, re-render, re-diff. Track whether the RMSE score is decreasing. If two consecutive iterations improve by less than 0.02, the remaining differences are either acceptable or require a fundamentally different construction approach.
 
 ### Silhouette comparison (shape-focused)
 
@@ -161,6 +176,9 @@ magick compare /tmp/original-resized.png wip.png /tmp/composite-diff.png
 
 # Numerical score
 magick compare -metric RMSE /tmp/original-resized.png wip.png null: 2>&1
+
+# Structural similarity
+magick compare -metric SSIM /tmp/original-resized.png wip.png null: 2>&1
 ```
 
 ### Reading the composite diff
