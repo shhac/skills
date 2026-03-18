@@ -58,7 +58,11 @@ If Node.js is not available, skip the SVGO optimization step — the SVG is stil
 
 ## Python Dependencies and Virtual Environments
 
-Some tools (currently just `vtracer`) require Python packages. These should be installed in a virtual environment to avoid polluting the system Python.
+Some tools require Python packages. These should be installed in a virtual environment to avoid polluting the system Python.
+
+Current Python dependencies:
+- `pyyaml` — parses `feature-locations.yml` for the batch crop script
+- `vtracer` — auto-traces feature crops for metadata extraction
 
 ### Step 1: Ask the user where to create the venv
 
@@ -83,20 +87,22 @@ Present all three options and let the user choose. If the user doesn't have a pr
 ### Step 2: Install Python packages
 
 ```bash
-pip install vtracer
+pip install pyyaml vtracer
 ```
 
 ### Step 3: Verify
 
 ```bash
+python3 -c "import yaml; print('pyyaml available')" 2>/dev/null || echo "pyyaml not available"
 python3 -c "import vtracer; print('vtracer', vtracer.__version__)" 2>/dev/null || echo "vtracer not available"
 ```
 
 ### When the venv is not available
 
 If the user declines to set up a venv, or Python is not available:
-- **Skip the trace metadata step.** Fall back to ImageMagick-only color extraction (`magick -kmeans`) which gives accurate colors but no sub-element spatial data.
-- The skill still works — trace metadata is an enhancement, not a requirement.
+- **Batch cropping:** Fall back to running individual `magick ... -crop` commands manually from the `feature-locations.yml` values (the YAML is still the source of truth — just read the coordinates by eye).
+- **Trace metadata:** Fall back to ImageMagick-only color extraction (`magick -kmeans`) which gives accurate colors but no sub-element spatial data.
+- The skill still works — Python packages are enhancements, not requirements.
 
 ## Dependency Check Script
 
@@ -110,6 +116,7 @@ command -v xmllint     && echo "✓ xmllint" || echo "✗ xmllint — install wi
 
 echo ""
 echo "=== Optional ==="
+python3 -c "import yaml" 2>/dev/null && echo "✓ pyyaml (Python)" || echo "○ pyyaml — pip install pyyaml (in a venv)"
 python3 -c "import vtracer" 2>/dev/null && echo "✓ vtracer (Python)" || echo "○ vtracer — pip install vtracer (in a venv)"
 command -v svgo        && echo "✓ SVGO $(svgo --version 2>/dev/null)" || echo "○ SVGO — npm install -g svgo"
 ```
