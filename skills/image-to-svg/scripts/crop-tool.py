@@ -8,9 +8,9 @@ Usage:
     python3 crop-tool.py grid <image> [--step 100] [--output grid.png]
     python3 crop-tool.py crop <feature-locations.yml>
     python3 crop-tool.py show <feature-locations.yml> [--output boxes.png]
-    python3 crop-tool.py pan <feature-locations.yml> <feature> <direction> <percent>
-    python3 crop-tool.py scale <feature-locations.yml> <feature> <percent>
-    python3 crop-tool.py tighten <feature-locations.yml> <feature> <percent>
+    python3 crop-tool.py pan <feature-locations.yml> <feature> <direction> <amount>
+    python3 crop-tool.py scale <feature-locations.yml> <feature> <amount>
+    python3 crop-tool.py tighten <feature-locations.yml> <feature> <amount>
     python3 crop-tool.py check <feature-locations.yml>
 
 Commands:
@@ -19,10 +19,13 @@ Commands:
     crop      Batch crop all features from the YAML file.
     show      Draw all bounding boxes on the image to visualize feature locations.
     pan       Move a feature's bounding box without changing its size.
-              Directions: left, right, up, down. Percent is relative to box size.
+              Directions: left, right, up, down.
+              Amount: "10%" (relative to box size) or "50px" (absolute pixels).
     scale     Grow or shrink a feature's bounding box from its center.
-              Positive percent grows (e.g., 20 = 20% larger), negative shrinks.
+              Amount: "20%" (20% larger) or "50px" (50px larger on each axis).
+              Negative values shrink: "-10%" or "-30px".
     tighten   Reduce all margins equally (opposite of scale). Useful for LOOSE crops.
+              Amount: "25%" or "40px".
     check     Run the clipping + tightness check on all crops (requires ImageMagick).
 """
 
@@ -36,6 +39,21 @@ try:
 except ImportError:
     print("Error: pyyaml not installed. Run: pip install pyyaml", file=sys.stderr)
     sys.exit(1)
+
+
+def parse_amount(amount_str, reference_size):
+    """Parse an amount as percent or pixels.
+
+    '10%' or '10' → 10% of reference_size
+    '50px' → 50 pixels absolute
+    """
+    s = str(amount_str).strip()
+    if s.endswith('px'):
+        return int(float(s[:-2]))
+    if s.endswith('%'):
+        return int(reference_size * float(s[:-1]) / 100.0)
+    # bare number = percent
+    return int(reference_size * float(s) / 100.0)
 
 
 def load_yaml(path):
@@ -141,24 +159,28 @@ def cmd_pan(args):
 
     box = data['features'][name]['box']
     x, y, w, h = box
-    pct = args.percent / 100.0
 
     direction = args.direction
+    if direction in ('right', 'left'):
+        delta = parse_amount(args.amount, w)
+    else:
+        delta = parse_amount(args.amount, h)
+
     if direction == 'right':
-        x = int(x + w * pct)
+        x = x + delta
     elif direction == 'left':
-        x = int(x - w * pct)
+        x = x - delta
     elif direction == 'down':
-        y = int(y + h * pct)
+        y = y + delta
     elif direction == 'up':
-        y = int(y - h * pct)
+        y = y - delta
     else:
         print(f"Error: direction must be left/right/up/down, got '{direction}'", file=sys.stderr)
         sys.exit(1)
 
     data['features'][name]['box'] = [x, y, w, h]
     save_yaml(args.yaml, data)
-    print(f"Panned {name} {direction} {args.percent}%: [{box[0]},{box[1]},{box[2]},{box[3]}] → [{x},{y},{w},{h}]")
+    print(f"Panned {name} {direction} {args.amount}: [{box[0]},{box[1]},{box[2]},{box[3]}] → [{x},{y},{w},{h}]")
 
 
 def cmd_scale(args):
@@ -172,10 +194,9 @@ def cmd_scale(args):
 
     box = data['features'][name]['box']
     x, y, w, h = box
-    pct = args.percent / 100.0
 
-    dw = int(w * pct)
-    dh = int(h * pct)
+    dw = parse_amount(args.amount, w)
+    dh = parse_amount(args.amount, h)
     new_x = x - dw // 2
     new_y = y - dh // 2
     new_w = w + dw
@@ -183,7 +204,7 @@ def cmd_scale(args):
 
     data['features'][name]['box'] = [new_x, new_y, new_w, new_h]
     save_yaml(args.yaml, data)
-    print(f"Scaled {name} {'+' if args.percent > 0 else ''}{args.percent}%: [{x},{y},{w},{h}] → [{new_x},{new_y},{new_w},{new_h}]")
+    print(f"Scaled {name} {args.amount}: [{x},{y},{w},{h}] → [{new_x},{new_y},{new_w},{new_h}]")
 
 
 def cmd_tighten(args):
@@ -197,22 +218,21 @@ def cmd_tighten(args):
 
     box = data['features'][name]['box']
     x, y, w, h = box
-    pct = args.percent / 100.0
 
-    dw = int(w * pct)
-    dh = int(h * pct)
+    dw = parse_amount(args.amount, w)
+    dh = parse_amount(args.amount, h)
     new_x = x + dw // 2
     new_y = y + dh // 2
     new_w = w - dw
     new_h = h - dh
 
     if new_w <= 0 or new_h <= 0:
-        print(f"Error: tightening by {args.percent}% would make the box empty", file=sys.stderr)
+        print(f"Error: tightening by {args.amount} would make the box empty", file=sys.stderr)
         sys.exit(1)
 
     data['features'][name]['box'] = [new_x, new_y, new_w, new_h]
     save_yaml(args.yaml, data)
-    print(f"Tightened {name} {args.percent}%: [{x},{y},{w},{h}] → [{new_x},{new_y},{new_w},{new_h}]")
+    print(f"Tightened {name} {args.amount}: [{x},{y},{w},{h}] → [{new_x},{new_y},{new_w},{new_h}]")
 
 
 def cmd_check(args):
@@ -291,21 +311,21 @@ def main():
     p.add_argument('yaml', help='feature-locations.yml path')
     p.add_argument('feature', help='Feature name')
     p.add_argument('direction', choices=['left', 'right', 'up', 'down'])
-    p.add_argument('percent', type=float, help='Percent of box size to move')
+    p.add_argument('amount', help='Amount: "10%%" (of box size) or "50px" (absolute)')
     p.set_defaults(func=cmd_pan)
 
     # scale
     p = sub.add_parser('scale', help='Scale a bounding box from center')
     p.add_argument('yaml', help='feature-locations.yml path')
     p.add_argument('feature', help='Feature name')
-    p.add_argument('percent', type=float, help='Percent to grow (positive) or shrink (negative)')
+    p.add_argument('amount', help='Amount: "20%%" (grow 20%%) or "50px" or "-10%%" (shrink)')
     p.set_defaults(func=cmd_scale)
 
     # tighten
     p = sub.add_parser('tighten', help='Tighten a bounding box (reduce margins)')
     p.add_argument('yaml', help='feature-locations.yml path')
     p.add_argument('feature', help='Feature name')
-    p.add_argument('percent', type=float, help='Percent to reduce by')
+    p.add_argument('amount', help='Amount: "25%%" or "40px"')
     p.set_defaults(func=cmd_tighten)
 
     # check

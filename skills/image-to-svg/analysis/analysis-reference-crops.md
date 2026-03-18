@@ -154,18 +154,21 @@ Use the crop tool's semantic commands to adjust bounding boxes — no manual coo
 **For CLIP failures** (feature cut off at an edge):
 
 ```bash
-# Scale the box larger (grows from center) — e.g., 30% bigger
-python3 crop-tool.py scale feature-locations.yml left-eye 30
+# Scale the box larger (grows from center) — percent or pixels
+python3 crop-tool.py scale feature-locations.yml left-eye 30%
+python3 crop-tool.py scale feature-locations.yml left-eye 80px
 
-# Or pan it toward the clipped side — e.g., move the box up 15% of its height
-python3 crop-tool.py pan feature-locations.yml left-eye up 15
+# Or pan it toward the clipped side
+python3 crop-tool.py pan feature-locations.yml left-eye up 15%
+python3 crop-tool.py pan feature-locations.yml left-eye up 50px
 ```
 
 **For LOOSE failures** (feature is too small in the crop):
 
 ```bash
-# Tighten the box (shrink from edges equally) — e.g., 25% tighter
-python3 crop-tool.py tighten feature-locations.yml left-eye 25
+# Tighten the box (shrink from edges equally)
+python3 crop-tool.py tighten feature-locations.yml left-eye 25%
+python3 crop-tool.py tighten feature-locations.yml left-eye 60px
 ```
 
 **After adjusting, re-crop and re-check:**
@@ -179,13 +182,17 @@ Repeat until all crops pass. You can also edit `feature-locations.yml` directly 
 
 **Quick reference:**
 
+**Quick reference:**
+
 | Problem | Command | What it does |
 |---|---|---|
-| Feature clipped at top | `pan ... up 15` | Moves box up by 15% of its height |
-| Feature clipped overall | `scale ... 30` | Grows box 30% from center |
-| Feature too small in crop | `tighten ... 25` | Shrinks box 25% from edges |
-| Feature off-center | `pan ... right 10` | Moves box right by 10% of its width |
+| Feature clipped at top | `pan ... up 15%` or `pan ... up 50px` | Moves box up |
+| Feature clipped overall | `scale ... 30%` or `scale ... 80px` | Grows box from center |
+| Feature too small in crop | `tighten ... 25%` or `tighten ... 60px` | Shrinks box from edges |
+| Feature off-center | `pan ... right 10%` or `pan ... right 30px` | Moves box right |
 | Need to see all boxes | `show ...` | Draws all boxes on image |
+
+Use `%` when you're thinking relatively ("move it a bit"), `px` when you can read exact pixel offsets from the grid image.
 
 ### Step 3: Visual verification — ONE crop at a time
 
