@@ -28,11 +28,11 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 ### Phase 1: Analyze the Image
 
-**First pass** — these are independent and can be done together in a single pass over the image:
+**Initial analysis** — these are independent. Delegate to parallel subagents so each can focus fully on its concern:
 
-1. **Identify the art style.** Read `styles/styles-identification.md` and classify the image (cartoon, geometric, lifelike, etc.). The identified style determines which techniques you'll use later.
-2. **Build your observation framework.** Read `analysis/analysis-asking-questions.md`. Use these questions during decomposition and cropping to verify you're capturing the right details — especially the Construction and Structural questions for complex objects.
-3. **Handle transparency.** If the image has transparency (PNG with alpha, stickers, cutouts), note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
+1. **Identify the art style.** Spawn a subagent that reads `styles/styles-identification.md`, studies the image, and reports back with the style classification and reasoning (line work, shape language, color approach, detail level). The identified style determines which techniques you'll use later.
+2. **Build your observation framework.** Spawn a subagent that reads `analysis/analysis-asking-questions.md`, studies the image, and reports back with answers to the key observation questions — especially the Construction and Structural questions for complex objects. This report informs the decomposition step.
+3. **Handle transparency.** Check programmatically: `magick identify -format "%[channels]" original.png` — if it reports `srgba` or similar alpha channel, note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
 
 **Decompose** — depends on the observation framework above:
 
