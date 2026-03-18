@@ -133,8 +133,9 @@ Read `workflow/composition-bringing-layers-together.md`.
 
 1. Combine standalone SVGs into the final composite
 2. Adjust relative positioning, z-ordering, and interactions between elements
-3. Review pass: do overlapping elements work together?
-4. Final render and comparison with original
+3. Apply effects where needed — read `styles/styles-effects.md` for `<clipPath>` (constraining features to boundaries), `<mask>` (fog, atmospheric fade, soft edges), and `<filter>` (drop shadows, glow, hand-drawn wobble)
+4. Review pass: do overlapping elements work together?
+5. Final render and comparison with original
 
 ### Phase 4: Deliver
 
