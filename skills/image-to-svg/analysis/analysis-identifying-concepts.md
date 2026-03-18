@@ -121,3 +121,45 @@ Decompose like a character but with different anatomy. The same z-order principl
 | Color regions | Logos often have very few — precision matters |
 
 Logos are usually geometric. Prefer SVG primitives (`<circle>`, `<rect>`, `<ellipse>`) over freehand paths where the shape is clearly geometric.
+
+### Vehicle/Machine
+
+See `features/features-vehicles.md` for full construction guidance. Key decomposition:
+
+| Element | Notes |
+|---------|-------|
+| Body panels | Each panel facing a different direction needs its own gradient |
+| Panel lines | Very thin seam lines between panels — critical for recognition |
+| Windows/glass | Layered: dark interior + tint + reflection gradient + specular highlight |
+| Wheels | Radial symmetry — `<defs>` + `<use>` + `rotate`; elliptical in perspective |
+| Lights | Radial gradient glow extending beyond the physical housing |
+| Chrome/trim | High-contrast multi-stop gradients |
+| Ground shadow | Elliptical gradient beneath vehicle |
+
+Vehicles are panel assemblies, not organic shapes. Panel lines and metallic gradients are what make them read as manufactured objects.
+
+### Food/Drink
+
+See `features/features-food-and-plants.md` for full construction guidance. Key decomposition:
+
+| Element | Notes |
+|---------|-------|
+| Container/plate | Sets the composition boundary |
+| Primary food mass | Organic shape — build from overlapping basic shapes |
+| Toppings/layers | Stacking order matters; thin shadows between layers |
+| Glossy highlights | White ellipses/shapes at low opacity — makes food look appetizing |
+| Steam/aroma | 2-3 wavy white paths, low opacity |
+| Signature detail | The one feature that makes it THIS food — never omit |
+
+Food illustration is built from overlapping shapes, not outline drawing. Specular highlights are essential.
+
+### Plant/Flower
+
+See `features/features-food-and-plants.md` for construction guidance. Key decomposition:
+
+| Element | Notes |
+|---------|-------|
+| Petals | Two-Bezier shapes; use `<use>` + `rotate` for radial symmetry |
+| Center | Contrasting circle or cluster |
+| Leaves | Bezier outline with gradient fill and vein paths clipped within |
+| Stem | Slightly curved path with consistent or tapered width |
