@@ -58,6 +58,8 @@ If `vtracer` is not installed and Python is available, **ask the user** where th
 
 7. **Write a subject brief.** In 2-3 sentences, describe the personality, expression, and overall vibe of the subject ("a cheeky, confident goblin with a big happy grin and a proud crossed-arms stance"). This qualitative description travels with every agent alongside the measurements — it gives agents a target for the *feeling* of the subject, not just the geometry. Without it, agents produce features that are technically correct but lack the character's personality.
 
+**After crops are verified** (step 5 must complete first):
+
 8. **Extract trace metadata from crops.** If `vtracer` is available, read `workflow/workflow-trace-metadata.md`. Auto-trace each feature crop in polygon mode and extract structured metadata: color palettes, sub-element positions/sizes, area percentages, and topology hints. This gives agents precise numeric data (~130 tokens per feature) instead of requiring them to eyeball colors and positions from the raster image. Add the trace metadata to each feature's entry in the feature map.
 
    If `vtracer` is not available, fall back to ImageMagick color extraction:
