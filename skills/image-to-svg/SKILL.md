@@ -7,9 +7,11 @@ description: Convert raster images (photos, illustrations, AI-generated art) int
 
 Recreate raster images as high-quality SVGs by decomposing, studying, and rebuilding each visual element independently.
 
-## Core Principle
+## Core Principles
 
 **Never try to reproduce the whole image at once.** The quality comes from isolating each feature, studying it closely against a cropped reference, and building it as a standalone SVG before compositing.
+
+**Correctness over speed.** Every shortcut in this workflow compounds into visible quality loss in the final output. Batching crop verification, skipping programmatic checks, eyeballing coordinates instead of measuring, settling for "looks about right" instead of running the diff — each saves a minute but costs ten in rework or produces a visibly worse result. The value of this skill is in the output quality. Take the time to verify at every step.
 
 ## When to Use
 
