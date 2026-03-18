@@ -1,2 +1,3 @@
 .claude/*.local.json
 CLAUDE.local.md
+.ai-cache/
