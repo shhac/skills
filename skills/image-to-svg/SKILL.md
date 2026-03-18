@@ -42,7 +42,10 @@ This skill uses **incremental discovery** — reference files live in subdirecto
    - Use ImageMagick to measure the original image dimensions and compute the scale factor to canvas
    - Identify **proportion anchors**: 3-5 key measured points (e.g., "head center at 35% of character height, chin at 52%, feet at 95%"). Express as ratios, not absolute pixels — ratios survive the canvas remapping.
    - Compute each feature's bounding box by measuring from the original and scaling to canvas coordinates
-   - Record the feature map with measured coordinates, proportion ratios, and z-ordering. This map travels with every swarmed agent.
+   - Record **inter-feature relationships** — not just individual bounding boxes but how features relate: "mouth width = 55% of face width", "gap between boots = 15% of body width", "ears extend 20% past hat brim edge". These relative measurements are what make proportions look right when features are built independently.
+   - Record the feature map with measured coordinates, proportion ratios, relationships, and z-ordering. This map travels with every swarmed agent.
+
+7. **Write a subject brief.** In 2-3 sentences, describe the personality, expression, and overall vibe of the subject ("a cheeky, confident goblin with a big happy grin and a proud crossed-arms stance"). This qualitative description travels with every agent alongside the measurements — it gives agents a target for the *feeling* of the subject, not just the geometry. Without it, agents produce features that are technically correct but lack the character's personality.
 
 ### Phase 2: Build Each Feature
 
@@ -110,12 +113,15 @@ For each feature:
 Spawn one agent per feature (or small group of related features). Each agent receives:
 - The reference crop for its feature(s)
 - **The full original image** — the crop is for detail, the full image is for proportion context. An agent building a mouth can't judge whether the grin is wide enough without seeing the full face.
+- The **subject brief** from Phase 1 step 7 — the personality/expression/vibe target
 - The identified art style description
 - The relevant feature reference sheet (from `features/`)
 - The relevant style technique file (`styles/styles-line-and-brush.md`, `styles/styles-geometric.md`, or `styles/styles-applying-to-lifelike.md`)
 - The curve construction reference (`styles/styles-curves-and-shapes.md`) — **always included**
 - The verification pipeline (`workflow/workflow-verification.md`) — **always included**
-- The **feature map with measured coordinates and proportion anchors** from Phase 1 step 6
+- The **feature map with measured coordinates, proportion anchors, and inter-feature relationships** from Phase 1 step 6
+
+**Describe features quantitatively, not qualitatively.** When briefing agents, text descriptions lose visual nuance — "wide grin" doesn't convey the exact curvature, "thick brim" is ambiguous. Instead use measurements: "mouth width = 55% of face width", "brim height = 5% of hat height, follows dome curvature". Adjectives fail; ratios survive.
 - Whether this feature is **expression-critical** (see above) — if so, the agent should run the full programmatic diff loop
 - Instructions to write its standalone SVG to `parts/{feature-name}.svg`
 
