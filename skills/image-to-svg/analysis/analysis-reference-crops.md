@@ -13,15 +13,21 @@ Tight crops of individual features from the original image are essential. Withou
 
 **All crop coordinates live in `feature-locations.yml`.** This file is the single source of truth for where every feature is in the original image. Crops are generated from it, and when a crop is wrong, you fix the numbers in the YAML and re-run — no re-estimating from the image.
 
-### Step 1: Get image dimensions
+The `scripts/crop-tool.py` script (bundled with this skill) handles all crop operations: grid overlay, batch cropping, bounding box visualization, and semantic adjustments (pan, scale, tighten). Copy it to the project directory or reference it from the skill location.
+
+### Step 1: Generate a coordinate grid
+
+Before estimating bounding boxes, generate a grid overlay on the original image. This gives you labeled pixel coordinates to reference:
 
 ```bash
-magick identify -format "%w %h" original.png
+python3 crop-tool.py grid original.png --step 100
 ```
+
+This produces `original-grid.png` with red gridlines every 100px and coordinate labels. Read this image — it makes estimating bounding boxes much more accurate than guessing from the raw image. For high-resolution images (> 2000px), use `--step 200` or `--step 250` to keep the grid readable.
 
 ### Step 2: Write `feature-locations.yml`
 
-Study the original image and estimate bounding boxes for each feature. Record them as `x, y, width, height` in original image pixel coordinates, where `x, y` is the **top-left corner** of the crop region.
+Using the grid image as reference, estimate bounding boxes for each feature. Record them as `x, y, width, height` in original image pixel coordinates, where `x, y` is the **top-left corner** of the crop region.
 
 **The feature should dominate its crop.** Aim for the feature to occupy roughly 50-70% of the crop area, with 15-20% margin on each side. This means:
 
@@ -84,30 +90,25 @@ For a character face:
 - `hat` — hat in isolation, including the full brim and how it sits on the head
 - Any other distinct features (hair, accessories, etc.)
 
-### Step 3: Crop all features from the YAML
+### Step 3: Apply crops
 
 ```bash
-# Read feature-locations.yml and crop each feature
-# Using a simple parser since yq may not be available
-python3 -c "
-import yaml, subprocess, pathlib
-pathlib.Path('refs').mkdir(exist_ok=True)
-with open('feature-locations.yml') as f:
-    data = yaml.safe_load(f)
-image = data['image']
-for name, info in data['features'].items():
-    x, y, w, h = info['box']
-    cmd = ['magick', image, '-crop', f'{w}x{h}+{x}+{y}', '+repage', f'refs/{name}.png']
-    subprocess.run(cmd, check=True)
-    print(f'  cropped refs/{name}.png ({w}x{h} at +{x}+{y})')
-print(f'Done: {len(data[\"features\"])} crops')
-"
+python3 crop-tool.py crop feature-locations.yml
 ```
 
-If Python with PyYAML is not available, crop manually with ImageMagick:
+This reads every feature from the YAML and crops them all to `refs/`. Re-run this after any YAML changes.
+
+**Optional: visualize bounding boxes** before cropping to spot obviously wrong boxes:
 
 ```bash
-# Fallback: crop each feature individually from the YAML values
+python3 crop-tool.py show feature-locations.yml
+```
+
+This draws all bounding boxes on the image with color-coded labels. Read the output image to verify boxes are roughly in the right place before spending time on individual crop verification.
+
+If Python with PyYAML is not available, crop manually with ImageMagick using the YAML values:
+
+```bash
 magick original.png -crop WIDTHxHEIGHT+X+Y +repage refs/feature-name.png
 ```
 
@@ -137,36 +138,7 @@ Run this on every crop. It checks two things:
 Both problems are common and both degrade quality — clipping loses content, looseness pollutes trace metadata with neighboring features' colors and shapes.
 
 ```bash
-# Automated clipping + tightness check for all crops:
-for f in refs/*.png; do
-  name=$(basename "$f")
-  dims=$(magick identify -format "%w %h" "$f")
-  w=${dims% *}; h=${dims#* }
-  min_h=$((w * 5 / 100))  # 5% of width
-  min_v=$((h * 5 / 100))  # 5% of height
-  # Get margins AND trimmed content dimensions
-  info=$(magick "$f" -fuzz 10% -trim -format "%X %Y %[fx:page.width-w-page.x] %[fx:page.height-h-page.y] %w %h" info:)
-  read l t r b tw th <<< "$info"
-  l=${l%.*}; t=${t%.*}; r=${r%.*}; b=${b%.*}; tw=${tw%.*}; th=${th%.*}
-  # Check clipping (too tight)
-  clip=""
-  [ "$l" -lt "$min_h" ] 2>/dev/null && clip="${clip} left=${l}"
-  [ "$t" -lt "$min_v" ] 2>/dev/null && clip="${clip} top=${t}"
-  [ "$r" -lt "$min_h" ] 2>/dev/null && clip="${clip} right=${r}"
-  [ "$b" -lt "$min_v" ] 2>/dev/null && clip="${clip} bottom=${b}"
-  # Check tightness (too loose) — feature area vs crop area
-  feat_pct=$((tw * th * 100 / (w * h)))
-  loose=""
-  [ "$feat_pct" -lt 30 ] 2>/dev/null && loose=" feature=${feat_pct}% of crop (want >=30%)"
-  # Report
-  if [ -n "$clip" ]; then
-    echo "CLIP $name:$clip (min_h=${min_h}px min_v=${min_v}px)"
-  elif [ -n "$loose" ]; then
-    echo "LOOSE $name:$loose — crop tighter around the feature"
-  else
-    echo "PASS $name: L=${l} T=${t} R=${r} B=${b} feature=${feat_pct}%"
-  fi
-done
+python3 crop-tool.py check feature-locations.yml
 ```
 
 - **CLIP** = feature is cut off. Fix: extend the crop on the failing side.
@@ -175,30 +147,45 @@ done
 
 **Do not skip this step.**
 
-### Step 2: Fix failing crops via the YAML
+### Step 2: Fix failing crops
 
-When a crop fails:
+Use the crop tool's semantic commands to adjust bounding boxes — no manual coordinate arithmetic needed:
 
-**For CLIP failures:**
-1. **Identify which side failed** — the output tells you (e.g., `top=3` means the top margin is only 3px)
-2. **Open `feature-locations.yml`** and adjust the bounding box:
-   - Top clipped → decrease `y` and increase `height` (extend upward)
-   - Bottom clipped → increase `height` (extend downward)
-   - Left clipped → decrease `x` and increase `width` (extend left)
-   - Right clipped → increase `width` (extend right)
-   - **Extend by at least 50% more than the current margin on the failing side**
+**For CLIP failures** (feature cut off at an edge):
 
-**For LOOSE failures:**
-1. The feature occupies too little of the crop — surrounding content dominates
-2. **Open `feature-locations.yml`** and tighten the bounding box:
-   - Increase `x` and decrease `width` (narrow horizontally)
-   - Increase `y` and decrease `height` (narrow vertically)
-   - Center the box on the feature, aiming for 15-20% margin on each side
-3. Be careful not to over-tighten into a CLIP — check again after adjusting
-3. **Re-run the crop script** (step 3 above) — it re-crops everything from the YAML
-4. **Re-run the margin check** — repeat until all crops pass
+```bash
+# Scale the box larger (grows from center) — e.g., 30% bigger
+python3 crop-tool.py scale feature-locations.yml left-eye 30
 
-This loop is fast because you're editing numbers, not re-estimating from the image.
+# Or pan it toward the clipped side — e.g., move the box up 15% of its height
+python3 crop-tool.py pan feature-locations.yml left-eye up 15
+```
+
+**For LOOSE failures** (feature is too small in the crop):
+
+```bash
+# Tighten the box (shrink from edges equally) — e.g., 25% tighter
+python3 crop-tool.py tighten feature-locations.yml left-eye 25
+```
+
+**After adjusting, re-crop and re-check:**
+
+```bash
+python3 crop-tool.py crop feature-locations.yml
+python3 crop-tool.py check feature-locations.yml
+```
+
+Repeat until all crops pass. You can also edit `feature-locations.yml` directly if you prefer — the semantic commands just save the coordinate arithmetic.
+
+**Quick reference:**
+
+| Problem | Command | What it does |
+|---|---|---|
+| Feature clipped at top | `pan ... up 15` | Moves box up by 15% of its height |
+| Feature clipped overall | `scale ... 30` | Grows box 30% from center |
+| Feature too small in crop | `tighten ... 25` | Shrinks box 25% from edges |
+| Feature off-center | `pan ... right 10` | Moves box right by 10% of its width |
+| Need to see all boxes | `show ...` | Draws all boxes on image |
 
 ### Step 3: Visual verification — ONE crop at a time
 
