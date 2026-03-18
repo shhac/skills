@@ -1,6 +1,6 @@
 # SVG Effects: clipPath, mask & filter
 
-These techniques add depth, atmosphere, and polish to SVG illustrations. They're used during composition (Phase 3) and during feature building when a feature needs clipping, soft edges, or artistic effects.
+These techniques add depth, atmosphere, and polish to SVG illustrations. They're used during composition (Phase 4) and during feature building when a feature needs clipping, soft edges, or artistic effects.
 
 **For curve construction and filled shape techniques**, see `styles/styles-curves-and-shapes.md`. This file covers effects layered on top of shapes.
 

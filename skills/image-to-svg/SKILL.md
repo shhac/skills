@@ -36,7 +36,7 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 4. **Handle transparency.** If the image has transparency (PNG with alpha, stickers, cutouts), note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
 
-5. **Create and verify reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`. **Run the programmatic edge-margin check on every crop** — this is the most common failure point. Then visually verify each crop individually (one per Read call, not batched). Do not proceed to Phase 2 with any clipped crops.
+5. **Create and verify reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`. **Run the programmatic edge-margin check on every crop** — this is the most common failure point. Then visually verify each crop individually (one per Read call, not batched). Do not proceed to the build phase with any clipped crops.
 
 6. **Measure and map coordinates programmatically.** Read `workflow/workflow-verification.md` for the measurement pipeline. Do NOT eyeball feature coordinates — small estimation errors compound across features and ruin proportions.
 
@@ -49,7 +49,7 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 7. **Write a subject brief.** In 2-3 sentences, describe the personality, expression, and overall vibe of the subject ("a cheeky, confident goblin with a big happy grin and a proud crossed-arms stance"). This qualitative description travels with every agent alongside the measurements — it gives agents a target for the *feeling* of the subject, not just the geometry. Without it, agents produce features that are technically correct but lack the character's personality.
 
-### Phase 2: Build Each Feature
+### Phase 2: Build Each Feature (Agent Swarm)
 
 Once the style is identified, reference crops verified, and the feature map established, **agent swarm the feature builds**. Each feature is independent — they can be built in parallel by separate agents, each working from its own reference crop.
 
@@ -114,7 +114,7 @@ For each feature:
 
 **One feature = one SVG = one agent. No exceptions.** Even trivially simple features (a nose that's just two dots, a sparkle, a small badge) get their own file and their own agent. The cost of an extra agent is low; the cost of coupled parts during compositing and future animation is high.
 
-**Paired features are ALWAYS separate.** Left eye and right eye are separate agents writing separate SVGs. Same for left/right ears, left/right boots, left/right arms. They will be checked for consistency in the alignment phase (Phase 2b) — that's where consistency is enforced, not by having one agent build both.
+**Paired features are ALWAYS separate.** Left eye and right eye are separate agents writing separate SVGs. Same for left/right ears, left/right boots, left/right arms. They will be checked for consistency in the alignment phase (Phase 3) — that's where consistency is enforced, not by having one agent build both.
 
 **Body parts are independent.** Arms are separate from the torso. Each leg is separate. The head is separate from the neck. Think of each part as something that might animate independently later — an arm could move while the body stays still, one ear could wiggle while the other doesn't.
 
@@ -135,7 +135,7 @@ If there are 5 features, spawn 5 agents. If there are 50 features, spawn 50 agen
 
 **All agents must use the same `viewBox` as the composite canvas** (e.g., `viewBox="0 0 512 512"`). Each agent positions its feature within the full canvas coordinates using the bounding box from the feature map. This ensures parts align without rescaling during composition.
 
-Features that interact (e.g., face + ears, hair + hat) should be noted but built independently — interactions are resolved in Phase 3. For tightly coupled features (ears + face contour, hair + hat brim), include the neighboring feature's bounding box so the agent knows where the boundary sits.
+Features that interact (e.g., face + ears, hair + hat) should be noted but built independently — interactions are resolved in Phase 4. For tightly coupled features (ears + face contour, hair + hat brim), include the neighboring feature's bounding box so the agent knows where the boundary sits.
 
 #### Render-Compare Loop
 
@@ -166,7 +166,7 @@ When a feature is partially hidden by another layer:
 - **Simplify but don't omit.** The hidden portion doesn't need full detail, but the shape should be continuous. This prevents hard edges or gaps if layers shift during compositing.
 - **Think in complete shapes.** A face path should be a complete closed curve, not one that stops where the hat brim sits.
 
-### Phase 2b: Class Alignment
+### Phase 3: Class Alignment (Agent Swarm)
 
 After all features are built individually, check paired and repeated features for consistency. **Agent swarm this** — one agent per class of similar features.
 
@@ -190,7 +190,7 @@ Each alignment agent receives both SVGs, both reference crops, and the full orig
 
 The alignment agent normalizes any unintentional inconsistencies — making paired features match while preserving intentional asymmetry from the reference (e.g., if the reference genuinely shows different-sized eyes, keep that).
 
-### Phase 3: Composite and Iterate
+### Phase 4: Composite and Iterate
 
 Read `workflow/composition-bringing-layers-together.md`.
 
@@ -204,7 +204,7 @@ Read `workflow/composition-bringing-layers-together.md`.
 6. **Repeat** until the composite diff stabilizes — at least 2 composite iterations, more if expression-critical features are off.
 7. **Final small-size check** — render at 64x64 or 128x128 to verify it reads clearly at icon size.
 
-### Phase 4: Deliver
+### Phase 5: Deliver
 
 Read `workflow/workflow-file-structure.md` for the expected project layout.
 
