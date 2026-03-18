@@ -5,8 +5,9 @@
 ```
 {project-dir}/
 ├── original.png              # Source image — NEVER modify
+├── feature-locations.yml     # Bounding boxes for all features (source of truth for cropping)
 ├── extract-trace-metadata.py # Metadata extraction script (from workflow-trace-metadata.md)
-├── refs/                     # Cropped reference images
+├── refs/                     # Cropped reference images (generated from feature-locations.yml)
 │   ├── head-full.png         # Wide crop of entire head/subject
 │   ├── left-eye.png          # Tight crop per feature
 │   ├── right-eye.png

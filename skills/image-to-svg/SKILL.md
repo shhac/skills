@@ -46,7 +46,7 @@ If `vtracer` is not installed and Python is available, **ask the user** where th
 
 **Parallel preparation** — these all depend on the feature list from step 4 but are independent of each other. Run them in parallel:
 
-5. **Create and verify reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`. **Run the programmatic edge-margin check on every crop** — this is the most common failure point. Then visually verify each crop individually (one per Read call, not batched). Do not proceed to the build phase with any clipped crops.
+5. **Create and verify reference crops.** Read `analysis/analysis-reference-crops.md`. Write `feature-locations.yml` with bounding boxes for every feature, then crop all features from it in one pass. **Run the programmatic edge-margin check on every crop** — this is the most common failure point. Fix any failing crops by adjusting the YAML and re-cropping (don't re-estimate from the image). Then visually verify each crop individually (one per Read call, not batched). Do not proceed to the build phase with any clipped crops.
 
 6. **Measure and map coordinates programmatically.** Read `workflow/workflow-verification.md` for the measurement pipeline. Do NOT eyeball feature coordinates — small estimation errors compound across features and ruin proportions.
    - Determine canvas size (512x512 standard for emoji/icons; use original aspect ratio for other subjects)
