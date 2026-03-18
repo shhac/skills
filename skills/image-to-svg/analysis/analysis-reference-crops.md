@@ -23,7 +23,13 @@ magick identify -format "%w %h" original.png
 
 Study the original image and estimate bounding boxes for each feature. Record them as `x, y, width, height` in original image pixel coordinates, where `x, y` is the **top-left corner** of the crop region.
 
-**Crop generously** — too tight is worse than too loose. Include a margin of at least 15-20% around the feature on all sides. A crop that's 50% background is fine; a crop that clips the feature is useless.
+**The feature should dominate its crop.** Aim for the feature to occupy roughly 50-70% of the crop area, with 15-20% margin on each side. This means:
+
+- **Too tight:** feature touches or is clipped at edges (< 5% margin on any side). Clipped crops are useless — the agent literally can't see what's cut off.
+- **Just right:** feature is the clear star of the image, with enough surrounding context to judge position relative to neighbors. 15-20% margin on each side.
+- **Too loose:** feature is a small element in a sea of surrounding image (< 30% of crop area). This is bad for two reasons: (1) trace metadata extraction picks up colors and shapes from neighboring features, polluting the palette; (2) the agent's reference is noisy — the eye shouldn't share its crop with the hat and other eye.
+
+When in doubt, err slightly loose rather than tight — but not dramatically. A crop where the feature occupies 40% of the area is fine. A crop where it occupies 10% is too loose.
 
 ```yaml
 # feature-locations.yml
@@ -122,59 +128,73 @@ Without the YAML file, the agent estimates coordinates, runs a crop command, and
 
 **This is the most common failure point in the entire workflow.** Bad crops produce bad SVGs. Every minute spent verifying crops saves ten minutes of iteration later.
 
-### Step 1: Programmatic edge-margin check
+### Step 1: Programmatic clipping + tightness check
 
-Run this on every crop to detect whether non-background content touches the crop edges. If the margin on any side is too small, the feature is likely clipped:
+Run this on every crop. It checks two things:
+- **Clipping** — is the feature cut off at any edge? (margin < 5% on any side)
+- **Tightness** — does the feature dominate its crop? (feature should fill at least 30% of crop area)
 
-```bash
-# Check margins around the feature (how much background padding exists on each side)
-# Trim to non-background pixels, then compute margin on each side
-magick refs/{feature}.png -fuzz 10% -trim -format \
-  "left=%X top=%Y right=%[fx:page.width-w-page.x] bottom=%[fx:page.height-h-page.y]" info:
-```
-
-**Interpret the output:**
-- Each value is the margin in pixels between the feature content and the crop edge
-- If ANY margin is less than 5% of the crop dimension → **the feature is likely clipped. Re-crop wider.**
-- Example: for a 300x280 crop, 5% margin = 15px horizontal, 14px vertical. If `top=3` → the top is clipped.
+Both problems are common and both degrade quality — clipping loses content, looseness pollutes trace metadata with neighboring features' colors and shapes.
 
 ```bash
-# Automated pass/fail check for all crops at once:
+# Automated clipping + tightness check for all crops:
 for f in refs/*.png; do
   name=$(basename "$f")
   dims=$(magick identify -format "%w %h" "$f")
   w=${dims% *}; h=${dims#* }
   min_h=$((w * 5 / 100))  # 5% of width
   min_v=$((h * 5 / 100))  # 5% of height
-  margins=$(magick "$f" -fuzz 10% -trim -format "%X %Y %[fx:page.width-w-page.x] %[fx:page.height-h-page.y]" info:)
-  read l t r b <<< "$margins"
-  l=${l%.*}; t=${t%.*}; r=${r%.*}; b=${b%.*}  # truncate to int
-  fail=""
-  [ "$l" -lt "$min_h" ] 2>/dev/null && fail="${fail} left=${l}"
-  [ "$t" -lt "$min_v" ] 2>/dev/null && fail="${fail} top=${t}"
-  [ "$r" -lt "$min_h" ] 2>/dev/null && fail="${fail} right=${r}"
-  [ "$b" -lt "$min_v" ] 2>/dev/null && fail="${fail} bottom=${b}"
-  if [ -n "$fail" ]; then
-    echo "FAIL $name:$fail (min_h=${min_h}px min_v=${min_v}px)"
+  # Get margins AND trimmed content dimensions
+  info=$(magick "$f" -fuzz 10% -trim -format "%X %Y %[fx:page.width-w-page.x] %[fx:page.height-h-page.y] %w %h" info:)
+  read l t r b tw th <<< "$info"
+  l=${l%.*}; t=${t%.*}; r=${r%.*}; b=${b%.*}; tw=${tw%.*}; th=${th%.*}
+  # Check clipping (too tight)
+  clip=""
+  [ "$l" -lt "$min_h" ] 2>/dev/null && clip="${clip} left=${l}"
+  [ "$t" -lt "$min_v" ] 2>/dev/null && clip="${clip} top=${t}"
+  [ "$r" -lt "$min_h" ] 2>/dev/null && clip="${clip} right=${r}"
+  [ "$b" -lt "$min_v" ] 2>/dev/null && clip="${clip} bottom=${b}"
+  # Check tightness (too loose) — feature area vs crop area
+  feat_pct=$((tw * th * 100 / (w * h)))
+  loose=""
+  [ "$feat_pct" -lt 30 ] 2>/dev/null && loose=" feature=${feat_pct}% of crop (want >=30%)"
+  # Report
+  if [ -n "$clip" ]; then
+    echo "CLIP $name:$clip (min_h=${min_h}px min_v=${min_v}px)"
+  elif [ -n "$loose" ]; then
+    echo "LOOSE $name:$loose — crop tighter around the feature"
   else
-    echo "PASS $name: L=${l} T=${t} R=${r} B=${b}"
+    echo "PASS $name: L=${l} T=${t} R=${r} B=${b} feature=${feat_pct}%"
   fi
 done
 ```
 
-Any crop that prints `FAIL` needs fixing. **Do not skip this step.**
+- **CLIP** = feature is cut off. Fix: extend the crop on the failing side.
+- **LOOSE** = feature is a small part of the crop. Fix: tighten the crop around the feature. A loose crop means trace metadata will pick up colors and shapes from neighboring features, and the agent's reference is noisy.
+- **PASS** = margins are adequate and feature dominates the crop.
+
+**Do not skip this step.**
 
 ### Step 2: Fix failing crops via the YAML
 
-When a crop fails the margin check:
+When a crop fails:
 
-1. **Identify which side failed** — the FAIL output tells you (e.g., `top=3` means the top margin is only 3px)
+**For CLIP failures:**
+1. **Identify which side failed** — the output tells you (e.g., `top=3` means the top margin is only 3px)
 2. **Open `feature-locations.yml`** and adjust the bounding box:
    - Top clipped → decrease `y` and increase `height` (extend upward)
    - Bottom clipped → increase `height` (extend downward)
    - Left clipped → decrease `x` and increase `width` (extend left)
    - Right clipped → increase `width` (extend right)
    - **Extend by at least 50% more than the current margin on the failing side**
+
+**For LOOSE failures:**
+1. The feature occupies too little of the crop — surrounding content dominates
+2. **Open `feature-locations.yml`** and tighten the bounding box:
+   - Increase `x` and decrease `width` (narrow horizontally)
+   - Increase `y` and decrease `height` (narrow vertically)
+   - Center the box on the feature, aiming for 15-20% margin on each side
+3. Be careful not to over-tighten into a CLIP — check again after adjusting
 3. **Re-run the crop script** (step 3 above) — it re-crops everything from the YAML
 4. **Re-run the margin check** — repeat until all crops pass
 
@@ -192,9 +212,9 @@ For EACH crop, read it and confirm:
    - Hat brim bottom edge not visible
    - Chin cut off at bottom
 2. **Is there visible margin on ALL FOUR sides** between the feature and the crop boundary? If the feature touches any edge, re-crop wider.
-3. **Is the feature the primary subject of the crop**, not a tiny element in the corner? The feature should be centered and prominent.
+3. **Does the feature dominate the crop?** It should be the clear primary subject — centered, prominent, filling most of the frame. If you can see more of neighboring features than the target feature, the crop is too loose. A "left eye" crop shouldn't include the hat, the other eye, and half the mouth.
 4. **Is the image large enough** to see detail (at least 200x200px)?
-5. **Does the crop include enough neighboring context** to judge relative positioning?
+5. **Does the crop include some neighboring context** to judge relative positioning? Some context is good (the brow above an eye, the cheek beside a nose), but the target feature should dominate.
 
 If any crop fails visual verification, fix it via the YAML (step 2 above) and re-verify.
 
