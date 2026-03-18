@@ -1,8 +1,8 @@
-# Feature Reference: Food, Drinks & Plants
+# Feature Reference: Food & Drinks
 
-Food and plant images are common for emoji, stickers, and illustration. They combine organic shapes, glossy surfaces, layered construction, and atmospheric effects (steam, glow). The core challenge is making surfaces look appetizing — this comes from highlights and color.
+Food images are common for emoji, stickers, and illustration. They combine organic shapes, glossy surfaces, layered construction, and atmospheric effects (steam, glow). The core challenge is making surfaces look appetizing — this comes from highlights and color.
 
-## Food Decomposition
+## Decomposition
 
 | Feature | What It Is | Key Challenge |
 |---|---|---|
@@ -16,19 +16,6 @@ Food and plant images are common for emoji, stickers, and illustration. They com
 | Steam/aroma | Rising wisps from hot food | 2-3 wavy paths, white, low opacity, `feGaussianBlur` |
 | Liquid (if visible) | Drink, soup, broth in a container | Colored fill with meniscus curve, surface highlight |
 | Signature detail | The one feature that makes it THIS food | Exaggerate for recognition; never omit |
-
-## Plant/Flower Decomposition
-
-| Feature | What It Is | Key Challenge |
-|---|---|---|
-| Petals | Individual petal shapes arranged radially | Two-Bezier petal path; use `<use>` + `rotate` for symmetry |
-| Flower center | Stamen/pistil cluster or contrasting disc | Circle or cluster of small circles; color contrast with petals |
-| Leaves | Flat green shapes with vein detail | Bezier outline, gradient fill, vein paths clipped within |
-| Stems | Connecting structure | Slightly curved path; consistent width or slight taper |
-| Thorns/spines | Small pointed projections on stems | Tiny triangle paths positioned along stem |
-| Bark/trunk | Woody stem structure for trees | Brown fill with grain pattern or line texture |
-| Fruit/berries | Produced by the plant | Small colored circles/ellipses in clusters |
-| Pot/vase (if present) | Container context | Simple geometric shape; ceramic/terracotta coloring |
 
 ## Construction Approach: Shape-Building
 
@@ -129,12 +116,7 @@ Layered food is constructed bottom-to-top, with each layer as a separate `<g>` g
 - Tile across the rice area
 - Two layers at slightly different tones for depth
 
-### Leaf veins
-- Central vein: tapered filled path from base to tip
-- Side veins: thinner paths branching at 30-45 degrees
-- Clip all veins to the leaf body with `<clipPath>`
-
-### Wood grain
+### Wood grain (cutting boards, chopsticks)
 - Wavy horizontal lines in varying brown tones as a `<pattern>` fill
 - Or `feTurbulence` with asymmetric `baseFrequency="0.01 0.1"` for elongated grain
 
@@ -181,42 +163,6 @@ Layered food is constructed bottom-to-top, with each layer as a separate `<g>` g
 - White highlight on one face
 - Partially submerged: use `<clipPath>` of liquid level
 
-## Flower Construction
-
-### Single petal
-Two cubic Bezier curves sharing start and end points with different control points — wide at middle, pointed at tip and base:
-```xml
-<path d="M 0,0 C 10,-20 30,-20 40,0 C 30,20 10,20 0,0 Z" fill="#FF69B4"/>
-```
-
-### Flower assembly
-Define one petal in `<defs>`, stamp with `<use>` + `rotate`:
-```xml
-<defs>
-  <path id="petal" d="M 0,-10 C 8,-35 15,-35 0,-55 C -15,-35 -8,-35 0,-10 Z" fill="#FF69B4"/>
-</defs>
-<g transform="translate(100,100)">
-  <use href="#petal" transform="rotate(0)"/>
-  <use href="#petal" transform="rotate(72)"/>
-  <use href="#petal" transform="rotate(144)"/>
-  <use href="#petal" transform="rotate(216)"/>
-  <use href="#petal" transform="rotate(288)"/>
-  <circle r="8" fill="#FFD700"/>  <!-- center -->
-</g>
-```
-
-### Petal depth
-- Rear petals: slightly darker fill (drawn first)
-- Front petals: full color (drawn last, highest z-order)
-- Thin dark shapes at petal bases for inter-petal shadow
-
-### Leaf construction
-Two mirrored quadratic Beziers:
-```xml
-<path d="M 0,50 Q 25,0 50,50 Q 25,100 0,50 Z" fill="#228B22"/>
-```
-Add a `linearGradient` (lighter at center vein, darker at edges) and vein paths clipped within.
-
 ## Emoji-Scale Recognition
 
 At 16-32px display size, detail disappears. Food emoji work because of:
@@ -235,7 +181,6 @@ At 16-32px display size, detail disappears. Food emoji work because of:
 | Cupcake | Swirled frosting, ridged wrapper, cherry |
 | Sushi | White rice rectangle, dark nori band, colored fish |
 | Coffee | White cup, brown liquid, 3 steam wisps |
-| Flower | 5 colored petals in a ring, contrasting center |
 
 **At emoji scale: no filters.** `feTurbulence`, `feGaussianBlur` etc. are invisible at 16-32px.
 

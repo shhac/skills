@@ -68,7 +68,8 @@ The `features/` reference sheets are character-specific. For other subjects, dec
 - **Landscapes/scenes:** sky/background, distant elements, midground, foreground, focal subject, atmospheric effects (fog, light rays)
 - **Objects/products:** Read `features/features-objects.md` for detailed guidance on structural decomposition. Objects have internal structure, multiple visible surfaces, and perspective complexity that goes far beyond silhouette + fill. Decompose into structural parts (panels, ribs, joints, handles), not just color regions.
 - **Vehicles/machines:** Read `features/features-vehicles.md`. Vehicles are panel assemblies — decompose by body panels, glass, wheels, lights, and trim. Panel lines and metallic gradients are critical.
-- **Food/drinks/plants:** Read `features/features-food-and-plants.md`. Shape-building approach with glossy highlights, layered construction, and steam/aroma effects.
+- **Food/drinks:** Read `features/features-food.md`. Shape-building approach with glossy highlights, layered construction, and steam/aroma effects.
+- **Plants/flowers:** Read `features/features-plants.md`. Radial petal symmetry with `<use>` + `rotate`, leaf construction with vein clipping.
 - **Abstract/patterns:** base layer, repeating motifs (use `<pattern>` or `<use>` where possible), accent elements, overlay effects
 - **Hybrid images:** For images that combine categories (character holding an object in a landscape), use the focal subject's decomposition as primary and treat secondary elements more simply.
 

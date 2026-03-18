@@ -140,7 +140,7 @@ Vehicles are panel assemblies, not organic shapes. Panel lines and metallic grad
 
 ### Food/Drink
 
-See `features/features-food-and-plants.md` for full construction guidance. Key decomposition:
+See `features/features-food.md` for full construction guidance. Key decomposition:
 
 | Element | Notes |
 |---------|-------|
@@ -155,7 +155,7 @@ Food illustration is built from overlapping shapes, not outline drawing. Specula
 
 ### Plant/Flower
 
-See `features/features-food-and-plants.md` for construction guidance. Key decomposition:
+See `features/features-plants.md` for construction guidance. Key decomposition:
 
 | Element | Notes |
 |---------|-------|
