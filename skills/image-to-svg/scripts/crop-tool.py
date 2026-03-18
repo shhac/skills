@@ -20,12 +20,13 @@ Commands:
     show      Draw all bounding boxes on the image to visualize feature locations.
     pan       Move a feature's bounding box without changing its size.
               Directions: left, right, up, down.
-              Amount: "10%" (relative to box size) or "50px" (absolute pixels).
+              Amount: "50px" (absolute pixels) or "10pct" (of current box size).
+              e.g., "pan right 10pct" moves right by 10% of the box's width.
     scale     Grow or shrink a feature's bounding box from its center.
-              Amount: "20%" (20% larger) or "50px" (50px larger on each axis).
-              Negative values shrink: "-10%" or "-30px".
+              Amount: "50px" or "20pct" (each axis grows by 20% of its current size).
+              Negative values shrink: "-30px" or "-10pct".
     tighten   Reduce all margins equally (opposite of scale). Useful for LOOSE crops.
-              Amount: "25%" or "40px".
+              Amount: "40px" or "25pct".
     check     Run the clipping + tightness check on all crops (requires ImageMagick).
 """
 
@@ -44,16 +45,23 @@ except ImportError:
 def parse_amount(amount_str, reference_size):
     """Parse an amount as percent or pixels.
 
-    '10%' or '10' → 10% of reference_size
-    '50px' → 50 pixels absolute
+    Percent is relative to the box's current size on the relevant axis:
+    - pan right 10pct  → move right by 10% of the box's current width
+    - scale 30pct      → grow each axis by 30% of its current size
+    - tighten 20pct    → shrink each axis by 20% of its current size
+
+    Formats:
+        '50px'  → 50 pixels absolute
+        '10pct' → 10% of reference_size (the box dimension on the relevant axis)
+        '10'    → bare number = pixels
     """
     s = str(amount_str).strip()
     if s.endswith('px'):
         return int(float(s[:-2]))
-    if s.endswith('%'):
-        return int(reference_size * float(s[:-1]) / 100.0)
-    # bare number = percent
-    return int(reference_size * float(s) / 100.0)
+    if s.endswith('pct'):
+        return int(reference_size * float(s[:-3]) / 100.0)
+    # bare number = pixels
+    return int(float(s))
 
 
 def load_yaml(path):
@@ -311,21 +319,21 @@ def main():
     p.add_argument('yaml', help='feature-locations.yml path')
     p.add_argument('feature', help='Feature name')
     p.add_argument('direction', choices=['left', 'right', 'up', 'down'])
-    p.add_argument('amount', help='Amount: "10%%" (of box size) or "50px" (absolute)')
+    p.add_argument('amount', help='Amount: "50px" (absolute) or "10pct" (of box size)')
     p.set_defaults(func=cmd_pan)
 
     # scale
     p = sub.add_parser('scale', help='Scale a bounding box from center')
     p.add_argument('yaml', help='feature-locations.yml path')
     p.add_argument('feature', help='Feature name')
-    p.add_argument('amount', help='Amount: "20%%" (grow 20%%) or "50px" or "-10%%" (shrink)')
+    p.add_argument('amount', help='Amount: "50px" or "20pct" (grow) or "-30px" (shrink)')
     p.set_defaults(func=cmd_scale)
 
     # tighten
     p = sub.add_parser('tighten', help='Tighten a bounding box (reduce margins)')
     p.add_argument('yaml', help='feature-locations.yml path')
     p.add_argument('feature', help='Feature name')
-    p.add_argument('amount', help='Amount: "25%%" or "40px"')
+    p.add_argument('amount', help='Amount: "40px" or "25pct"')
     p.set_defaults(func=cmd_tighten)
 
     # check

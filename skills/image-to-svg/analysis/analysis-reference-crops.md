@@ -154,21 +154,21 @@ Use the crop tool's semantic commands to adjust bounding boxes — no manual coo
 **For CLIP failures** (feature cut off at an edge):
 
 ```bash
-# Scale the box larger (grows from center) — percent or pixels
-python3 crop-tool.py scale feature-locations.yml left-eye 30%
+# Scale the box larger (grows from center) — pixels or percent of current box size
 python3 crop-tool.py scale feature-locations.yml left-eye 80px
+python3 crop-tool.py scale feature-locations.yml left-eye 30pct
 
 # Or pan it toward the clipped side
-python3 crop-tool.py pan feature-locations.yml left-eye up 15%
 python3 crop-tool.py pan feature-locations.yml left-eye up 50px
+python3 crop-tool.py pan feature-locations.yml left-eye up 15pct
 ```
 
 **For LOOSE failures** (feature is too small in the crop):
 
 ```bash
 # Tighten the box (shrink from edges equally)
-python3 crop-tool.py tighten feature-locations.yml left-eye 25%
 python3 crop-tool.py tighten feature-locations.yml left-eye 60px
+python3 crop-tool.py tighten feature-locations.yml left-eye 25pct
 ```
 
 **After adjusting, re-crop and re-check:**
@@ -186,13 +186,13 @@ Repeat until all crops pass. You can also edit `feature-locations.yml` directly 
 
 | Problem | Command | What it does |
 |---|---|---|
-| Feature clipped at top | `pan ... up 15%` or `pan ... up 50px` | Moves box up |
-| Feature clipped overall | `scale ... 30%` or `scale ... 80px` | Grows box from center |
-| Feature too small in crop | `tighten ... 25%` or `tighten ... 60px` | Shrinks box from edges |
-| Feature off-center | `pan ... right 10%` or `pan ... right 30px` | Moves box right |
+| Feature clipped at top | `pan ... up 50px` or `pan ... up 15pct` | Moves box up |
+| Feature clipped overall | `scale ... 80px` or `scale ... 30pct` | Grows box from center |
+| Feature too small in crop | `tighten ... 60px` or `tighten ... 25pct` | Shrinks box from edges |
+| Feature off-center | `pan ... right 30px` or `pan ... right 10pct` | Moves box right |
 | Need to see all boxes | `show ...` | Draws all boxes on image |
 
-Use `%` when you're thinking relatively ("move it a bit"), `px` when you can read exact pixel offsets from the grid image.
+Use `px` when you can read exact pixel offsets from the grid image. Use `pct` when thinking relatively ("move it a bit" — percent is relative to the box's current size on that axis). Bare numbers default to pixels.
 
 ### Step 3: Visual verification — ONE crop at a time
 
