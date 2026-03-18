@@ -28,18 +28,21 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 ### Phase 1: Analyze the Image
 
+**First pass** — these are independent and can be done together in a single pass over the image:
+
 1. **Identify the art style.** Read `styles/styles-identification.md` and classify the image (cartoon, geometric, lifelike, etc.). The identified style determines which techniques you'll use later.
-
 2. **Build your observation framework.** Read `analysis/analysis-asking-questions.md`. Use these questions during decomposition and cropping to verify you're capturing the right details — especially the Construction and Structural questions for complex objects.
+3. **Handle transparency.** If the image has transparency (PNG with alpha, stickers, cutouts), note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
 
-3. **Decompose into features.** Read `analysis/analysis-identifying-concepts.md`. Break the image into independent visual elements and establish a z-order (layer stack).
+**Decompose** — depends on the observation framework above:
 
-4. **Handle transparency.** If the image has transparency (PNG with alpha, stickers, cutouts), note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
+4. **Decompose into features.** Read `analysis/analysis-identifying-concepts.md`. Break the image into independent visual elements and establish a z-order (layer stack).
+
+**Parallel preparation** — these all depend on the feature list from step 4 but are independent of each other. Run them in parallel:
 
 5. **Create and verify reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`. **Run the programmatic edge-margin check on every crop** — this is the most common failure point. Then visually verify each crop individually (one per Read call, not batched). Do not proceed to the build phase with any clipped crops.
 
 6. **Measure and map coordinates programmatically.** Read `workflow/workflow-verification.md` for the measurement pipeline. Do NOT eyeball feature coordinates — small estimation errors compound across features and ruin proportions.
-
    - Determine canvas size (512x512 standard for emoji/icons; use original aspect ratio for other subjects)
    - Use ImageMagick to measure the original image dimensions and compute the scale factor to canvas
    - Identify **proportion anchors**: 3-5 key measured points (e.g., "head center at 35% of character height, chin at 52%, feet at 95%"). Express as ratios, not absolute pixels — ratios survive the canvas remapping.
