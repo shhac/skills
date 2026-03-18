@@ -110,7 +110,7 @@ For each feature:
 
 #### Agent Swarming
 
-Spawn one agent per feature (or small group of related features). Each agent receives:
+Spawn **one agent per feature** — this means one agent per feature, in parallel. If there are 5 features, spawn 5 agents. If there are 50 features, spawn 50 agents. The parallelism is the point. Each agent receives:
 - The reference crop for its feature(s)
 - **The full original image** — the crop is for detail, the full image is for proportion context. An agent building a mouth can't judge whether the grin is wide enough without seeing the full face.
 - The **subject brief** from Phase 1 step 7 — the personality/expression/vibe target
