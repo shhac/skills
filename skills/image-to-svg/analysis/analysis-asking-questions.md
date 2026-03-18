@@ -74,6 +74,17 @@ These bridge observation to technique — answering them tells you HOW to build 
 - Do parallel lines in reality converge in the image?
 - Which parts of the object are closest to the viewer? (These should have more detail and stronger contrast.)
 
+## Expression-Critical Features
+
+Some features carry disproportionate weight — getting them wrong changes the entire character or object's identity. Before building, flag these for extra iteration (up to 10 passes with programmatic diff):
+
+- **Mouth/smile** — curvature, width, and corner upturn define the expression. Measure width relative to face width.
+- **Eye gaze** — pupil position and highlight placement. Even 5% shift changes where the character "looks."
+- **Overall head-to-body ratio** — the single biggest proportion call. Measure from reference, don't estimate.
+- **Signature feature** — whatever makes THIS subject unique (a distinctive hat, a specific pose, a recognizable silhouette).
+
+For these features, always run the programmatic diff from `workflow/workflow-verification.md` and don't accept "looks about right."
+
 ## Feature-Specific Questions
 
 ### For Eyes (ask for EACH eye independently)

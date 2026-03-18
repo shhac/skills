@@ -36,7 +36,13 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 5. **Create reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`.
 
-6. **Establish canvas and coordinate system.** Determine the composite canvas size (512x512 is standard for emoji/icons; use the original image's aspect ratio for other subjects). Estimate each feature's bounding box within this canvas — approximate x, y, width, height from the original image proportions. Record these in a brief feature map that swarmed agents will use as their coordinate reference. Also determine z-ordering (what's behind what) — this drives the composite in Phase 3.
+6. **Measure and map coordinates programmatically.** Read `workflow/workflow-verification.md` for the measurement pipeline. Do NOT eyeball feature coordinates — small estimation errors compound across features and ruin proportions.
+
+   - Determine canvas size (512x512 standard for emoji/icons; use original aspect ratio for other subjects)
+   - Use ImageMagick to measure the original image dimensions and compute the scale factor to canvas
+   - Identify **proportion anchors**: 3-5 key measured points (e.g., "head center at 35% of character height, chin at 52%, feet at 95%"). Express as ratios, not absolute pixels — ratios survive the canvas remapping.
+   - Compute each feature's bounding box by measuring from the original and scaling to canvas coordinates
+   - Record the feature map with measured coordinates, proportion ratios, and z-ordering. This map travels with every swarmed agent.
 
 ### Phase 2: Build Each Feature
 
@@ -75,10 +81,21 @@ The `features/` reference sheets are character-specific. For other subjects, dec
 
 The same principles apply: one crop per element, one standalone SVG per layer, same composite viewBox. Read `analysis/analysis-asking-questions.md` for each element — the shape, color, and position questions are universal.
 
+#### Expression-critical features
+
+Some features are disproportionately important because they define the character's personality or the object's identity. These get **extra comparison rigor** — more iteration passes, programmatic diff verification, and side-by-side checks before moving to composition:
+
+- **Mouth/smile** — the single biggest driver of expression. Curvature, width, and upturn at corners must match closely.
+- **Eye gaze** — pupil position and highlight placement determine where the character is looking and how it "feels."
+- **Overall proportions** — head-to-body ratio, stance width, limb length. If these are off, no amount of detail fixes the result.
+- **Signature features** — whatever makes this specific subject recognizable (a distinctive hat, a specific logo, a unique silhouette).
+
+For these features, always run the programmatic diff (see "Render-Compare Loop" below) and iterate until the diff score converges, even if it means exceeding 3 passes.
+
 #### Building each feature
 
 For each feature:
-1. Study the cropped reference image in isolation
+1. Study the cropped reference image in isolation **and** the full original image for proportion context
 2. Ask yourself the questions from `analysis/analysis-asking-questions.md`
 3. **Consider what's hidden** — if this feature is partially obscured by another (head under hat, face under hair), the layer should still extend under the obscuring element. See "Handling Obscured Content" below.
 4. Build as a standalone SVG in `parts/`
@@ -92,11 +109,14 @@ For each feature:
 
 Spawn one agent per feature (or small group of related features). Each agent receives:
 - The reference crop for its feature(s)
+- **The full original image** — the crop is for detail, the full image is for proportion context. An agent building a mouth can't judge whether the grin is wide enough without seeing the full face.
 - The identified art style description
 - The relevant feature reference sheet (from `features/`)
 - The relevant style technique file (`styles/styles-line-and-brush.md`, `styles/styles-geometric.md`, or `styles/styles-applying-to-lifelike.md`)
 - The curve construction reference (`styles/styles-curves-and-shapes.md`) — **always included**
-- The **composite canvas size and this feature's bounding box** from the feature map (Phase 1 step 6)
+- The verification pipeline (`workflow/workflow-verification.md`) — **always included**
+- The **feature map with measured coordinates and proportion anchors** from Phase 1 step 6
+- Whether this feature is **expression-critical** (see above) — if so, the agent should run the full programmatic diff loop
 - Instructions to write its standalone SVG to `parts/{feature-name}.svg`
 
 **All agents must use the same `viewBox` as the composite canvas** (e.g., `viewBox="0 0 512 512"`). Each agent positions its feature within the full canvas coordinates using the bounding box from the feature map. This ensures parts align without rescaling during composition.
@@ -105,21 +125,25 @@ Features that interact (e.g., face + ears, hair + hat) should be noted but built
 
 #### Render-Compare Loop
 
-After every SVG change, render immediately and compare against the reference crop:
+Read `workflow/workflow-verification.md` for the full verification pipeline. The key insight: **don't rely on visual comparison alone** — the LLM is good at spotting catastrophic errors but bad at catching subtle proportion and curvature differences. Use programmatic diff to find errors precisely, then use the LLM to interpret and fix them.
 
-```bash
-rsvg-convert -w 512 -h 512 parts/{feature}.svg -o parts/{feature}.png
-```
+After every SVG change:
 
-If `rsvg-convert` is not installed, install it (`brew install librsvg` on macOS, `apt install librsvg2-bin` on Linux). If neither package manager is available, fall back to opening the SVG directly in a browser.
+1. **Render** the SVG to PNG:
+   ```bash
+   rsvg-convert -w 512 -h 512 parts/{feature}.svg -o parts/{feature}.png
+   ```
+   If `rsvg-convert` is not installed, install it (`brew install librsvg` on macOS, `apt install librsvg2-bin` on Linux).
 
-**How to compare:** Read both the rendered PNG and the reference crop image, then evaluate:
-- Does the overall shape match? (outline, proportions, curvature)
-- Are colors correct? (hue, saturation, gradient direction)
-- Are details present? (highlights, shadows, stroke weight)
-- Does it match at the target display size, not just zoomed in?
+2. **Programmatic diff** — generate a visual diff image and numerical score comparing the rendered feature against the reference crop. See `workflow/workflow-verification.md` for ImageMagick commands. The diff image highlights exactly WHERE the SVG diverges — red areas show the biggest differences.
 
-**When to stop iterating:** Move on when the feature is recognizably correct at target size — perfect pixel-matching is not the goal. Limit to 3 refinement passes per feature (refinement = adjusting a shape that's already recognizable, not initial construction attempts). If it's still wrong after 3 passes, simplify the construction approach rather than shipping broken complexity — a clean simple shape beats a half-baked complex one. Move to composition where context from neighboring features often reveals the fix.
+3. **Read the diff image** — use the highlighted differences to direct your corrections. This is far more effective than comparing two similar-looking images: ImageMagick finds the errors precisely, you interpret them and know how to fix the SVG.
+
+4. **Visual sanity check** — also read both the rendered PNG and reference crop for qualitative assessment (colors, overall feel, details).
+
+5. **Iterate** — fix the top issue highlighted by the diff, re-render, re-diff. Repeat.
+
+**When to stop iterating:** Limit to 3-5 refinement passes for normal features. For **expression-critical features** (mouth, eyes, overall proportions), continue up to 10 passes — these define the character and are worth the extra iteration. Track the diff score: if it stops improving, either the remaining differences are acceptable or a fundamentally different construction approach is needed.
 
 #### Handling Obscured Content
 
@@ -128,15 +152,19 @@ When a feature is partially hidden by another layer:
 - **Simplify but don't omit.** The hidden portion doesn't need full detail, but the shape should be continuous. This prevents hard edges or gaps if layers shift during compositing.
 - **Think in complete shapes.** A face path should be a complete closed curve, not one that stops where the hat brim sits.
 
-### Phase 3: Composite
+### Phase 3: Composite and Iterate
 
 Read `workflow/composition-bringing-layers-together.md`.
 
-1. Combine standalone SVGs into the final composite
-2. Adjust relative positioning, z-ordering, and interactions between elements
-3. Apply effects where needed — read `styles/styles-effects.md` for `<clipPath>` (constraining features to boundaries), `<mask>` (fog, atmospheric fade, soft edges), and `<filter>` (drop shadows, glow, hand-drawn wobble)
-4. Review pass: do overlapping elements work together?
-5. Final render and comparison with original
+**This phase is not optional.** The first assembly is never the final output. Individual features built in isolation always have proportion and alignment issues that only become visible in context.
+
+1. **Assemble** — combine standalone SVGs into the composite
+2. **Apply effects** — read `styles/styles-effects.md` for `<clipPath>`, `<mask>`, and `<filter>` where needed
+3. **Diff the composite against the original** — use the full-image programmatic diff from `workflow/workflow-verification.md`. This highlights exactly where the composite diverges from the original.
+4. **Identify the top 3 discrepancies** from the diff — usually proportion errors (head too small, features shifted), expression mismatches (mouth curvature, gaze direction), or interaction issues (hat sitting wrong, limbs overlapping incorrectly).
+5. **Fix each discrepancy** — either send targeted corrections back to the feature agent, or fix directly in the composite SVG. Re-render and re-diff after each fix.
+6. **Repeat** until the composite diff stabilizes — at least 2 composite iterations, more if expression-critical features are off.
+7. **Final small-size check** — render at 64x64 or 128x128 to verify it reads clearly at icon size.
 
 ### Phase 4: Deliver
 
