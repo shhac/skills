@@ -112,7 +112,13 @@ For each feature:
 
 #### Agent Swarming
 
-Spawn **one agent per feature** — this means one agent per feature, in parallel. If there are 5 features, spawn 5 agents. If there are 50 features, spawn 50 agents. The parallelism is the point. Each agent receives:
+**One feature = one SVG = one agent. No exceptions.** Even trivially simple features (a nose that's just two dots, a sparkle, a small badge) get their own file and their own agent. The cost of an extra agent is low; the cost of coupled parts during compositing and future animation is high.
+
+**Paired features are ALWAYS separate.** Left eye and right eye are separate agents writing separate SVGs. Same for left/right ears, left/right boots, left/right arms. They will be checked for consistency in the alignment phase (Phase 2b) — that's where consistency is enforced, not by having one agent build both.
+
+**Body parts are independent.** Arms are separate from the torso. Each leg is separate. The head is separate from the neck. Think of each part as something that might animate independently later — an arm could move while the body stays still, one ear could wiggle while the other doesn't.
+
+If there are 5 features, spawn 5 agents. If there are 50 features, spawn 50 agents. The parallelism is the point. Each agent receives:
 - The reference crop for its feature(s)
 - **The full original image** — the crop is for detail, the full image is for proportion context. An agent building a mouth can't judge whether the grin is wide enough without seeing the full face.
 - The **subject brief** from Phase 1 step 7 — the personality/expression/vibe target
@@ -159,6 +165,30 @@ When a feature is partially hidden by another layer:
 - **Imagine what's underneath.** A head wearing a hat still has a complete top — extend the head shape up under where the hat sits, even though it won't be visible in the final composite.
 - **Simplify but don't omit.** The hidden portion doesn't need full detail, but the shape should be continuous. This prevents hard edges or gaps if layers shift during compositing.
 - **Think in complete shapes.** A face path should be a complete closed curve, not one that stops where the hat brim sits.
+
+### Phase 2b: Class Alignment
+
+After all features are built individually, check paired and repeated features for consistency. **Agent swarm this** — one agent per class of similar features.
+
+A "class" is a group of features that should share the same construction style:
+- **Eyes class** — left eye + right eye
+- **Ears class** — left ear + right ear
+- **Boots/shoes class** — left boot + right boot
+- **Arms class** — left arm + right arm (if pose shows both)
+- **Any other repeated elements** — e.g., both wheels of a bike, multiple windows on a building
+
+For images with multiple subjects, classes are per-subject: "character A eyes" and "character B eyes" are separate classes.
+
+Each alignment agent receives both SVGs, both reference crops, and the full original image, and checks:
+
+1. **Outline weight** — are paired features using the same stroke width or offset technique? (Most likely to drift between independent agents)
+2. **Absolute size** — are they the same size, or intentionally different per the reference?
+3. **Fill colors** — do both use exactly the same hex values?
+4. **Construction technique** — did one use ellipses while the other used paths? This creates visual inconsistency even if dimensions match.
+5. **Highlight count and position** — highlights are the most "creative" part and most likely to vary between agents.
+6. **Proportional placement** — "both eyes should be equidistant from face center" type checks.
+
+The alignment agent normalizes any unintentional inconsistencies — making paired features match while preserving intentional asymmetry from the reference (e.g., if the reference genuinely shows different-sized eyes, keep that).
 
 ### Phase 3: Composite and Iterate
 

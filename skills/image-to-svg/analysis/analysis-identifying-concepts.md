@@ -6,11 +6,15 @@ The biggest mistake is trying to recreate the whole image at once. Instead, deco
 
 ### 1. List Every Distinct Visual Element
 
-Look at the image and list everything you can see as a separate "thing":
+Look at the image and list everything you can see as a separate "thing." **Each independently movable part is its own feature** — think of each part as something that might animate independently later.
+
 - Don't group by proximity — group by what IS it
 - A hat is separate from hair, which is separate from the head
 - Each eye is its own element (they are NOT identical — see feature sheets)
 - Outlines/strokes are part of the element they define, not separate elements
+- **Left and right are always separate** — left eye, right eye, left ear, right ear, left boot, right boot. Never combine paired features into one.
+- **Arms are separate from the torso** — an arm could move while the body stays still
+- **Even trivial features get their own entry** — a nose that's just two dots, a small sparkle, a badge. The cost of an extra SVG is negligible; the cost of coupling is high during compositing and animation.
 
 ### 2. Establish the Layer Stack (z-order)
 
