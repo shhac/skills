@@ -34,7 +34,7 @@ This skill uses **incremental discovery** — reference files live in subdirecto
 
 4. **Handle transparency.** If the image has transparency (PNG with alpha, stickers, cutouts), note whether the transparent background should be preserved in the final SVG (common for emoji/stickers) or filled with a solid color.
 
-5. **Create reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`.
+5. **Create and verify reference crops.** Read `analysis/analysis-reference-crops.md`. Crop the original image into tight per-feature references and save to `refs/`. **Run the programmatic edge-margin check on every crop** — this is the most common failure point. Then visually verify each crop individually (one per Read call, not batched). Do not proceed to Phase 2 with any clipped crops.
 
 6. **Measure and map coordinates programmatically.** Read `workflow/workflow-verification.md` for the measurement pipeline. Do NOT eyeball feature coordinates — small estimation errors compound across features and ruin proportions.
 
