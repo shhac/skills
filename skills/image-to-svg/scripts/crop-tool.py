@@ -103,7 +103,7 @@ def cmd_grid(args):
     subprocess.run([
         'magick', image,
         '-fill', 'none', '-stroke', 'rgba(255,0,0,0.4)', '-strokewidth', '1',
-        '-font', 'Helvetica', '-pointsize', '12',
+        '-pointsize', '12',
         '-fill', 'rgba(255,0,0,0.7)', '-stroke', 'none',
         '-draw', " ".join(draw_cmds),
         output
@@ -149,7 +149,7 @@ def cmd_show(args):
 
     subprocess.run([
         'magick', image,
-        '-strokewidth', '3', '-font', 'Helvetica', '-pointsize', '14',
+        '-strokewidth', '3', '-pointsize', '14',
         '-draw', " ".join(draw_cmds),
         output
     ], check=True)
