@@ -42,7 +42,7 @@ Locate the script relative to this skill file. Invoke it as:
 python3 <skill-dir>/scripts/sync_fork.py <subcommand> [options]
 ```
 
-Subcommands: `classify`, `divergence`, `graph`, `plan`, `state`. Run with `--help` for full usage. Default output is compact key-value (LLM-friendly). Add `--json` for structured output.
+Subcommands: `classify`, `divergence`, `graph`, `plan`. Run with `--help` for full usage. Default output is compact key-value (LLM-friendly). Add `--json` for structured output.
 
 ## Instructions
 
@@ -58,17 +58,15 @@ Reference files live in two directories adjacent to this skill:
 
 1. **Check for interrupted previous run.** Look for branches matching `sync-fork/*`. If found, a previous sync was interrupted. Show the user what backup branches exist and ask: restore from backups, or clean up (`git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`) and start fresh?
 
-2. **Check for state file.** Run `python3 <script> state read`. If a state file exists, a previous sync was interrupted mid-phase. Show the user which phase was reached and ask: resume from that phase, or delete the state file (`python3 <script> state delete`) and start fresh?
+2. **Save current branch.** Record `git symbolic-ref --short HEAD` (or the detached commit) so we can restore it at the end.
 
-3. **Save current branch.** Record `git symbolic-ref --short HEAD` (or the detached commit) so we can restore it at the end.
-
-4. **Guard dirty working tree.** Run `git status --porcelain`. If there are uncommitted changes, stash them:
+3. **Guard dirty working tree.** Run `git status --porcelain`. If there are uncommitted changes, stash them:
    ```bash
    git stash push -m "sync-fork: uncommitted changes"
    ```
    This will be popped at the end. Stash is branch-independent, so it survives the checkout/reset operations that follow.
 
-5. **Identify remotes.** Run `git remote -v` and resolve which remote is the fork and which is upstream using the rules in the Usage section above. Confirm with the user if there was any ambiguity.
+4. **Identify remotes.** Run `git remote -v` and resolve which remote is the fork and which is upstream using the rules in the Usage section above. Confirm with the user if there was any ambiguity.
 
 ### Phase 1: Assess Divergence
 
@@ -131,13 +129,6 @@ For each shared branch (in order: default branch first, then others):
 2. `git reset --hard <upstream>/<branch>` to align with upstream.
 3. `git push <fork> <branch> --force-with-lease` to update the fork.
 
-#### 2c. Save state
-
-Write state after resets complete so an interrupted run can resume from Phase 3:
-```bash
-python3 <script> state write --data '<JSON with phase, remotes, classification, backups>'
-```
-
 ### Phase 3: Rebase Fork-Only Branches
 
 #### 3a. Build the dependency graph
@@ -187,8 +178,6 @@ For each fork-only branch (parents first, children last — use the `order` from
 
 4. `git push <fork> <branch> --force-with-lease` to update the fork.
 
-5. **Update state** after each successful rebase (add to `completed_rebases` list).
-
 ### Phase 4: Re-merge into Shared Branches
 
 The fork's shared branches are maintained as "upstream + local patches." This phase replays merge commits on top, so fork/main = upstream/main + fork-only work.
@@ -208,11 +197,10 @@ For each shared branch that has fork-only branches targeting it (use the `target
 
 1. Delete remote branches (`git push <fork> --delete <branch>`) that are fully merged into upstream.
 2. Delete all backup branches: `git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`
-3. Delete state file: `python3 <script> state delete`
-4. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
-5. If changes were stashed in Phase 0, restore them: `git stash pop`.
-6. List any local tracking branches that can be pruned.
-7. Show the user a final summary of what was synced, rebased, merged, deleted, and what branches remain.
+3. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
+4. If changes were stashed in Phase 0, restore them: `git stash pop`.
+5. List any local tracking branches that can be pruned.
+6. Show the user a final summary of what was synced, rebased, merged, deleted, and what branches remain.
 
 ### Rules
 

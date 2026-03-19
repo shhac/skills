@@ -14,7 +14,6 @@ import subprocess
 import sys
 from dataclasses import dataclass, asdict
 from graphlib import TopologicalSorter
-from pathlib import Path
 from typing import Optional, List, Dict
 
 
@@ -486,26 +485,6 @@ def format_compact_plan(plan: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
-# State management
-# ---------------------------------------------------------------------------
-
-def load_state(path: Path) -> Optional[dict]:
-    """Load sync state from file, or None if it doesn't exist."""
-    if not path.exists():
-        return None
-    try:
-        return json.loads(path.read_text())
-    except (json.JSONDecodeError, OSError) as e:
-        print(f"warning: could not read state file: {e}", file=sys.stderr)
-        return None
-
-
-def save_state(state: dict, path: Path) -> None:
-    """Write sync state to file."""
-    path.write_text(json.dumps(state, indent=2) + "\n")
-
-
-# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -547,44 +526,6 @@ def cmd_plan(args: argparse.Namespace) -> None:
         print(json.dumps(plan, indent=2))
     else:
         print(format_compact_plan(plan))
-
-
-def cmd_state(args: argparse.Namespace) -> None:
-    git_dir = git("rev-parse", "--git-dir")
-    state_path = Path(git_dir) / "sync-fork-state.json"
-
-    if args.state_action == "read":
-        state = load_state(state_path)
-        if state is None:
-            print("no state file found")
-            sys.exit(1)
-        if args.json:
-            print(json.dumps(state, indent=2))
-        else:
-            for key, value in state.items():
-                if isinstance(value, (dict, list)):
-                    print(f"{key}: {json.dumps(value)}")
-                else:
-                    print(f"{key}: {value}")
-
-    elif args.state_action == "write":
-        if not args.data:
-            print("error: --data required for state write", file=sys.stderr)
-            sys.exit(1)
-        try:
-            data = json.loads(args.data)
-        except json.JSONDecodeError as e:
-            print(f"error: invalid JSON: {e}", file=sys.stderr)
-            sys.exit(1)
-        save_state(data, state_path)
-        print(f"state written to {state_path}")
-
-    elif args.state_action == "delete":
-        if state_path.exists():
-            state_path.unlink()
-            print("state file deleted")
-        else:
-            print("no state file to delete")
 
 
 def main() -> None:
@@ -637,18 +578,6 @@ def main() -> None:
         help="Full dry-run: classify + divergence + graph + proposed actions",
     )
 
-    state_parser = subparsers.add_parser(
-        "state",
-        help="Read, write, or delete sync state file in .git/",
-    )
-    state_parser.add_argument(
-        "state_action", choices=["read", "write", "delete"],
-        help="State operation to perform",
-    )
-    state_parser.add_argument(
-        "--data", help="JSON string to write (required for 'write')",
-    )
-
     args = parser.parse_args()
 
     # Validate remote args for commands that need them
@@ -661,7 +590,6 @@ def main() -> None:
         "divergence": cmd_divergence,
         "graph": cmd_graph,
         "plan": cmd_plan,
-        "state": cmd_state,
     }
     dispatch[args.command](args)
 
