@@ -10,8 +10,10 @@ Requires Python 3.9+ (stdlib only, no external dependencies).
 
 import argparse
 import json
+import os
 import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass, asdict
 from graphlib import TopologicalSorter
 from typing import Optional, List, Dict
@@ -126,6 +128,57 @@ class DependencyGraph:
 # Core logic
 # ---------------------------------------------------------------------------
 
+def _is_content_absorbed(
+    fork: str, upstream: str, branch: str, target: str,
+) -> bool:
+    """Check if branch's changes are already present in upstream/target.
+
+    Generates the branch's patch (merge-base to tip) and checks if it can
+    be reverse-applied against upstream's tree using a temporary index.
+    If the reverse applies cleanly, every change the branch introduced is
+    present in upstream — e.g., upstream squash-merged the branch with
+    additional modifications.
+
+    Uses -C0 (zero context lines) so that matching succeeds even when
+    upstream has added surrounding content beyond the branch's changes.
+    """
+    upstream_ref = f"{upstream}/{target}"
+    branch_ref = f"{fork}/{branch}"
+    mb = git("merge-base", upstream_ref, branch_ref)
+
+    # Use raw subprocess instead of git() helper — strip() corrupts patches
+    patch_result = subprocess.run(
+        ["git", "diff", f"{mb}..{branch_ref}"],
+        capture_output=True, text=True, check=False,
+    )
+    patch = patch_result.stdout
+    if not patch.strip():
+        return True
+
+    fd, idx_path = tempfile.mkstemp(suffix=".idx", prefix="sync-fork-")
+    os.close(fd)
+    try:
+        env = {**os.environ, "GIT_INDEX_FILE": idx_path}
+
+        subprocess.run(
+            ["git", "read-tree", upstream_ref],
+            env=env, capture_output=True, check=True,
+        )
+
+        result = subprocess.run(
+            ["git", "apply", "--cached", "--reverse", "--check", "-C0"],
+            input=patch, env=env,
+            capture_output=True, text=True, check=False,
+        )
+
+        return result.returncode == 0
+    except subprocess.CalledProcessError:
+        return False
+    finally:
+        if os.path.exists(idx_path):
+            os.unlink(idx_path)
+
+
 def classify_branches(fork: str, upstream: str) -> Classification:
     """Classify all branches into shared, merged, promoted, partial, active."""
     fork_set = set(remote_branches(fork))
@@ -165,6 +218,19 @@ def classify_branches(fork: str, upstream: str) -> Classification:
                 is_promoted = True
                 break
         if is_promoted:
+            promoted.append(branch)
+            continue
+
+        # Content absorption: can the branch's patch be reverse-applied
+        # against upstream?  Catches squash-merges where upstream modified
+        # the branch before merging (SHAs and patches differ, but content
+        # is absorbed).
+        is_absorbed = False
+        for target in shared:
+            if _is_content_absorbed(fork, upstream, branch, target):
+                is_absorbed = True
+                break
+        if is_absorbed:
             promoted.append(branch)
             continue
 

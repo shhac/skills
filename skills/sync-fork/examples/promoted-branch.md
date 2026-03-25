@@ -19,7 +19,7 @@ B still has commits not in upstream.
 
 ## Detection: how to identify promoted branches
 
-Use two methods in order:
+Use three methods in order:
 
 1. **Exact merge:** `git branch -r --merged <upstream/main>` catches branches whose
    tip is an ancestor of upstream/main (direct merge or fast-forward).
@@ -30,6 +30,23 @@ Use two methods in order:
    ```
    If this produces no output, every commit on A has a patch-equivalent commit in
    upstream (handles squash-merges and cherry-picks where SHAs differ).
+
+3. **Content absorption (reverse-apply):** For remaining branches, generate the
+   branch's patch and check if it can be reverse-applied against upstream's tree:
+   ```bash
+   mb=$(git merge-base <upstream/main> <fork>/A)
+   # Set up a temp index with upstream's tree
+   GIT_INDEX_FILE=/tmp/test.idx git read-tree <upstream/main>
+   # Check if the branch's changes can be "undone" from upstream
+   git diff $mb..<fork>/A | GIT_INDEX_FILE=/tmp/test.idx \
+     git apply --cached --reverse --check -C0
+   # Exit 0 = all changes present in upstream, branch is absorbed
+   ```
+   Uses `-C0` (zero context) so matching succeeds even when upstream added
+   surrounding content beyond the branch's changes. This catches the case where
+   upstream took the branch, added extra commits on top, then squash-merged
+   everything. The individual patches don't match (method 2 fails) and the SHAs
+   differ (method 1 fails), but the branch's content is fully present in upstream.
 
 ## What happens
 
@@ -53,11 +70,15 @@ fork/main:  ●─────────●────●
 (A deleted — its content is in upstream)
 ```
 
-## Edge case: partial promotion
+## Edge case: upstream modified the branch before squash-merging
 
-If upstream squash-merged A alongside other work into a single commit, neither
-`--merged` nor `--cherry-pick` will detect it (the combined commit's patch doesn't
-match A's individual patches). In this case A will appear as "has commits not in
-upstream" during Phase 1. When A is rebased in Phase 3, its commits may become
-empty (dropped by `--empty=drop`). Phase 3 will then flag it: *"Branch A appears
-to be fully absorbed by upstream."* The user can confirm deletion.
+If upstream took A, added extra commits, then squash-merged everything into a
+single commit, methods 1 and 2 won't detect it (SHAs differ, and the combined
+patch doesn't match A's individual patches). Method 3 (content absorption) catches
+this: merging A into the updated upstream produces no new changes, so A is
+classified as promoted.
+
+If the reverse-apply check fails (e.g., upstream substantially refactored the
+changes), A will appear as active. When rebased in Phase 3, its commits may
+become empty (dropped by `--empty=drop`). Phase 3 will then flag it: *"Branch A
+appears to be fully absorbed by upstream."* The user can confirm deletion.

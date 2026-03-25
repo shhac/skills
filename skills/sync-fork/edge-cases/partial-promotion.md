@@ -2,7 +2,7 @@
 
 ## Trigger
 
-Phase 1 step 6 `--cherry-pick` check shows that SOME but not all of a branch's commits have equivalents in upstream.
+Phase 1 step 3 (`classify`) shows `fork-only-partial` entries — SOME but not all of a branch's commits have patch equivalents in upstream.
 
 ## What's happening
 
