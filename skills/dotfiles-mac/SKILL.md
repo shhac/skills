@@ -25,7 +25,7 @@ Help users create, update, or apply a macOS dotfiles repo using GNU Stow and pla
 ├── README.md
 │
 ├── # Cross-platform stow packages (each mirrors $HOME)
-├── shell/                      # → ~/.zshrc, ~/.zprofile, etc.
+├── shell/                      # → ~/.zshrc.shared, ~/.zprofile, etc.
 ├── git/                        # → ~/.gitconfig, ~/.gitignore_global
 ├── ssh/                        # → ~/.ssh/config (NOT keys)
 ├── gpg/                        # → ~/.gnupg/gpg.conf, gpg-agent.conf
@@ -60,7 +60,8 @@ If OS-specific package directories contain files that should be ignored by stow 
 
 Use the `.local` file pattern — tracked configs source/include an untracked `.local` counterpart:
 
-- `.zshrc` → sources `~/.zshrc.local` at end (if it exists)
+- Local `~/.zshrc` bootstrap (not stowed) → sources `~/.zshrc.shared` then `~/.zshrc.local`
+- `.zshrc.shared` is tracked and stowed from `shell/.zshrc.shared`
 - `.gitconfig` → `[include] path = ~/.gitconfig.local`
 - `.ssh/config` → `Include ~/.ssh/config.local` at top
 
@@ -222,7 +223,10 @@ Ask the user:
 6. Generate `.stow-local-ignore` (skip `README.md`, `setup.sh`, `os-*`, `.git`, `.gitignore`)
 7. Generate `README.md` with repo overview and usage instructions
 8. If macOS defaults selected, generate `os-macos/defaults.sh`
-9. Ensure tracked shell configs include the `.local` sourcing pattern at the end
+9. Ensure shell setup uses local bootstrap + shared tracked config pattern:
+   - `~/.zshrc` is local bootstrap (not stowed)
+   - tracked `shell/.zshrc.shared` is stowed to `~/.zshrc.shared`
+   - local bootstrap sources `~/.zshrc.shared` and `~/.zshrc.local`
 10. Ensure `.gitconfig` includes `[include] path = ~/.gitconfig.local`
 11. Ensure `.ssh/config` includes `Include ~/.ssh/config.local` at top
 12. `git init`, create initial commit
@@ -271,7 +275,7 @@ Show the user a summary of what changed:
 - Added: package-a, package-b, cask-c
 - Removed: old-package
 
-### shell/.zshrc
+### shell/.zshrc.shared
 - [diff summary or key changes]
 
 ### New (untracked)
@@ -400,26 +404,32 @@ Phase 3: Decrypt Secrets (if age-encrypted files exist)
 Phase 4: Frameworks
   5. Oh My Zsh (if shell/ stow package uses it)
      - Install if ~/.oh-my-zsh/ doesn't exist
-     - Stow custom themes/plugins into place
+     - Use unattended mode and preserve local bootstrap: `CHSH=no RUNZSH=no KEEP_ZSHRC=yes ... --unattended --keep-zshrc`
+  6. NVM (if selected)
+     - Install with profile mutation disabled: `... | PROFILE=/dev/null bash`
 
 Phase 5: Configuration
-  6. Stow all packages
+  7. Ensure local ~/.zshrc bootstrap exists (not stowed)
+     - Local ~/.zshrc sources ~/.zshrc.shared and ~/.zshrc.local
+     - If an unmanaged ~/.zshrc exists, migrate it to ~/.zshrc.local before writing bootstrap
+  8. Stow all packages
      - For each directory that isn't os-*, .git, or special files:
        - Check for os-macos/ override → stow that instead if present
        - Backup conflicting real files to ~/.dotfiles-backup/<timestamp>/
        - stow --no-folding -d $DOTFILES_DIR -t $HOME <package>
+     - Exclude shell/.zshrc from stow (local bootstrap is intentionally unmanaged)
      - Skip packages the user has excluded (via env var or config)
 
 Phase 6: System Preferences (opt-in)
-  7. macOS defaults (only if explicitly requested or --with-defaults flag)
+  9. macOS defaults (only if explicitly requested or --with-defaults flag)
      - Source os-macos/defaults.sh
      - killall affected apps at the end (Dock, Finder, SystemUIServer)
 
 Phase 7: Post-install
-  8. Change default shell to brew zsh (if not already)
-     - Ensure brew's zsh is in /etc/shells: sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells'
-     - Then: chsh -s $(brew --prefix)/bin/zsh
-  9. Print next-steps checklist
+  10. Change default shell to brew zsh (if not already)
+      - Ensure brew's zsh is in /etc/shells: sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells'
+      - Then: chsh -s $(brew --prefix)/bin/zsh
+  11. Print next-steps checklist
 ```
 
 ### Backup Strategy
