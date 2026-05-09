@@ -80,11 +80,11 @@ Analyze and improve code structure across a repo or targeted scope. Spawns paral
 
 ### repeat-until-settled
 
-Run another skill in a loop until its output settles — meaning no further substantive changes or recommendations. Detects cycles (oscillation between two or more states) and resolves them autonomously when one side has stronger reasoning, surfacing only when uncertain. Detects stalls (recommendations that won't land) and pauses after three consecutive misses with an orchestration-layer-aware diagnosis. Optionally chains to a follow-up skill on settle. No iteration cap by default.
+Run another skill in a loop until its output settles — meaning no further substantive changes or recommendations. Domain-agnostic: works on code in a git repo, prose in a manuscript directory, image files, configs, anything. Detects cycles (oscillation between two or more states) and resolves them forward — never backwards: either Stay (current state is a fixed point) or Forward-escape (instruct the inner skill toward the better alternate). Detects stalls (recommendations that won't land), pauses with an orchestration-layer-aware diagnosis, and switches to a deeper-stall pause that drops "retry" once it's clear retry isn't working. Optionally chains to a follow-up skill on settle. No iteration cap by default; explicit `max=N` opt-in.
 
 **Example:** `repeat-until-settled improve-code-structure then release`
 
-**Workflow:** Parse args → Iterate (invoke → fingerprint → classify) → Settle / Cycle-resolve / Stall-pause → Convergence summary → Follow-up
+**Workflow:** Parse args → Pick state recipe → Iterate (capture pre → invoke inner → capture post → classify) → Settle / Cycle-resolve (stay or forward-escape) / Stall-pause → Exit-reason dispatch → Convergence summary → Follow-up
 
 ## License
 
