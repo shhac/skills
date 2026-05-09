@@ -51,20 +51,23 @@ For three worked examples (settle in 3 iterations, cycle resolved autonomously, 
 
 Before the first iteration:
 
-1. Record `START_SHA = git rev-parse HEAD` and `START_TREE_HASH = sha256(git diff HEAD)`. Together these are the baseline.
-2. Initialize an empty list `FINGERPRINTS = []` for cycle detection (each entry is a `(SHA, tree-hash)` tuple).
-3. Initialize counters: `iteration = 0`, `consecutive_stalls = 0`.
+1. **Pick a state-capture recipe.** Identify the project type and pick the appropriate recipe from [references/state-capture.md](references/state-capture.md): git project, plain filesystem, or ambiguous (ask the user). The recipe defines what counts as the "state" of the work and how to compare two states for equality. This skill is domain-agnostic — the inner skill might be operating on code, prose, artwork, configuration, anything — so don't assume a default; pick the recipe that fits.
+2. **Capture `START_STATE`** using the chosen recipe.
+3. Initialize empty list `STATES = []` (cycle detection will compare against this).
+4. Initialize counters: `iteration = 0`, `consecutive_stalls = 0`, `forward_escape_attempts = 0`.
+5. Initialize empty list `ITERATION_LOG = []` (per-iteration data for the convergence summary).
 
 ### Per-iteration loop
 
 For each iteration:
 
-1. Increment `iteration`. If a max was specified and `iteration > max`, exit the loop and report the cap was hit (this is *not* settled — surface it explicitly).
-2. **Capture pre-state:** `pre = (git rev-parse HEAD, sha256(git diff HEAD))`.
+1. Increment `iteration`. If a max was specified and `iteration > max`, exit the loop with `Partial convergence (max-cap)`.
+2. **Capture pre-state:** `pre = current state` (apply the chosen recipe from references/state-capture.md).
 3. **Invoke the target skill** as if the user had just invoked it directly, with its parsed args. The mechanism depends on the harness — the Skill tool in Claude Code, the equivalent subagent/skill API in the Claude Agent SDK, equivalent constructs elsewhere.
-4. **Capture post-state:** `post = (git rev-parse HEAD, sha256(git diff HEAD))`. Append `post` to `FINGERPRINTS`.
-5. **Capture the inner skill's final summary** — the text it produced when it concluded. You'll need this for the settle/stall distinction below.
-6. **Classify the outcome** using the table in the next section.
+4. **Capture post-state:** `post = current state` (same recipe). Append `post` to `STATES`.
+5. **Capture the inner skill's final summary** — the text it produced when it concluded.
+6. **Append per-iteration data to `ITERATION_LOG`:** the iteration number, outcome (after step 7), summary tag, and the recipe's change-metric (diff stats for git, file count for filesystem, word-count delta for text projects, etc.). Needed for the convergence summary.
+7. **Classify the outcome** using the table in the next section.
 
 ### Outcome classification
 
@@ -72,25 +75,46 @@ For each iteration:
 |----------------------------------------------------------------------------------------------------|--------------|--------------------------------------------------------------------------------------------------------------|
 | `post == pre` AND inner skill's summary indicates no further work                                  | **Settled**  | Exit loop → convergence summary → follow-up.                                                                 |
 | `post == pre` AND inner skill's summary had recommendations or pending work                        | **Stalled**  | Increment `consecutive_stalls`. If `>= 3`, pause and ask. Otherwise reset for next iteration.                |
-| `post` matches `FINGERPRINTS[i]` for some `i < iteration - 1` (not the immediately prior)          | **Cycled**   | Run cycle resolution. Reset `consecutive_stalls = 0`.                                                        |
+| `post` matches `STATES[i]` for some `i < iteration - 1` (not the immediately prior) AND the summaries are similar | **Cycled**   | Run cycle resolution. Reset `consecutive_stalls = 0`.                                                        |
 | `post != pre` and not a cycle                                                                      | **Continuing** | Reset `consecutive_stalls = 0` and proceed to next iteration.                                              |
 
 #### Settle detection — two signals must agree
 
-- **Git delta zero:** `post == pre`. No commits, no working-tree change.
-- **Output judgment:** the inner skill's final summary indicates no further work. Look for phrases like "no recommendations", "nothing to change", "no findings", an empty prioritized plan, an explicit "done" / "settled" message, or a Phase-N report whose accumulators are all "none". Read the actual summary; don't pattern-match blindly.
+- **State delta zero:** `post == pre` per the recipe.
+- **Positive output signal:** the inner skill's summary contains an explicit empty/done indicator. Treat any of the following as positive:
+  - An explicit "no findings" / "no recommendations" / "nothing to change" / "done" / "settled" statement.
+  - A structured summary whose findings/recommendations list is empty.
+  - A phase report whose accumulators are all empty / "none".
 
-If git delta is zero but the inner skill *wanted* changes that didn't land, that's a **stall**, not a settle. They're distinct: settle = the world is stable; stall = the skill wanted to change things and couldn't.
+  If the summary is ambiguous (recommendations exist but were deferred, status is unstated, the inner skill returned terse text like "done." with no breakdown), default to **Stalled**, not Settled. Premature settle exits the loop and may invoke a follow-up against incomplete work.
+
+State delta zero AND positive output signal → Settled. State delta zero AND ambiguous output → Stalled.
 
 ### Cycle resolution
 
-When the current fingerprint matches an earlier one (two or more iterations back), the loop has cycled. **Do not immediately return to the user** — try to resolve autonomously first.
+When `post` matches `STATES[i]` for some `i < iteration - 1` AND the inner skill's summary at iteration `i` is substantively similar to the current summary, the loop has cycled. (Summary similarity matters — two unrelated iterations can produce identical states by coincidence; without summary confirmation, the orchestrator would resolve a false cycle.)
 
-1. Identify the cycle: which iterations are involved (e.g. iteration 5's state == iteration 2's state).
-2. For each state in the cycle, gather the inner skill's reasoning at that point — what recommendations it produced, what justifications, what verification outcomes.
-3. **Pick autonomously when possible.** Read the competing reasonings and choose the state with the stronger case — usually the one that addresses more concerns, or the one whose competing alternative carries weaker confidence in the inner skill's own words.
-4. **Surface only when uncertain.** If the two sides are comparably strong and you cannot confidently pick, present both states to the user with a one-line summary of each side's reasoning, and ask which to keep. The pause mechanism depends on the harness.
-5. Once a side is chosen, restore that state (`git checkout`/`git reset` to the corresponding commit, or apply/discard working-tree changes accordingly), exit the loop, record the choice in the convergence summary, and proceed to the follow-up if specified.
+**This skill never goes backward.** No `git reset`, no checkout to a prior SHA, no overwriting newer files with older versions. Cycles resolve forward, with one of two outcomes:
+
+#### Stay
+
+The current state is a fixed point — both sides of the cycle are valid and the inner skill is oscillating between equally-good options. This is the most common cycle pattern in LLM-driven loops.
+
+- Default in: when the two competing summaries are comparably defensible (no asymmetric coverage advantage to either side).
+- Action: exit the loop. Treat as `Settled-via-cycle`. The convergence summary records both sides' reasoning so the user sees what was at stake and why staying was reasonable.
+
+#### Forward escape
+
+The alternate state in the cycle has clearly stronger reasoning AND it isn't the current state — the inner skill is converging on the *worse* of the two options.
+
+- Default in: when one side covers a concern the other doesn't (asymmetric coverage), AND the favored side is the alternate, not the current.
+- Action: increment `forward_escape_attempts`. On the next iteration, prepend a directive to the inner skill: *"You have oscillated between state A and state B. State {favored} is preferred because {asymmetric-coverage reason}. Make the forward changes needed to land at {favored} and stay there."* Continue the loop. If `forward_escape_attempts >= 2` (the inner skill ignored the directive and produced another cycle), surface to the user — autonomous escape is not working.
+
+#### Surface to user
+
+When neither default applies — typically because the two sides are both substantive but disagree on a value judgment (style preference, scope tradeoff) the user should weigh in on.
+
+- Action: present both states with their summaries and offer three options: **stay** at current, **forward-escape** to alternate, or **abandon** the loop. Pause for response. The pause mechanism depends on the harness.
 
 ### Stall handling
 
@@ -128,9 +152,9 @@ Once the loop exits via Settled or Cycled-resolved (not by max-cap or abandon), 
 ## Convergence summary
 
 - Iterations: {N}
-- Exit reason: {settled | cycle resolved at iteration M ↔ K}
-- Net change since start: {diff stats — files changed, +additions, -deletions}
-- Notable events: {stalls encountered, cycles encountered, user decisions during the run}
+- Exit reason: {settled | settled-via-cycle (stay) | cycle resolved by forward-escape at iteration M ↔ K | partial: max-cap | partial: abandoned at stall}
+- Net change since start: {recipe-appropriate metric — git diff stats, file count delta, word count delta, etc.}
+- Notable events: {stalls encountered, cycles encountered, user decisions during the run; "none" if empty}
 
 ## Iteration log
 
@@ -157,8 +181,8 @@ If the loop exited via max-cap or abandon, do **not** invoke the follow-up. Surf
 
 - **Skill invocation:** in Claude Code use the Skill tool; in the Claude Agent SDK use the equivalent subagent/skill API; in other harnesses use whatever mechanism that harness provides.
 - **User pauses** (cycle requiring user input, stall threshold reached, no args given, max-cap exit): the pause mechanism depends on the harness — interactive prompt, return to caller, etc. What matters is that the loop does not advance without explicit input.
-- **Git operations** are plain `git` — no Graphite, no `gh`, no harness-specific tooling.
-- **Reversal of state** during cycle resolution may require committed history. If the inner skill commits between iterations, `git reset --hard <SHA>` works; if it leaves changes uncommitted, `git checkout -- .` plus restoring stashes is the pattern. If the inner skill's commit policy is unclear, ask the user before performing destructive resets.
+- **No backwards operations.** The skill never rolls back state — no `git reset`, no `git checkout` to a prior SHA, no overwriting newer files with older versions. Cycle resolution moves forward only (stay or forward-escape).
+- **Domain-agnostic.** The inner skill might be operating on code in a git repo, prose in a manuscript directory, image files, configuration, anything. Use the appropriate state-capture recipe from references/state-capture.md; do not assume code or git unless the project shape says so.
 
 ## Limits
 
