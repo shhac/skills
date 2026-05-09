@@ -88,6 +88,7 @@ For each iteration:
 
 - `consecutive_stalls`: incremented in `→ stall`; reset to 0 in `→ continue`, `→ cycle`, and after the user responds to a stall pause. Untouched by `→ settle` (loop exits).
 - `total_stalls`: incremented in `→ stall`; never reset. Used by [Stall handling](#stall-handling) to detect the deeper-stall threshold.
+- `first_pause_count`: incremented in [Stall handling](#stall-handling) when the first-threshold pause is reached; never reset. Used together with `total_stalls` to detect the deeper-stall threshold.
 - `forward_escape_attempts`: managed inside `→ cycle` only.
 - `STATES`: `post` is appended on every iteration (already done in step 5 of the loop).
 
@@ -156,11 +157,11 @@ Track two counters:
 
 #### First-pause threshold
 
-When `consecutive_stalls` reaches 3, pause using the [first-threshold template](references/templates.md#stall-pause--first-threshold) — offers **retry / skip / abandon / change scope**. After the user responds, reset `consecutive_stalls = 0`.
+When `consecutive_stalls` reaches 3, increment `first_pause_count`. If `first_pause_count >= 2` OR `total_stalls >= 6`, jump to the [Deeper-stall threshold](#deeper-stall-threshold) below instead of the first-threshold pause — at this point retry has demonstrably not worked. Otherwise, pause using the [first-threshold template](references/templates.md#stall-pause--first-threshold) — offers **retry / skip / abandon / change scope**. After the user responds, reset `consecutive_stalls = 0`.
 
 #### Deeper-stall threshold
 
-When `total_stalls >= 6` OR the first-pause threshold has fired twice in this run, pause using the [deeper-threshold template](references/templates.md#stall-pause--deeper-threshold) — drops `retry`, recommends `change scope` or `abandon`. Repeated retry has demonstrably not worked at this point.
+Triggered when `first_pause_count >= 2` OR `total_stalls >= 6`. Pause using the [deeper-threshold template](references/templates.md#stall-pause--deeper-threshold) — drops `retry`, recommends `change scope` or `abandon`. After the user responds, reset `consecutive_stalls = 0` (but `first_pause_count` and `total_stalls` keep accumulating).
 
 #### Ambiguous user response
 
