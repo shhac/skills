@@ -12,7 +12,7 @@ A meta-skill that runs another skill in a loop until the working state settles, 
 The skill takes one argument string of the form:
 
 ```
-<inner-skill-invocation> [then <follow-up-invocation>]
+<inner-skill-invocation> [then <follow-up-invocation>] [max=N]
 ```
 
 Examples:
@@ -21,15 +21,21 @@ Examples:
 - `improve-code-structure then release`
 - `improve-code-structure src/auth.ts then release`
 - `simplify the lib/ directory then commit`
+- `improve-code-structure max=10 then release`
 
-Parse: split on the first ` then ` (case-insensitive, surrounded by whitespace).
+### Parsing recipe
 
-- Left side = inner skill invocation (with its args).
-- Right side, if present = follow-up invocation (with its args).
+Apply these steps in order; each operates on the result of the previous one. This is the canonical recipe — do not improvise.
 
-If no argument is supplied, ask the user what skill to repeat. If multiple ` then ` separators are present, only the first is honored in v1; extras are reported back to the user as ignored.
+1. **Empty argument** → ask the user what skill to repeat. Stop.
+2. **Extract iteration cap.** Look for an explicit `max=N` token (literal, with `=`, anywhere in the string). If present, set `max = N` and remove the token from the string. The literal `max=N` form is the only recognized cap syntax — natural-language phrases like "up to 10 times" are NOT parsed automatically, because they collide too easily with inner-skill args meaning the same words. If the user wrote a natural-language cap, surface a one-line note: "I see what looks like an iteration cap in your request. Please re-invoke with `max=N` to apply it, or confirm you want me to ignore it."
+3. **Split on the follow-up separator.** Search for the first ` then ` (case-insensitive, with whitespace on both sides) in the remaining string.
+4. **Validate the split.**
+   - Left side = inner skill invocation. Must be non-empty.
+   - Right side, if present = follow-up invocation. **Sanity-check:** if the right side does not begin with what looks like a skill name (single token of lowercase letters/numbers/hyphens), treat the split as a false positive — the inner skill's args legitimately contained " then ". In that case, treat the entire pre-cap string as the inner-skill invocation and report "no follow-up parsed".
+5. **Multiple ` then ` separators** in the original string: only the first is honored. Report any extras as ignored.
 
-If the user expressed an iteration cap in natural language anywhere in the args ("up to 10 times", "max 5 iterations", "at most 20"), parse it out and respect it. Without an explicit cap, there is **no maximum** — the loop runs until settled, cycled, or stalled-out.
+Without an explicit `max=`, there is **no maximum** — the loop runs until settled, cycled, or stalled-out at the user-pause threshold.
 
 ## Instructions
 
@@ -38,11 +44,11 @@ You are the **orchestrator** running an outer loop over a target skill.
 Copy this checklist into your first response and tick items off as you progress:
 
 ```
-- [ ] Parse arguments (target skill, optional follow-up, optional max)
-- [ ] Capture starting state (HEAD SHA + working-tree hash)
-- [ ] Iteration loop: invoke target → fingerprint → classify
-- [ ] On settled or cycle-resolved: produce convergence summary
-- [ ] On settled: invoke follow-up if specified
+- [ ] Parse arguments (inner skill, optional follow-up, optional `max=N`)
+- [ ] Pick state-capture recipe and capture `START_STATE`
+- [ ] Iteration loop: capture pre → invoke inner skill → capture post → classify
+- [ ] On Settled or Cycled-stay or Cycled-forward-resolved: produce convergence summary
+- [ ] On Settled or Cycled-forward-resolved (with user OK): invoke follow-up if specified
 ```
 
 For three worked examples (settle in 3 iterations, cycle resolved autonomously, stall after 3 attempts), see [references/examples.md](references/examples.md).
