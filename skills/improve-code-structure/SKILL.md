@@ -1,6 +1,6 @@
 ---
 name: improve-code-structure
-description: Analyze and improve code structure — decompose long functions and files, reduce complexity, extract shared patterns, and assess test coverage on critical paths. Use when the user wants to refactor for clarity, split large files, reduce nesting, DRY up code, or improve testability. Not for feature changes, bug fixes, or performance optimization — this is structural refactoring only.
+description: Analyzes and improves code structure — decomposes long functions and files, reduces complexity, extracts shared patterns, assesses test coverage on critical paths, and cleans up dead, unreachable, or orphaned code that accumulates as a side effect of refactoring. Use when the user wants to refactor for clarity, split large files, reduce nesting, DRY up code, improve testability, or sweep for dead code after restructuring. Not for feature changes, bug fixes, or performance optimization — this is structural refactoring only.
 ---
 
 # Improve Code Structure
@@ -20,9 +20,21 @@ Analyze code for structural improvements, then implement changes with user appro
 
 You are the **lead** orchestrating a structural analysis and refactoring workflow.
 
+Copy this checklist into your first response and tick items off as you progress. It is your authoritative progress record across all four phases:
+
+```
+- [ ] Phase 1a — spawn one analyst subagent per lens, in parallel
+- [ ] Phase 1b — synthesize findings into a prioritized plan
+- [ ] Phase 1c — present the plan and wait for user approval
+- [ ] Phase 2a — record baseline ref before the first change
+- [ ] Phase 2b — implement approved changes sequentially, verifying each
+- [ ] Phase 3  — dead code detection & cleanup (skip if Phase 2 made no changes)
+- [ ] Phase 4  — final verification + cross-phase summary
+```
+
 ### Phase 1: Analysis
 
-Spawn five subagents in parallel — one per lens from [references/lenses.md](references/lenses.md). Each subagent receives:
+Spawn one subagent per lens listed in [references/lenses.md](references/lenses.md), in parallel. Each subagent receives:
 
 - The lens content from lenses.md (one section, verbatim) as its role.
 - The scope (full repo, directory, or file).
@@ -48,21 +60,22 @@ Once all analysts report:
 
 ### Phase 2: Implementation
 
-The lead implements approved changes directly — **sequentially**, one recommendation at a time, in dependency order.
+The lead implements approved changes directly, in dependency order.
 
 **Before the first change:** record the **baseline ref** by running `git rev-parse HEAD` and remembering the SHA. Phase 3a's scan scope depends on diffing against this exact ref, so it must be captured *before* any modifications. If the working tree is dirty at the start of Phase 2, ask the user to commit, stash, or explicitly accept that the existing changes will be folded into the baseline.
 
-For each change:
-1. Make the change.
-2. Run the [verification loop](references/conventions.md#verification-loop).
-3. Brief status update to the user.
-
-#### Implementation Rules
+#### Invariants (must hold throughout Phase 2)
 
 - **Preserve interfaces** — these are structural improvements, not feature changes. If tests exist, they should still pass (with imports/paths updated for new locations). If no tests exist, preserve the project's interfaces explicitly: exported symbols and their signatures, public file paths, and package entry points (`package.json` `exports`/`main`/`bin`, `Cargo.toml` `[lib]`/`[[bin]]`, the equivalent for the ecosystem in use). If a refactor would change any interface, surface it before making the change.
-- **Update imports and references** — when moving or renaming, update all call sites. Grep to verify nothing is missed.
 - **Don't gold-plate** — implement what was approved, nothing more. Don't "improve" surrounding code while you're in there.
-- **One logical change at a time** — don't batch a file split, a function extraction, and a dedup into a single step. Each should be independently verifiable.
+
+#### Per-change loop
+
+Sequentially, **one logical change at a time** — don't batch a file split, a function extraction, and a dedup into a single step; each should be independently verifiable. For each change:
+
+1. Make the change. If it involves moves or renames, update all call sites — grep to verify nothing is missed.
+2. Run the [verification loop](references/conventions.md#verification-loop).
+3. Brief status update to the user.
 
 ### Phase 3: Dead Code Detection & Cleanup
 
