@@ -5,7 +5,7 @@ description: Repeatedly invokes a target skill until its output settles — mean
 
 # Repeat Until Settled
 
-A meta-skill that runs another skill in a loop until the working state settles, then optionally chains to a follow-up. Use when one pass of a skill is rarely enough — when each pass uncovers more work until eventually nothing's left.
+Run a target skill in a loop, classify each iteration's outcome, and exit on settle, cycle resolution, max-cap, or user decision at a stall pause.
 
 ## Arguments
 
@@ -51,7 +51,7 @@ Copy this checklist into your first response and tick items off as you progress:
 - [ ] On Settled or Cycled-forward-resolved (with user OK): invoke follow-up if specified
 ```
 
-For three worked examples (settle in 3 iterations, cycle resolved autonomously, stall after 3 attempts), see [references/examples.md](references/examples.md).
+For five worked examples covering settle, cycle-by-stay, cycle-by-forward-escape, a non-code (manuscript) project, and a stall pause, see [references/examples.md](references/examples.md).
 
 ### Setup
 

@@ -1,138 +1,135 @@
 # Examples
 
-Three worked examples covering the most common branches through this skill.
+Four worked examples covering the most common branches. Examples abbreviate states as `(short-sha, …)` for readability; actual recipes capture full hashes per [state-capture.md](state-capture.md).
 
 ---
 
-## Example 1 — Settle in three iterations
+## Example 1 — Settle in three iterations (git project)
 
-**User request:** `/repeat-until-settled improve-code-structure then release`
+**Invocation:** `/repeat-until-settled improve-code-structure then release`
 
-**Setup.** Orchestrator records `START_SHA = e4a1c9f` and `START_TREE_HASH = sha256(<empty diff>)` (clean working tree). `FINGERPRINTS = []`, `iteration = 0`, `consecutive_stalls = 0`.
+**Setup.** Project is a git repo → orchestrator picks the git recipe. Records `START_STATE` (HEAD `e4a1c9f`, clean working tree). Initializes `STATES = []`, all counters zero.
 
 **Iteration 1.**
-- pre = `(e4a1c9f, <empty>)`
-- Invokes `improve-code-structure`. Inner skill analyzes, presents 8 recommendations, user approves all. Phase 2 lands them, Phase 3 cleans up 2 dead exports, Phase 4 reports.
-- post = `(7b2d04a, <empty>)` — committed
-- Outcome: **Continuing** (post != pre, not a cycle).
-- `FINGERPRINTS = [(7b2d04a, <empty>)]`.
+- pre = state at HEAD `e4a1c9f`, clean.
+- Inner skill analyzes, presents 8 recommendations, user approves all. Phase 2 lands them; Phase 3 cleans up 2 dead exports; Phase 4 reports.
+- post = state at HEAD `7b2d04a`, clean.
+- Outcome: `continuing`. `consecutive_stalls = 0`.
 
 **Iteration 2.**
-- pre = `(7b2d04a, <empty>)`
-- Inner skill runs again. Finds 3 new recommendations that emerged from iteration 1's restructuring (files that are now ripe for further splitting). User approves 2. Phase 3 finds 1 dead utility introduced by the refactor.
-- post = `(c19fe87, <empty>)`
-- Outcome: **Continuing**.
-- `FINGERPRINTS = [(7b2d04a, <empty>), (c19fe87, <empty>)]`.
+- Inner skill analyzes again. Iteration 1's restructuring exposed 3 follow-on opportunities; user approves 2; Phase 3 finds 1 introduced dead utility.
+- post = state at HEAD `c19fe87`, clean.
+- Outcome: `continuing`.
 
 **Iteration 3.**
-- pre = `(c19fe87, <empty>)`
-- Inner skill analyzes. Phase 1 returns no recommendations — the codebase is well-structured at this point. Phase 2 has nothing to do. Phase 3 is skipped (no Phase 2 changes). Phase 4 summary: "Analysis complete. No recommendations."
-- post = `(c19fe87, <empty>)`
-- Outcome: **Settled** — git delta is zero AND the inner skill explicitly reported no recommendations.
+- Inner skill analyzes. Phase 1 returns no recommendations — codebase is well-structured. Phase 2/3 have nothing to do. Phase 4 summary: "Analysis complete. No recommendations."
+- post = state at HEAD `c19fe87`, clean. State delta zero.
+- Settle predicate: state delta zero ✓; positive output signal ✓ ("No recommendations", an explicit empty signal).
+- Outcome: `settled` → `→ settle`. Loop exits.
 
-**Convergence summary:**
+**Exit-reason dispatch:** `Settled` → Convergence summary header, follow-up invoked automatically.
 
-```
-## Convergence summary
-
-- Iterations: 3
-- Exit reason: settled
-- Net change since start: 11 files changed, +318/-247 lines
-- Notable events: none
-
-## Iteration log
-
-| # | Outcome    | Net change                                        |
-|---|------------|---------------------------------------------------|
-| 1 | continuing | 8 refactors landed, 2 dead exports cleaned up    |
-| 2 | continuing | 2 follow-on refactors landed, 1 dead util gone  |
-| 3 | settled    | (no change — inner skill reported no findings)  |
-```
-
-**Follow-up.** The orchestrator invokes `/release` as if the user had just typed it.
+**Convergence summary** rendered from the [template](templates.md#convergence-summary). Then `/release` is invoked.
 
 ---
 
-## Example 2 — Cycle resolved autonomously
+## Example 2 — Cycle resolved by Stay (style oscillation)
 
-**User request:** `/repeat-until-settled simplify`
+**Invocation:** `/repeat-until-settled simplify`
 
-Imagine an inner skill called `simplify` that proposes simplifications, but where two valid styles exist and each one looks like a "simplification" relative to the other — early-return-flat vs ternary-compact, say.
+Imagine an inner skill `simplify` operating on a small library where two valid styles exist — early-return-flat vs ternary-compact — and each looks like a "simplification" relative to the other.
 
 **Iterations 1–3.**
-- Iter 1: refactors `formatPath` into early-return style. State `A`.
-- Iter 2: re-analyzes, recommends ternary-compact style. State `B`.
-- Iter 3: re-analyzes, recommends early-return again. State `A` (matches iteration 1's fingerprint).
+- Iter 1: rewrites `formatPath` into early-return style. State `A` (HEAD `aaa1`).
+- Iter 2: re-analyzes, recommends ternary-compact. State `B` (HEAD `bbb2`).
+- Iter 3: re-analyzes, recommends early-return again. State `A'` (HEAD `aaa3`, content-equivalent to A by recipe).
 
-**Cycle detected.** `FINGERPRINTS[3] == FINGERPRINTS[1]`.
+**Cycle detection.** `STATES[3]`'s state matches `STATES[1]`. Summaries similar (both at iteration 1 and iteration 3 the inner skill said "extract early-return style — clearer for extension"). Cycle confirmed. → `→ cycle`.
 
-**Resolution attempt:** the orchestrator reads the inner skill's reasoning at iteration 1 (state A) and at iteration 2 (state B):
+**Cycle resolution.** Orchestrator reads competing reasonings:
 
-- At A → B: "ternary is more compact (3 lines vs 7)."
-- At B → A: "early returns are easier to extend; the ternary becomes unreadable if a fourth case is added; the function is documented in the API and likely to grow."
+- A → B reasoning: "ternary is more compact (3 lines vs 7)."
+- B → A reasoning: "early returns are easier to extend; the ternary becomes unreadable if a fourth case is added; the function is documented in the API and likely to grow."
 
-The orchestrator judges the iteration-2-to-A reasoning as substantively stronger (extensibility argument outweighs line-count argument), and picks **state A** without consulting the user. It restores state A via `git reset --hard <A-sha>`.
+The two are not asymmetrically covering different concerns — both address readability, just from different angles. Neither side has a coverage advantage the other lacks. → **Stay** (default for comparably defensible cycles).
 
-**Convergence summary:**
+The orchestrator does NOT roll back — state A' is current and stays. The convergence summary records both sides' reasoning.
+
+**Exit-reason dispatch:** `Settled-via-cycle (Stay)` → Convergence summary header, **ask user** before invoking the follow-up (none specified here, so this just exits cleanly).
+
+The iteration log notes:
 
 ```
-## Convergence summary
-
-- Iterations: 3
-- Exit reason: cycle resolved at iteration 3 ↔ iteration 1, kept state A (early-return-flat)
-- Net change since start: 1 file changed, +4/-2 lines
-- Notable events: 1 cycle (autonomously resolved — favored extensibility argument over compactness)
-
-## Iteration log
-
-| # | Outcome             | Net change                              |
-|---|---------------------|-----------------------------------------|
-| 1 | continuing          | refactored formatPath to early-return   |
-| 2 | continuing          | rewrote formatPath as ternary           |
-| 3 | cycled (resolved A) | reverted to state A                     |
+| 1 | continuing | —    | early-return refactor of formatPath |
+| 2 | continuing | —    | rewrote as ternary                  |
+| 3 | cycled     | stay | (no change — at fixed point)        |
 ```
-
-The orchestrator does **not** auto-invoke a follow-up after cycle resolution — it would ask the user whether to proceed (e.g., "kept state A; want me to run `release`?"), since the user might want to inspect the resolved state first.
 
 ---
 
-## Example 3 — Stalled after three iterations, paused
+## Example 3 — Cycle resolved by Forward-escape
 
-**User request:** `/repeat-until-settled improve-code-structure`
+**Invocation:** `/repeat-until-settled simplify`
 
-The codebase has a flaky integration test that fails inconsistently when the inner skill tries to land a particular refactor.
+Same setup as example 2, but the alternate state has a clearly-stronger asymmetric-coverage advantage.
 
-**Iteration 1.** Inner skill recommends extracting a shared validator. User approves. Phase 2 makes the change. Verification fails — flaky test. Phase 2 reverts. Phase 3 skipped (no changes landed). Phase 4 summary mentions one approved-but-reverted recommendation. post == pre. **Stall #1.**
+**Iterations 1–3.** Oscillation again, but this time:
 
-**Iteration 2.** Inner skill (fresh context) re-analyzes, recommends the same extraction. User approves. Same verification failure. Same revert. post == pre. **Stall #2.**
+- A → B reasoning: "removed unused parameter; clearer signature."
+- B → A reasoning: "compact" *(no asymmetric coverage; just brevity)*.
 
-**Iteration 3.** Same again. post == pre. **Stall #3.**
+**Cycle detection** triggers as before. Resolution: A removes a real flaw (unused parameter) that B does not address. **Forward-escape toward A** (asymmetric coverage; favored side is the alternate to current state B).
 
-`consecutive_stalls == 3` → pause.
+`forward_escape_attempts = 1`. On iteration 4, the orchestrator prepends to the inner skill's prompt: *"You have oscillated between state A and state B. State A is preferred because it removes an unused parameter. Make the forward changes needed to land at A and stay there."*
 
-The orchestrator emits:
+**Iteration 4.** Inner skill makes the changes. State lands at A". Iteration 5 returns no recommendations. Loop settles.
+
+**Exit-reason dispatch:** `Forward-escape resolved (later settled)` → Convergence summary, follow-up invoked automatically.
+
+The iteration log notes:
 
 ```
-Stalled after 3 consecutive iterations. The inner skill keeps recommending
-extracting a shared validator from src/orders/validation.ts, but the changes
-aren't landing.
-
-Looking at the iteration log, the recurring blocker appears to be:
-verification failure on tests/integration/orders.spec.ts — the test fails
-on this change with "timeout exceeded waiting for fixture", but the test
-passes on the original code.
-
-This is likely an orchestration-layer issue (something about how the
-recommendation is being applied or how the test interacts with the change),
-not necessarily a problem with the inner skill itself. The recommendation
-itself looks reasonable — the test may be flaky, or the extraction may have
-introduced a subtle async-ordering change.
-
-How would you like to proceed?
-- retry: try the same recommendation again (perhaps the flake clears)
-- skip: drop this recommendation and continue iterating on others
-- abandon: stop the loop and produce a partial convergence summary
-- change scope: narrow or broaden what the inner skill is operating on
+| 3 | cycled    | forward-escape | (no change — directing toward A) |
+| 4 | continuing| —              | applied targeted refactor        |
+| 5 | settled   | —              | (no change — nothing left to do) |
 ```
 
-The user picks "skip". The orchestrator notes the skip, resets `consecutive_stalls = 0`, and continues to iteration 4 with a hint to the inner skill that the validator extraction has been deferred.
+---
+
+## Example 4 — Manuscript editing pass (non-code, no git)
+
+**Invocation:** `/repeat-until-settled copy-edit-pass`
+
+**Setup.** Working directory is `~/manuscripts/novel-draft-3/` containing `.md` chapter files. No `.git/` directory. Orchestrator picks the **plain filesystem** recipe; scope is all `.md` files in the directory. `START_STATE` = sha256 of (path, content-hash) pairs across all chapters.
+
+**Iteration 1.**
+- pre = current state.
+- Inner skill `copy-edit-pass` reads the chapters, makes targeted line edits (typo fixes, awkward phrasing), reports a summary like "12 line edits applied across chapters 2, 3, 5."
+- post = current state (different — edits landed).
+- Change-metric: 3 files modified, +12/-12 lines, word-count delta near zero.
+- Outcome: `continuing`.
+
+**Iteration 2.** Inner skill makes 3 more line edits. `continuing`.
+
+**Iteration 3.** Inner skill returns "No further line-level edits found." State delta zero. Positive signal explicit. → `settled`.
+
+The convergence summary's "Net change since start" uses the filesystem recipe's metric: "3 files modified, +15/-15 lines, word-count delta +3 across the manuscript." The follow-up — none specified — is skipped.
+
+This example demonstrates that the skill is **not git-specific**. The same control flow (capture pre, invoke, capture post, classify) runs on a plain directory of prose; the recipe choice in Setup is what makes it work.
+
+---
+
+## Example 5 — Stalled, paused at first threshold
+
+**Setup:** Phase 3d of an inner refactor skill keeps proposing the same extraction; verification fails on a flaky integration test each time.
+
+**Iterations 1–3.** Each iteration: inner skill recommends extracting a shared validator → user approves → Phase 2 makes the change → verification fails on `tests/integration/orders.spec.ts: timeout exceeded` → Phase 2 reverts. State delta zero per iteration. Each is a `stall`. `consecutive_stalls` reaches 3. `total_stalls = 3`.
+
+The orchestrator pauses using the [first-threshold template](templates.md#stall-pause--first-threshold), substituting:
+
+- `recurring recommendation` = "extracting a shared validator from src/orders/validation.ts"
+- `recurring blocker` = "verification failure on tests/integration/orders.spec.ts — timeout exceeded waiting for fixture"
+
+User picks **skip**. Orchestrator notes the skip in `ITERATION_LOG`, resets `consecutive_stalls = 0`, and continues to iteration 4 with a hint to the inner skill that the validator extraction has been deferred.
+
+If retries continued and `total_stalls` reached 6 — or the first-threshold pause fired a second time — the orchestrator would switch to the [deeper-threshold template](templates.md#stall-pause--deeper-threshold), drop `retry`, and recommend `change scope` or `abandon`.
