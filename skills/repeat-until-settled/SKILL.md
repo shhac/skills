@@ -77,24 +77,46 @@ For each iteration:
 
 ### Outcome classification
 
-| Condition                                                                                          | Outcome      | Action                                                                                                       |
-|----------------------------------------------------------------------------------------------------|--------------|--------------------------------------------------------------------------------------------------------------|
-| `post == pre` AND inner skill's summary indicates no further work                                  | **Settled**  | Exit loop → convergence summary → follow-up.                                                                 |
-| `post == pre` AND inner skill's summary had recommendations or pending work                        | **Stalled**  | Increment `consecutive_stalls`. If `>= 3`, pause and ask. Otherwise reset for next iteration.                |
-| `post` matches `STATES[i]` for some `i < iteration - 1` (not the immediately prior) AND the summaries are similar | **Cycled**   | Run cycle resolution. Reset `consecutive_stalls = 0`.                                                        |
-| `post != pre` and not a cycle                                                                      | **Continuing** | Reset `consecutive_stalls = 0` and proceed to next iteration.                                              |
+| Outcome    | Condition                                                                                              | Action      |
+|------------|--------------------------------------------------------------------------------------------------------|-------------|
+| Settled    | `post == pre` AND summary has a positive empty/done signal (see [Settle predicate](#settle-predicate)) | → settle    |
+| Stalled    | `post == pre` AND summary is ambiguous or had pending work                                             | → stall     |
+| Cycled     | `post == STATES[i]` for some `i < iteration - 1` AND summary similar to that iteration's              | → cycle     |
+| Continuing | otherwise                                                                                              | → continue  |
 
-#### Settle detection — two signals must agree
+**Counter invariants** (apply on every iteration, regardless of outcome):
 
-- **State delta zero:** `post == pre` per the recipe.
-- **Positive output signal:** the inner skill's summary contains an explicit empty/done indicator. Treat any of the following as positive:
-  - An explicit "no findings" / "no recommendations" / "nothing to change" / "done" / "settled" statement.
-  - A structured summary whose findings/recommendations list is empty.
-  - A phase report whose accumulators are all empty / "none".
+- `consecutive_stalls`: incremented in `→ stall`; reset to 0 in `→ continue`, `→ cycle`, and after the user responds to a stall pause. Untouched by `→ settle` (loop exits).
+- `forward_escape_attempts`: managed inside `→ cycle` only.
+- `STATES`: `post` is appended on every iteration (already done in step 5 of the loop).
 
-  If the summary is ambiguous (recommendations exist but were deferred, status is unstated, the inner skill returned terse text like "done." with no breakdown), default to **Stalled**, not Settled. Premature settle exits the loop and may invoke a follow-up against incomplete work.
+#### → settle
 
-State delta zero AND positive output signal → Settled. State delta zero AND ambiguous output → Stalled.
+Exit the loop. Proceed to the [exit-reason dispatch](#exit-reason-dispatch).
+
+#### → stall
+
+Increment `consecutive_stalls`. If it reaches 3, run [Stall handling](#stall-handling) (pause and ask the user). Otherwise proceed to the next iteration without resetting the counter.
+
+#### → cycle
+
+Run [Cycle resolution](#cycle-resolution).
+
+#### → continue
+
+Proceed to the next iteration.
+
+#### Settle predicate
+
+Settle requires both signals:
+
+- **State delta zero:** `post == pre` per the chosen recipe.
+- **Positive output signal:** the inner skill's summary contains an explicit empty/done indicator. Treat any of these as positive:
+  - "no findings" / "no recommendations" / "nothing to change" / "done" / "settled"
+  - A structured summary whose findings / recommendations list is empty
+  - A phase report whose accumulators are all empty / "none"
+
+If state delta is zero but the summary is ambiguous (recommendations exist but were deferred, status is unstated, terse text like "done." with no breakdown), classify as Stalled, not Settled. Premature settle exits the loop and may invoke a follow-up against incomplete work.
 
 ### Cycle resolution
 
@@ -150,38 +172,47 @@ How would you like to proceed?
 
 Reset `consecutive_stalls` after the user responds.
 
-### Convergence summary
+### Exit-reason dispatch
 
-Once the loop exits via Settled or Cycled-resolved (not by max-cap or abandon), output:
+When the loop exits, classify the exit reason and dispatch:
+
+| Exit reason                                  | Summary header        | Follow-up                                |
+|----------------------------------------------|-----------------------|------------------------------------------|
+| Settled                                      | Convergence summary   | Invoke automatically.                    |
+| Settled-via-cycle (Stay)                     | Convergence summary   | Ask user before invoking — they may want to verify the cycled state. |
+| Forward-escape resolved (later settled)      | Convergence summary   | Invoke automatically — the resolution landed forward, the state is the natural outcome. |
+| Partial: max-cap hit                         | Partial convergence   | Skip; surface to user.                   |
+| Partial: abandoned at stall pause            | Partial convergence   | Skip; surface to user.                   |
+| Partial: cycle surfaced, user picked abandon | Partial convergence   | Skip; surface to user.                   |
+| Partial: forward-escape failed (≥2 attempts) | Partial convergence   | Skip; surface to user.                   |
+
+The "Forward-escape resolved" row applies when forward-escape was invoked at some point but the loop later reached Settled — that's a clean exit, the cycle was a passing turbulence, not a terminal state.
+
+### Convergence summary template
+
+Output this structure (substitute "Convergence summary" or "Partial convergence" per the dispatch table):
 
 ```
-## Convergence summary
+## {Convergence summary | Partial convergence}
 
 - Iterations: {N}
-- Exit reason: {settled | settled-via-cycle (stay) | cycle resolved by forward-escape at iteration M ↔ K | partial: max-cap | partial: abandoned at stall}
-- Net change since start: {recipe-appropriate metric — git diff stats, file count delta, word count delta, etc.}
+- Exit reason: {one of the seven from the dispatch table}
+- Net change since start: {recipe-appropriate metric — git diff stats, file count delta, word count delta, etc.; computed from START_STATE vs final state}
 - Notable events: {stalls encountered, cycles encountered, user decisions during the run; "none" if empty}
 
 ## Iteration log
 
-| # | Outcome    | Net change                            |
-|---|------------|---------------------------------------|
-| 1 | continuing | refactored 3 files                    |
-| 2 | continuing | extracted 2 shared utilities          |
-| 3 | stalled→retried | (no change — verification failed) |
-| 4 | continuing | applied alternate refactor            |
-| 5 | settled    | (no change — nothing left to do)      |
+| # | Outcome     | Resolution      | Change-metric                    |
+|---|-------------|-----------------|----------------------------------|
+| 1 | continuing  | —               | {recipe-appropriate metric}      |
+| 2 | stalled     | retried         | (no change)                      |
+| 3 | continuing  | —               | …                                |
+| 4 | cycled      | stay            | (no change — cycled at iter 2)   |
 ```
 
-If the loop exits via max-cap or user-abandon, label the summary "Partial convergence" instead and explain why.
+The `Outcome` column uses one of the four bare classifications (`settled`, `stalled`, `cycled`, `continuing`). The `Resolution` column carries the secondary action where relevant (`retried` / `skipped` / `stay` / `forward-escape` / `—`). Use this exact column shape so the structure is consistent across runs.
 
-### Follow-up
-
-If a follow-up was parsed from the args and the loop reached **Settled** (not Cycled-resolved, not max-cap, not abandoned), invoke the follow-up as if the user had just typed it directly. Pass any args from the parsed follow-up invocation.
-
-If the loop exited via Cycled-resolved, ask the user whether to proceed with the follow-up — they may want to verify the cycle-resolved state first before, e.g., releasing.
-
-If the loop exited via max-cap or abandon, do **not** invoke the follow-up. Surface that to the user.
+The data for the iteration log comes from `ITERATION_LOG` captured during the per-iteration loop; do not invent it.
 
 ## Cross-harness notes
 
