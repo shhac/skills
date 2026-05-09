@@ -78,6 +78,14 @@ Analyze and improve code structure across a repo or targeted scope. Spawns paral
 
 **Workflow:** Analyze (parallel) → Synthesize → Approve → Implement (sequential) → Dead-code sweep + per-finding audit → Validate
 
+### repeat-until-settled
+
+Run another skill in a loop until its output settles — meaning no further substantive changes or recommendations. Detects cycles (oscillation between two or more states) and resolves them autonomously when one side has stronger reasoning, surfacing only when uncertain. Detects stalls (recommendations that won't land) and pauses after three consecutive misses with an orchestration-layer-aware diagnosis. Optionally chains to a follow-up skill on settle. No iteration cap by default.
+
+**Example:** `repeat-until-settled improve-code-structure then release`
+
+**Workflow:** Parse args → Iterate (invoke → fingerprint → classify) → Settle / Cycle-resolve / Stall-pause → Convergence summary → Follow-up
+
 ## License
 
 [MIT](LICENSE)
