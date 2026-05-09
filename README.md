@@ -74,9 +74,9 @@ Extract and sharpen the user's mental model through targeted questioning. Interv
 
 ### improve-code-structure
 
-Analyze and improve code structure across a repo or targeted scope. Spawns parallel analysts examining five lenses — function decomposition, file decomposition, complexity reduction, pattern deduplication, and test coverage — then implements approved changes sequentially.
+Analyze and improve code structure across a repo or targeted scope. Spawns parallel analysts examining five lenses — function decomposition, file decomposition, complexity reduction, pattern deduplication, and test coverage — then implements approved changes sequentially. After refactoring, sweeps for dead/unreachable/orphaned code introduced as side effects, audits each finding deeply, and removes anything confirmed dead while tests stay green.
 
-**Workflow:** Analyze (parallel) → Synthesize → Approve → Implement (sequential)
+**Workflow:** Analyze (parallel) → Synthesize → Approve → Implement (sequential) → Dead-code sweep + per-finding audit → Validate
 
 ## License
 
