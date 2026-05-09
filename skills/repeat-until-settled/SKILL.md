@@ -156,29 +156,11 @@ Track two counters:
 
 #### First-pause threshold
 
-When `consecutive_stalls` reaches 3, pause and offer four options: **retry**, **skip**, **abandon**, **change scope**. Pause message template:
-
-```
-Stalled after 3 consecutive iterations. The inner skill keeps recommending
-{recurring recommendation}, but the changes aren't landing.
-
-Recurring blocker: {verification failure | user rejection | tool error: …}.
-
-This is likely an orchestration-layer issue, not a problem with the inner
-skill itself.
-
-How would you like to proceed?
-- retry — try the same recommendation again
-- skip — drop this recommendation and continue
-- abandon — stop the loop and produce a partial convergence summary
-- change scope — narrow or broaden what the inner skill is operating on
-```
-
-After the user responds, reset `consecutive_stalls = 0`.
+When `consecutive_stalls` reaches 3, pause using the [first-threshold template](references/templates.md#stall-pause--first-threshold) — offers **retry / skip / abandon / change scope**. After the user responds, reset `consecutive_stalls = 0`.
 
 #### Deeper-stall threshold
 
-When `total_stalls >= 6` OR the orchestrator has hit the first-pause threshold twice in the same run, **drop "retry" from the offered options** — repeated retry has demonstrably not worked. The deeper pause keeps **skip**, **abandon**, **change scope** and adds an explicit recommendation: "I've tried this approach 6+ times. Repeating it is unlikely to succeed. I'd suggest `change scope` or `abandon`."
+When `total_stalls >= 6` OR the first-pause threshold has fired twice in this run, pause using the [deeper-threshold template](references/templates.md#stall-pause--deeper-threshold) — drops `retry`, recommends `change scope` or `abandon`. Repeated retry has demonstrably not worked at this point.
 
 #### Ambiguous user response
 
@@ -201,31 +183,9 @@ When the loop exits, classify the exit reason and dispatch:
 
 The "Forward-escape resolved" row applies when forward-escape was invoked at some point but the loop later reached Settled — that's a clean exit, the cycle was a passing turbulence, not a terminal state.
 
-### Convergence summary template
+### Convergence summary
 
-Output this structure (substitute "Convergence summary" or "Partial convergence" per the dispatch table):
-
-```
-## {Convergence summary | Partial convergence}
-
-- Iterations: {N}
-- Exit reason: {one of the seven from the dispatch table}
-- Net change since start: {recipe-appropriate metric — git diff stats, file count delta, word count delta, etc.; computed from START_STATE vs final state}
-- Notable events: {stalls encountered, cycles encountered, user decisions during the run; "none" if empty}
-
-## Iteration log
-
-| # | Outcome     | Resolution      | Change-metric                    |
-|---|-------------|-----------------|----------------------------------|
-| 1 | continuing  | —               | {recipe-appropriate metric}      |
-| 2 | stalled     | retried         | (no change)                      |
-| 3 | continuing  | —               | …                                |
-| 4 | cycled      | stay            | (no change — cycled at iter 2)   |
-```
-
-The `Outcome` column uses one of the four bare classifications (`settled`, `stalled`, `cycled`, `continuing`). The `Resolution` column carries the secondary action where relevant (`retried` / `skipped` / `stay` / `forward-escape` / `—`). Use this exact column shape so the structure is consistent across runs.
-
-The data for the iteration log comes from `ITERATION_LOG` captured during the per-iteration loop; do not invent it.
+Output the [convergence summary template](references/templates.md#convergence-summary), substituting the header from the dispatch table (`Convergence summary` for clean exits, `Partial convergence` for partial ones). Data for the iteration log comes from `ITERATION_LOG` captured during the per-iteration loop — do not invent it.
 
 ## Cross-harness notes
 
