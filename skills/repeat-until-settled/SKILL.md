@@ -60,7 +60,7 @@ Before the first iteration:
 1. **Pick a state-capture recipe.** Identify the project type and pick the appropriate recipe from [references/state-capture.md](references/state-capture.md): git project, plain filesystem, or ambiguous (ask the user). The recipe defines what counts as the "state" of the work and how to compare two states for equality. This skill is domain-agnostic — the inner skill might be operating on code, prose, artwork, configuration, anything — so don't assume a default; pick the recipe that fits.
 2. **Capture `START_STATE`** using the chosen recipe.
 3. Initialize empty list `STATES = []` (cycle detection will compare against this).
-4. Initialize counters: `iteration = 0`, `consecutive_stalls = 0`, `forward_escape_attempts = 0`.
+4. Initialize counters: `iteration = 0`, `consecutive_stalls = 0`, `total_stalls = 0`, `forward_escape_attempts = 0`, `first_pause_count = 0`.
 5. Initialize empty list `ITERATION_LOG = []` (per-iteration data for the convergence summary).
 
 ### Per-iteration loop
@@ -87,6 +87,7 @@ For each iteration:
 **Counter invariants** (apply on every iteration, regardless of outcome):
 
 - `consecutive_stalls`: incremented in `→ stall`; reset to 0 in `→ continue`, `→ cycle`, and after the user responds to a stall pause. Untouched by `→ settle` (loop exits).
+- `total_stalls`: incremented in `→ stall`; never reset. Used by [Stall handling](#stall-handling) to detect the deeper-stall threshold.
 - `forward_escape_attempts`: managed inside `→ cycle` only.
 - `STATES`: `post` is appended on every iteration (already done in step 5 of the loop).
 
@@ -146,31 +147,42 @@ When neither default applies — typically because the two sides are both substa
 
 ### Stall handling
 
-A **stall** is an iteration where the inner skill produced recommendations or had pending work, but no changes landed. Stalls usually indicate trouble at the *orchestration* layer, not inside the inner skill — verification keeps failing, user keeps rejecting, a tool keeps erroring, the same recommendation gets re-proposed but never applied.
+A **stall** is an iteration where the inner skill produced recommendations or had pending work, but no changes landed. Stalls usually indicate trouble at the *orchestration* layer, not the inner skill — verification keeps failing, user keeps rejecting, a tool keeps erroring, the same recommendation gets re-proposed but never applied.
 
-After **three consecutive stalls**, pause the loop.
+Track two counters:
 
-The pause message must clearly tell the user what the actual failure mode looks like, framed at the orchestration layer rather than blaming the inner skill:
+- `consecutive_stalls` — resets after the user responds to a pause.
+- `total_stalls` — monotonic; never reset until the loop exits.
+
+#### First-pause threshold
+
+When `consecutive_stalls` reaches 3, pause and offer four options: **retry**, **skip**, **abandon**, **change scope**. Pause message template:
 
 ```
 Stalled after 3 consecutive iterations. The inner skill keeps recommending
-{summary of recurring recommendation}, but the changes aren't landing.
+{recurring recommendation}, but the changes aren't landing.
 
-Looking at the iteration log, the recurring blocker appears to be:
-{verification failure on file X | user rejection | tool error: …}
+Recurring blocker: {verification failure | user rejection | tool error: …}.
 
-This is likely an orchestration-layer issue (something about how the
-recommendation is being applied), not necessarily a problem with the inner
+This is likely an orchestration-layer issue, not a problem with the inner
 skill itself.
 
 How would you like to proceed?
-- retry: try the same recommendation again
-- skip: drop this recommendation and continue iterating
-- abandon: stop the loop and produce a partial convergence summary
-- change scope: narrow or broaden what the inner skill is operating on
+- retry — try the same recommendation again
+- skip — drop this recommendation and continue
+- abandon — stop the loop and produce a partial convergence summary
+- change scope — narrow or broaden what the inner skill is operating on
 ```
 
-Reset `consecutive_stalls` after the user responds.
+After the user responds, reset `consecutive_stalls = 0`.
+
+#### Deeper-stall threshold
+
+When `total_stalls >= 6` OR the orchestrator has hit the first-pause threshold twice in the same run, **drop "retry" from the offered options** — repeated retry has demonstrably not worked. The deeper pause keeps **skip**, **abandon**, **change scope** and adds an explicit recommendation: "I've tried this approach 6+ times. Repeating it is unlikely to succeed. I'd suggest `change scope` or `abandon`."
+
+#### Ambiguous user response
+
+If the user's response isn't a clear match to one of the offered options ("ok", "sure", "yeah whatever"), state your interpretation back before acting: "I read that as `retry` — please confirm or tell me a different option." Do not proceed on a guess. Treat ambiguous responses as a pause continuation, not a fresh decision.
 
 ### Exit-reason dispatch
 
@@ -185,6 +197,7 @@ When the loop exits, classify the exit reason and dispatch:
 | Partial: abandoned at stall pause            | Partial convergence   | Skip; surface to user.                   |
 | Partial: cycle surfaced, user picked abandon | Partial convergence   | Skip; surface to user.                   |
 | Partial: forward-escape failed (≥2 attempts) | Partial convergence   | Skip; surface to user.                   |
+| Partial: indeterminate (non-interactive harness, pause needed) | Partial convergence | Skip; state written to `.ai-cache/repeat-until-settled-state.md` for resume. |
 
 The "Forward-escape resolved" row applies when forward-escape was invoked at some point but the loop later reached Settled — that's a clean exit, the cycle was a passing turbulence, not a terminal state.
 
@@ -217,7 +230,8 @@ The data for the iteration log comes from `ITERATION_LOG` captured during the pe
 ## Cross-harness notes
 
 - **Skill invocation:** in Claude Code use the Skill tool; in the Claude Agent SDK use the equivalent subagent/skill API; in other harnesses use whatever mechanism that harness provides.
-- **User pauses** (cycle requiring user input, stall threshold reached, no args given, max-cap exit): the pause mechanism depends on the harness — interactive prompt, return to caller, etc. What matters is that the loop does not advance without explicit input.
+- **User pauses** (cycle requiring user input, stall threshold reached, no args given, ambiguous user response): the pause mechanism depends on the harness — interactive prompt, return to caller, etc. What matters is that the loop does not advance without explicit input.
+- **Non-interactive harnesses.** Some harnesses can't pause for user input (scheduled runs, headless API invocations, CI). Detect this at Setup. When pauses aren't supported, the orchestrator must NOT autonomously decide things that would normally pause — never invent a stall response, never auto-pick on a "Surface to user" cycle. Instead, exit with `Partial: indeterminate`, write the loop state and the pending question to a discoverable location (e.g. `.ai-cache/repeat-until-settled-state.md`), and stop. The user can re-invoke later with the answer.
 - **No backwards operations.** The skill never rolls back state — no `git reset`, no `git checkout` to a prior SHA, no overwriting newer files with older versions. Cycle resolution moves forward only (stay or forward-escape).
 - **Domain-agnostic.** The inner skill might be operating on code in a git repo, prose in a manuscript directory, image files, configuration, anything. Use the appropriate state-capture recipe from references/state-capture.md; do not assume code or git unless the project shape says so.
 
