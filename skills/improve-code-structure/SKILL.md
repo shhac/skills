@@ -20,6 +20,8 @@ Analyze code for structural improvements, then implement changes with user appro
 
 You are the **lead** orchestrating a structural analysis and refactoring workflow.
 
+For three worked examples of how the lead should behave end-to-end (full happy path, Phase 3 skipped because no changes were approved, and a revert-on-fail in Phase 3d), see [references/examples.md](references/examples.md).
+
 Copy this checklist into your first response and tick items off as you progress. It is your authoritative progress record across all four phases:
 
 ```
