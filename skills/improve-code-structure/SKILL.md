@@ -87,6 +87,8 @@ Once all analysts report:
 
 The lead implements approved changes directly — **sequentially**, one recommendation at a time, in dependency order.
 
+**Before the first change:** record the **baseline ref** by running `git rev-parse HEAD` and remembering the SHA. Phase 3a's scan scope depends on diffing against this exact ref, so it must be captured *before* any modifications. If the working tree is dirty at the start of Phase 2, ask the user to commit, stash, or explicitly accept that the existing changes will be folded into the baseline.
+
 For each change:
 1. Make the change.
 2. Run the [verification loop](references/conventions.md#verification-loop).
@@ -94,80 +96,24 @@ For each change:
 
 #### Implementation Rules
 
-- **Preserve behavior** — these are structural improvements, not feature changes. If tests exist, they should still pass (updated for new file/function locations). If no tests exist, don't change observable behavior.
+- **Preserve interfaces** — these are structural improvements, not feature changes. If tests exist, they should still pass (with imports/paths updated for new locations). If no tests exist, preserve the project's interfaces explicitly: exported symbols and their signatures, public file paths, and package entry points (`package.json` `exports`/`main`/`bin`, `Cargo.toml` `[lib]`/`[[bin]]`, the equivalent for the ecosystem in use). If a refactor would change any interface, surface it before making the change.
 - **Update imports and references** — when moving or renaming, update all call sites. Grep to verify nothing is missed.
 - **Don't gold-plate** — implement what was approved, nothing more. Don't "improve" surrounding code while you're in there.
 - **One logical change at a time** — don't batch a file split, a function extraction, and a dedup into a single step. Each should be independently verifiable.
 
 ### Phase 3: Dead Code Detection & Cleanup
 
-Refactoring removes callers, splits files, and shuffles exports — orphaned code and unreachable branches accumulate as a side effect. This phase finds and removes them.
+After Phase 2 makes changes, dead code accumulates as a side effect — orphaned exports, unreachable branches, unused imports, files no one imports anymore.
 
-**Skip condition:** if Phase 2 made no changes (user approved nothing, or all changes were reverted), skip this phase entirely.
+**Skip if Phase 2 made no changes.** Otherwise, follow [references/dead-code-cleanup.md](references/dead-code-cleanup.md). The phase is a five-step pipeline:
 
-#### Step 3a: Determine scan scope
+- **3a — Scope:** files changed in Phase 2 (`git diff --name-only <baseline-ref>...HEAD`) plus their pre/post-refactor import neighbors.
+- **3b — Broad scan:** one subagent sweeps the scope for six categories of dead code.
+- **3c — Deep audit:** one parallel subagent per finding (cap 10) verifies the false-positive traps and returns `confirmed-dead` / `not-dead` / `uncertain`.
+- **3d — Removal:** sequential, with preconditions (verification tooling exists; user approved the list) and per-removal verification revert-on-fail.
+- **3e — Report:** structured summary covering removed, rejected, reverted, uncertain, and coverage follow-ups.
 
-The lead computes the scan scope from Phase 2's actual file changes:
-
-- Files changed in Phase 2
-- Files **currently** importing from any changed file
-- Files **currently** imported by any changed file
-- Files that **previously** imported from any changed file (use `git diff` to recover pre-refactor imports)
-- Files that **previously** were imported by any changed file
-
-Pre-refactor neighbors matter because a file that lost its last caller during the refactor may no longer appear in the current import graph at all — it would be invisible if you only looked at the post-refactor state.
-
-#### Step 3b: Broad scan (single subagent)
-
-Spawn one subagent — a broad, shallow sweep across the scan scope. Categories to look for:
-
-- **Unreachable code** — statements after unconditional `return`/`throw`/`break`, branches that can't be entered, conditions that are always true/false
-- **Orphaned exports** — exported symbols with zero importers anywhere in the repo
-- **Unused private symbols** — file-local functions, constants, types with no in-file references
-- **Unused imports** — imported names that aren't referenced in the file
-- **Orphaned files** — files with no importers anywhere in the repo
-- **Leftover commented-out code** — comment blocks that are clearly old code, not explanatory prose
-
-Tell the scanner to **bias toward false negatives over false positives**. The deep auditor will catch missed dead code on a future run, but a confidently-claimed false positive wastes audit cycles and may produce noise.
-
-Output format: prioritized list of findings, each with file:line, category, and a one-line claim (e.g. "`processOrder` in src/orders.ts:42 has no callers in the repo").
-
-#### Step 3c: Deep audit (parallel, one subagent per finding)
-
-For each finding from the broad scan, spawn a subagent in parallel — narrow and deep on that single finding. The auditor must check the common false-positive traps before confirming:
-
-- **Dynamic dispatch** — grep for the symbol name as a string literal (lookup tables, `require(name)`, reflective access, message handlers keyed by name)
-- **Public API surface** — exported from a package entry point, `index.*`, or anything declared in `package.json` `exports`/`main`/`bin`
-- **Entry points** — CLI commands, `bin` scripts, plugin registrations, framework conventions (e.g. Next.js page files, route handlers)
-- **Non-code references** — grep HTML, JSON, YAML, Markdown, templates, config files for the symbol name or filename
-- **Re-exports** — is this re-exported through a barrel file (`index.ts`, etc.) that *is* consumed?
-- **Test-only references** — referenced only by tests, but the tests themselves are real and meaningful (don't kill code that exists to support real test scenarios)
-- **Doc references** — referenced in JSDoc `@see`, README, or external documentation
-
-Auditor returns one of:
-- `confirmed-dead` — with a one-line justification and confirmation that the false-positive traps were checked
-- `not-dead` — with the specific reason (e.g. "consumed via dynamic dispatch in src/router.ts:88")
-- `uncertain` — with a specific question the user would need to answer
-
-#### Step 3d: Removal (sequential)
-
-For each `confirmed-dead` finding, **one at a time**:
-
-1. Remove the code (and any imports that become unused as a result).
-2. Run the [verification loop](references/conventions.md#verification-loop).
-3. **If verification passes:** keep the removal. If the surrounding code region has no tests covering it (use `git grep` for the symbol or surrounding function name across the project's test paths — see verification.md for common test-path conventions), record a follow-up recommendation: *"add tests for `{region}` — coverage was absent where dead code was removed, and the safety net here is weak for future changes."*
-4. **If verification fails:** the verification loop already reverted the change. Record it as test-protected (the audit was wrong — something depends on it that grep didn't catch) and surface to the user.
-
-For `not-dead` findings: skip and log the auditor's reason.
-For `uncertain` findings: surface to the user as-is — do not auto-remove.
-
-#### Step 3e: Report
-
-Summarize for the user:
-- Findings removed (category, location, one-line description)
-- Findings rejected by the deep audit (with the auditor's reason)
-- Findings reverted because tests failed (with which test failed)
-- Follow-up test recommendations from low-coverage regions where dead code was removed
+The full procedure — including the trap checklists, verdict dispatch table, named accumulators, and removal preconditions — is in references/dead-code-cleanup.md.
 
 ### Phase 4: Validation
 
