@@ -22,7 +22,7 @@ You are the **lead** orchestrating a structural analysis and refactoring workflo
 
 ### Phase 1: Analysis
 
-Spawn each analyst as a `Task` subagent (fire-and-forget — analysts aren't needed after reporting). Run all 5 in parallel.
+Spawn five subagents in parallel — one per lens, fire-and-forget. Use whatever subagent mechanism the harness provides (e.g. the Agent/Task tool in Claude Code, the subagent API in the Claude Agent SDK, equivalent constructs elsewhere). The lead reads each report and discards the subagent.
 
 #### Analyst Lenses
 
@@ -92,7 +92,7 @@ Once all analysts report:
    - For each recommendation: what to change, why, and what it enables
    - Flag any recommendations that are in tension with each other — let the user decide
 
-**Ask the user which recommendations to implement** (all, some, or none). Do not proceed without approval.
+**Present the prioritized plan and wait for approval** — the user picks which recommendations to implement (all, some, or none). Do not proceed past this point without explicit approval. The pause mechanism depends on the harness (interactive prompt, return to caller, etc.) — what matters is that no Phase 2 changes happen until approval is in.
 
 ### Phase 2: Implementation
 
@@ -131,7 +131,7 @@ Pre-refactor neighbors matter because a file that lost its last caller during th
 
 #### Step 3b: Broad scan (single subagent)
 
-Spawn one `Task` subagent — a broad, shallow sweep across the scan scope. Categories to look for:
+Spawn one subagent — a broad, shallow sweep across the scan scope. Categories to look for:
 
 - **Unreachable code** — statements after unconditional `return`/`throw`/`break`, branches that can't be entered, conditions that are always true/false
 - **Orphaned exports** — exported symbols with zero importers anywhere in the repo
@@ -146,7 +146,7 @@ Output format: prioritized list of findings, each with file:line, category, and 
 
 #### Step 3c: Deep audit (parallel, one subagent per finding)
 
-For each finding from the broad scan, spawn a `Task` subagent in parallel — narrow and deep on that single finding. The auditor must check the common false-positive traps before confirming:
+For each finding from the broad scan, spawn a subagent in parallel — narrow and deep on that single finding. The auditor must check the common false-positive traps before confirming:
 
 - **Dynamic dispatch** — grep for the symbol name as a string literal (lookup tables, `require(name)`, reflective access, message handlers keyed by name)
 - **Public API surface** — exported from a package entry point, `index.*`, or anything declared in `package.json` `exports`/`main`/`bin`
