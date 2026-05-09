@@ -2,6 +2,8 @@
 
 Phase 1 spawns one subagent per lens. Each subagent receives one section of this file verbatim — that section *is* its role. Pass each lens together with the scope and the standard fields from [conventions.md](conventions.md#subagent-conventions). Output uses the [Finding Record schema](conventions.md#finding-record-schema).
 
+**Every lens below must run on every Phase 1 invocation.** Adding a new lens is straightforward — append a numbered section. Removing or skipping a lens is not — each one covers a distinct failure mode that the others miss, so the value comes from running the full sweep. If a lens genuinely has nothing to report on a given codebase, its analyst returns an empty findings list, which is the correct outcome.
+
 ## 1. Function decomposition
 
 Find functions that are too long or handle multiple concerns. Look for:

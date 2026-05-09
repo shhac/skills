@@ -25,7 +25,7 @@ For three worked examples of how the lead should behave end-to-end (full happy p
 Copy this checklist into your first response and tick items off as you progress. It is your authoritative progress record across all four phases:
 
 ```
-- [ ] Phase 1a — spawn one analyst subagent per lens, in parallel
+- [ ] Phase 1a — spawn one analyst subagent per lens, in parallel (every lens in references/lenses.md, no skipping)
 - [ ] Phase 1b — synthesize findings into a prioritized plan
 - [ ] Phase 1c — present the plan and wait for user approval
 - [ ] Phase 2a — record baseline ref before the first change
@@ -36,7 +36,9 @@ Copy this checklist into your first response and tick items off as you progress.
 
 ### Phase 1: Analysis
 
-Spawn one subagent per lens listed in [references/lenses.md](references/lenses.md), in parallel. Each subagent receives:
+Spawn one subagent per lens listed in [references/lenses.md](references/lenses.md), in parallel. **Every lens must run** — count the lens sections in lenses.md and confirm you spawned that many subagents before continuing. Skipping a lens because it "seems unlikely to find anything" is not allowed; each lens covers a distinct failure mode and the value comes from running the full sweep. If a lens genuinely doesn't apply (e.g. the test-coverage lens against a project with zero tests), the analyst will report "no findings" — that's the correct outcome, not a reason to skip.
+
+Each subagent receives:
 
 - The lens content from lenses.md (one section, verbatim) as its role.
 - The scope (full repo, directory, or file).
