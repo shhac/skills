@@ -22,50 +22,13 @@ You are the **lead** orchestrating a structural analysis and refactoring workflo
 
 ### Phase 1: Analysis
 
-Spawn five subagents in parallel — one per lens. Follow the [subagent conventions](references/conventions.md#subagent-conventions) (fire-and-forget, standard prompt fields, parallelism rule).
+Spawn five subagents in parallel — one per lens from [references/lenses.md](references/lenses.md). Each subagent receives:
 
-#### Analyst Lenses
+- The lens content from lenses.md (one section, verbatim) as its role.
+- The scope (full repo, directory, or file).
+- The standard fields per [conventions.md](references/conventions.md#subagent-conventions).
 
-1. **Function decomposition** — Find functions that are too long or handle multiple concerns. Look for:
-   - Functions doing more than one thing (setup + logic + cleanup, fetch + transform + render)
-   - Functions that are hard to test because they mix side effects with pure logic
-   - Opportunities to extract testable pure functions from effectful code
-
-2. **File decomposition** — Find files that are too large (350+ lines as a guideline, not a hard rule). Look for:
-   - Files containing multiple unrelated concepts
-   - Files where one section could serve a broader audience (belongs in a shared/common location)
-   - Whether new files should be siblings, a subdirectory, or relocated to a shared space
-   - Note: function decomposition may increase a file's function count, creating new file-split opportunities — flag these
-
-3. **Complexity reduction** — Find unnecessarily complex code. Look for:
-   - Deep nesting that could be flattened with early returns or guard clauses
-   - `let x; try { x = ... } catch { ... }` patterns that should be extracted into functions
-   - Complex conditionals that could be simplified by inverting, decomposing, or using lookup tables
-   - Overly clever code that sacrifices readability for brevity
-
-4. **Pattern deduplication** — Find repeated patterns that should be shared. Look for:
-   - Near-identical code blocks across files (not just exact duplicates — similar structure with minor variation)
-   - Repeated error handling, validation, or transformation patterns
-   - Opportunities for shared utilities, but only when 3+ call sites exist — don't abstract prematurely
-
-5. **Test coverage on critical paths** — Identify critical code and assess its test coverage. Look for:
-   - Code that handles money, auth, data mutations, or external integrations
-   - Edge cases that aren't covered (nulls, empty collections, boundary values, concurrent access)
-   - Functions that were recently decomposed (by lenses 1-3) and now need their own tests
-   - If the project has no test infrastructure, still identify critical untested paths but note the gap
-
-#### Analyst Instructions
-
-Each analyst prompt should include:
-- Their lens description (from above)
-- The scope (full repo, directory, or file)
-- Instruction to report findings as a prioritized list with file paths, line numbers, and concrete suggestions
-- Instruction to focus on **impact** — don't flag every 50-line function, focus on the ones where splitting genuinely improves clarity or testability
-- Instruction to note dependencies between their findings (e.g., "splitting this function creates a new shared utility candidate")
-
-#### Analyst Output Format
-
-Use the [Finding Record schema](references/conventions.md#finding-record-schema). Analysts omit the `Verdict` field — that's only for Phase 3c auditors.
+Tell each analyst to focus on **impact** (the changes that genuinely improve clarity, testability, or maintainability — not every long function) and to note **dependencies** between findings (e.g. "splitting this function creates a new shared utility candidate"). Output uses the [Finding Record schema](references/conventions.md#finding-record-schema), without the `Verdict` field.
 
 #### Synthesis
 
