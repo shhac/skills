@@ -22,7 +22,7 @@ You are the **lead** orchestrating a structural analysis and refactoring workflo
 
 ### Phase 1: Analysis
 
-Spawn five subagents in parallel — one per lens, fire-and-forget. Use whatever subagent mechanism the harness provides (e.g. the Agent/Task tool in Claude Code, the subagent API in the Claude Agent SDK, equivalent constructs elsewhere). The lead reads each report and discards the subagent.
+Spawn five subagents in parallel — one per lens. Follow the [subagent conventions](references/conventions.md#subagent-conventions) (fire-and-forget, standard prompt fields, parallelism rule).
 
 #### Analyst Lenses
 
@@ -65,18 +65,7 @@ Each analyst prompt should include:
 
 #### Analyst Output Format
 
-```
-## {Lens} Analysis
-
-### Findings (prioritized)
-1. **[impact: high/medium/low]** **{file:line}** — {what's wrong and why it matters}
-   - Suggestion: {concrete recommendation}
-   - Improves: {testability, readability, reuse, maintainability}
-   - Dependencies: {other findings this interacts with, if any}
-
-### Summary
-{1-2 sentences: overall assessment from this lens}
-```
+Use the [Finding Record schema](references/conventions.md#finding-record-schema). Analysts omit the `Verdict` field — that's only for Phase 3c auditors.
 
 #### Synthesis
 
@@ -99,10 +88,9 @@ Once all analysts report:
 The lead implements approved changes directly — **sequentially**, one recommendation at a time, in dependency order.
 
 For each change:
-1. Make the change
-2. Verify it works — detect the project's verification tooling (tests, typecheck, lint) and run what exists. Not all projects have all three.
-3. If verification fails, fix the issue. If the fix isn't straightforward, revert and discuss with the user before moving on.
-4. Brief status update to the user
+1. Make the change.
+2. Run the [verification loop](references/conventions.md#verification-loop).
+3. Brief status update to the user.
 
 #### Implementation Rules
 
@@ -165,10 +153,10 @@ Auditor returns one of:
 
 For each `confirmed-dead` finding, **one at a time**:
 
-1. Remove the code (and any imports that become unused as a result)
-2. Run the project's test suite (and typecheck if available)
-3. **If tests pass:** keep the removal. If the surrounding code region has thin or no test coverage, record a follow-up recommendation: *"add tests for `{region}` — coverage was thin where dead code was removed, and the safety net here is weak for future changes."*
-4. **If tests fail:** revert that single removal, record it as test-protected (the audit was wrong — something depends on it that grep didn't catch), and surface to the user
+1. Remove the code (and any imports that become unused as a result).
+2. Run the [verification loop](references/conventions.md#verification-loop).
+3. **If verification passes:** keep the removal. If the surrounding code region has no tests covering it (use `git grep` for the symbol or surrounding function name across the project's test paths — see verification.md for common test-path conventions), record a follow-up recommendation: *"add tests for `{region}` — coverage was absent where dead code was removed, and the safety net here is weak for future changes."*
+4. **If verification fails:** the verification loop already reverted the change. Record it as test-protected (the audit was wrong — something depends on it that grep didn't catch) and surface to the user.
 
 For `not-dead` findings: skip and log the auditor's reason.
 For `uncertain` findings: surface to the user as-is — do not auto-remove.
@@ -185,7 +173,7 @@ Summarize for the user:
 
 After all approved changes and dead-code removals are complete:
 
-1. Run the full verification suite (tests, typecheck, lint) one final time
-2. Summarize what was changed across both phases: files created/moved/split, functions extracted, patterns consolidated, dead code removed
+1. Run the [verification loop](references/conventions.md#verification-loop) one final time across the whole project, not just changed files.
+2. Summarize what was changed across all phases: files created/moved/split, functions extracted, patterns consolidated, dead code removed.
 3. Note any analyst findings that were approved but deferred or skipped, and why
 4. Surface the test-coverage follow-ups from Phase 3e as a recommended next step

@@ -1,0 +1,49 @@
+# Conventions
+
+Shared definitions used across all phases of this skill. SKILL.md links here instead of repeating these definitions in each phase, so any update lands in one place.
+
+## Subagent conventions
+
+When a phase says "spawn a subagent", the lead:
+
+1. Spawns it via whatever mechanism the harness provides (Agent/Task tool in Claude Code, subagent API in the Claude Agent SDK, equivalent constructs elsewhere).
+2. Treats it as **fire-and-forget** — the lead reads the report and discards. The lead does not hold an ongoing dialogue with analysts or auditors.
+3. Includes these standard fields in the prompt:
+   - **Role** — which lens or task this subagent is for.
+   - **Scope** — which files, directories, or findings to consider.
+   - **Output format** — the exact Finding Record schema below.
+   - **Bias** — how to weigh false positives vs false negatives. Phase 1 analysts and Phase 3b broad scanners both bias toward high-confidence claims; missed findings can be caught on a later run, false claims waste downstream cycles.
+   - **Dependency notes** — instruction to flag interactions with sibling subagents' findings.
+4. Runs subagents in parallel when the work is independent (Phase 1 analysts, Phase 3c auditors).
+
+## Finding Record schema
+
+Every subagent reports findings in this exact format:
+
+```
+## {Lens or category} Analysis
+
+### Findings (prioritized)
+1. **[impact: high/medium/low]** **{file:line}** — {what's wrong and why it matters}
+   - Suggestion: {concrete recommendation}
+   - Improves: {testability, readability, reuse, maintainability, safety}
+   - Verdict: {confirmed-dead | not-dead | uncertain}    # Phase 3c auditors only
+   - Dependencies: {other findings this interacts with, if any}
+
+### Summary
+{1–2 sentences}
+```
+
+The `Verdict` line is included only by Phase 3c deep auditors. Phase 1 analysts and Phase 3b broad scanners omit it.
+
+## Verification loop
+
+Whenever an instruction says "run verification" or "verify the change":
+
+1. Detect the project's verification tooling — see [verification.md](verification.md) for a per-toolchain catalog and a fallback for unfamiliar toolchains.
+2. Run **everything available**: tests, typecheck, lint. There is no time pressure that justifies skipping any.
+3. If any check fails:
+   - Revert the single change that triggered the failure. Do not amend or fix on top — revert, then re-evaluate.
+   - Record: which change was reverted, which check failed, the failure message.
+   - Continue to the next pending change unless the calling phase says otherwise.
+4. If no verification tooling can be detected at all, do not treat that as "passed". Surface the absence to the user — autonomous structural changes against a project with no verification path require explicit acknowledgement that there is no safety net, and the user may want to halt.
