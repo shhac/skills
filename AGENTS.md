@@ -8,9 +8,18 @@ A collection of reusable Claude Code skills distributed via [skills.sh](https://
 skills/
   <skill-name>/
     SKILL.md          # Skill definition with YAML frontmatter
+scripts/
+  <skill-name>/       # Optional per-skill maintenance scripts
+    README.md         # Run instructions for the scripts
 README.md             # Public-facing docs — lists all skills
 LICENSE               # MIT
 ```
+
+## Per-skill maintenance scripts
+
+Some skills have helper scripts (validators, cleaners, generators) under `scripts/<skill-name>/`. They are **not** part of the shipped skill — they exist to help maintainers keep the skill's files consistent. No git hooks are configured; run them manually.
+
+**When making changes to a skill, check `scripts/<skill-name>/README.md` (if it exists) for additional steps that should be done before committing** — typically running a validate script after editing, or a clean script after a bulk import.
 
 ## Skills.sh Conventions
 
