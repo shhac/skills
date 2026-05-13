@@ -28,3 +28,12 @@ quotes:
   - quote: "Avengers, assemble."
     source: "Captain America (Marvel)"
     topics: [team, crew-assembly, defiance]
+  - quote: "We're on a mission from God."
+    source: "The Blues Brothers (Elwood)"
+    topics: [team, purpose, defiance]
+  - quote: "There's strength in numbers."
+    source: "proverb"
+    topics: [team, principle]
+  - quote: "Many shoulders, lighter load."
+    source: "generic"
+    topics: [team, delegation]

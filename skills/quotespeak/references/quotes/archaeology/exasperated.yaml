@@ -28,3 +28,13 @@ quotes:
   - quote: "Of course it's a singleton."
     source: "generic developer cry"
     topics: [archaeology, anti-pattern]
+  - quote: "Who let this happen?"
+    source: "universal developer cry"
+    topics: [archaeology, exasperated]
+  - quote: "Bless their heart."
+    source: "Southern US idiom"
+    topics: [archaeology, exasperated]
+    notes: "Apparent compliment doing the work of incredulous criticism. Use for past-self or past-team."
+  - quote: "This was peer-reviewed?"
+    source: "generic"
+    topics: [archaeology, exasperated, review]

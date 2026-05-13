@@ -29,3 +29,12 @@ quotes:
   - quote: "Slow and steady wins the race."
     source: "Aesop (The Tortoise and the Hare)"
     topics: [persistence, principle]
+  - quote: "All in good time."
+    source: "proverb"
+    topics: [waiting, principle, patience]
+  - quote: "Patience is a virtue."
+    source: "proverb (Cato the Elder)"
+    topics: [waiting, principle, patience]
+  - quote: "The river always finds the sea."
+    source: "generic patience idiom"
+    topics: [waiting, principle, persistence]

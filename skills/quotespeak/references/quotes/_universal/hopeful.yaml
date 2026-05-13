@@ -29,3 +29,12 @@ quotes:
   - quote: "Worth a shot."
     source: "generic"
     topics: [hopeful, try]
+  - quote: "Forward."
+    source: "generic imperative"
+    topics: [hopeful, persistence]
+  - quote: "We got this."
+    source: "generic encouragement"
+    topics: [hopeful, team, retry]
+  - quote: "Fortune favors the bold."
+    source: "Latin proverb (Virgil, Aeneid)"
+    topics: [hopeful, risky, principle]
