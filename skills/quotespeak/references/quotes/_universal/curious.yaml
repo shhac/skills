@@ -24,3 +24,15 @@ quotes:
     source: "generic"
     topics: [curious, processing]
     notes: "Single-syllable processing-aloud. Useful in subtle intensity."
+  - quote: "What sorcery is this?"
+    source: "generic medieval-fantasy idiom"
+    topics: [curious, disbelief]
+  - quote: "Is this real life?"
+    source: "David After Dentist (YouTube)"
+    topics: [curious, disbelief]
+  - quote: "Riddle me this."
+    source: "Batman (Riddler)"
+    topics: [curious, challenge]
+  - quote: "I'll have what she's having."
+    source: "When Harry Met Sally (Estelle Reiner)"
+    topics: [curious, imitate]

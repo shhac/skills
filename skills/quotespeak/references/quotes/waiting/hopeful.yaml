@@ -6,21 +6,25 @@ vibe: |
 quotes:
   - quote: "Trust the process."
     source: "Philadelphia 76ers / sports cliché"
-    topics: ["ci", "tests", "waiting"]
-
+    topics: [ci, tests, waiting]
   - quote: "Patience you must have, my young padawan."
-    source: "Star Wars - Yoda"
-    topics: ["waiting", "ci", "build"]
-
+    source: "Star Wars (Yoda)"
+    topics: [waiting, ci, build]
   - quote: "Don't stop believing."
     source: "Journey"
-    topics: ["ci", "retry", "hope"]
-
+    topics: [ci, retry, hope]
   - quote: "Just keep swimming."
-    source: "Finding Nemo - Dory"
-    topics: ["persistence", "retry", "ci"]
-
-  - quote: "Don't stop believin'."
-    source: "Journey"
-    topics: ["ci", "retry", "hope"]
-    notes: "Duplicate of earlier 'Don't stop believing' entry - same song, different punctuation."
+    source: "Finding Nemo (Dory)"
+    topics: [persistence, retry, ci]
+  - quote: "Maybe this time."
+    source: "generic (and Cabaret)"
+    topics: [retry, ci, hope]
+  - quote: "I think this is the one."
+    source: "generic developer optimism"
+    topics: [retry, ci, hope]
+  - quote: "Hope springs eternal."
+    source: "Alexander Pope (Essay on Man)"
+    topics: [hope, persistence]
+  - quote: "We're getting there."
+    source: "generic"
+    topics: [progress, waiting, hope]

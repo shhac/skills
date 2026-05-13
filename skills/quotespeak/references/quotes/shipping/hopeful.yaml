@@ -5,21 +5,27 @@ vibe: |
 
 quotes:
   - quote: "Rebellions are built on hope."
-    source: "Rogue One - Jyn Erso"
-    topics: ["hope", "refactor", "beginning"]
-
+    source: "Rogue One (Jyn Erso)"
+    topics: [hope, refactor, beginning]
   - quote: "Have fun storming the castle!"
-    source: "The Princess Bride - Miracle Max"
-    topics: ["deploy", "send-off", "hope"]
-
+    source: "The Princess Bride (Miracle Max)"
+    topics: [deploy, send-off, hope]
   - quote: "Look at this stuff. Isn't it neat?"
-    source: "The Little Mermaid - Ariel"
-    topics: ["discovery", "perf", "new"]
-
+    source: "The Little Mermaid (Ariel)"
+    topics: [discovery, perf, new]
   - quote: "Living on a prayer."
     source: "Bon Jovi"
-    topics: ["risky", "ship"]
-
+    topics: [risky, ship]
   - quote: "Yes we can."
     source: "Barack Obama"
-    topics: ["hope", "ship", "oneliner"]
+    topics: [hope, ship, oneliner]
+  - quote: "Today is a good day to die."
+    source: "Klingon proverb (Star Trek)"
+    topics: [risky, ship, commit]
+    notes: "Corruption: 'Today is a good day to ship.' Use for stakes-high deploys."
+  - quote: "May we meet again."
+    source: "The 100"
+    topics: [ship, farewell-blessing]
+  - quote: "Wish us luck."
+    source: "generic"
+    topics: [hope, ship]

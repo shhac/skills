@@ -5,21 +5,26 @@ vibe: |
 
 quotes:
   - quote: "Don't go where I can't follow."
-    source: "The Lord of the Rings - Sam"
-    topics: ["refactor", "dependency", "boundary"]
-
+    source: "The Lord of the Rings (Sam)"
+    topics: [refactor, dependency, boundary]
   - quote: "A heart's a heavy burden."
     source: "Howl's Moving Castle"
-    topics: ["refactor", "weight"]
-
+    topics: [refactor, weight]
   - quote: "Some people are worth melting for."
-    source: "Frozen - Olaf"
-    topics: ["sacrifice", "refactor"]
-
+    source: "Frozen (Olaf)"
+    topics: [sacrifice, refactor]
   - quote: "Sweet child o' mine."
     source: "Guns N' Roses"
-    topics: ["attachment", "oneliner"]
-
+    topics: [attachment, oneliner]
   - quote: "Losing my religion."
     source: "R.E.M."
-    topics: ["doubt", "refactor"]
+    topics: [doubt, refactor]
+  - quote: "We had a good thing going."
+    source: "generic"
+    topics: [refactor, wistful, farewell]
+  - quote: "It was the best of times, it was the worst of times."
+    source: "A Tale of Two Cities (Charles Dickens)"
+    topics: [legacy, refactor, wistful]
+  - quote: "It served us well."
+    source: "generic farewell-to-pattern"
+    topics: [refactor, wistful, deprecate]

@@ -5,25 +5,29 @@ vibe: |
 
 quotes:
   - quote: "I can do this all day."
-    source: "Captain America - Steve Rogers"
-    topics: ["retry", "ci", "persistence"]
-
+    source: "Captain America (Steve Rogers)"
+    topics: [retry, ci, persistence]
   - quote: "I am no man."
-    source: "The Lord of the Rings - Éowyn"
-    topics: ["edge-case", "override", "polymorphism"]
-
+    source: "The Lord of the Rings (Éowyn)"
+    topics: [edge-case, override, polymorphism]
   - quote: "Bite my shiny metal ass."
-    source: "Futurama - Bender"
-    topics: ["defiance", "oneliner"]
-
+    source: "Futurama (Bender)"
+    topics: [defiance, oneliner]
   - quote: "Challenge accepted."
-    source: "How I Met Your Mother - Barney"
-    topics: ["accept", "ship", "oneliner"]
-
+    source: "How I Met Your Mother (Barney)"
+    topics: [accept, ship, oneliner]
   - quote: "Suit up."
-    source: "How I Met Your Mother - Barney"
-    topics: ["prepare", "deploy", "oneliner"]
-
+    source: "How I Met Your Mother (Barney)"
+    topics: [prepare, deploy, oneliner]
   - quote: "We move."
-    source: "internet folklore - moving on after a setback"
-    topics: ["postmortem", "persistence", "oneliner"]
+    source: "internet folklore (moving on after a setback)"
+    topics: [postmortem, persistence, oneliner]
+  - quote: "Bring it on."
+    source: "Bring It On (and generic)"
+    topics: [defiance, ready]
+  - quote: "Make my day."
+    source: "Sudden Impact (Dirty Harry / Clint Eastwood)"
+    topics: [defiance, challenge]
+  - quote: "I am Spartacus."
+    source: "Spartacus (1960)"
+    topics: [defiance, solidarity, identity]
