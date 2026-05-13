@@ -29,3 +29,7 @@ quotes:
   - quote: "I know a guy."
     source: "generic"
     topics: [delegation, network]
+  - quote: "Yeah, if you could <verb-A> <noun-A>, that'd be great."
+    source: "Office Space (Bill Lumbergh)"
+    topics: [delegation, passive-aggressive, template]
+    notes: "Placeholder template for Lumbergh-style passive-aggressive request. Fill <verb-A> and <noun-A> with the ask (e.g., 'rerun the migration', 'check the deploy'). The iconic flatness of the delivery does the work."

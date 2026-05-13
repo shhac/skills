@@ -5,25 +5,29 @@ vibe: |
 
 quotes:
   - quote: "I'm going on an adventure!"
-    source: "The Hobbit - Bilbo"
-    topics: ["start", "refactor", "ship"]
-
+    source: "The Hobbit (Bilbo)"
+    topics: [start, refactor, ship]
   - quote: "Bond. James Bond."
     source: "James Bond films"
-    topics: ["intro", "identity", "oneliner"]
-
+    topics: [intro, identity, oneliner]
   - quote: "The name's Bond. James Bond."
     source: "James Bond films"
-    topics: ["intro", "identity", "oneliner"]
-
+    topics: [intro, identity, oneliner]
   - quote: "I'm kind of a big deal."
-    source: "Anchorman - Ron Burgundy"
-    topics: ["claim", "intro"]
-
+    source: "Anchorman (Ron Burgundy)"
+    topics: [claim, intro]
   - quote: "I'm ready, I'm ready, I'm ready."
     source: "SpongeBob SquarePants"
-    topics: ["start", "hype", "oneliner"]
-
+    topics: [start, hype, oneliner]
   - quote: "It's-a me, Mario!"
-    source: "Mario 64 - Mario"
-    topics: ["intro", "identity", "oneliner"]
+    source: "Mario 64"
+    topics: [intro, identity, oneliner]
+  - quote: "It's alive! It's alive!"
+    source: "Frankenstein (1931)"
+    topics: [building, creation, triumphant]
+  - quote: "Behold."
+    source: "generic"
+    topics: [building, reveal, triumphant]
+  - quote: "And there it is."
+    source: "generic"
+    topics: [building, completion, triumphant]

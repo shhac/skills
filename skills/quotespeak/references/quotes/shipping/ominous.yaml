@@ -5,26 +5,30 @@ vibe: |
 
 quotes:
   - quote: "Hold onto your butts."
-    source: "Jurassic Park - Ray Arnold"
-    topics: ["deploy", "risky", "ci"]
+    source: "Jurassic Park (Ray Arnold)"
+    topics: [deploy, risky, ci]
     notes: "Perfect right before a risky deploy or migration."
-
   - quote: "You're gonna need a bigger boat."
     source: "Jaws"
-    topics: ["scale", "perf", "capacity"]
-
+    topics: [scale, perf, capacity]
   - quote: "It's a dangerous business, going out your door."
-    source: "The Hobbit - Bilbo"
-    topics: ["risk", "deploy", "journey"]
-
+    source: "The Hobbit (Bilbo)"
+    topics: [risk, deploy, journey]
   - quote: "I am a leaf on the wind."
-    source: "Firefly: Serenity - Wash"
-    topics: ["smooth", "deploy", "doomed"]
-
+    source: "Firefly: Serenity (Wash)"
+    topics: [smooth, deploy, doomed]
   - quote: "Tread lightly."
-    source: "Breaking Bad - Walter White"
-    topics: ["warning", "careful"]
-
+    source: "Breaking Bad (Walter White)"
+    topics: [warning, careful]
   - quote: "When you play the game of thrones, you win or you die."
-    source: "Game of Thrones - Cersei"
-    topics: ["stakes", "deploy"]
+    source: "Game of Thrones (Cersei)"
+    topics: [stakes, deploy]
+  - quote: "What could possibly go wrong?"
+    source: "internet meme / generic"
+    topics: [risky, deploy, ironic]
+  - quote: "Last call."
+    source: "generic bar idiom"
+    topics: [deploy, finality]
+  - quote: "Send it."
+    source: "internet folklore (snowboard / motorsport)"
+    topics: [deploy, risky, commit]

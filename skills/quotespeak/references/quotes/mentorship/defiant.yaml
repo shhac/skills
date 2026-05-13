@@ -6,56 +6,55 @@ vibe: |
 quotes:
   - quote: "She's a witch! May we burn her?"
     source: "Monty Python and the Holy Grail"
-    topics: ["blame", "witch-hunt", "scapegoat"]
-
+    topics: [blame, witch-hunt, scapegoat]
   - quote: "You're not wrong, Walter. You're just an asshole."
-    source: "The Big Lebowski - The Dude"
-    topics: ["code-review", "partial-accept"]
-
+    source: "The Big Lebowski (The Dude)"
+    topics: [code-review, partial-accept]
   - quote: "Say 'what' again. I dare you."
-    source: "Pulp Fiction - Jules"
-    topics: ["confront", "code-review"]
-
+    source: "Pulp Fiction (Jules)"
+    topics: [confront, code-review]
   - quote: "There's only one thing I hate more than lying: skim milk. Which is water that's lying about being milk."
-    source: "Parks and Recreation - Ron Swanson"
-    topics: ["code-review", "fake"]
-
+    source: "Parks and Recreation (Ron Swanson)"
+    topics: [code-review, fake]
   - quote: "Sarge, with all due respect, I am gonna completely ignore everything you just said."
-    source: "Brooklyn Nine-Nine - Jake Peralta"
-    topics: ["defiance", "code-review"]
-
+    source: "Brooklyn Nine-Nine (Jake Peralta)"
+    topics: [defiance, code-review]
   - quote: "Could you BE any more obvious?"
-    source: "Friends - Chandler"
-    topics: ["code-review"]
-
+    source: "Friends (Chandler)"
+    topics: [code-review]
   - quote: "Welcome to the real world. It sucks. You're gonna love it."
-    source: "Friends - Monica"
-    topics: ["onboarding", "postmortem"]
-
+    source: "Friends (Monica)"
+    topics: [onboarding, postmortem]
   - quote: "I bet you think this song is about you."
-    source: "Carly Simon - 'You're So Vain'"
-    topics: ["code-review", "blame"]
-
+    source: "Carly Simon ('You're So Vain')"
+    topics: [code-review, blame]
   - quote: "Hit me with your best shot."
     source: "Pat Benatar"
-    topics: ["review", "feedback", "defiance"]
-
-  - quote: "Cellblock tango - He had it comin'."
+    topics: [review, feedback, defiance]
+  - quote: "Cellblock tango: he had it comin'."
     source: "Chicago"
-    topics: ["blame", "postmortem"]
-
+    topics: [blame, postmortem]
   - quote: "Amazing chest ahead."
     source: "Dark Souls (player message meme)"
-    topics: ["misleading", "docs"]
-
+    topics: [misleading, docs]
   - quote: "If you're going through hell, keep going."
     source: "Winston Churchill (attributed)"
-    topics: ["persistence", "postmortem"]
-
+    topics: [persistence, postmortem]
   - quote: "I ain't reading all that. Happy for you tho. Or sorry that happened."
     source: "Twitter meme"
-    topics: ["docs", "scope"]
-
+    topics: [docs, scope]
   - quote: "I'm not arguing, I'm just explaining why I'm right."
     source: "stand-up folklore"
-    topics: ["code-review", "defiance"]
+    topics: [code-review, defiance]
+  - quote: "I'm going to get medieval on <noun-A>."
+    source: "Pulp Fiction (Marsellus Wallace)"
+    topics: [refactor, pitch, defiance]
+    notes: "Placeholder template: fill <noun-A> with the target (e.g., 'this codebase', 'the auth layer'). Canonical form has crude noun; stored template stays clean."
+  - quote: "Are you gonna bark all day, little <noun-A>, or are you gonna <verb-A>?"
+    source: "Reservoir Dogs (Mr. Pink)"
+    topics: [pitch, defiance, stop-talking]
+    notes: "Placeholder template: <noun-A> is the target of the challenge (often the person/team), <verb-A> is what they should do instead of talking. Canonical noun has crude diminutive; placeholder keeps clean."
+  - quote: "Pretty please. With sugar on top. <imperative-A>."
+    source: "Pulp Fiction (Jules)"
+    topics: [pitch, forceful-ask]
+    notes: "Placeholder template: <imperative-A> is the demand the speaker is making (e.g., 'merge the PR', 'rerun the test'). Canonical imperative has profanity modifier; placeholder strips it."

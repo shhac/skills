@@ -6,29 +6,32 @@ vibe: |
 quotes:
   - quote: "Houston, we have a problem."
     source: "Apollo 13 (paraphrased)"
-    topics: ["incident", "production", "bug"]
-    notes: "Actual line was 'Houston, we've had a problem' - the paraphrase is more recognizable."
-
+    topics: [incident, production, bug]
+    notes: "Actual line was 'Houston, we've had a problem'; the paraphrase is more recognizable."
   - quote: "Everything is fine. Nothing to see here."
-    source: "Naked Gun - Frank Drebin"
-    topics: ["incident", "denial", "deflection"]
-
+    source: "Naked Gun (Frank Drebin)"
+    topics: [incident, denial, deflection]
   - quote: "Get used to disappointment."
-    source: "The Princess Bride - Westley"
-    topics: ["expectations", "failure"]
-
+    source: "The Princess Bride (Westley)"
+    topics: [expectations, failure]
   - quote: "He's dead, Jim."
-    source: "Star Trek - Bones McCoy"
-    topics: ["crash", "exit", "process-died"]
-
+    source: "Star Trek (Bones McCoy)"
+    topics: [crash, exit, process-died]
   - quote: "Damage report."
-    source: "Star Trek - generic"
-    topics: ["postmortem", "incident", "status"]
-
+    source: "Star Trek (generic)"
+    topics: [postmortem, incident, status]
   - quote: "I'm in danger."
-    source: "The Simpsons / chili cook-off meme - Ralph Wiggum"
-    topics: ["crash", "panic"]
-
+    source: "The Simpsons (Ralph Wiggum, chili cook-off meme)"
+    topics: [crash, panic]
   - quote: "Aaaand it's gone."
-    source: "South Park - bank teller"
-    topics: ["crash", "lost", "oneliner"]
+    source: "South Park (bank teller)"
+    topics: [crash, lost, oneliner]
+  - quote: "Working as designed."
+    source: "developer folklore"
+    topics: [incident, deflection]
+  - quote: "Could be worse."
+    source: "generic British understatement"
+    topics: [incident, deadpan]
+  - quote: "Carry on."
+    source: "generic British idiom"
+    topics: [incident, composed]
