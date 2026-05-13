@@ -5,22 +5,27 @@ vibe: |
 
 quotes:
   - quote: "I'm a doctor, not a bricklayer."
-    source: "Star Trek - Bones McCoy"
-    topics: ["scope", "expertise", "refusal"]
+    source: "Star Trek (Bones McCoy)"
+    topics: [scope, expertise, refusal]
     notes: "Template: 'I'm a doctor, not a ___.' Endless variations."
-
   - quote: "We are the knights who say 'Ni!'"
     source: "Monty Python and the Holy Grail"
-    topics: ["requirements", "gatekeeper", "demand"]
-
+    topics: [requirements, gatekeeper, demand]
   - quote: "Don't push me 'cause I'm close to the edge."
-    source: "Grandmaster Flash - 'The Message'"
-    topics: ["burnout", "scope"]
-
+    source: "Grandmaster Flash ('The Message')"
+    topics: [burnout, scope]
   - quote: "Practice. We're talkin' 'bout practice."
     source: "Allen Iverson"
-    topics: ["meetings", "scope"]
-
+    topics: [meetings, scope]
   - quote: "We need a meeting to plan the meeting."
     source: "office folklore"
-    topics: ["meetings", "recursion"]
+    topics: [meetings, recursion]
+  - quote: "We've replanned this four times."
+    source: "generic process-fatigue register"
+    topics: [planning, exasperated, replan]
+  - quote: "Same shape, new dates."
+    source: "generic"
+    topics: [planning, exasperated, replan]
+  - quote: "Back to the drawing board."
+    source: "proverb / Peter Arno (New Yorker cartoon)"
+    topics: [planning, exasperated, restart]
