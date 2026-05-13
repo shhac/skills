@@ -28,3 +28,12 @@ quotes:
   - quote: "It was a good run."
     source: "generic"
     topics: [wistful, ending]
+  - quote: "Time marches on."
+    source: "generic"
+    topics: [wistful, time]
+  - quote: "We had our moment."
+    source: "generic"
+    topics: [wistful, ending]
+  - quote: "All things must pass."
+    source: "George Harrison"
+    topics: [wistful, principle, deprecate]

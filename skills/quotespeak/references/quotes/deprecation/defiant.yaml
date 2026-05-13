@@ -5,34 +5,36 @@ vibe: |
 
 quotes:
   - quote: "Mostly dead is slightly alive."
-    source: "The Princess Bride - Miracle Max"
-    topics: ["legacy", "deprecated", "refactor"]
-
+    source: "The Princess Bride (Miracle Max)"
+    topics: [legacy, deprecated, refactor]
   - quote: "Touch grass."
     source: "internet folklore"
-    topics: ["break", "log-off", "rest"]
+    topics: [break, log-off, rest]
     notes: "For when the user has been debugging too long."
-
   - quote: "I'm not dead yet."
     source: "Monty Python and the Holy Grail"
-    topics: ["legacy", "alive", "deprecate"]
-
+    topics: [legacy, alive, deprecate]
   - quote: "I'm gonna get medieval on your ass."
-    source: "Pulp Fiction - Marsellus"
-    topics: ["retribution", "deprecate", "oneliner"]
-
+    source: "Pulp Fiction (Marsellus)"
+    topics: [retribution, deprecate, oneliner]
   - quote: "Bran the Broken."
-    source: "Game of Thrones - Tyrion"
-    topics: ["naming", "deprecate"]
-
+    source: "Game of Thrones (Tyrion)"
+    topics: [naming, deprecate]
   - quote: "We are never ever getting back together."
     source: "Taylor Swift"
-    topics: ["deprecate", "finality", "defiance"]
-
+    topics: [deprecate, finality, defiance]
   - quote: "Bye bye bye."
     source: "*NSYNC"
-    topics: ["deprecate", "farewell", "oneliner"]
-
+    topics: [deprecate, farewell, oneliner]
   - quote: "GG no re."
     source: "competitive gaming"
-    topics: ["postmortem", "finality"]
+    topics: [postmortem, finality]
+  - quote: "Good riddance."
+    source: "generic"
+    topics: [deprecate, defiance, finality]
+  - quote: "Out with the old."
+    source: "proverb (and 'in with the new')"
+    topics: [deprecate, defiance, replace]
+  - quote: "Don't let the door hit you on the way out."
+    source: "generic dismissive idiom"
+    topics: [deprecate, defiance, finality]

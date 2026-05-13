@@ -5,37 +5,38 @@ vibe: |
 
 quotes:
   - quote: "We have a Hulk."
-    source: "The Avengers - Tony Stark"
-    topics: ["helper", "tool", "util"]
-
+    source: "The Avengers (Tony Stark)"
+    topics: [helper, tool, util]
   - quote: "Avengers, assemble."
-    source: "Avengers: Endgame - Captain America"
-    topics: ["team", "deploy", "callout"]
-
+    source: "Avengers: Endgame (Captain America)"
+    topics: [team, deploy, callout]
   - quote: "Wakanda forever."
-    source: "Black Panther - T'Challa"
-    topics: ["allegiance", "deploy", "callout"]
-
+    source: "Black Panther (T'Challa)"
+    topics: [allegiance, deploy, callout]
   - quote: "Did we just become best friends?"
-    source: "Step Brothers - Brennan"
-    topics: ["pair", "collaboration", "sudden"]
-
+    source: "Step Brothers (Brennan)"
+    topics: [pair, collaboration, sudden]
   - quote: "Shake and bake."
-    source: "Talladega Nights - Ricky Bobby"
-    topics: ["pair", "success", "ship"]
-
+    source: "Talladega Nights (Ricky Bobby)"
+    topics: [pair, success, ship]
   - quote: "Nine-nine!"
-    source: "Brooklyn Nine-Nine - Squad"
-    topics: ["team", "callout", "oneliner"]
-
+    source: "Brooklyn Nine-Nine (Squad)"
+    topics: [team, callout, oneliner]
   - quote: "Steve Holt!"
-    source: "Arrested Development - Steve Holt"
-    topics: ["intro", "callout", "oneliner"]
-
+    source: "Arrested Development (Steve Holt)"
+    topics: [intro, callout, oneliner]
   - quote: "Norm!"
-    source: "Cheers - bar regulars"
-    topics: ["greeting", "recognition", "oneliner"]
-
+    source: "Cheers (bar regulars)"
+    topics: [greeting, recognition, oneliner]
   - quote: "We've got Dog."
-    source: "Half-Life 2 - Alyx"
-    topics: ["helper", "dependency", "oneliner"]
+    source: "Half-Life 2 (Alyx)"
+    topics: [helper, dependency, oneliner]
+  - quote: "Mission accomplished."
+    source: "generic (and George W. Bush banner)"
+    topics: [team, success, finished]
+  - quote: "The team came through."
+    source: "generic"
+    topics: [team, success, ship]
+  - quote: "Teamwork makes the dream work."
+    source: "proverb (John C. Maxwell)"
+    topics: [team, principle, success]

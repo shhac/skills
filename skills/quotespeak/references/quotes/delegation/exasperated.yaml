@@ -28,3 +28,12 @@ quotes:
   - quote: "That's not what I asked for."
     source: "generic"
     topics: [delegation, miscommunication]
+  - quote: "I gave you ONE job."
+    source: "internet meme (emphatic variant)"
+    topics: [delegation, single-task-failed]
+  - quote: "That's the opposite of what I asked for."
+    source: "generic"
+    topics: [delegation, miscommunication]
+  - quote: "I should have been clearer."
+    source: "generic mature-recognition"
+    topics: [delegation, self-blame, miscommunication]
