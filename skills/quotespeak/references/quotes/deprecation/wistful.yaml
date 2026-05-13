@@ -6,65 +6,53 @@ vibe: |
 quotes:
   - quote: "All good things must come to an end."
     source: "proverb (Chaucer-attributed)"
-    topics: ["deprecate", "ending", "sunset"]
-
+    topics: [deprecate, ending, sunset]
   - quote: "So long, and thanks for all the fish."
-    source: "The Hitchhiker's Guide to the Galaxy - Douglas Adams"
-    topics: ["deprecate", "ending", "farewell"]
-
+    source: "The Hitchhiker's Guide to the Galaxy (Douglas Adams)"
+    topics: [deprecate, ending, farewell]
   - quote: "I have been, and always shall be, your friend."
-    source: "Star Trek II - Spock"
-    topics: ["deprecate", "ending", "farewell"]
+    source: "Star Trek II (Spock)"
+    topics: [deprecate, ending, farewell]
     notes: "Corrupt for callbacks: 'I have been, and always shall be, your callback.'"
-
   - quote: "Here's looking at you, kid."
     source: "Casablanca"
-    topics: ["farewell", "deprecate"]
-
+    topics: [farewell, deprecate]
   - quote: "We'll always have Paris."
     source: "Casablanca"
-    topics: ["deprecate", "farewell", "legacy"]
-
+    topics: [deprecate, farewell, legacy]
   - quote: "I will not say: do not weep; for not all tears are an evil."
-    source: "The Lord of the Rings - Gandalf"
-    topics: ["deprecate", "farewell", "postmortem"]
-
+    source: "The Lord of the Rings (Gandalf)"
+    topics: [deprecate, farewell, postmortem]
   - quote: "I am glad you are here with me. Here at the end of all things."
-    source: "The Lord of the Rings - Frodo"
-    topics: ["farewell", "deprecate", "shutdown"]
-
+    source: "The Lord of the Rings (Frodo)"
+    topics: [farewell, deprecate, shutdown]
   - quote: "Part of the journey is the end."
-    source: "Avengers: Endgame - Tony Stark"
-    topics: ["deprecate", "ending"]
-
+    source: "Avengers: Endgame (Tony Stark)"
+    topics: [deprecate, ending]
   - quote: "I love you 3000."
-    source: "Avengers: Endgame - Morgan Stark"
-    topics: ["farewell", "deprecate"]
-
+    source: "Avengers: Endgame (Morgan Stark)"
+    topics: [farewell, deprecate]
   - quote: "I love you and I like you."
-    source: "Parks and Recreation - Leslie / Ben"
-    topics: ["farewell", "dependency"]
-
+    source: "Parks and Recreation (Leslie / Ben)"
+    topics: [farewell, dependency]
   - quote: "Hold the door."
-    source: "Game of Thrones - Hodor"
-    topics: ["block", "sacrifice", "deprecate"]
-
+    source: "Game of Thrones (Hodor)"
+    topics: [block, sacrifice, deprecate]
   - quote: "Run, you clever boy. And remember."
-    source: "Doctor Who - Clara"
-    topics: ["farewell", "deprecate"]
-
+    source: "Doctor Who (Clara)"
+    topics: [farewell, deprecate]
   - quote: "And so we play our parts."
-    source: "Rick and Morty - Mr. Poopybutthole"
-    topics: ["deprecate"]
-
+    source: "Rick and Morty (Mr. Poopybutthole)"
+    topics: [deprecate]
   - quote: "Take me home, country roads."
     source: "John Denver"
-    topics: ["farewell", "return"]
-
+    topics: [farewell, return]
   - quote: "I will always love you."
     source: "Dolly Parton / Whitney Houston"
-    topics: ["farewell", "oneliner"]
-
+    topics: [farewell, oneliner]
   - quote: "I'm sorry. We have to delete this branch."
     source: "developer folklore (corrupted medical-drama)"
-    topics: ["merge-conflict", "deprecate"]
+    topics: [merge-conflict, deprecate]
+  - quote: "I should go."
+    source: "Mass Effect (Commander Shepard)"
+    topics: [farewell, deprecate, exit]

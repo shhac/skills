@@ -53,8 +53,12 @@ quotes:
   - quote: "Are you gonna bark all day, little <noun-A>, or are you gonna <verb-A>?"
     source: "Reservoir Dogs (Mr. Pink)"
     topics: [pitch, defiance, stop-talking]
-    notes: "Placeholder template: <noun-A> is the target of the challenge (often the person/team), <verb-A> is what they should do instead of talking. Canonical noun has crude diminutive; placeholder keeps clean."
+    notes: "Placeholder template: <noun-A> is the target of the challenge, <verb-A> is what they should do. Canonical has crude diminutive; placeholder keeps clean."
   - quote: "Pretty please. With sugar on top. <imperative-A>."
     source: "Pulp Fiction (Jules)"
     topics: [pitch, forceful-ask]
-    notes: "Placeholder template: <imperative-A> is the demand the speaker is making (e.g., 'merge the PR', 'rerun the test'). Canonical imperative has profanity modifier; placeholder strips it."
+    notes: "Placeholder template: <imperative-A> is the demand (e.g., 'merge the PR'). Canonical has profanity modifier; placeholder strips it."
+  - quote: "The first rule of <thing-A> is: you do not talk about <thing-A>."
+    source: "Fight Club (Tyler Durden)"
+    topics: [pitch, secrecy, rule]
+    notes: "Placeholder template: <thing-A> is the silent topic (e.g., 'the hotfix branch', 'the legacy module'). Canonical form is verbatim; the template form lets the listener fill the topic."

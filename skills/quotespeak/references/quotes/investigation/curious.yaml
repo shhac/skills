@@ -51,3 +51,11 @@ quotes:
   - quote: "Follow the money."
     source: "All the President's Men"
     topics: [investigation, methods, curious]
+  - quote: "New <noun-A> has come to light."
+    source: "The Big Lebowski (The Dude)"
+    topics: [investigation, discovery, curious]
+    notes: "Placeholder template: fill <noun-A> with the evidence (e.g., 'logs', 'stack frame', 'commit'). Canonical noun has crude descriptor; placeholder keeps clean."
+  - quote: "The greatest trick the devil ever pulled was convincing the world he didn't exist."
+    source: "The Usual Suspects (Verbal Kint, originally Baudelaire)"
+    topics: [investigation, ominous-curious, hidden]
+    notes: "For bugs that are hidden by design or by clever misdirection in the code."

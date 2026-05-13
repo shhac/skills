@@ -31,3 +31,7 @@ quotes:
   - quote: "Oh, for crying out loud."
     source: "generic"
     topics: [exasperated, exhaustion]
+  - quote: "Ah <expletive-A>, here we go again."
+    source: "Grand Theft Auto: San Andreas (Carl 'CJ' Johnson)"
+    topics: [exasperated, retry, recurring]
+    notes: "Placeholder template: fill <expletive-A> with a context-appropriate mild interjection (or omit). Canonical has crude word; placeholder keeps clean. Use for the universal 'this again' moment."

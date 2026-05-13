@@ -29,3 +29,10 @@ quotes:
   - quote: "Here be dragons."
     source: "medieval cartography idiom"
     topics: [legacy, warning]
+  - quote: "Itchy. Tasty."
+    source: "Resident Evil (Keeper's diary)"
+    topics: [legacy, cursed, journal]
+    notes: "Found in old comments or commit messages that describe code in unsettlingly affectionate terms."
+  - quote: "What lies beneath."
+    source: "generic"
+    topics: [legacy, buried]

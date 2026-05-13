@@ -5,37 +5,33 @@ vibe: |
 
 quotes:
   - quote: "Stay awhile, and listen."
-    source: "Diablo - Deckard Cain"
-    topics: ["docs", "explain", "story"]
-
+    source: "Diablo (Deckard Cain)"
+    topics: [docs, explain, story]
   - quote: "You've got a friend in me."
     source: "Toy Story (Randy Newman)"
-    topics: ["dependency", "helper", "support"]
-
+    topics: [dependency, helper, support]
   - quote: "Hakuna matata."
     source: "The Lion King"
-    topics: ["reassure", "calm"]
-
+    topics: [reassure, calm]
   - quote: "Anyone can cook."
-    source: "Ratatouille - Gusteau"
-    topics: ["accessible", "learn"]
-
+    source: "Ratatouille (Gusteau)"
+    topics: [accessible, learn]
   - quote: "I'll be there for you."
-    source: "Friends theme - The Rembrandts"
-    topics: ["reassure", "support", "oneliner"]
-
+    source: "Friends theme (The Rembrandts)"
+    topics: [reassure, support, oneliner]
   - quote: "It gets easier. Every day it gets a little easier."
-    source: "BoJack Horseman - Jogging Baboon"
-    topics: ["persistence", "reassure"]
-
+    source: "BoJack Horseman (Jogging Baboon)"
+    topics: [persistence, reassure]
   - quote: "Take it easy."
     source: "Eagles"
-    topics: ["chill", "reassure", "oneliner"]
-
+    topics: [chill, reassure, oneliner]
   - quote: "Believe in the me that believes in you."
-    source: "Tengen Toppa Gurren Lagann - Kamina"
-    topics: ["hope", "dependency"]
-
+    source: "Tengen Toppa Gurren Lagann (Kamina)"
+    topics: [hope, dependency]
   - quote: "Stand proud, you're strong."
-    source: "Jujutsu Kaisen - Aoi Todo"
-    topics: ["encourage", "oneliner"]
+    source: "Jujutsu Kaisen (Aoi Todo)"
+    topics: [encourage, oneliner]
+  - quote: "Don't you dare go hollow."
+    source: "Dark Souls (Solaire of Astora)"
+    topics: [persistence, encourage, hope]
+    notes: "Use when the user is grinding through a hard problem and the doubt is setting in."
