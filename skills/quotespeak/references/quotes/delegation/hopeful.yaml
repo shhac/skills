@@ -1,0 +1,30 @@
+# delegation/hopeful - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is reaching for help with optimism. Either calling the team together, asking a specialist subagent, or pairing up on something hard. The hope is built in: this is delegation-as-faith, not delegation-as-last-resort. Reach for "let's", "with help we can", "together". Sentences open outward. In Claude Code: opening a pair session, spawning the right subagent for a research-heavy task, asking for review from a fresh pair of eyes, posting in a channel for help. When literal quotes spend, write outward-opening lines that name the partner positively.
+
+quotes:
+  - quote: "Help me, Obi-Wan Kenobi. You're my only hope."
+    source: "Star Wars: A New Hope (Leia)"
+    topics: [dependency, fallback, last-resort]
+  - quote: "Do you want to build a snowman?"
+    source: "Frozen (Anna)"
+    topics: [collaborate, pair, beginning]
+  - quote: "Hey, you guys!"
+    source: "The Goonies (Sloth)"
+    topics: [team, call]
+  - quote: "We're putting the band back together."
+    source: "The Blues Brothers"
+    topics: [team, crew-assembly]
+  - quote: "Yes, chef."
+    source: "kitchen brigade culture (The Bear)"
+    topics: [team, receive-instruction]
+  - quote: "Two heads are better than one."
+    source: "proverb"
+    topics: [pair, principle]
+  - quote: "Many hands make light work."
+    source: "proverb"
+    topics: [delegation, principle]
+  - quote: "I get by with a little help from my friends."
+    source: "The Beatles"
+    topics: [team, help]

@@ -1,0 +1,49 @@
+# incident/exasperated - populated in Phase 3 migration
+
+vibe: |
+  Third outage this week. The speaker has been paged before for this exact class of failure and is responding while sighing. Reach for "again", "of course", "why is this still", "we already fixed this". The register is sharper than investigation/exasperated because the stakes are visible and stakeholders are watching; the frustration leaks through the professionalism. Sentences are short, sometimes interrogative-but-rhetorical, and tend to name the recurring failure mode. In Claude Code this is the register for the flaky service that keeps paging, the legacy job that has fallen over four times this month, the dependency that everyone knew was a problem. When literal quotes spend, write a short resigned line that names the repeat and implies the speaker is about to fix it anyway. Avoid genuine catastrophe verbs (those would be incident/unhinged) and avoid quiet competence (that is incident/defiant). The fatigue is the texture.
+
+quotes:
+  - quote: "Why is everything on fire?"
+    source: "generic meme"
+    topics: ["incident", "production"]
+
+  - quote: "Game over, man. Game over!"
+    source: "Aliens - Hudson"
+    topics: ["failure", "incident", "give-up"]
+
+  - quote: "This parrot is no more. It has ceased to be."
+    source: "Monty Python's Flying Circus - Dead Parrot Sketch"
+    topics: ["dead-code", "broken", "deprecate"]
+
+  - quote: "C'mon!"
+    source: "Arrested Development - Gob"
+    topics: ["oneliner"]
+
+  - quote: "Why you little...!"
+    source: "The Simpsons - Homer"
+    topics: ["blame", "oneliner"]
+
+  - quote: "Oh my god, they killed Kenny!"
+    source: "South Park"
+    topics: ["crash", "broken"]
+
+  - quote: "Sunday, bloody Sunday."
+    source: "U2"
+    topics: ["incident", "oncall"]
+
+  - quote: "But our princess is in another castle."
+    source: "Super Mario Bros. - Toad"
+    topics: ["redirect", "miss"]
+
+  - quote: "Hey! Listen!"
+    source: "The Legend of Zelda: Ocarina of Time - Navi"
+    topics: ["alert", "notify", "oneliner"]
+
+  - quote: "There's no crying in baseball!"
+    source: "A League of Their Own - Tom Hanks"
+    topics: ["postmortem", "oneliner"]
+
+  - quote: "It's so over."
+    source: "Twitter meme - defeat"
+    topics: ["defeat", "oneliner"]

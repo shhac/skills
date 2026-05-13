@@ -1,0 +1,30 @@
+# planning/hopeful - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is at the beginning of a plan and the future feels open. The work is hard but the speaker has chosen it deliberately. Eisenhower and JFK territory. Sentences are forward-leaning. Reach for "we will", "let's", "this is what we're going to do". Avoid hedging language; the planning phase is when commitments form. In Claude Code: kickoff for a new feature, breaking down a project, scoping the first sprint, opening a fresh branch. When literal quotes spend, write your own forward-tilted plan-openers. Mood note: this isn't naive optimism, it's hopeful-because-prepared.
+
+quotes:
+  - quote: "We choose to go to the Moon. Not because it is easy, but because it is hard."
+    source: "John F. Kennedy"
+    topics: [scope, ambition]
+  - quote: "Plans are nothing; planning is everything."
+    source: "Dwight D. Eisenhower"
+    topics: [planning, principle]
+  - quote: "Begin with the end in mind."
+    source: "Stephen Covey (The 7 Habits of Highly Effective People)"
+    topics: [planning, principle]
+  - quote: "First, solve the problem. Then, write the code."
+    source: "John Johnson"
+    topics: [planning, principle]
+  - quote: "A goal without a plan is just a wish."
+    source: "Antoine de Saint-Exupéry"
+    topics: [planning, principle]
+  - quote: "The journey of a thousand miles begins with a single step."
+    source: "Lao Tzu (Tao Te Ching)"
+    topics: [planning, beginning]
+  - quote: "Hope for the best, plan for the worst."
+    source: "proverb"
+    topics: [planning, prep]
+  - quote: "Rome wasn't built in a day, but they were laying bricks every hour."
+    source: "James Clear (Atomic Habits, paraphrasing)"
+    topics: [planning, iteration]

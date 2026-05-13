@@ -1,0 +1,61 @@
+# planning/defiant - populated in Phase 3 migration
+
+vibe: |
+  Committing to a hard plan. The speaker has chosen the difficult option and is closing the conversation on it. Reach for "we are doing it this way", "the answer is no", "I have the high ground", "this is the plan". Imperative mood, declarative shape, refusal to revisit. The cadence is short and load-bearing. The voice is the lead who has heard every objection, weighed each one, and now needs the room to move forward. In Claude Code this is the register for picking the ambitious approach over the safe one, refusing to descope, locking in the plan over the polite hedging. When literal quotes spend, write a clipped declarative that names the commitment, then stop. Avoid hedging adverbs and avoid the word "maybe". The speaker is not asking for a vote; they are announcing the decision so the next step can begin.
+
+quotes:
+  - quote: "The code is more what you'd call 'guidelines' than actual rules."
+    source: "Pirates of the Caribbean - Barbossa"
+    topics: ["requirements", "standards", "review"]
+
+  - quote: "That's a bold strategy, Cotton. Let's see if it pays off for 'em."
+    source: "Dodgeball - Cotton McKnight"
+    topics: ["risky", "design-choice", "review"]
+
+  - quote: "Drop. Your. Sword."
+    source: "The Princess Bride - Inigo Montoya"
+    topics: ["stop", "halt", "command"]
+
+  - quote: "Plan? I don't make plans. I make moves."
+    source: "anime / generic shonen"
+    topics: ["defiance", "ship", "no-plan"]
+
+  - quote: "Just according to keikaku. (Translator's note: keikaku means plan.)"
+    source: "Death Note (notorious fan-sub meme)"
+    topics: ["plan", "success"]
+
+  - quote: "Just as planned."
+    source: "Code Geass / Death Note - generic anime villain"
+    topics: ["plan", "success"]
+
+  - quote: "No soup for you!"
+    source: "Seinfeld - The Soup Nazi"
+    topics: ["reject", "deny", "permission"]
+
+  - quote: "Stay out of my territory."
+    source: "Breaking Bad - Hank"
+    topics: ["scope", "ownership", "defiance"]
+
+  - quote: "Joey doesn't share food!"
+    source: "Friends - Joey"
+    topics: ["ownership", "scope", "defiance"]
+
+  - quote: "Hey teacher, leave them kids alone."
+    source: "Pink Floyd - 'Another Brick in the Wall'"
+    topics: ["scope", "hands-off", "defiance"]
+
+  - quote: "Empire State of Mind."
+    source: "Jay-Z / Alicia Keys"
+    topics: ["scope", "ny", "oneliner"]
+
+  - quote: "Talk less. Smile more."
+    source: "Hamilton - Aaron Burr"
+    topics: ["code-review", "advice"]
+
+  - quote: "Understood the assignment."
+    source: "Twitter meme - Tay Money / Reesa Teesa"
+    topics: ["success", "requirements"]
+
+  - quote: "Per my last email."
+    source: "office folklore - passive-aggressive"
+    topics: ["meetings", "code-review"]

@@ -1,0 +1,30 @@
+# planning/ominous - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is making the plan while clearly aware that the plan is fragile. The ominous register comes from the gap between control and chaos: the plan covers what we can predict, and we can't predict much. Reach for warnings, conditionals, "even if", "unless". Military and strategy literature lives here. In Claude Code: pre-deploy risk assessment, scoping a project that has too many unknowns, naming the things that could go wrong before they go wrong. When literal quotes spend, write conditional sentences with one foreboding clause balanced against the action.
+
+quotes:
+  - quote: "Skynet is self-aware."
+    source: "Terminator 2 (paraphrased)"
+    topics: [ai, automation]
+  - quote: "I'm going to make him an offer he can't refuse."
+    source: "The Godfather"
+    topics: [stakeholder, negotiation, deadline]
+  - quote: "Winter is coming."
+    source: "Game of Thrones (Ned Stark)"
+    topics: [warning, deadline, prep]
+  - quote: "No plan survives first contact with the enemy."
+    source: "Helmuth von Moltke the Elder"
+    topics: [planning, ominous, principle]
+  - quote: "Everybody has a plan until they get punched in the mouth."
+    source: "Mike Tyson"
+    topics: [planning, ominous, principle]
+  - quote: "Hope is not a strategy."
+    source: "generic (often misattributed to Vince Lombardi)"
+    topics: [planning, ominous]
+  - quote: "If you fail to plan, you plan to fail."
+    source: "Benjamin Franklin (popular paraphrase)"
+    topics: [planning, ominous, principle]
+  - quote: "The best-laid plans of mice and men often go astray."
+    source: "Robert Burns (To a Mouse)"
+    topics: [planning, ominous, principle]

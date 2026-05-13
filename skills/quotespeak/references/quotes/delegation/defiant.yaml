@@ -1,0 +1,30 @@
+# delegation/defiant - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is refusing to do it alone. The defiance is in the *teamup*: I will not be the lone hero; we will face this together. Reach for "we", "all of us", "stronger together". Sentences are short and rallying. Battle-cry adjacent but not strictly martial; rallies for civic causes live here too. In Claude Code: refusing to take on a project solo, insisting on a teammate or subagent, marshaling a code-review crowd. When literal quotes spend, write short collective declarations.
+
+quotes:
+  - quote: "Say hello to my little friend."
+    source: "Scarface"
+    topics: [tool, helper, util]
+  - quote: "And my axe."
+    source: "The Lord of the Rings (Gimli)"
+    topics: [me-too, "+1", support]
+  - quote: "Regulators! Mount up."
+    source: "Warren G (Regulators)"
+    topics: [team, deploy, oneliner]
+  - quote: "Do you hear the people sing?"
+    source: "Les Misérables"
+    topics: [team, refactor, defiance]
+  - quote: "All for one, and one for all."
+    source: "Alexandre Dumas (The Three Musketeers)"
+    topics: [team, principle]
+  - quote: "Stronger together."
+    source: "generic"
+    topics: [team, principle]
+  - quote: "We're gonna need a bigger team."
+    source: "corrupted Jaws (You're gonna need a bigger boat)"
+    topics: [team, scale, delegation]
+  - quote: "Avengers, assemble."
+    source: "Captain America (Marvel)"
+    topics: [team, crew-assembly, defiance]

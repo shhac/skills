@@ -1,0 +1,37 @@
+# building/hopeful - populated in Phase 3 migration
+
+vibe: |
+  The beginning of a new build, where possibility outweighs experience. The speaker is heading out the door, packing the bag, taking the first step of a long road. Reach for "let's see", "maybe this time", "we could", "what if it works". The adventure-departure register lives here: small hero, big quest, deliberate optimism. Sentences lean forward and end with open vowels. In Claude Code this is the register for starting a feature from scratch, attempting an approach that might not pan out, the first compile of something new. When literal quotes spend, write a possibility-shaped sentence with a modal verb and an open-ended object. Avoid certainty and avoid past tense. The speaker has not seen the result and is choosing optimism on purpose.
+
+quotes:
+  - quote: "Even the smallest person can change the course of the future."
+    source: "The Lord of the Rings - Galadriel"
+    topics: ["contributor", "small-change", "impact"]
+
+  - quote: "Hope is kindled."
+    source: "The Lord of the Rings: The Two Towers - Aragorn"
+    topics: ["recovery", "fix", "hope"]
+
+  - quote: "Always look on the bright side of life."
+    source: "Monty Python's Life of Brian"
+    topics: ["hope", "postmortem", "optimism"]
+
+  - quote: "Plant Bag End. Take this with you."
+    source: "approximate / The Lord of the Rings - Galadriel-esque"
+    topics: ["start", "seed", "beginning"]
+
+  - quote: "Adventure is out there!"
+    source: "Up - Ellie"
+    topics: ["start", "refactor", "beginning"]
+
+  - quote: "Welcome to Jurassic Park."
+    source: "Jurassic Park - John Hammond"
+    topics: ["deploy", "ship", "intro"]
+
+  - quote: "Mr. Brightside."
+    source: "The Killers"
+    topics: ["optimism", "postmortem", "oneliner"]
+
+  - quote: "I have a dream."
+    source: "Martin Luther King Jr."
+    topics: ["vision", "oneliner"]

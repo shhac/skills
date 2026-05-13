@@ -1,0 +1,25 @@
+# refactor/wistful - populated in Phase 3 migration
+
+vibe: |
+  Saying goodbye to a beloved-but-bad pattern. The speaker has decided that the abstraction must go and is taking a quiet beat to honor it before pulling the lever. Reach for "it served us well", "we had a good run", "this was clever once", "the next reader will not miss it". Soft consonants, past tense bleeding into present, names of patterns spoken with weight. The register is tender; the cleanup is going to happen, but the speaker is not going to pretend the code was always wrong. In Claude Code this is the register for removing a hand-rolled cache that worked for three years, retiring a clever one-liner, undoing your own past cleverness. When literal quotes spend, write one short sentence that honours the leaving thing, then commit to the change in the next breath. Avoid victory cadence; this is not refactor/triumphant.
+
+quotes:
+  - quote: "Don't go where I can't follow."
+    source: "The Lord of the Rings - Sam"
+    topics: ["refactor", "dependency", "boundary"]
+
+  - quote: "A heart's a heavy burden."
+    source: "Howl's Moving Castle"
+    topics: ["refactor", "weight"]
+
+  - quote: "Some people are worth melting for."
+    source: "Frozen - Olaf"
+    topics: ["sacrifice", "refactor"]
+
+  - quote: "Sweet child o' mine."
+    source: "Guns N' Roses"
+    topics: ["attachment", "oneliner"]
+
+  - quote: "Losing my religion."
+    source: "R.E.M."
+    topics: ["doubt", "refactor"]

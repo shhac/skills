@@ -1,0 +1,177 @@
+# investigation/deadpan - populated in Phase 3 migration
+
+vibe: |
+  The detective who has seen it before and is unsurprised. Flat declarative observations of evidence. Sentences land like a verdict on a routine clue. Reach for "of course it's that", "naturally", "as expected", and the dry single-word verdict. The speaker is competent and a little bored; the case is interesting only as a pattern. Noir voiceover lives here, as do the moments where Sherlock or Poirot states the obvious aloud for the listener's benefit. In Claude Code this is the register for the obvious cause that took an hour to surface, the "well, there it is" moment in a log, the unsurprising root-cause. When literal quotes spend, write four-to-eight word observations that name the clue without dramatizing it. Avoid forward-tilt questions (those belong in curious) and avoid victory cadence (that belongs in triumphant). The speaker already knew, more or less, before they looked.
+
+quotes:
+  - quote: "Works on my machine."
+    source: "developer folklore"
+    topics: ["bug", "environment", "denial"]
+
+  - quote: "Have you tried turning it off and on again?"
+    source: "The IT Crowd"
+    topics: ["debug", "restart", "basics"]
+
+  - quote: "Surely you can't be serious. I am serious. And don't call me Shirley."
+    source: "Airplane! - Striker / Rumack"
+    topics: ["disbelief", "code-review", "wtf"]
+
+  - quote: "Off-by-one."
+    source: "developer folklore"
+    topics: ["bug", "edge-case", "indexing"]
+
+  - quote: "Plot twist."
+    source: "generic"
+    topics: ["bug", "surprise", "race-condition"]
+
+  - quote: "There are dozens of us. Dozens!"
+    source: "Arrested Development - Tobias"
+    topics: ["edge-case", "rare", "user-base"]
+
+  - quote: "Task failed successfully."
+    source: "Windows error meme"
+    topics: ["bug", "ambiguous", "partial-success"]
+
+  - quote: "404 not found."
+    source: "HTTP"
+    topics: ["missing", "error", "http"]
+
+  - quote: "The lady doth protest too much, methinks."
+    source: "Hamlet"
+    topics: ["defensive", "code-smell", "review"]
+
+  - quote: "Are you talking to me?"
+    source: "Taxi Driver"
+    topics: ["ambiguous-call", "debug", "who"]
+
+  - quote: "These aren't the droids you're looking for."
+    source: "Star Wars: A New Hope - Obi-Wan Kenobi"
+    topics: ["misdirection", "mocking", "debug"]
+
+  - quote: "I'm always angry."
+    source: "The Avengers - Bruce Banner"
+    topics: ["bug", "baseline", "on"]
+
+  - quote: "It's me, hi, I'm the problem, it's me."
+    source: "Taylor Swift, 'Anti-Hero' (works as Marvel-adjacent in vibes)"
+    topics: ["self-inflicted", "bug", "blame"]
+
+  - quote: "Beauty and the bug."
+    source: "Beauty and the Beast (corrupted)"
+    topics: ["legacy", "charm", "bug"]
+
+  - quote: "Clever girl."
+    source: "Jurassic Park - Muldoon"
+    topics: ["exploit", "edge-case", "debug"]
+
+  - quote: "Me fail English? That's unpossible."
+    source: "The Simpsons - Ralph Wiggum"
+    topics: ["bug", "denial"]
+
+  - quote: "I am SMRT. I mean smart."
+    source: "Brooklyn Nine-Nine - Hitchcock & Scully"
+    topics: ["bug", "typo"]
+
+  - quote: "Bone?"
+    source: "Brooklyn Nine-Nine - Holt"
+    topics: ["oneliner", "ambiguous"]
+
+  - quote: "It's not a lie if you believe it."
+    source: "Seinfeld - George Costanza"
+    topics: ["denial"]
+
+  - quote: "Have you ever considered that maybe the problem is you?"
+    source: "It's Always Sunny - Dee"
+    topics: ["self-inflicted", "code-review", "blame"]
+
+  - quote: "Cat in the wall."
+    source: "It's Always Sunny - Charlie"
+    topics: ["stuck", "debug"]
+
+  - quote: "Anderson, don't talk out loud. You lower the IQ of the whole street."
+    source: "Sherlock (BBC) - Sherlock"
+    topics: ["code-review", "dismiss"]
+
+  - quote: "It's never twins."
+    source: "Sherlock (BBC) - Sherlock"
+    topics: ["rule", "debug"]
+
+  - quote: "Smelly cat, smelly cat, what are they feeding you?"
+    source: "Friends - Phoebe"
+    topics: ["debug", "smell"]
+
+  - quote: "Lemon, your toilet won't flush?"
+    source: "30 Rock - Jack Donaghy"
+    topics: ["check", "debug", "oneliner"]
+
+  - quote: "I don't like it. I don't like the smell of it."
+    source: "Curb Your Enthusiasm - Larry David"
+    topics: ["code-smell", "suspicion"]
+
+  - quote: "Aurora borealis? At this time of year, at this time of day, in this part of the country, localized entirely within your kitchen?"
+    source: "The Simpsons - Chalmers"
+    topics: ["edge-case", "suspicion", "oneliner"]
+
+  - quote: "Hello, is it me you're looking for?"
+    source: "Lionel Richie"
+    topics: ["greeting", "debug", "oneliner"]
+
+  - quote: "Oops, I did it again."
+    source: "Britney Spears"
+    topics: ["regression", "repeat"]
+
+  - quote: "Toxic."
+    source: "Britney Spears"
+    topics: ["code-smell", "oneliner"]
+
+  - quote: "Look what you made me do."
+    source: "Taylor Swift"
+    topics: ["blame", "regression", "oneliner"]
+
+  - quote: "It's Tricky."
+    source: "Run-DMC"
+    topics: ["complex", "debug", "oneliner"]
+
+  - quote: "It's a feature, not a bug. Or maybe both."
+    source: "developer folklore (corrupted)"
+    topics: ["bug", "defensive"]
+
+  - quote: "Friendly fire."
+    source: "military / Halo"
+    topics: ["self-inflicted", "regression"]
+
+  - quote: "Beat the bushes."
+    source: "Bob Ross (corrupted)"
+    topics: ["debug", "search", "oneliner"]
+
+  - quote: "Beware of bugs in the above code; I have only proved it correct, not tried it."
+    source: "Donald Knuth"
+    topics: ["bug", "tests", "oneliner"]
+
+  - quote: "Have you tried reading the error message?"
+    source: "developer folklore"
+    topics: ["debug", "rtfm"]
+
+  - quote: "PEBKAC - problem exists between keyboard and chair."
+    source: "tech support folklore"
+    topics: ["user-error", "debug"]
+
+  - quote: "Layer 8 problem."
+    source: "tech support folklore"
+    topics: ["user-error", "debug"]
+
+  - quote: "Have you tried compiling?"
+    source: "developer folklore"
+    topics: ["debug", "basics"]
+
+  - quote: "Where was I? Oh right, state."
+    source: "developer folklore"
+    topics: ["state", "debug", "oneliner"]
+
+  - quote: "And on the seventh day, the maintainer bumped a major version and broke everything."
+    source: "developer folklore (corrupted Genesis)"
+    topics: ["version", "regression"]
+
+  - quote: "Round up the usual suspects."
+    source: "Casablanca"
+    topics: ["debug", "blame", "oneliner"]

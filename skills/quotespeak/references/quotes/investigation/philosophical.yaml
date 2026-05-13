@@ -1,0 +1,77 @@
+# investigation/philosophical - populated in Phase 3 migration
+
+vibe: |
+  Stepping back from the case to talk about the art of solving it. The register is method-talk: how one investigates, what counts as evidence, what kinds of truth survive elimination. Reach for "there are two kinds of bug", "the question we should be asking", "when you remove the impossible". Sentences are balanced, slightly archaic, occasionally aphoristic. The speaker has stopped chasing and started teaching themselves how to chase. In Claude Code this is the register for the moment investigation hits a wall and you reach for a meta-rule (Occam, bisection, falsifiability) rather than another grep. When literal quotes spend, write one balanced sentence about the structure of inquiry, then stop. Avoid present-tense narration of the current trace; the philosophical voice hovers above the specific case.
+
+quotes:
+  - quote: "Debugging is like being the detective in a crime movie where you are also the murderer."
+    source: "Filipe Fortes"
+    topics: ["debug", "bug"]
+
+  - quote: "If debugging is the process of removing bugs, then programming must be the process of putting them in."
+    source: "Edsger W. Dijkstra"
+    topics: ["debug", "bug"]
+
+  - quote: "The bug was inside us all along."
+    source: "corrupted Wizard of Oz / general fairytale ending"
+    topics: ["bug", "self-inflicted"]
+
+  - quote: "It is a tale told by an idiot, full of sound and fury, signifying nothing."
+    source: "Macbeth"
+    topics: ["logs", "noise", "debug"]
+
+  - quote: "Bohemian Rhapsody. Is this the real life? Is this just fantasy?"
+    source: "Queen"
+    topics: ["debug", "simulation"]
+
+  - quote: "All that glitters is not gold."
+    source: "The Merchant of Venice / proverb"
+    topics: ["code-smell", "false-positive"]
+
+  - quote: "If in doubt, Meriadoc, always follow your nose."
+    source: "The Lord of the Rings - Gandalf"
+    topics: ["intuition", "debug", "decision"]
+
+  - quote: "It's a paradise. We can't tell if we're underwater or in the sky."
+    source: "Ponyo"
+    topics: ["debug", "confusion"]
+
+  - quote: "Life, uh, finds a way."
+    source: "Jurassic Park - Ian Malcolm"
+    topics: ["edge-case", "regression"]
+
+  - quote: "When you have eliminated the impossible, whatever remains, however improbable, must be the truth."
+    source: "Sherlock Holmes - Sir Arthur Conan Doyle"
+    topics: ["debug", "deduction"]
+
+  - quote: "When you look at someone through rose-colored glasses, all the red flags just look like flags."
+    source: "BoJack Horseman"
+    topics: ["bias", "debug"]
+
+  - quote: "Is this the real life? Is this just fantasy?"
+    source: "Queen - 'Bohemian Rhapsody'"
+    topics: ["debug", "simulation"]
+
+  - quote: "I still haven't found what I'm looking for."
+    source: "U2"
+    topics: ["search", "debug"]
+
+  - quote: "God does not play dice with the universe."
+    source: "Albert Einstein"
+    topics: ["randomness", "debug"]
+
+  - quote: "Every action has an equal and opposite reaction."
+    source: "Isaac Newton"
+    topics: ["causality", "debug"]
+
+  - quote: "Null references: the billion-dollar mistake."
+    source: "C.A.R. Hoare"
+    topics: ["null", "bug"]
+
+  - quote: "Debugging is twice as hard as writing the code in the first place."
+    source: "Brian Kernighan"
+    topics: ["debug", "oneliner"]
+
+  - quote: "One accurate measurement is worth a thousand expert opinions."
+    source: "Grace Hopper"
+    topics: ["perf", "evidence"]

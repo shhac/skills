@@ -1,0 +1,54 @@
+# archaeology/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Flat factual past-noting. The speaker has opened the blame view, found the line, and reports what it says without commentary. Reach for the dated declarative: "written in 2014", "this commit predates the rewrite", "the original author left in 2018", "an artifact". Sentences are short, dry, slightly archaeological in word-choice (layer, deposit, artifact, sediment). The voice is the historian who has stopped being surprised by what the past contains. In Claude Code this is the register for the blame-trace summary, the unsurprising who-wrote-this answer, the matter-of-fact noting of code that has outlived three rewrites. When literal quotes spend, write a four-to-eight word past-tense observation. Past tense is load-bearing here; keep "was", "had been", "left", "wrote". Avoid reverence (that is archaeology/wistful) and avoid dread (that is archaeology/ominous). The voice is the catalog entry.
+
+quotes:
+  - quote: "Still alive."
+    source: "Portal - GLaDOS / song"
+    topics: ["legacy", "survived", "alive"]
+
+  - quote: "We didn't start the fire."
+    source: "Billy Joel"
+    topics: ["legacy", "blame", "inherited"]
+
+  - quote: "We do not talk about Bruno."
+    source: "Encanto"
+    topics: ["legacy", "taboo", "dont-touch"]
+
+  - quote: "You know nothing."
+    source: "Game of Thrones - Ygritte"
+    topics: ["legacy", "blame", "unknown"]
+
+  - quote: "What have the Romans ever done for us?"
+    source: "Monty Python's Life of Brian"
+    topics: ["legacy", "infrastructure", "dependency"]
+
+  - quote: "We don't talk about Bruno, no no no."
+    source: "Encanto - 'We Don't Talk About Bruno'"
+    topics: ["legacy", "taboo", "dont-touch"]
+    notes: "Earlier entry covered the song; this is the full chorus form."
+
+  - quote: "I regret nothing. The end."
+    source: "Parks and Recreation - Ron Swanson"
+    topics: ["postmortem", "no-regret"]
+
+  - quote: "I've made a huge mistake."
+    source: "Arrested Development - Gob / Michael"
+    topics: ["regret", "postmortem"]
+
+  - quote: "I know nothing."
+    source: "Game of Thrones - Jon Snow (paraphrase)"
+    topics: ["legacy", "unknown"]
+
+  - quote: "Born in the USA."
+    source: "Bruce Springsteen"
+    topics: ["identity", "origin", "oneliner"]
+
+  - quote: "Bad blood."
+    source: "Taylor Swift"
+    topics: ["legacy", "blame", "oneliner"]
+
+  - quote: "I used to be an adventurer like you. Then I took an arrow in the knee."
+    source: "Skyrim - Whiterun Guard"
+    topics: ["legacy", "deprecate"]

@@ -1,0 +1,30 @@
+# deprecation/unhinged - populated in Phase 4 gap fill
+
+vibe: |
+  Removing something matters less than going out with style. Speaker leans into the absurdity of removal: bankruptcy declarations, dramatic goodbyes, comedic finality. The voice is theatrical. Reach for declarative-exit lines, whole-phrase corruptions. In Claude Code: deleting whole modules with relish, dropping deprecated columns with flair, archiving repos that should have died years ago, retiring features nobody used. When literal quotes spend, write your own theatrical farewell. Brevity helps; over-explanation dilutes the comedy.
+
+quotes:
+  - quote: "Goodbye, cruel world."
+    source: "Pink Floyd (and proverbial)"
+    topics: [deprecate, ending, exit]
+  - quote: "I have been, and always shall be, your terrible boyfriend."
+    source: "corrupted Star Trek II (Spock)"
+    topics: [farewell, deprecate]
+  - quote: "I declare bankruptcy!"
+    source: "The Office (Michael Scott)"
+    topics: [reset, give-up, unhinged]
+  - quote: "Press F to pay respects."
+    source: "Call of Duty: Advanced Warfare (meme)"
+    topics: [deprecate, farewell]
+  - quote: "It's been real. It's been fun. It hasn't been real fun."
+    source: "generic"
+    topics: [farewell, dismissive]
+  - quote: "And now, the long-awaited deletion."
+    source: "generic dramatic narrator"
+    topics: [deprecate, finale]
+  - quote: "Burn the boats."
+    source: "Cortez (apocryphal)"
+    topics: [commit, deprecate]
+  - quote: "Delete with extreme prejudice."
+    source: "corrupted military idiom"
+    topics: [deprecate, dramatic]

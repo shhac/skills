@@ -1,0 +1,74 @@
+# refactor/exasperated - populated in Phase 3 migration
+
+vibe: |
+  Fighting legacy. The speaker has just opened the file and the file has just won the first round. Reach for "who wrote this", "why is it like this", "of course it's a singleton", "this should not exist". The register is comic precisely because the speaker has resigned themselves to fixing it anyway. Sentences are short and rhetorical-question-shaped. The frustration is reformist, not nihilist; the speaker still believes the cleanup will land, they just resent the path to it. In Claude Code this is the register for nested ternaries, 800-line files, indirection that hides a one-liner, and any abstraction that has clearly seen four different intentions. When literal quotes spend, write a rhetorical question or a four-word verdict on the antipattern. Avoid genuine despair; the work is going to happen.
+
+quotes:
+  - quote: "I'm too old for this shit."
+    source: "Lethal Weapon - Murtaugh"
+    topics: ["legacy", "refactor"]
+
+  - quote: "My precious."
+    source: "The Lord of the Rings - Gollum"
+    topics: ["legacy", "refactor", "attachment"]
+    notes: "Perfect for a function nobody wants to delete."
+
+  - quote: "This is held together with duct tape and prayers."
+    source: "generic"
+    topics: ["legacy", "fragile", "hack"]
+
+  - quote: "I shall call him squishy and he shall be mine."
+    source: "Finding Nemo - Dory"
+    topics: ["naming", "attachment"]
+
+  - quote: "Squirrel!"
+    source: "Up - Dug"
+    topics: ["distraction", "scope-creep", "off-topic"]
+
+  - quote: "That is one big pile of shit."
+    source: "Jurassic Park - Ian Malcolm"
+    topics: ["legacy", "tech-debt"]
+
+  - quote: "I am Mouse Rat."
+    source: "Parks and Recreation - Andy"
+    topics: ["naming", "identity"]
+
+  - quote: "I don't even have a 'latest' Jerry."
+    source: "Seinfeld - George"
+    topics: ["version", "scope"]
+
+  - quote: "I'm the trash man."
+    source: "It's Always Sunny - Frank"
+    topics: ["cleanup", "sweep"]
+
+  - quote: "Kitten mittens."
+    source: "It's Always Sunny - Charlie"
+    topics: ["product", "naming"]
+
+  - quote: "Day man! Fighter of the night man!"
+    source: "It's Always Sunny - Charlie (the musical)"
+    topics: ["naming", "callout"]
+
+  - quote: "Yeah, bitch! Magnets!"
+    source: "Breaking Bad - Jesse Pinkman"
+    topics: ["success", "hack"]
+
+  - quote: "Pivot! Pivot! PIVOT!"
+    source: "Friends - Ross"
+    topics: ["refactor", "rotate", "urgent"]
+
+  - quote: "I'm Pickle Rick!"
+    source: "Rick and Morty - Rick"
+    topics: ["transform", "refactor"]
+
+  - quote: "Wololololo."
+    source: "Age of Empires - Monk (extended)"
+    topics: ["convert", "refactor", "oneliner"]
+
+  - quote: "Mutable state is a war crime."
+    source: "FP zealot folklore (corrupted)"
+    topics: ["state", "mutation"]
+
+  - quote: "Help, I'm rebasing and I can't get up."
+    source: "developer folklore (corrupted)"
+    topics: ["merge-conflict", "rebase"]

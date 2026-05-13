@@ -1,0 +1,38 @@
+# deprecation/defiant - populated in Phase 3 migration
+
+vibe: |
+  Refusing to mourn. The speaker is letting the thing go and is making clear that no farewell speech is owed. Reach for the dismissive farewell: "good riddance", "it had to go", "frankly, no", "not coming back". Sentences are short, declarative, and slightly clipped. The voice is the engineer who has wanted this removal for two quarters and is finally getting to do it. Less tender than deprecation/wistful, less procedural than deprecation/deadpan; the energy is the deliberate refusal of a eulogy. In Claude Code this is the register for ripping out the misbegotten flag, deleting the abandoned subsystem, ending support for the path everyone privately resented. When literal quotes spend, write a short imperative or a dismissive declarative. Avoid celebratory cadence (the loss is still a loss, even when welcome) and avoid affection. The speaker is closing the door and not looking back.
+
+quotes:
+  - quote: "Mostly dead is slightly alive."
+    source: "The Princess Bride - Miracle Max"
+    topics: ["legacy", "deprecated", "refactor"]
+
+  - quote: "Touch grass."
+    source: "internet folklore"
+    topics: ["break", "log-off", "rest"]
+    notes: "For when the user has been debugging too long."
+
+  - quote: "I'm not dead yet."
+    source: "Monty Python and the Holy Grail"
+    topics: ["legacy", "alive", "deprecate"]
+
+  - quote: "I'm gonna get medieval on your ass."
+    source: "Pulp Fiction - Marsellus"
+    topics: ["retribution", "deprecate", "oneliner"]
+
+  - quote: "Bran the Broken."
+    source: "Game of Thrones - Tyrion"
+    topics: ["naming", "deprecate"]
+
+  - quote: "We are never ever getting back together."
+    source: "Taylor Swift"
+    topics: ["deprecate", "finality", "defiance"]
+
+  - quote: "Bye bye bye."
+    source: "*NSYNC"
+    topics: ["deprecate", "farewell", "oneliner"]
+
+  - quote: "GG no re."
+    source: "competitive gaming"
+    topics: ["postmortem", "finality"]

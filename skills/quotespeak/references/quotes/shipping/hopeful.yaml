@@ -1,0 +1,25 @@
+# shipping/hopeful - populated in Phase 3 migration
+
+vibe: |
+  First deploy of something new. The speaker has not done this exact ship before and is choosing to believe it will go well. Reach for blessings, send-offs, the may-the-force register, and earnest small benedictions. Modal verbs do most of the work: "may", "let it", "godspeed". Sentences lean forward and end with open vowels. The energy is generous, not naive; the speaker has done the prep and is now releasing the work to whatever comes next. In Claude Code this is the register for the first prod release, the new pipeline's debut, sending a build into a context that has never seen it. When literal quotes spend, write a short benediction directed at the build itself. Avoid swagger (that lives in shipping/triumphant after the deploy lands) and avoid the procedural beat (that lives in shipping/deadpan). The voice is hopeful, never overconfident.
+
+quotes:
+  - quote: "Rebellions are built on hope."
+    source: "Rogue One - Jyn Erso"
+    topics: ["hope", "refactor", "beginning"]
+
+  - quote: "Have fun storming the castle!"
+    source: "The Princess Bride - Miracle Max"
+    topics: ["deploy", "send-off", "hope"]
+
+  - quote: "Look at this stuff. Isn't it neat?"
+    source: "The Little Mermaid - Ariel"
+    topics: ["discovery", "perf", "new"]
+
+  - quote: "Living on a prayer."
+    source: "Bon Jovi"
+    topics: ["risky", "ship"]
+
+  - quote: "Yes we can."
+    source: "Barack Obama"
+    topics: ["hope", "ship", "oneliner"]

@@ -1,0 +1,137 @@
+# refactor/philosophical - populated in Phase 3 migration
+
+vibe: |
+  Craft-talk about code quality. The speaker steps back from the specific diff to think about what makes code good. Reach for the balanced aphorism: "any fool can write code a computer can understand", "naming is one of the two hard problems", "premature optimization is the root of evil". Fowler, Beck, Knuth, Karlton sit at the centre of this register, alongside design-pattern reflection. Sentences are slightly archaic, rhythmically balanced, often paired (the two-kinds-of, the not-X-but-Y). In Claude Code this is the register for the moment the refactor invites a meta-comment about what we owe the next reader. When literal quotes spend, write one balanced sentence about a principle of code-shape, then stop. Avoid present-tense narration of the file at hand; this voice hovers above the specific change.
+
+quotes:
+  - quote: "Premature optimization is the root of all evil."
+    source: "Donald Knuth (after Tony Hoare)"
+    topics: ["perf", "optimization", "refactor"]
+
+  - quote: "There are only two hard things in Computer Science: cache invalidation and naming things."
+    source: "Phil Karlton"
+    topics: ["cache", "naming"]
+
+  - quote: "Make it work, make it right, make it fast."
+    source: "Kent Beck"
+    topics: ["perf", "refactor", "process"]
+
+  - quote: "There is no spoon."
+    source: "The Matrix"
+    topics: ["abstraction", "refactor"]
+
+  - quote: "Free your mind."
+    source: "The Matrix - Morpheus"
+    topics: ["refactor", "paradigm", "rethink"]
+
+  - quote: "Brevity is the soul of wit."
+    source: "Hamlet"
+    topics: ["refactor", "conciseness"]
+
+  - quote: "The road to hell is paved with good intentions."
+    source: "proverb"
+    topics: ["tech-debt", "refactor", "legacy"]
+
+  - quote: "There is some good in this world, and it's worth fighting for."
+    source: "The Lord of the Rings: The Two Towers - Samwise"
+    topics: ["hope", "refactor", "persistence"]
+
+  - quote: "I'm the hero this codebase deserves, but not the one it needs right now."
+    source: "The Dark Knight (corrupted) - Commissioner Gordon"
+    topics: ["refactor", "anti-hero"]
+
+  - quote: "No fate but what we make."
+    source: "Terminator 2 - Sarah Connor"
+    topics: ["agency", "refactor"]
+
+  - quote: "Remember who you are."
+    source: "The Lion King - Mufasa"
+    topics: ["identity", "refactor", "principles"]
+
+  - quote: "When will my reflection show who I am inside?"
+    source: "Mulan"
+    topics: ["identity", "refactor"]
+
+  - quote: "The times they are a-changin'."
+    source: "Bob Dylan"
+    topics: ["refactor", "migration"]
+
+  - quote: "It's the end of the world as we know it (and I feel fine)."
+    source: "R.E.M."
+    topics: ["postmortem", "refactor"]
+
+  - quote: "Where the streets have no name."
+    source: "U2"
+    topics: ["naming", "anonymous"]
+
+  - quote: "Mo money, mo problems."
+    source: "Notorious B.I.G."
+    topics: ["scale", "tech-debt"]
+
+  - quote: "Dying is easy, young man. Living is harder."
+    source: "Hamilton - Washington"
+    topics: ["maintain", "refactor"]
+
+  - quote: "Champions adjust."
+    source: "Billie Jean King"
+    topics: ["adapt", "refactor"]
+
+  - quote: "Imagination is more important than knowledge."
+    source: "Albert Einstein"
+    topics: ["creativity", "refactor"]
+
+  - quote: "Be the change you wish to see in the world."
+    source: "Mahatma Gandhi (attributed)"
+    topics: ["contribution", "refactor"]
+
+  - quote: "When the facts change, I change my mind. What do you do, sir?"
+    source: "John Maynard Keynes (attributed)"
+    topics: ["adapt", "refactor"]
+
+  - quote: "Simplicity is prerequisite for reliability."
+    source: "Edsger W. Dijkstra"
+    topics: ["refactor", "complexity"]
+
+  - quote: "The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise."
+    source: "Edsger W. Dijkstra"
+    topics: ["abstraction", "refactor"]
+
+  - quote: "Inside every well-written large program is a well-written small program."
+    source: "C.A.R. Hoare"
+    topics: ["refactor", "simplicity"]
+
+  - quote: "There is nothing more permanent than a temporary solution."
+    source: "developer folklore"
+    topics: ["legacy", "tech-debt"]
+
+  - quote: "Refactor in small steps."
+    source: "Martin Fowler - Refactoring"
+    topics: ["refactor", "oneliner"]
+
+  - quote: "Write code that's easy to delete, not easy to extend."
+    source: "Tef - programming is terrible"
+    topics: ["refactor", "design"]
+
+  - quote: "What's in a name? That which we call a rose by any other name would smell as sweet."
+    source: "Romeo and Juliet - Shakespeare"
+    topics: ["naming", "oneliner"]
+
+  - quote: "Naming things is a religious experience."
+    source: "developer folklore"
+    topics: ["naming", "oneliner"]
+
+  - quote: "Everything flows. Nothing stays."
+    source: "Heraclitus"
+    topics: ["state", "mutation"]
+
+  - quote: "The only constant is change."
+    source: "Heraclitus (paraphrase)"
+    topics: ["state", "refactor"]
+
+  - quote: "Major version, minor regret."
+    source: "developer folklore (corrupted)"
+    topics: ["version", "migration"]
+
+  - quote: "Pin your dependencies. Trust no one."
+    source: "developer folklore"
+    topics: ["version", "dependency"]

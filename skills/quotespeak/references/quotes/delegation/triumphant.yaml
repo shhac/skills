@@ -1,0 +1,41 @@
+# delegation/triumphant - populated in Phase 3 migration
+
+vibe: |
+  The crew delivered. The team came back with the thing, and the speaker is celebrating the collective rather than themselves. Reach for the assemble-cadence, the "we did it" plural, the heist-crew exhale after the score lands. First-person plural carries the energy: "we got it", "the team brought it home", "all hands". Sentences are short, heightened, present-tense. The voice is the orchestrator who chose well and now gets to point at the result and at the names behind it. In Claude Code this is the register for parallel subagents returning clean work, the delegated module landing on the first review, the moment "I trusted them" pays off. When literal quotes spend, write a short plural declaration that credits the crew without naming individuals, or a two-beat "task done, team strong" pair. Avoid solo-hero swagger (that lives in building/triumphant or shipping/triumphant). The shine here belongs to the group.
+
+quotes:
+  - quote: "We have a Hulk."
+    source: "The Avengers - Tony Stark"
+    topics: ["helper", "tool", "util"]
+
+  - quote: "Avengers, assemble."
+    source: "Avengers: Endgame - Captain America"
+    topics: ["team", "deploy", "callout"]
+
+  - quote: "Wakanda forever."
+    source: "Black Panther - T'Challa"
+    topics: ["allegiance", "deploy", "callout"]
+
+  - quote: "Did we just become best friends?"
+    source: "Step Brothers - Brennan"
+    topics: ["pair", "collaboration", "sudden"]
+
+  - quote: "Shake and bake."
+    source: "Talladega Nights - Ricky Bobby"
+    topics: ["pair", "success", "ship"]
+
+  - quote: "Nine-nine!"
+    source: "Brooklyn Nine-Nine - Squad"
+    topics: ["team", "callout", "oneliner"]
+
+  - quote: "Steve Holt!"
+    source: "Arrested Development - Steve Holt"
+    topics: ["intro", "callout", "oneliner"]
+
+  - quote: "Norm!"
+    source: "Cheers - bar regulars"
+    topics: ["greeting", "recognition", "oneliner"]
+
+  - quote: "We've got Dog."
+    source: "Half-Life 2 - Alyx"
+    topics: ["helper", "dependency", "oneliner"]

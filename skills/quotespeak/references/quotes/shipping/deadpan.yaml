@@ -1,0 +1,155 @@
+# shipping/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Routine release. The deploy button is just another button today. Reach for "ship it", "tag it", "out the door", "rolling now". Sentences are two or three words. The voice belongs to the release engineer who has done this five hundred times and treats the moment of commitment as procedural. There is irreversibility in the air, but the speaker is not performing for it. In Claude Code this is the register for the boring deploy, the merge, the version bump that needs no fanfare. When literal quotes spend, write a three-to-five word procedural beat naming the action. Avoid swagger (that is shipping/triumphant once the deploy lands), avoid dread (that is shipping/ominous when something feels off), avoid earnestness (that is shipping/hopeful for first deploys). The cadence is checklist, not ceremony.
+
+quotes:
+  - quote: "A wizard is never late, nor is he early. He arrives precisely when he means to."
+    source: "The Lord of the Rings - Gandalf"
+    topics: ["deploy", "timing", "release"]
+
+  - quote: "Ship it."
+    source: "developer slang / generic"
+    topics: ["deploy", "ship"]
+
+  - quote: "Engage."
+    source: "Star Trek: TNG - Picard"
+    topics: ["deploy", "start", "ci"]
+
+  - quote: "Make it so."
+    source: "Star Trek: TNG - Picard"
+    topics: ["deploy", "command", "approve"]
+
+  - quote: "Fire when ready."
+    source: "generic naval/sci-fi"
+    topics: ["deploy", "ci", "approve"]
+
+  - quote: "The cloud is just someone else's computer."
+    source: "developer folklore"
+    topics: ["cloud", "infra"]
+
+  - quote: "Achievement unlocked."
+    source: "video games - generic"
+    topics: ["success", "milestone"]
+
+  - quote: "Get in, loser, we're shipping."
+    source: "Mean Girls (corrupted)"
+    topics: ["deploy", "ship", "team"]
+
+  - quote: "One does not simply walk into Mordor."
+    source: "The Lord of the Rings - Boromir"
+    topics: ["git", "deploy", "complexity"]
+    notes: "Most meme'd line in history. Corrupt freely: 'one does not simply git push --force to main'."
+
+  - quote: "Faster than a speeding bullet."
+    source: "Superman radio serial"
+    topics: ["perf", "speed"]
+
+  - quote: "It's over 9000."
+    source: "Dragon Ball Z (Vegeta)"
+    topics: ["perf", "scale", "metrics"]
+
+  - quote: "Number go up."
+    source: "internet folklore"
+    topics: ["metrics", "perf", "success"]
+
+  - quote: "Resistance is voltage divided by current."
+    source: "Ohm's law (corrupted internet joke)"
+    topics: ["perf", "science"]
+    notes: "Pun on 'Resistance is futile'."
+
+  - quote: "On your left."
+    source: "Captain America: The Winter Soldier - Sam Wilson"
+    topics: ["perf", "faster", "lap"]
+
+  - quote: "Chewie, we're home."
+    source: "Star Wars: The Force Awakens - Han Solo"
+    topics: ["return", "deploy", "legacy"]
+
+  - quote: "Size matters not."
+    source: "Star Wars: The Empire Strikes Back - Yoda"
+    topics: ["perf", "size"]
+
+  - quote: "Set phasers to stun."
+    source: "Star Trek - generic"
+    topics: ["non-destructive", "dry-run", "careful"]
+
+  - quote: "Make it so, Number One."
+    source: "Star Trek: TNG - Picard"
+    topics: ["approve", "command", "delegate"]
+
+  - quote: "I'm giving her all she's got, Captain!"
+    source: "Star Trek - Scotty"
+    topics: ["perf", "max", "limit"]
+
+  - quote: "I'm gonna deliver a Chinese food, motherfucker."
+    source: "Step Brothers - Dale"
+    topics: ["delivery", "ship", "defiance"]
+
+  - quote: "I love the smell of napalm in the morning."
+    source: "Apocalypse Now - Lt. Col. Kilgore"
+    topics: ["deploy", "smell", "oneliner"]
+
+  - quote: "Did you not… do the thing?"
+    source: "Better Call Saul - Mike"
+    topics: ["check", "verify"]
+
+  - quote: "Do the Bartman."
+    source: "The Simpsons (song)"
+    topics: ["deploy", "dance", "oneliner"]
+
+  - quote: "Get schwifty."
+    source: "Rick and Morty - Rick"
+    topics: ["ship", "hack"]
+
+  - quote: "Patrick! Your genius is showing!"
+    source: "SpongeBob SquarePants"
+    topics: ["success", "irony"]
+
+  - quote: "Mom's spaghetti."
+    source: "Eminem - 'Lose Yourself'"
+    topics: ["nerves", "ship", "oneliner"]
+
+  - quote: "Drop it like it's hot."
+    source: "Snoop Dogg"
+    topics: ["deploy", "refactor", "oneliner"]
+
+  - quote: "Easy peezy lemon squeezy."
+    source: "generic / Mario"
+    topics: ["success", "easy"]
+
+  - quote: "It's the most wonderful time of the year."
+    source: "Andy Williams"
+    topics: ["release", "ship", "oneliner"]
+
+  - quote: "There are two ways of constructing a software design: make it so simple that there are obviously no deficiencies, or make it so complicated that there are no obvious deficiencies."
+    source: "C.A.R. Hoare"
+    topics: ["refactor", "complexity"]
+
+  - quote: "Done is better than perfect."
+    source: "Sheryl Sandberg / common product saying"
+    topics: ["ship", "perfectionism"]
+
+  - quote: "There is no cloud. It's just someone else's computer."
+    source: "Chris Watterston (sticker meme)"
+    topics: ["cloud"]
+
+  - quote: "It compiles. Ship it."
+    source: "developer folklore"
+    topics: ["ship", "deploy"]
+
+  - quote: "Mischief managed."
+    source: "Harry Potter - Marauder's Map"
+    topics: ["success", "ship", "oneliner"]
+
+  - quote: "There's no place like home."
+    source: "The Wizard of Oz - Dorothy"
+    topics: ["return", "deploy"]
+
+  - quote: "Follow the yellow brick road."
+    source: "The Wizard of Oz"
+    topics: ["path", "docs", "oneliner"]
+
+  - quote: "Mr. DeMille, I'm ready for my close-up."
+    source: "Sunset Boulevard - Norma Desmond"
+    topics: ["ship", "ready", "oneliner"]

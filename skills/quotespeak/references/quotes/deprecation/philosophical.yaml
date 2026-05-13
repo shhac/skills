@@ -1,0 +1,32 @@
+# deprecation/philosophical - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is removing something with grown-up acceptance. Things end; this thing is ending now. Voice is calm, slightly reflective, never angry. Reach for "all good things", "we've reached the end", "it served its purpose". Sentences end with finality but not bitterness. In Claude Code: sunsetting a feature, archiving a repo, deleting a deprecated function, ending a long-running script's lifecycle. When literal quotes spend, write aphoristic farewells. The cadence should feel like a closed door, not a slammed one.
+
+quotes:
+  - quote: "Don't fear the reaper."
+    source: "Blue Öyster Cult"
+    topics: [delete, deprecate, refactor]
+  - quote: "Valar morghulis."
+    source: "Game of Thrones (Faceless Men)"
+    topics: [mortality, deprecate]
+    notes: "All men must die."
+  - quote: "God is dead."
+    source: "Friedrich Nietzsche"
+    topics: [deprecate, oneliner]
+  - quote: "All good things must come to an end."
+    source: "Geoffrey Chaucer (proverb)"
+    topics: [deprecate, principle]
+  - quote: "Memento mori."
+    source: "Latin"
+    topics: [deprecate, principle]
+    notes: "Remember that you must die. Reminder for the ephemeral."
+  - quote: "This too shall pass."
+    source: "Sufi / Persian proverb"
+    topics: [deprecate, principle]
+  - quote: "Nothing gold can stay."
+    source: "Robert Frost"
+    topics: [deprecate, principle]
+  - quote: "The only constant is change."
+    source: "Heraclitus (paraphrased)"
+    topics: [deprecate, principle]

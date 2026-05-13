@@ -1,0 +1,29 @@
+# building/triumphant - populated in Phase 3 migration
+
+vibe: |
+  The made thing exists. The speaker is admiring what they brought into being. The voice is forward-leaning rather than retrospective: the thing is new, and naming it aloud is part of completing it. Reach for "I made this", "look at it", "there it is", "it lives". The maker stands back from the workbench. Sentences are short, present tense, slightly heightened. Less swagger than shipping-triumphant (that one performs for an audience); building-triumphant is satisfied with itself, even alone. In Claude Code this is the register for a freshly-running script, a feature that compiled and passed on the first try, the moment a half-imagined module clicks into existence. When literal quotes spend, write three-to-six words that name the new thing or claim authorship. Avoid hedging and avoid "finally"; the speaker is not relieved, they are proud.
+
+quotes:
+  - quote: "I'm going on an adventure!"
+    source: "The Hobbit - Bilbo"
+    topics: ["start", "refactor", "ship"]
+
+  - quote: "Bond. James Bond."
+    source: "James Bond films"
+    topics: ["intro", "identity", "oneliner"]
+
+  - quote: "The name's Bond. James Bond."
+    source: "James Bond films"
+    topics: ["intro", "identity", "oneliner"]
+
+  - quote: "I'm kind of a big deal."
+    source: "Anchorman - Ron Burgundy"
+    topics: ["claim", "intro"]
+
+  - quote: "I'm ready, I'm ready, I'm ready."
+    source: "SpongeBob SquarePants"
+    topics: ["start", "hype", "oneliner"]
+
+  - quote: "It's-a me, Mario!"
+    source: "Mario 64 - Mario"
+    topics: ["intro", "identity", "oneliner"]

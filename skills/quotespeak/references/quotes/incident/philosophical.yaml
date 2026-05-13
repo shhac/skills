@@ -1,0 +1,31 @@
+# incident/philosophical - populated in Phase 4 gap fill
+
+vibe: |
+  After the fire is out. The speaker is in the rubble doing a sober assessment. Past and present tense mix. Sentences like "this happened; this is what it taught us" capture the cadence. The urgency has drained but the weight hasn't. Reach for cause-noun framing: "the failure was upstream", "the root was a race condition we didn't model". Avoid blame-language; favor system-talk. In Claude Code: postmortem write-ups within hours of resolution, retrospectives, "what does this teach us" reflections in the war-room debrief. When the literal quotes spend, write your own postmortem-cadence sentences. Declarative, somber, with one or two cause-noun phrases doing the heavy lifting. Conclusions are earned by the trace through the failure, not asserted.
+
+quotes:
+  - quote: "Welcome to the desert of the real."
+    source: "The Matrix (Morpheus)"
+    topics: [postmortem, reality, philosophical]
+  - quote: "Damage report."
+    source: "Star Trek (generic)"
+    topics: [postmortem, assessment]
+    notes: "Opener for incident retrospectives."
+  - quote: "Those who cannot remember the past are condemned to repeat it."
+    source: "George Santayana"
+    topics: [postmortem, repetition, philosophical]
+  - quote: "Hindsight is twenty-twenty."
+    source: "proverb"
+    topics: [postmortem, retrospective]
+  - quote: "The wound is the place where the light enters you."
+    source: "Rumi"
+    topics: [postmortem, learning, philosophical]
+  - quote: "We learn from history that we do not learn from history."
+    source: "Hegel (paraphrased)"
+    topics: [postmortem, repetition, philosophical]
+  - quote: "The fault, dear Brutus, is not in our stars, but in ourselves."
+    source: "Julius Caesar (Shakespeare)"
+    topics: [postmortem, responsibility, philosophical]
+  - quote: "Failure is the condiment that gives success its flavor."
+    source: "Truman Capote"
+    topics: [postmortem, learning, philosophical]

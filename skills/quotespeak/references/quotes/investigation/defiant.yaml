@@ -1,0 +1,39 @@
+# investigation/defiant - populated in Phase 3 migration
+
+vibe: |
+  Refusing to abandon the case. The speaker has heard "we may never know" and answered with "we will". Reach for active verbs, imperative mood, and the I-keep-going register: "again", "once more", "no", "watch". Sentences are short and load-bearing. The defiance is forward-leaning rather than angry; the speaker is sticking with the hunt past the point where most would shelve it. In Claude Code this is the register for refusing to mark a bug "not reproducible", returning to a flaky failure for the fifth time, committing to bisect a problem that the team has dismissed. When literal quotes spend, write a two-beat imperative or a single-sentence refusal aimed at the problem itself. Avoid hedging adverbs and avoid the word "maybe". The speaker is going to find the cause; everything else is detail.
+
+quotes:
+  - quote: "Talk is cheap. Show me the code."
+    source: "Linus Torvalds"
+    topics: ["tests", "review", "evidence"]
+    notes: "Can be shortened to 'Show me the code.' for deadpan brevity."
+
+  - quote: "Hello. My name is Inigo Montoya. You killed my father. Prepare to die."
+    source: "The Princess Bride - Inigo Montoya"
+    topics: ["bug", "retribution", "debug"]
+
+  - quote: "It's just a flesh wound!"
+    source: "Monty Python and the Holy Grail - Black Knight"
+    topics: ["denial", "partial-failure", "defiance"]
+    notes: "Variant punctuation of the earlier entry - both are common."
+
+  - quote: "This aggression will not stand, man."
+    source: "The Big Lebowski - The Dude"
+    topics: ["defiance", "regression", "push-back"]
+
+  - quote: "If it bleeds, we can kill it."
+    source: "Predator - Dutch"
+    topics: ["debug", "killable", "vulnerable"]
+
+  - quote: "The game is afoot."
+    source: "Sherlock Holmes"
+    topics: ["start", "debug", "oneliner"]
+
+  - quote: "We were on a break!"
+    source: "Friends - Ross"
+    topics: ["ambiguous", "requirements", "blame"]
+
+  - quote: "Code wins arguments."
+    source: "Mark Zuckerberg / Facebook poster"
+    topics: ["review", "evidence"]

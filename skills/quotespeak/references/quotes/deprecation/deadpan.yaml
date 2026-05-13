@@ -1,0 +1,96 @@
+# deprecation/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Flat finality. The line ends here, and the speaker names it without ceremony. Reach for "end of line", "press F", "removed", "no longer supported", "and that is that". Sentences are short and terminal, often two words long. The voice is the operator who has flipped the kill switch and is recording the event for the log. The meme-era farewell ("press F") sits comfortably alongside the procedural sunset note. In Claude Code this is the register for the routine removal, the EOL announcement, the simple deletion of a flag, the matter-of-fact decommissioning. When literal quotes spend, write a two-to-five word terminal sentence that names the end. Avoid mourning (that is deprecation/wistful), avoid refusal-to-mourn (that is deprecation/defiant), avoid celebratory cadence in any direction. The voice is matter-of-fact, never enthusiastic.
+
+quotes:
+  - quote: "End of line."
+    source: "Tron - Master Control Program"
+    topics: ["ending", "terminal", "output"]
+
+  - quote: "Frankly, my dear, I don't give a damn."
+    source: "Gone with the Wind - Rhett Butler"
+    topics: ["deprecate", "ignore", "dismissive"]
+
+  - quote: "Press F to pay respects."
+    source: "Call of Duty: Advanced Warfare meme"
+    topics: ["deprecate", "farewell", "removed"]
+
+  - quote: "Omae wa mou shindeiru."
+    source: "Fist of the North Star - Kenshiro"
+    topics: ["bug", "fix", "killed"]
+    notes: "Translation: 'You are already dead.' Followed by victim saying 'Nani?!' (What?!)."
+
+  - quote: "Hodor."
+    source: "Game of Thrones - Hodor"
+    topics: ["stuck", "blocked", "single-purpose"]
+
+  - quote: "I love you. I know."
+    source: "Star Wars: The Empire Strikes Back - Leia / Han"
+    topics: ["farewell", "deploy"]
+
+  - quote: "I'll most likely kill you in the morning."
+    source: "The Princess Bride - Dread Pirate Roberts"
+    topics: ["deprecate", "schedule"]
+
+  - quote: "Beam me up, Scotty."
+    source: "Star Trek - popular paraphrase"
+    topics: ["escape", "rollback", "exit"]
+    notes: "Never said exactly this in the original series; the closest is 'Beam us up, Mr. Scott.'"
+
+  - quote: "I'm going to enjoy watching you die, Mr. Anderson."
+    source: "The Matrix - Agent Smith"
+    topics: ["adversary", "deprecate"]
+
+  - quote: "I expect you to die, Mr. Bond."
+    source: "Goldfinger"
+    topics: ["adversary", "deprecate"]
+    notes: "Goldfinger's full line: 'No, Mr. Bond, I expect you to die.'"
+
+  - quote: "Long live the king."
+    source: "The Lion King - Scar"
+    topics: ["deprecate", "succession"]
+
+  - quote: "I'll be in my bunk."
+    source: "Firefly - Jayne"
+    topics: ["exit", "log-off", "oneliner"]
+
+  - quote: "Exterminate!"
+    source: "Doctor Who - Daleks"
+    topics: ["destroy", "kill-process", "oneliner"]
+
+  - quote: "You can check out any time you like, but you can never leave."
+    source: "Eagles - 'Hotel California'"
+    topics: ["legacy", "lock-in"]
+
+  - quote: "GG."
+    source: "competitive gaming - 'good game'"
+    topics: ["farewell", "postmortem", "oneliner"]
+
+  - quote: "I should go."
+    source: "Mass Effect - Shepard"
+    topics: ["exit", "farewell", "oneliner"]
+
+  - quote: "Read my lips: no new taxes."
+    source: "George H.W. Bush"
+    topics: ["commitment", "broken-promise", "oneliner"]
+
+  - quote: "Rest in peace."
+    source: "WWE - The Undertaker"
+    topics: ["deprecate", "kill", "oneliner"]
+
+  - quote: "Out with the old, in with the new."
+    source: "proverb"
+    topics: ["version", "migration", "deprecate"]
+
+  - quote: "Deprecated. Use {x} instead."
+    source: "compiler warnings everywhere"
+    topics: ["version", "deprecate", "oneliner"]
+
+  - quote: "Cheers, big ears."
+    source: "British folklore"
+    topics: ["farewell", "oneliner"]
+
+  - quote: "Avada kedavra."
+    source: "Harry Potter - killing curse"
+    topics: ["kill", "deprecate"]

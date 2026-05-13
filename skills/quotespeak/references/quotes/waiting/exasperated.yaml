@@ -1,0 +1,31 @@
+# waiting/exasperated - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker has been waiting too long. The wait has gone from background to foreground. Frustration is active but contained; the speaker is not screaming, just sighing audibly. Reach for "are we there yet", "tick tock", "any day now", "I could've built it myself by now". In Claude Code: CI loops that won't finish, deps that won't install, requests that have been pending review for hours. When literal quotes spend, write short sighs at the clock. Avoid resignation (that's wistful); the wait still bothers you.
+
+quotes:
+  - quote: "Here we go again."
+    source: "generic"
+    topics: [retry, start, ci]
+  - quote: "I'm just a guy, standing in front of a compiler, asking it to build."
+    source: "corrupted Notting Hill"
+    topics: [ci, build, plea]
+    notes: "Original: 'I'm just a girl, standing in front of a boy, asking him to love her.'"
+  - quote: "Are we there yet?"
+    source: "every kid in every car"
+    topics: [wait, impatience]
+  - quote: "Tick tock."
+    source: "generic"
+    topics: [wait, time-pressure]
+  - quote: "Any day now."
+    source: "generic"
+    topics: [wait, impatience]
+  - quote: "I could have built it myself by now."
+    source: "generic developer folklore"
+    topics: [wait, exasperated]
+  - quote: "How long must this go on?"
+    source: "generic"
+    topics: [wait, exasperated]
+  - quote: "The earth has cooled, civilizations have risen and fallen, and this build still hasn't finished."
+    source: "developer folklore (paraphrased)"
+    topics: [wait, hyperbole-exasperated]

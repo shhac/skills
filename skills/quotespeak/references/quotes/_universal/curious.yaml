@@ -1,0 +1,26 @@
+# _universal/curious - populated in Phase 4 gap fill
+
+vibe: |
+  Open-question voice that lands across any mode of work. The speaker is in receive-mode, scanning, wondering aloud. Sentences are short and tilted forward. Use when the work is exploratory regardless of theme. Planning, mentorship, archaeology, investigation all share this when the goal is to learn before deciding. These are the universal openers and reframings: koan-style or question-style lines that don't bind to any single theme. Avoid franchise-specific curious lines; those go to investigation/curious. These are theme-agnostic.
+
+quotes:
+  - quote: "Curiouser and curiouser."
+    source: "Alice's Adventures in Wonderland (Lewis Carroll)"
+    topics: [discover, curious]
+  - quote: "What's this?"
+    source: "The Nightmare Before Christmas (Jack Skellington)"
+    topics: [discover, curious]
+  - quote: "Compared to what?"
+    source: "Real Genius (Chris Knight)"
+    topics: [reframe, curious]
+  - quote: "Tell me more."
+    source: "generic conversational"
+    topics: [curious, attention]
+  - quote: "No matter where you go, there you are."
+    source: "The Adventures of Buckaroo Banzai Across the 8th Dimension"
+    topics: [meta, philosophical-curious]
+    notes: "Koan-style. Fits any context-shift moment."
+  - quote: "Hmm."
+    source: "generic"
+    topics: [curious, processing]
+    notes: "Single-syllable processing-aloud. Useful in subtle intensity."

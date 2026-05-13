@@ -1,116 +1,293 @@
 #!/usr/bin/env python3
-"""Validate skills/quotespeak/references/quotes.yaml.
+"""quotespeak v2 bank validator.
 
 Checks:
-  - YAML parses
-  - Every entry has the required fields (quote, source, topics, register)
-  - `topics` is a list of strings
-  - `register` is one of the canonical registers
-  - No register token appears inside a `topics` list (cross-axis pollution)
-  - No exact-duplicate quote text across entries
+1. Every theme directory has a _vibe.md.
+2. Each _vibe.md's "Available moods" list matches the .yaml files in its directory.
+3. Every leaf YAML has a `vibe:` field (warns if still TODO).
+4. Every leaf YAML has >= 5 quotes (error) / >= 8 quotes (warn target).
+5. Universal `_universal/*.yaml` count <= 30 each (warn).
+6. No quote appears in both _universal/ and a theme leaf.
+7. Required themes/moods present per the v2 taxonomy.
 
-Exit codes:
-  0  clean
-  1  validation issues found
-  2  cannot run (missing file, missing dependency, parse failure)
+Usage:
+    python3 validate.py [--root <path-to-quotes-dir>]
+
+Default --root is the v2 staging area: .ai-cache/quotespeak-v2/references/quotes/
+After cutover, point at skills/quotespeak/references/quotes/.
 """
 
 from __future__ import annotations
 
+import argparse
+import re
 import sys
 from pathlib import Path
 
 try:
     import yaml
 except ImportError:
-    sys.stderr.write(
-        "Missing dependency: pyyaml.\n"
-        "See scripts/quotespeak/README.md for setup options.\n"
-    )
+    print("ERROR: pyyaml required (pip install pyyaml)", file=sys.stderr)
     sys.exit(2)
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-QUOTES_PATH = REPO_ROOT / "skills" / "quotespeak" / "references" / "quotes.yaml"
 
-CANONICAL_REGISTERS = {
-    "ominous", "triumphant", "exasperated", "deadpan", "hopeful",
-    "defiant", "unhinged", "philosophical", "wistful", "snark",
-    "reassuring", "foreboding", "smug",
+THEMES = [
+    "investigation",
+    "building",
+    "refactor",
+    "shipping",
+    "incident",
+    "planning",
+    "delegation",
+    "mentorship",
+    "waiting",
+    "archaeology",
+    "deprecation",
+]
+
+VALID_MOODS = {
+    "curious",
+    "deadpan",
+    "triumphant",
+    "ominous",
+    "exasperated",
+    "hopeful",
+    "philosophical",
+    "wistful",
+    "defiant",
+    "unhinged",
 }
 
-REQUIRED_FIELDS = ("quote", "source", "topics", "register")
+# The 62 valid theme×mood combinations per references/themes.md.
+MATRIX = {
+    "investigation": {"curious", "deadpan", "triumphant", "ominous", "exasperated", "philosophical", "defiant"},
+    "building": {"deadpan", "triumphant", "exasperated", "hopeful", "philosophical"},
+    "refactor": {"deadpan", "triumphant", "exasperated", "philosophical", "wistful", "defiant"},
+    "shipping": {"deadpan", "triumphant", "ominous", "hopeful", "defiant"},
+    "incident": {"deadpan", "ominous", "exasperated", "philosophical", "defiant", "unhinged"},
+    "planning": {"deadpan", "ominous", "exasperated", "hopeful", "philosophical", "defiant"},
+    "delegation": {"deadpan", "triumphant", "exasperated", "hopeful", "philosophical", "defiant"},
+    "mentorship": {"deadpan", "hopeful", "philosophical", "wistful", "defiant"},
+    "waiting": {"deadpan", "ominous", "exasperated", "hopeful", "philosophical", "wistful"},
+    "archaeology": {"deadpan", "ominous", "exasperated", "philosophical", "wistful"},
+    "deprecation": {"deadpan", "philosophical", "wistful", "defiant", "unhinged"},
+}
+
+UNIVERSAL_CAP = 30
+UNIVERSAL_CAP_OVERRIDE = {"deadpan": 200}  # deadpan is the genuine catchall register
+MIN_LEAF_QUOTES = 5
+TARGET_LEAF_QUOTES = 8
+MAX_THEME_LEAF_QUOTES = 20
+
+
+def parse_vibe_md_moods(vibe_md_path: Path) -> list[str] | None:
+    """Extract moods listed in the 'Available moods' section of a _vibe.md."""
+    if not vibe_md_path.exists():
+        return None
+    text = vibe_md_path.read_text()
+    match = re.search(r"## Available moods\n(.*?)(?=\n## |\Z)", text, re.DOTALL)
+    if not match:
+        return None
+    section = match.group(1)
+    moods = re.findall(r"`(\w+)\.yaml`", section)
+    seen: list[str] = []
+    for m in moods:
+        if m not in seen and m in VALID_MOODS:
+            seen.append(m)
+    return seen
+
+
+def count_sentences(text: str) -> int:
+    """Rough sentence-count heuristic for vibe blurbs."""
+    return len(re.findall(r"[.!?]\s", text.strip() + " "))
+
+
+def load_yaml(path: Path) -> dict | None:
+    try:
+        return yaml.safe_load(path.read_text())
+    except yaml.YAMLError as e:
+        print(f"ERR:  {path}: invalid YAML - {e}", file=sys.stderr)
+        return None
+
+
+def check_leaf(path: Path, *, is_universal: bool, errors: list[str], warnings: list[str]) -> set[str]:
+    """Validate a leaf YAML; return the set of quote strings it contains."""
+    data = load_yaml(path)
+    if data is None:
+        return set()
+    if not isinstance(data, dict):
+        errors.append(f"{path}: root must be a mapping")
+        return set()
+
+    vibe = data.get("vibe", "")
+    if not isinstance(vibe, str) or not vibe.strip():
+        errors.append(f"{path}: missing or empty `vibe:` field")
+    elif vibe.strip().lower().startswith("todo"):
+        warnings.append(f"{path}: vibe is TODO - fill in Phase 4")
+    elif count_sentences(vibe) < 6:
+        warnings.append(f"{path}: vibe has <6 sentences (target 6-10 with concrete diction)")
+
+    quotes = data.get("quotes") or []
+    if not isinstance(quotes, list):
+        errors.append(f"{path}: `quotes:` must be a list")
+        return set()
+
+    n = len(quotes)
+    if n < MIN_LEAF_QUOTES:
+        errors.append(f"{path}: only {n} quote(s); minimum {MIN_LEAF_QUOTES}")
+    elif n < TARGET_LEAF_QUOTES:
+        warnings.append(f"{path}: only {n} quote(s); target {TARGET_LEAF_QUOTES}")
+
+    if is_universal:
+        cap = UNIVERSAL_CAP_OVERRIDE.get(path.stem, UNIVERSAL_CAP)
+        if n > cap:
+            warnings.append(f"{path}: {n} quotes exceeds _universal cap of {cap}")
+    if not is_universal and n > MAX_THEME_LEAF_QUOTES:
+        warnings.append(f"{path}: {n} quotes - theme leaf bloated (cap {MAX_THEME_LEAF_QUOTES})")
+
+    seen: set[str] = set()
+    for i, q in enumerate(quotes):
+        if not isinstance(q, dict):
+            errors.append(f"{path}: quotes[{i}] is not a mapping")
+            continue
+        text = q.get("quote")
+        if not text:
+            errors.append(f"{path}: quotes[{i}] has no `quote:` text")
+            continue
+        if text in seen:
+            errors.append(f"{path}: duplicate quote within file: {text[:60]!r}")
+        seen.add(text)
+        if not q.get("source"):
+            warnings.append(f"{path}: quotes[{i}] ({text[:40]!r}) has no `source:`")
+
+    return seen
+
+
+def check_theme(theme_dir: Path, errors: list[str], warnings: list[str]) -> dict[str, set[str]]:
+    """Validate a theme directory; return {mood: set-of-quote-strings}."""
+    theme = theme_dir.name
+    leaves: dict[str, set[str]] = {}
+
+    vibe_md = theme_dir / "_vibe.md"
+    if not vibe_md.exists():
+        errors.append(f"{theme}: missing _vibe.md")
+        return leaves
+
+    listed_moods = parse_vibe_md_moods(vibe_md)
+    if listed_moods is None or not listed_moods:
+        errors.append(f"{theme}: _vibe.md has no parseable 'Available moods' section")
+        listed_set = set()
+    else:
+        listed_set = set(listed_moods)
+
+    actual_moods = {p.stem for p in theme_dir.glob("*.yaml")}
+
+    missing_files = listed_set - actual_moods
+    extra_files = actual_moods - listed_set
+    for m in missing_files:
+        warnings.append(f"{theme}: _vibe.md lists `{m}.yaml` but no file exists yet")
+    for m in extra_files:
+        errors.append(f"{theme}: file `{m}.yaml` exists but is not listed in _vibe.md")
+
+    valid_moods_for_theme = MATRIX.get(theme, set())
+    invalid = actual_moods - valid_moods_for_theme
+    for m in invalid:
+        errors.append(f"{theme}: `{m}.yaml` is not a valid mood for this theme (per matrix)")
+
+    for yaml_path in sorted(theme_dir.glob("*.yaml")):
+        mood = yaml_path.stem
+        leaves[mood] = check_leaf(yaml_path, is_universal=False, errors=errors, warnings=warnings)
+
+    return leaves
+
+
+def check_universal(universal_dir: Path, errors: list[str], warnings: list[str]) -> dict[str, set[str]]:
+    leaves: dict[str, set[str]] = {}
+    if not universal_dir.exists():
+        errors.append("_universal/ directory missing")
+        return leaves
+    for yaml_path in sorted(universal_dir.glob("*.yaml")):
+        mood = yaml_path.stem
+        if mood not in VALID_MOODS:
+            errors.append(f"_universal/{mood}.yaml is not a valid mood name")
+            continue
+        leaves[mood] = check_leaf(yaml_path, is_universal=True, errors=errors, warnings=warnings)
+    return leaves
+
+
+def check_cross_dup(
+    universal_leaves: dict[str, set[str]],
+    theme_leaves: dict[str, dict[str, set[str]]],
+    errors: list[str],
+) -> None:
+    """No quote should appear in both _universal/ and any theme leaf."""
+    universal_all: set[str] = set()
+    for s in universal_leaves.values():
+        universal_all |= s
+    for theme, moods in theme_leaves.items():
+        for mood, quotes in moods.items():
+            overlap = quotes & universal_all
+            for q in overlap:
+                errors.append(
+                    f"{theme}/{mood}.yaml: quote also in _universal/ - pick one home: {q[:60]!r}"
+                )
 
 
 def main() -> int:
-    if not QUOTES_PATH.exists():
-        sys.stderr.write(f"ERROR: {QUOTES_PATH} not found\n")
+    script_dir = Path(__file__).resolve().parent
+    # Resolve for both staging (.ai-cache/quotespeak-v2/scripts/) and post-cutover (repo/scripts/quotespeak/) layouts.
+    candidates = [
+        script_dir.parent / "references" / "quotes",  # staging area pattern
+        script_dir.parent.parent / "skills" / "quotespeak" / "references" / "quotes",  # post-cutover repo pattern
+    ]
+    default_root = next((c for c in candidates if c.is_dir()), candidates[0])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=default_root,
+        help="path to the quotes/ root (default: staging area)",
+    )
+    args = parser.parse_args()
+
+    root: Path = args.root.resolve()
+    if not root.is_dir():
+        print(f"ERROR: {root} is not a directory", file=sys.stderr)
         return 2
 
-    try:
-        with QUOTES_PATH.open() as f:
-            data = yaml.safe_load(f)
-    except yaml.YAMLError as e:
-        sys.stderr.write(f"ERROR: YAML parse failure: {e}\n")
-        return 2
+    errors: list[str] = []
+    warnings: list[str] = []
 
-    quotes = data.get("quotes") if isinstance(data, dict) else None
-    if not isinstance(quotes, list):
-        sys.stderr.write("ERROR: top-level 'quotes' key must be a list\n")
-        return 2
-
-    issues: list[str] = []
-
-    for i, entry in enumerate(quotes, 1):
-        label = f"entry {i}"
-        if not isinstance(entry, dict):
-            issues.append(f"{label}: not a mapping")
+    theme_leaves: dict[str, dict[str, set[str]]] = {}
+    for theme in THEMES:
+        theme_dir = root / theme
+        if not theme_dir.is_dir():
+            errors.append(f"theme directory missing: {theme}")
             continue
-        label = f"entry {i} ({entry.get('quote', '<no quote>')!r})"
+        theme_leaves[theme] = check_theme(theme_dir, errors, warnings)
 
-        for field in REQUIRED_FIELDS:
-            value = entry.get(field)
-            if value is None or value == "":
-                issues.append(f"{label}: missing required field `{field}`")
+    universal_leaves = check_universal(root / "_universal", errors, warnings)
+    check_cross_dup(universal_leaves, theme_leaves, errors)
 
-        topics = entry.get("topics")
-        if topics is not None and not (
-            isinstance(topics, list) and all(isinstance(t, str) for t in topics)
-        ):
-            issues.append(f"{label}: `topics` must be a list of strings")
+    # Surface counts
+    print("Leaf counts:")
+    for theme in THEMES:
+        moods = theme_leaves.get(theme, {})
+        if moods:
+            line = ", ".join(f"{m}={len(q)}" for m, q in sorted(moods.items()))
+            print(f"  {theme}: {line}")
+    if universal_leaves:
+        line = ", ".join(f"{m}={len(q)}" for m, q in sorted(universal_leaves.items()))
+        print(f"  _universal: {line}")
 
-        register = entry.get("register")
-        if register and register not in CANONICAL_REGISTERS:
-            issues.append(
-                f"{label}: unknown register {register!r} "
-                f"(canonical: {sorted(CANONICAL_REGISTERS)})"
-            )
+    print()
+    for w in warnings:
+        print(f"WARN: {w}")
+    for e in errors:
+        print(f"ERR:  {e}", file=sys.stderr)
 
-        if isinstance(topics, list):
-            overlap = sorted(set(topics) & CANONICAL_REGISTERS)
-            if overlap:
-                issues.append(
-                    f"{label}: register tokens used as topics: {overlap} "
-                    "— registers and topics are separate axes"
-                )
-
-    seen: dict[str, list[int]] = {}
-    for i, entry in enumerate(quotes, 1):
-        if isinstance(entry, dict):
-            q = entry.get("quote")
-            if isinstance(q, str):
-                seen.setdefault(q, []).append(i)
-    for q, ids in seen.items():
-        if len(ids) > 1:
-            issues.append(f"duplicate quote at entries {ids}: {q!r}")
-
-    print(f"quotespeak: scanned {len(quotes)} entries in {QUOTES_PATH.relative_to(REPO_ROOT)}")
-    if issues:
-        print(f"FAIL: {len(issues)} issue(s):")
-        for issue in issues:
-            print(f"  - {issue}")
-        return 1
-    print("OK: schema clean, registers canonical, no dups, no register/topic crossover")
-    return 0
+    print(f"\nTotals: {len(errors)} errors, {len(warnings)} warnings")
+    return 1 if errors else 0
 
 
 if __name__ == "__main__":

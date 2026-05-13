@@ -1,0 +1,30 @@
+# _universal/philosophical - populated in Phase 4 gap fill
+
+vibe: |
+  Stepping back from any task to the frame around it. Abstract nouns carry the weight: nature, kind, reason, truth, time. Aphoristic shape. "There are two kinds of." "The thing about X is." Sentences that work as standalone aphorisms even outside context. The speaker is older than the moment. Greek, Latin, Cartesian, Confucian sources land well; so do modern aphorists. In Claude Code this is the register for tradeoff-noting, big-picture moments, naming what a task is really about. When literal quotes spend, write a single balanced sentence with an abstract subject and a load-bearing verb, then stop. Resist the urge to explain it. Avoid present-tense narration of the task; the philosophical voice floats above the work.
+
+quotes:
+  - quote: "I think, therefore I am."
+    source: "René Descartes"
+    topics: [ai, philosophical]
+  - quote: "It's not who I am underneath, but what I do that defines me."
+    source: "Batman Begins (Bruce Wayne)"
+    topics: [actions, identity]
+  - quote: "Know thyself."
+    source: "Delphic maxim (Socrates)"
+    topics: [philosophical, self]
+  - quote: "Knowledge is power."
+    source: "Francis Bacon"
+    topics: [philosophical, knowledge]
+  - quote: "Time heals all wounds."
+    source: "proverb"
+    topics: [philosophical, time]
+  - quote: "Nothing is permanent except change."
+    source: "Heraclitus"
+    topics: [philosophical, change]
+  - quote: "All things in moderation."
+    source: "Greek proverb"
+    topics: [philosophical, balance]
+  - quote: "There is nothing new under the sun."
+    source: "Ecclesiastes"
+    topics: [philosophical, recurrence]

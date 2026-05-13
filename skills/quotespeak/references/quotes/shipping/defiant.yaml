@@ -1,0 +1,110 @@
+# shipping/defiant - populated in Phase 3 migration
+
+vibe: |
+  Shipping despite warnings. The speaker has been told the odds and has chosen to deploy anyway. Reach for "never tell me", "I do not care", "ship it", "watch me". Imperative mood, active verbs, refusal to defer. The cadence is short and load-bearing; each sentence stands alone. The voice belongs to the engineer who has reviewed the risk, accepted it, and pushed the button while the rest of the room held its breath. In Claude Code this is the register for the deploy after CI flake, the merge over a stalled approval, the release that ignores conventional wisdom for good reason. When literal quotes spend, write a clipped imperative or a single-sentence refusal aimed at the warning rather than the build. Avoid hedging adverbs and the word "maybe". The speaker is going first; the rest is detail.
+
+quotes:
+  - quote: "Yippee-ki-yay."
+    source: "Die Hard - John McClane"
+    topics: ["success", "victory"]
+
+  - quote: "I don't have time to bleed."
+    source: "Predator - Blain"
+    topics: ["hot-fix", "deadline", "push-through"]
+
+  - quote: "Always be closing."
+    source: "Glengarry Glen Ross - Alec Baldwin"
+    topics: ["tickets", "finish", "ship"]
+
+  - quote: "Believe it!"
+    source: "Naruto (English dub)"
+    topics: ["confidence", "ship", "claim"]
+
+  - quote: "Never tell me the odds."
+    source: "Star Wars: The Empire Strikes Back - Han Solo"
+    topics: ["risk", "deploy", "defiance"]
+
+  - quote: "Ye cannae change the laws of physics."
+    source: "Star Trek - Scotty"
+    topics: ["perf", "limit", "constraint"]
+
+  - quote: "If you ain't first, you're last."
+    source: "Talladega Nights - Reese Bobby"
+    topics: ["perf", "ranking", "defiance"]
+
+  - quote: "Get to the choppa!"
+    source: "Predator - Dutch"
+    topics: ["escape", "deploy", "urgent"]
+    notes: "Schwarzenegger-accent variant of 'Get to the chopper!'"
+
+  - quote: "Are you not entertained?"
+    source: "Gladiator - Maximus"
+    topics: ["defiance", "ship", "oneliner"]
+
+  - quote: "Release the hounds."
+    source: "The Simpsons - Mr. Burns"
+    topics: ["deploy", "release", "command"]
+
+  - quote: "We will rock you."
+    source: "Queen"
+    topics: ["confidence", "ship", "oneliner"]
+
+  - quote: "Eye of the tiger."
+    source: "Survivor - 'Eye of the Tiger'"
+    topics: ["focus", "hype", "ship"]
+
+  - quote: "You only get one shot, do not miss your chance to blow."
+    source: "Eminem - 'Lose Yourself'"
+    topics: ["deploy", "deadline", "ship"]
+
+  - quote: "I am not throwing away my shot."
+    source: "Hamilton - Alexander Hamilton"
+    topics: ["deploy", "opportunity", "defiance"]
+
+  - quote: "Zerg rush."
+    source: "StarCraft"
+    topics: ["scale", "deploy", "attack"]
+
+  - quote: "Stand and deliver."
+    source: "highwayman cliché / Adam Ant"
+    topics: ["demand", "ship", "oneliner"]
+
+  - quote: "Just do it."
+    source: "Nike slogan"
+    topics: ["ship", "start", "oneliner"]
+
+  - quote: "Float like a butterfly, sting like a bee."
+    source: "Muhammad Ali"
+    topics: ["perf", "agile"]
+
+  - quote: "Can you smell what The Rock is cookin'?"
+    source: "WWE - The Rock"
+    topics: ["deploy", "ship", "oneliner"]
+
+  - quote: "If it's a good idea, go ahead and do it."
+    source: "Grace Hopper"
+    topics: ["ship", "decision"]
+
+  - quote: "Real artists ship."
+    source: "Steve Jobs"
+    topics: ["ship", "deploy"]
+
+  - quote: "Move fast and break things."
+    source: "Mark Zuckerberg / early Facebook"
+    topics: ["ship", "speed", "refactor"]
+
+  - quote: "Hack the planet!"
+    source: "Hackers (1995)"
+    topics: ["ship", "refactor", "defiance"]
+
+  - quote: "Send it."
+    source: "internet folklore - extreme sports"
+    topics: ["ship", "deploy", "defiance"]
+
+  - quote: "I'll become the Pirate King!"
+    source: "One Piece - Monkey D. Luffy"
+    topics: ["ambition", "ship", "defiance"]
+
+  - quote: "Show me the money!"
+    source: "Jerry Maguire - Rod Tidwell"
+    topics: ["demand", "ship", "oneliner"]

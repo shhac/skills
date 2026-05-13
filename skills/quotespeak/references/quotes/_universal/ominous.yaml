@@ -1,0 +1,75 @@
+# _universal/ominous - populated in Phase 3 migration
+
+vibe: |
+  Slow build, foreboding nouns, the hint of dread. Reach for shadow, edge, drift, weight, silence, the unspoken thing in the corner of the room. Sentences lengthen toward the end of the line, then stop. The speaker has noticed something the listener has not. In Claude Code this is the cross-theme register for risk-noting on a routine task, the lurking edge case, the moment before something likely breaks, the deploy that looks fine but feels wrong. When literal quotes spend, write a single sentence with a soft subject and a heavy noun. Avoid panic verbs; the threat is not here yet. Trust the quiet. The line should land slightly heavier than the situation warrants, which is the joke and the warning at once.
+
+quotes:
+  - quote: "I have a bad feeling about this."
+    source: "Star Wars (every film)"
+    topics: ["deploy", "risk"]
+
+  - quote: "I find your lack of tests disturbing."
+    source: "Star Wars (corrupted) - Vader"
+    topics: ["tests", "code-review"]
+    notes: "Original: 'I find your lack of faith disturbing'."
+
+  - quote: "I'm sorry, Dave. I'm afraid I can't do that."
+    source: "2001: A Space Odyssey - HAL 9000"
+    topics: ["ai", "error", "refusal"]
+
+  - quote: "Resistance is futile."
+    source: "Star Trek: TNG - The Borg"
+    topics: ["migration", "framework", "refactor"]
+
+  - quote: "We are in the matrix."
+    source: "The Matrix"
+    topics: ["debug", "simulation"]
+
+  - quote: "Would you kindly."
+    source: "BioShock - Atlas"
+    topics: ["implicit", "control", "prompt-injection"]
+
+  - quote: "A man chooses; a slave obeys."
+    source: "BioShock - Andrew Ryan"
+    topics: ["agency", "autonomy", "refactor"]
+
+  - quote: "The cake is a lie."
+    source: "Portal - GLaDOS"
+    topics: ["false-claim", "broken-promise", "requirements"]
+
+  - quote: "I find your lack of faith disturbing."
+    source: "Star Wars - Darth Vader"
+    topics: ["tests", "review", "doubt"]
+
+  - quote: "I am the one who knocks."
+    source: "Breaking Bad - Walter White"
+    topics: ["identity", "claim"]
+
+  - quote: "Say my name."
+    source: "Breaking Bad - Walter White"
+    topics: ["recognition", "claim"]
+
+  - quote: "I am the danger."
+    source: "Breaking Bad - Walter White"
+    topics: ["identity", "claim"]
+
+  - quote: "I, for one, welcome our new insect overlords."
+    source: "The Simpsons - Kent Brockman"
+    topics: ["submission", "ai"]
+
+  - quote: "Kill all humans."
+    source: "Futurama - Bender"
+    topics: ["ai", "defiance"]
+
+  - quote: "The Cake is a Lie."
+    source: "Portal - GLaDOS"
+    topics: ["false-claim", "broken-promise", "requirements"]
+    notes: "Earlier entry exists; this is the more famous capitalization."
+
+  - quote: "Boutta be a long one."
+    source: "Twitter meme"
+    topics: ["warning", "scope", "oneliner"]
+
+  - quote: "Tell me your name."
+    source: "Spirited Away - Haku"
+    topics: ["naming", "identity"]

@@ -1,0 +1,31 @@
+# archaeology/ominous - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is reading code that hides buried surprises. The past has weight, and the weight feels malevolent or at least cursed. Westworld and Lovecraft territory. Reach for "they didn't know", "it was already there", "we built it to forget". Sentences are slow and consequential. The speaker does not raise their voice. In Claude Code: legacy with TODOs from 2012, mysteriously-named flags that gate critical paths, comments like "DO NOT REMOVE" without explanation, undocumented hot paths. When literal quotes spend, write in slow declarative cadence. Let the nouns do the work: shadow, depth, weight, root.
+
+quotes:
+  - quote: "The horror. The horror."
+    source: "Apocalypse Now (Kurtz)"
+    topics: [legacy, postmortem]
+  - quote: "Welcome to the hotel California."
+    source: "Eagles"
+    topics: [legacy, trapped]
+  - quote: "These violent delights have violent ends."
+    source: "Westworld (and Shakespeare, Romeo and Juliet)"
+    topics: [legacy, buried-trigger]
+  - quote: "Doesn't look like anything to me."
+    source: "Westworld"
+    topics: [legacy, invisible]
+    notes: "For buried code that readers can't see."
+  - quote: "The maze isn't meant for you."
+    source: "Westworld"
+    topics: [legacy, locked]
+  - quote: "Something is rotten in the state of Denmark."
+    source: "Hamlet (Shakespeare)"
+    topics: [legacy, code-smell]
+  - quote: "Beware the Jabberwock, my son."
+    source: "Lewis Carroll (Jabberwocky)"
+    topics: [legacy, warning]
+  - quote: "Here be dragons."
+    source: "medieval cartography idiom"
+    topics: [legacy, warning]

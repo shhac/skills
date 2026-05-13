@@ -1,0 +1,30 @@
+# incident/defiant - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is the fixer-arrives. Production is broken; the speaker is unhurried and competent. The defiance is quiet: a refusal to panic, not a battle-cry. Mr. Wolf and Captain America territory. Reach for understatement: "I solve problems", "let's get this sorted", "we'll be fine". Active verbs, calm cadence. In Claude Code: arriving at an incident channel, taking ownership of a hotfix, leading a rollback. When literal quotes spend, write short defiant lines that sound like the speaker has done this before.
+
+quotes:
+  - quote: "It's only a flesh wound."
+    source: "Monty Python and the Holy Grail (Black Knight)"
+    topics: [denial, broken, partial-failure]
+  - quote: "Puny god."
+    source: "The Avengers (Hulk)"
+    topics: [defeat, easy, win]
+  - quote: "I'm the wolf. I solve problems."
+    source: "Pulp Fiction (Winston Wolf)"
+    topics: [debug, fix, helper]
+  - quote: "Calm down. Let's think."
+    source: "Pulp Fiction (Winston Wolf)"
+    topics: [incident, defiant]
+  - quote: "We've been here before."
+    source: "incident-veteran idiom"
+    topics: [incident, defiant]
+  - quote: "Not on my watch."
+    source: "generic"
+    topics: [incident, defiant]
+  - quote: "Hold the line."
+    source: "Gladiator (Maximus)"
+    topics: [incident, hold]
+  - quote: "Stay frosty."
+    source: "Aliens (Hicks)"
+    topics: [incident, defiant, hold]

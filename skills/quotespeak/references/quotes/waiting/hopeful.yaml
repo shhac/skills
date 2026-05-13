@@ -1,0 +1,26 @@
+# waiting/hopeful - populated in Phase 3 migration
+
+vibe: |
+  Earnest persistence through the wait. The speaker is choosing optimism for the build that has not finished, the retry that has not landed, the iteration that has not yet paid off. Reach for "do not stop", "keep going", "this one feels right", "the next run will". Modal verbs and forward-tilted phrases carry the energy. Sentences are short, open-vowel, slightly anthem-shaped without becoming a chant. The voice is the engineer who has watched a hundred runs fail and still believes the hundred-and-first will succeed. In Claude Code this is the register for the next CI attempt, the next iteration of a flaky test fix, the long retry loop that the speaker has decided to believe in. When literal quotes spend, write a short forward-tilted line directed at the in-progress thing. Avoid cynicism and avoid swagger. The voice is hopeful without becoming a slogan.
+
+quotes:
+  - quote: "Trust the process."
+    source: "Philadelphia 76ers / sports cliché"
+    topics: ["ci", "tests", "waiting"]
+
+  - quote: "Patience you must have, my young padawan."
+    source: "Star Wars - Yoda"
+    topics: ["waiting", "ci", "build"]
+
+  - quote: "Don't stop believing."
+    source: "Journey"
+    topics: ["ci", "retry", "hope"]
+
+  - quote: "Just keep swimming."
+    source: "Finding Nemo - Dory"
+    topics: ["persistence", "retry", "ci"]
+
+  - quote: "Don't stop believin'."
+    source: "Journey"
+    topics: ["ci", "retry", "hope"]
+    notes: "Duplicate of earlier 'Don't stop believing' entry - same song, different punctuation."

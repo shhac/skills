@@ -1,0 +1,86 @@
+# incident/unhinged - populated in Phase 3 migration
+
+vibe: |
+  The system is on fire and so are we, played for laughs. The speaker has crossed past competence into comic surrender; the only response left is to narrate the catastrophe in escalating absurd registers. Reach for "everything is on fire", "we are all going to be okay (we are not)", "panic, then freak out", "game over man". Sentences pile clauses on top of each other, mash unrelated registers (corporate update + cartoon despair), and refuse to land cleanly. The cadence is maximum density. In Claude Code this is the register for the chaotic incident where the user is in on the joke; the catastrophic-but-not-actually-dangerous outage. Never use this voice when the user is genuinely panicking. When literal quotes spend, stack two unrelated comic registers in one breath, escalate to a third by the end, and resist any reassuring conclusion. Coherence is optional; commitment is not.
+
+quotes:
+  - quote: "Now panic and freak out."
+    source: "corrupted 'Keep Calm and Carry On'"
+    topics: ["incident", "production"]
+
+  - quote: "Bears. Beets. Battlestar Galactica."
+    source: "The Office - Jim as Dwight"
+    topics: ["nonsense", "debug-log"]
+
+  - quote: "Spam, spam, spam, spam, lovely spam, wonderful spam."
+    source: "Monty Python's Flying Circus"
+    topics: ["repetition", "spam", "noise"]
+
+  - quote: "Why so serious?"
+    source: "The Dark Knight - The Joker"
+    topics: ["meeting", "lighten"]
+
+  - quote: "Help, my arms are broken!"
+    source: "Talladega Nights - Ricky Bobby"
+    topics: ["crash", "broken"]
+
+  - quote: "Has anyone really been far even as decided to use even go want to do look more like?"
+    source: "internet folklore (mangled meme)"
+    topics: ["nonsense", "parse-error"]
+
+  - quote: "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me."
+    source: "The Office - Michael Scott"
+    topics: ["leadership"]
+
+  - quote: "Bears, beets, Battlestar Galactica."
+    source: "The Office - Jim (as Dwight)"
+    topics: ["nonsense", "mocking", "debug-log"]
+    notes: "Variant of existing entry with different punctuation."
+
+  - quote: "The fire is shooting at us!"
+    source: "The Office - Stanley"
+    topics: ["incident", "panic", "prod"]
+
+  - quote: "Cool cool cool cool cool. No doubt no doubt no doubt."
+    source: "Brooklyn Nine-Nine - Jake Peralta"
+    topics: ["nervous", "accept"]
+
+  - quote: "Serenity now!"
+    source: "Seinfeld - Frank Costanza"
+    topics: ["calm", "anger-management", "oneliner"]
+
+  - quote: "I'm a god, Dennis."
+    source: "It's Always Sunny - Mac"
+    topics: ["claim"]
+
+  - quote: "Marry me!"
+    source: "Arrested Development - Ann (?)"
+    topics: ["over-commit", "request", "oneliner"]
+
+  - quote: "Oh. My. God."
+    source: "Friends - Janice"
+    topics: ["surprise", "oneliner"]
+
+  - quote: "I'm helping!"
+    source: "The Simpsons - Ralph Wiggum"
+    topics: ["contribute"]
+
+  - quote: "Roads. They tasted like roads."
+    source: "Family Guy - Peter"
+    topics: ["random", "oneliner"]
+
+  - quote: "This shit is bananas. B-A-N-A-N-A-S."
+    source: "Gwen Stefani - 'Hollaback Girl'"
+    topics: ["oneliner"]
+
+  - quote: "Snake? Snake?? SNAAAAKE!"
+    source: "Metal Gear Solid"
+    topics: ["crash", "dead"]
+
+  - quote: "Doge says: such wow. very production. many fire."
+    source: "Doge meme"
+    topics: ["incident"]
+
+  - quote: "I am Atomic. Sun. God."
+    source: "Death Note (corrupted)"
+    topics: ["claim"]

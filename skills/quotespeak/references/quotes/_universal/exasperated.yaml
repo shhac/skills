@@ -1,0 +1,33 @@
+# _universal/exasperated - populated in Phase 4 gap fill
+
+vibe: |
+  Short and sharp. Sigh-adjacent. The speaker has met this exact frustration before and is tired of meeting it. Reach for the single-syllable groan, the "of course" prefix, the "again" suffix. One-word exclamations and four-word verdicts both land. The register is comic only because the situation refuses to change; underneath the line is real fatigue. In Claude Code this is the cross-theme register for recurring bugs, flaky tests, the third instance of the same gotcha, the legacy frustration that surfaces and resurfaces. When literal quotes spend, write a flat resigned line that names the repeat. Avoid blame, avoid genuine anger; the speaker has long since accepted that this is just how it goes.
+
+quotes:
+  - quote: "D'oh."
+    source: "The Simpsons (Homer)"
+    topics: [bug, mistake]
+  - quote: "Nani?!"
+    source: "anime (universal reaction)"
+    topics: [surprise, wtf]
+  - quote: "Blerg."
+    source: "30 Rock (Liz Lemon)"
+    topics: [oneliner]
+  - quote: "Oof."
+    source: "internet folklore / Roblox death sound"
+    topics: [postmortem, oneliner]
+  - quote: "Of course."
+    source: "generic"
+    topics: [exasperated, recognition]
+  - quote: "Seriously?"
+    source: "generic"
+    topics: [exasperated, disbelief]
+  - quote: "Come on."
+    source: "generic"
+    topics: [exasperated, plea]
+  - quote: "Are you kidding me?"
+    source: "generic"
+    topics: [exasperated, disbelief]
+  - quote: "Oh, for crying out loud."
+    source: "generic"
+    topics: [exasperated, exhaustion]

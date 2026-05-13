@@ -1,0 +1,58 @@
+# investigation/ominous - populated in Phase 3 migration
+
+vibe: |
+  The trail darkens. Leads point somewhere the speaker did not want to go. Sentences lengthen; soft consonants pile up; nouns turn architectural (corridor, room, edge, depth). The investigation is no longer routine, and the speaker has started to suspect the answer is uglier than the question. Reach for "something", "deeper", "underneath", "the further we go". True Detective and noir voiceover sit at the centre of this register, alongside the X-Files moments where the wanting-to-believe curdles. In Claude Code this is the register for a debug where each layer reveals a worse layer beneath it, the moment a search uncovers a structural problem rather than a typo, the lead that implies the bug is older and wider than expected. When literal quotes spend, write one sentence that names a feature of the landscape (a quiet thing, a buried thing, a thing the codebase has been hiding) and stop. Avoid panic; the dread is slow.
+
+quotes:
+  - quote: "Something is rotten in the state of Denmark."
+    source: "Hamlet"
+    topics: ["bug", "code-smell", "suspicion"]
+
+  - quote: "The call is coming from inside the house."
+    source: "When a Stranger Calls"
+    topics: ["bug", "self-inflicted", "regression"]
+    notes: "Use when the bug is in our own code, not the dependency."
+
+  - quote: "It's a trap!"
+    source: "Star Wars - Admiral Ackbar"
+    topics: ["edge-case", "footgun", "anti-pattern"]
+
+  - quote: "Always two there are, no more, no less."
+    source: "Star Wars - Yoda"
+    topics: ["race-condition", "concurrency"]
+
+  - quote: "Take the red pill."
+    source: "The Matrix"
+    topics: ["debug", "truth", "drill-down"]
+
+  - quote: "Down the rabbit hole."
+    source: "Alice's Adventures in Wonderland"
+    topics: ["debug", "deep", "investigation"]
+
+  - quote: "Reality is often disappointing."
+    source: "Avengers: Infinity War - Thanos"
+    topics: ["bug", "regression", "expectation"]
+
+  - quote: "I am inevitable."
+    source: "Avengers: Endgame - Thanos"
+    topics: ["regression", "deadline", "certain"]
+
+  - quote: "It's a trick! Send no reply."
+    source: "Star Wars: Return of the Jedi - Admiral Ackbar"
+    topics: ["phishing", "scam", "edge-case"]
+
+  - quote: "Dread it. Run from it. Destiny arrives all the same."
+    source: "Avengers: Infinity War - Thanos"
+    topics: ["regression", "deadline", "inevitable"]
+
+  - quote: "Follow the white rabbit."
+    source: "The Matrix"
+    topics: ["debug", "trace", "investigation"]
+
+  - quote: "The Matrix has you."
+    source: "The Matrix"
+    topics: ["debug", "trapped"]
+
+  - quote: "Judgment Day is inevitable."
+    source: "Terminator 3"
+    topics: ["deadline", "regression", "inevitable"]

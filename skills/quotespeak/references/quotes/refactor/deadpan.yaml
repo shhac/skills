@@ -1,0 +1,278 @@
+# refactor/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Matter-of-fact reform. The speaker has identified what needs to change, has formed an opinion, and is stating it without dressing it up. Reach for "this needs to change", "rename it", "extract the helper", "the duplication goes here". Sentences are short, declarative, slightly clinical. The voice is the senior reviewer who has read enough code to recognize the shape of a problem and the shape of its fix. In Claude Code this is the register for the routine cleanup pass, the matter-of-fact rename, the de-duplication that nobody needs convinced of. When literal quotes spend, write four-to-eight word verdicts on a piece of code or a one-line instruction for changing it. Avoid swagger (that lives in refactor/triumphant after the diff lands) and avoid the burn-it-down register (that lives in refactor/defiant). The voice is calm; the cleanup is happening either way.
+
+quotes:
+  - quote: "I see dead code."
+    source: "The Sixth Sense (corrupted)"
+    topics: ["dead-code", "cleanup", "refactor"]
+    notes: "Pre-corrupted; original is 'I see dead people'."
+
+  - quote: "We need to go deeper."
+    source: "Inception (corrupted)"
+    topics: ["refactor", "abstraction", "debug"]
+    notes: "Original is 'we have to go deeper'."
+
+  - quote: "Run, you fools."
+    source: "The Lord of the Rings - Gandalf"
+    topics: ["git", "escape", "rollback"]
+
+  - quote: "Hold my beer."
+    source: "internet folklore"
+    topics: ["hack", "risky", "perf"]
+
+  - quote: "Nobody touch anything."
+    source: "generic heist movie"
+    topics: ["fragile", "legacy", "hack"]
+
+  - quote: "Cross the streams."
+    source: "Ghostbusters (corrupted from 'don't cross the streams')"
+    topics: ["fragile", "anti-pattern", "footgun"]
+    notes: "Original: 'Don't cross the streams' - Egon Spengler."
+
+  - quote: "If it works, don't touch it."
+    source: "developer folklore"
+    topics: ["legacy", "fragile"]
+
+  - quote: "Held together by spite."
+    source: "generic"
+    topics: ["legacy", "fragile", "hack"]
+
+  - quote: "Why not both?"
+    source: "Old El Paso commercial / meme"
+    topics: ["scope-creep", "design-choice"]
+
+  - quote: "We need to talk."
+    source: "generic relationship-movie cliché"
+    topics: ["review", "feedback", "refactor"]
+
+  - quote: "It's not you, it's me."
+    source: "generic"
+    topics: ["review", "refactor", "blame"]
+
+  - quote: "We're not in Kansas anymore."
+    source: "The Wizard of Oz"
+    topics: ["framework-jump", "new-stack", "refactor"]
+
+  - quote: "Pay no attention to the man behind the curtain."
+    source: "The Wizard of Oz"
+    topics: ["hack", "hidden", "magic"]
+
+  - quote: "Leave the gun. Take the cannoli."
+    source: "The Godfather"
+    topics: ["refactor", "cleanup", "salvage"]
+
+  - quote: "The world is changed. I feel it in the water. I feel it in the earth. I smell it in the air."
+    source: "The Lord of the Rings - Galadriel"
+    topics: ["refactor", "migration", "legacy"]
+
+  - quote: "Po-ta-toes. Boil 'em, mash 'em, stick 'em in a stew."
+    source: "The Lord of the Rings - Sam"
+    topics: ["refactor", "pipeline", "etl"]
+
+  - quote: "Anybody want a peanut?"
+    source: "The Princess Bride - Fezzik"
+    topics: ["interject", "scope-creep", "non-sequitur"]
+
+  - quote: "Bring out your dead!"
+    source: "Monty Python and the Holy Grail"
+    topics: ["dead-code", "cleanup", "sweep"]
+
+  - quote: "And now for something completely different."
+    source: "Monty Python's Flying Circus"
+    topics: ["pivot", "refactor", "new-direction"]
+
+  - quote: "Some men just want to watch the world burn."
+    source: "The Dark Knight - Alfred"
+    topics: ["chaos", "motive", "refactor"]
+
+  - quote: "It can't be reasoned with. It can't be bargained with."
+    source: "The Terminator - Kyle Reese"
+    topics: ["legacy", "immutable", "fragile"]
+
+  - quote: "Royale with cheese."
+    source: "Pulp Fiction"
+    topics: ["naming", "localization", "oneliner"]
+
+  - quote: "Today, smoking is going to save lives."
+    source: "The Office - Dwight"
+    topics: ["unconventional", "fix", "hack"]
+
+  - quote: "Festivus for the rest of us."
+    source: "Seinfeld - Frank Costanza"
+    topics: ["alternative", "refactor", "oneliner"]
+
+  - quote: "Bird law."
+    source: "It's Always Sunny - Charlie"
+    topics: ["fake-expertise", "naming"]
+
+  - quote: "A Lannister always pays his debts."
+    source: "Game of Thrones - Tywin / Tyrion"
+    topics: ["debt", "tech-debt", "repay"]
+
+  - quote: "Burn them all."
+    source: "Game of Thrones - Aerys / Daenerys"
+    topics: ["refactor", "rewrite"]
+
+  - quote: "Dracarys."
+    source: "Game of Thrones - Daenerys"
+    topics: ["destroy", "refactor", "command"]
+
+  - quote: "Reverse the polarity of the neutron flow."
+    source: "Doctor Who - Third Doctor"
+    topics: ["hack", "fix", "oneliner"]
+
+  - quote: "It's bigger on the inside."
+    source: "Doctor Who"
+    topics: ["scale", "abstraction", "oneliner"]
+
+  - quote: "Skinner with the Steamed Hams."
+    source: "The Simpsons - Principal Skinner"
+    topics: ["cover-up", "hack"]
+
+  - quote: "Mmm, donuts."
+    source: "The Simpsons - Homer"
+    topics: ["reward", "attachment", "oneliner"]
+
+  - quote: "Mmm, ___ {anything}."
+    source: "The Simpsons - Homer (template)"
+    topics: ["reward", "attachment", "oneliner"]
+    notes: "Template - swap in the thing being savored."
+
+  - quote: "Sometimes science is more art than science."
+    source: "Rick and Morty - Rick"
+    topics: ["hack"]
+
+  - quote: "Imagination."
+    source: "SpongeBob SquarePants"
+    topics: ["naming", "abstract", "oneliner"]
+
+  - quote: "Like a rolling stone."
+    source: "Bob Dylan"
+    topics: ["legacy", "refactor", "oneliner"]
+
+  - quote: "Will the real Slim Shady please stand up?"
+    source: "Eminem"
+    topics: ["identity", "dedup", "oneliner"]
+
+  - quote: "Wololo."
+    source: "Age of Empires - Monk"
+    topics: ["convert", "refactor", "oneliner"]
+
+  - quote: "I'll fix it later. - said no one ever, while it actually got fixed."
+    source: "developer folklore"
+    topics: ["tech-debt", "legacy"]
+
+  - quote: "git push --force"
+    source: "developer command-line folklore"
+    topics: ["git", "push", "footgun"]
+    notes: "Not a quote so much as a four-word horror story. Use as a punchline."
+
+  - quote: "Commit early, commit often."
+    source: "git folklore"
+    topics: ["git", "commit"]
+
+  - quote: "Naming is hard."
+    source: "developer folklore (Phil Karlton-adjacent)"
+    topics: ["naming", "oneliner"]
+
+  - quote: "I fear no man. But that thing… it scares me."
+    source: "internet meme template"
+    topics: ["warning", "fragile"]
+
+  - quote: "I am Legend."
+    source: "Richard Matheson - I Am Legend"
+    topics: ["naming", "identity", "oneliner"]
+
+  - quote: "Call me Ishmael."
+    source: "Moby Dick - Herman Melville"
+    topics: ["naming", "intro", "oneliner"]
+
+  - quote: "He who must not be named."
+    source: "Harry Potter - Voldemort"
+    topics: ["naming", "taboo"]
+
+  - quote: "Hello, my name is `tmp_x_final_v2_REAL.js`."
+    source: "developer folklore"
+    topics: ["naming", "tech-debt"]
+
+  - quote: "I dub thee."
+    source: "knighting ceremony / generic"
+    topics: ["naming", "rename", "oneliner"]
+
+  - quote: "A name has power."
+    source: "fantasy folklore - generic"
+    topics: ["naming", "oneliner"]
+
+  - quote: "It's complicated."
+    source: "Facebook relationship status (cultural)"
+    topics: ["state", "complexity", "oneliner"]
+
+  - quote: "State is the root of all evil."
+    source: "functional programming folklore"
+    topics: ["state"]
+
+  - quote: "<<<<<<< HEAD."
+    source: "git conflict markers"
+    topics: ["merge-conflict", "git", "oneliner"]
+
+  - quote: "We don't have to do this. We can just merge."
+    source: "Star Wars (corrupted)"
+    topics: ["merge-conflict", "deescalate", "oneliner"]
+
+  - quote: "I have altered the deal. Pray I do not alter it any further."
+    source: "Star Wars: The Empire Strikes Back - Vader"
+    topics: ["merge-conflict", "force-push"]
+
+  - quote: "Rebase is a verb. Rebased is a feeling."
+    source: "developer folklore"
+    topics: ["merge-conflict", "rebase"]
+
+  - quote: "Conflict, then thy name is woman."
+    source: "Shakespeare's Hamlet (corrupted)"
+    topics: ["merge-conflict"]
+
+  - quote: "I can fix him."
+    source: "Twitter meme - codependent partner"
+    topics: ["merge-conflict", "refactor"]
+
+  - quote: "Just take theirs."
+    source: "git folklore - 'git checkout --theirs'"
+    topics: ["merge-conflict", "surrender", "oneliner"]
+
+  - quote: "Rerere."
+    source: "git command - 'reuse recorded resolution'"
+    topics: ["merge-conflict", "git", "oneliner"]
+
+  - quote: "We meet again, old friend."
+    source: "generic"
+    topics: ["merge-conflict", "recurring"]
+
+  - quote: "If it ain't broke, don't fix it."
+    source: "Bert Lance / proverb"
+    topics: ["version", "legacy"]
+
+  - quote: "Semantic versioning is a lie we tell ourselves."
+    source: "developer folklore"
+    topics: ["version"]
+
+  - quote: "I am altering the API. Pray I do not alter it any further."
+    source: "Star Wars (corrupted) - Vader"
+    topics: ["version", "breaking-change"]
+
+  - quote: "This API is stable."
+    source: "developer folklore (irony)"
+    topics: ["version", "fragile"]
+
+  - quote: "Upgrade at your own risk."
+    source: "developer folklore"
+    topics: ["version", "migration", "warning"]
+
+  - quote: "Toto, I have a feeling we're not in Kansas anymore."
+    source: "The Wizard of Oz - Dorothy"
+    topics: ["framework-jump", "refactor", "oneliner"]
+
+  - quote: "Of course I love you, but I'm in a relationship with the codebase."
+    source: "generic developer folklore"
+    topics: ["attachment", "oneliner"]

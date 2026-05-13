@@ -1,0 +1,30 @@
+# waiting/ominous - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is watching a long-running process and the air has gone still. The wait isn't just slow; something feels off. Reach for "too quiet", "calm before the storm", "this isn't right". Sentences are short and tense. The speaker is alert but not yet acting. In Claude Code: a deploy that's been pending way longer than expected, a process whose logs went silent, a CI run that should have failed by now but is still running. When literal quotes spend, write quiet alarmed sentences. Sense of suspended action.
+
+quotes:
+  - quote: "Never send a human to do a machine's job."
+    source: "The Matrix (Agent Smith)"
+    topics: [automation, scripting, ci]
+  - quote: "Wake up, Mr. Freeman. Wake up and smell the ashes."
+    source: "Half-Life 2 (G-Man)"
+    topics: [start, postmortem]
+  - quote: "Rise and shine, Mr. Freeman."
+    source: "Half-Life 2 (G-Man)"
+    topics: [start, postmortem]
+  - quote: "Big Brother is watching you."
+    source: "1984 (George Orwell)"
+    topics: [observability, surveillance]
+  - quote: "It's quiet. Too quiet."
+    source: "generic western"
+    topics: [wait, ominous]
+  - quote: "The calm before the storm."
+    source: "proverb"
+    topics: [wait, ominous]
+  - quote: "Something wicked this way comes."
+    source: "Macbeth (Shakespeare)"
+    topics: [wait, ominous]
+  - quote: "Tick tock. Tick tock."
+    source: "generic"
+    topics: [wait, ominous, time-pressure]

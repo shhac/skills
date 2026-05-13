@@ -1,0 +1,31 @@
+# delegation/deadpan - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker delegates with flat composure. No drama, no high stakes, just routine assignment of work to a specialist. Crew-assembly scenes from heist movies live here, but so do the boring ones: "send it to the team", "have someone look at it". Sentences are short and declarative. Reach for understated handoff language: "let's get someone on this", "this is for the X team", "I'll loop in Y". In Claude Code: spawning a subagent for a research task, routing a question to the right tool, asking the team channel without urgency. When literal quotes spend, write flat handoff sentences. Avoid theatrical language; deadpan is the point.
+
+quotes:
+  - quote: "It's dangerous to go alone. Take this."
+    source: "The Legend of Zelda"
+    topics: [dependency, helper, library, util]
+    notes: "Perfect when handing over a util/snippet/library suggestion."
+  - quote: "I am Groot."
+    source: "Guardians of the Galaxy (Groot)"
+    topics: [single-purpose, hodor, generic]
+  - quote: "Mr. Anderson."
+    source: "The Matrix (Agent Smith)"
+    topics: [callout, formal]
+  - quote: "Let's go shopping."
+    source: "Ocean's Eleven (Danny Ocean)"
+    topics: [delegation, crew-cue]
+  - quote: "I need a guy who can do X."
+    source: "Ocean's Eleven (template)"
+    topics: [delegation, specialist]
+  - quote: "Have your people call my people."
+    source: "Hollywood idiom"
+    topics: [delegation, deferral]
+  - quote: "Get me someone who knows."
+    source: "generic"
+    topics: [delegation, specialist]
+  - quote: "I know a guy."
+    source: "generic"
+    topics: [delegation, network]

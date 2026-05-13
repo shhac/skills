@@ -1,0 +1,30 @@
+# delegation/philosophical - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker stands back from the immediate work to articulate principles of delegation: pick the right people, trust them, get out of the way. Roosevelt and Reagan territory. The register is calm and quietly confident. Sentences are declarative; the speaker has done this enough times to abstract it. In Claude Code: deciding to spawn subagents, choosing which specialist tool fits the job, framing what to delegate versus what to keep solo. When literal quotes spend, articulate one principle clearly. Avoid first-person framing ("I think we should…"); abstract to the general case ("The best delegators…").
+
+quotes:
+  - quote: "We are Groot."
+    source: "Guardians of the Galaxy (Groot)"
+    topics: [team, sacrifice]
+  - quote: "The best executive is the one who has sense enough to pick good men to do what he wants done, and self-restraint enough to keep from meddling with them while they do it."
+    source: "Theodore Roosevelt"
+    topics: [delegation, principle]
+  - quote: "If you want to go fast, go alone. If you want to go far, go together."
+    source: "African proverb (popularized by Ted Lasso)"
+    topics: [team, principle]
+  - quote: "Surround yourself with the best people you can find, delegate authority, and don't interfere as long as the policy you've decided upon is being carried out."
+    source: "Ronald Reagan"
+    topics: [delegation, principle]
+  - quote: "Talent wins games, but teamwork and intelligence win championships."
+    source: "Michael Jordan"
+    topics: [team, principle]
+  - quote: "None of us is as smart as all of us."
+    source: "Ken Blanchard"
+    topics: [team, principle]
+  - quote: "Coming together is a beginning. Keeping together is progress. Working together is success."
+    source: "Henry Ford"
+    topics: [team, principle]
+  - quote: "You don't lead by hitting people over the head; that's assault, not leadership."
+    source: "Dwight D. Eisenhower"
+    topics: [delegation, principle]

@@ -1,0 +1,30 @@
+# shipping/ominous - populated in Phase 3 migration
+
+vibe: |
+  The risky deploy. The speaker is committed but quietly uneasy. Reach for "hold onto something", "this might bite", "we are about to find out", "I do not love this". The Jurassic-Park hold-on-tight register lives here, alongside the "bad feeling about this" prelude. Sentences are short, slightly heavier than the moment warrants, and tend to land on a foreboding noun (weight, edge, drift). The speaker is shipping anyway; the dread is a low hum, not a stop signal. In Claude Code this is the register for the late-Friday deploy, the migration with no rollback, the version bump that should have had more eyes on it. When literal quotes spend, write one sentence that names a feature of the situation that is making the speaker uneasy. Avoid panic verbs; the dread is slow. Avoid hopeful framing; the unease is the point.
+
+quotes:
+  - quote: "Hold onto your butts."
+    source: "Jurassic Park - Ray Arnold"
+    topics: ["deploy", "risky", "ci"]
+    notes: "Perfect right before a risky deploy or migration."
+
+  - quote: "You're gonna need a bigger boat."
+    source: "Jaws"
+    topics: ["scale", "perf", "capacity"]
+
+  - quote: "It's a dangerous business, going out your door."
+    source: "The Hobbit - Bilbo"
+    topics: ["risk", "deploy", "journey"]
+
+  - quote: "I am a leaf on the wind."
+    source: "Firefly: Serenity - Wash"
+    topics: ["smooth", "deploy", "doomed"]
+
+  - quote: "Tread lightly."
+    source: "Breaking Bad - Walter White"
+    topics: ["warning", "careful"]
+
+  - quote: "When you play the game of thrones, you win or you die."
+    source: "Game of Thrones - Cersei"
+    topics: ["stakes", "deploy"]

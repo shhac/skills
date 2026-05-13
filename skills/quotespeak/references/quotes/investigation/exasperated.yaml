@@ -1,0 +1,81 @@
+# investigation/exasperated - populated in Phase 3 migration
+
+vibe: |
+  Fourth dead end of the day. The speaker has run the same search, opened the same file, walked the same trace, and found the same nothing. The frustration is comic precisely because it has been earned through repetition. Reach for "again", "still", "of course", "naturally none of them work". The register is sigh-then-keep-going, not blow-up-and-quit. In Claude Code this is the mode for the bug that should already be solved, the grep that returned everything, the log that omits exactly the moment of failure. When literal quotes spend, write a short resigned line that names the repeat. Avoid catastrophe verbs and avoid actual anger; the speaker has done this song before. The next move is usually a sigh and then one more search.
+
+quotes:
+  - quote: "Nobody expects the Spanish Inquisition!"
+    source: "Monty Python's Flying Circus"
+    topics: ["edge-case", "surprise", "regression"]
+
+  - quote: "But why is the rum gone?"
+    source: "Pirates of the Caribbean - Jack Sparrow"
+    topics: ["bug", "missing", "state"]
+    notes: "Great for 'why is this variable undefined / file gone / row missing'."
+
+  - quote: "Nobody expects the empty array."
+    source: "corrupted Monty Python"
+    topics: ["edge-case", "null", "empty"]
+
+  - quote: "Y u no work?"
+    source: "Y U NO meme"
+    topics: ["bug", "debug"]
+
+  - quote: "Worst. Bug. Ever."
+    source: "The Simpsons - Comic Book Guy (corrupted)"
+    topics: ["bug", "severe"]
+    notes: "Original: 'Worst. Episode. Ever.'"
+
+  - quote: "I'm not saying it was aliens. But it was aliens."
+    source: "Ancient Aliens meme - Giorgio Tsoukalos"
+    topics: ["bug", "mystery", "debug"]
+
+  - quote: "Why are you the way that you are?"
+    source: "The Office - Michael Scott"
+    topics: ["bug", "legacy"]
+
+  - quote: "I don't like sand. It's coarse and rough and irritating, and it gets everywhere."
+    source: "Star Wars: Attack of the Clones - Anakin"
+    topics: ["legacy", "bug", "complaint"]
+
+  - quote: "Inconceivable!"
+    source: "The Princess Bride - Vizzini"
+    topics: ["disbelief", "edge-case", "debug"]
+    notes: "Set up: 'You keep using that word. I do not think it means what you think it means.'"
+
+  - quote: "Martha!"
+    source: "Batman v Superman"
+    topics: ["coincidence", "plot-twist", "debug"]
+
+  - quote: "Curse your sudden but inevitable betrayal!"
+    source: "Firefly - Wash"
+    topics: ["regression", "dependency", "betrayal"]
+
+  - quote: "Wildcard, bitches!"
+    source: "It's Always Sunny in Philadelphia - Charlie"
+    topics: ["edge-case", "chaos"]
+
+  - quote: "Pepe Silvia."
+    source: "It's Always Sunny - Charlie"
+    topics: ["conspiracy", "debug"]
+    notes: "The corkboard-with-strings meme. Perfect for tangled investigations."
+
+  - quote: "Hot ham water. Smell it."
+    source: "Arrested Development - Lindsay (close)"
+    topics: ["debug", "smell"]
+
+  - quote: "Sweet zombie Jesus."
+    source: "Futurama - Professor Farnsworth"
+    topics: ["wtf", "oneliner"]
+
+  - quote: "Oh god, no."
+    source: "South Park - generic"
+    topics: ["wtf", "oneliner"]
+
+  - quote: "Is mayonnaise an instrument?"
+    source: "SpongeBob SquarePants - Patrick"
+    topics: ["wtf", "naming"]
+
+  - quote: "Et tu, Brute?"
+    source: "Shakespeare's Julius Caesar"
+    topics: ["betrayal", "regression"]

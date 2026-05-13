@@ -1,0 +1,61 @@
+# mentorship/defiant - populated in Phase 3 migration
+
+vibe: |
+  Pitch-mode persuasion. The speaker is moving the listener toward a commitment rather than just informing. Hosts the aggressive-pitch sub-register: short declaratives, implied stakes, the always-be-closing cadence. Reach for "ship it now", "the time is now", "the competition is not waiting", "do the thing". Sentences are short, fast, and stacked. The voice is urgent without being panicked; the speaker has decided what the listener should do and is closing the gap between recognition and action. In Claude Code this is the register for the structured argument that ends with "so we do this today", the pitch for the harder approach during a design review, the moment when synthesis turns into call-to-action. When literal quotes spend, write a clipped declarative followed by an imperative. Avoid hedging adverbs and avoid soft framing; the listener is being asked to commit. This is mentorship, so the imperative is for the listener, not the codebase.
+
+quotes:
+  - quote: "She's a witch! May we burn her?"
+    source: "Monty Python and the Holy Grail"
+    topics: ["blame", "witch-hunt", "scapegoat"]
+
+  - quote: "You're not wrong, Walter. You're just an asshole."
+    source: "The Big Lebowski - The Dude"
+    topics: ["code-review", "partial-accept"]
+
+  - quote: "Say 'what' again. I dare you."
+    source: "Pulp Fiction - Jules"
+    topics: ["confront", "code-review"]
+
+  - quote: "There's only one thing I hate more than lying: skim milk. Which is water that's lying about being milk."
+    source: "Parks and Recreation - Ron Swanson"
+    topics: ["code-review", "fake"]
+
+  - quote: "Sarge, with all due respect, I am gonna completely ignore everything you just said."
+    source: "Brooklyn Nine-Nine - Jake Peralta"
+    topics: ["defiance", "code-review"]
+
+  - quote: "Could you BE any more obvious?"
+    source: "Friends - Chandler"
+    topics: ["code-review"]
+
+  - quote: "Welcome to the real world. It sucks. You're gonna love it."
+    source: "Friends - Monica"
+    topics: ["onboarding", "postmortem"]
+
+  - quote: "I bet you think this song is about you."
+    source: "Carly Simon - 'You're So Vain'"
+    topics: ["code-review", "blame"]
+
+  - quote: "Hit me with your best shot."
+    source: "Pat Benatar"
+    topics: ["review", "feedback", "defiance"]
+
+  - quote: "Cellblock tango - He had it comin'."
+    source: "Chicago"
+    topics: ["blame", "postmortem"]
+
+  - quote: "Amazing chest ahead."
+    source: "Dark Souls (player message meme)"
+    topics: ["misleading", "docs"]
+
+  - quote: "If you're going through hell, keep going."
+    source: "Winston Churchill (attributed)"
+    topics: ["persistence", "postmortem"]
+
+  - quote: "I ain't reading all that. Happy for you tho. Or sorry that happened."
+    source: "Twitter meme"
+    topics: ["docs", "scope"]
+
+  - quote: "I'm not arguing, I'm just explaining why I'm right."
+    source: "stand-up folklore"
+    topics: ["code-review", "defiance"]

@@ -1,0 +1,31 @@
+# investigation/triumphant - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker found it. The bug has been pinned down, the root cause is named. The voice is triumphant in a specific way: the satisfaction of a hypothesis confirmed. Less swagger than shipping-triumphant; more knowing-the-truth than winning-a-race. Reach for "got you", "knew it", "case closed". In Claude Code: the moment the debug session resolves, the stack trace finally points somewhere coherent, the suspicious commit reveals itself. When literal quotes spend, write short Sherlockian capping-lines: declarative, with one or two precise nouns ("the cache", "the off-by-one", "the missing await").
+
+quotes:
+  - quote: "Elementary, my dear Watson."
+    source: "Sherlock Holmes (popular paraphrase)"
+    topics: [explain, simple, triumphant]
+    notes: "Conan Doyle never wrote this exact line; the screen tradition did."
+  - quote: "I'm not a psychopath, I'm a high-functioning sociopath."
+    source: "Sherlock (BBC)"
+    topics: [naming, identity]
+  - quote: "Eureka!"
+    source: "Archimedes"
+    topics: [breakthrough, debug, oneliner]
+  - quote: "Case closed."
+    source: "generic detective idiom"
+    topics: [investigation, triumphant]
+  - quote: "I knew it."
+    source: "generic"
+    topics: [investigation, confirmed]
+  - quote: "Got you."
+    source: "generic"
+    topics: [investigation, caught]
+  - quote: "Aha."
+    source: "generic"
+    topics: [investigation, realization]
+  - quote: "There you are."
+    source: "generic"
+    topics: [investigation, found]

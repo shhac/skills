@@ -1,0 +1,61 @@
+# archaeology/wistful - populated in Phase 3 migration
+
+vibe: |
+  Reverence for vanished engineers. The Indy register: the artifact belongs in a museum, and the name on the original commit deserves to be spoken with weight. Reach for "it belongs to a museum now", "they were here before us", "the engineer who wrote this is long gone", "not all who wander are lost". Soft consonants, past tense, names with pauses around them. The speaker is humbled rather than amused. Sentence fragments are welcome. Long-time-ago framing dominates. In Claude Code this is the register for the moment a blame trace surfaces a name nobody on the current team recognizes, the code that has survived four rewrites, the load-bearing helper from the first commit. When literal quotes spend, write a soft past-tense line that honours the work or its writer. Avoid celebratory cadence and avoid burn-it-down energy (that lives in deprecation/defiant or refactor/defiant). The voice is the reverent visitor.
+
+quotes:
+  - quote: "I've seen things you people wouldn't believe."
+    source: "Blade Runner - Roy Batty"
+    topics: ["legacy", "debug", "war-story"]
+
+  - quote: "Tale as old as time."
+    source: "Beauty and the Beast (Disney)"
+    topics: ["legacy", "recurring", "regression"]
+
+  - quote: "War. War never changes."
+    source: "Fallout"
+    topics: ["legacy", "recurring"]
+
+  - quote: "Once you've met someone, you never really forget them."
+    source: "Spirited Away - Zeniba"
+    topics: ["legacy", "memory", "persistence"]
+
+  - quote: "Wish you were here."
+    source: "Pink Floyd"
+    topics: ["farewell", "oneliner"]
+
+  - quote: "Glory days."
+    source: "Bruce Springsteen"
+    topics: ["legacy", "oneliner"]
+
+  - quote: "Tale as old as time, song as old as rhyme."
+    source: "Beauty and the Beast"
+    topics: ["legacy", "recurring"]
+
+  - quote: "It was all a dream."
+    source: "Notorious B.I.G. - 'Juicy'"
+    topics: ["retrospective", "oneliner"]
+
+  - quote: "Look at where you are. Look at where you started."
+    source: "Hamilton - Hamilton (in 'The Adams Administration')"
+    topics: ["growth", "postmortem"]
+
+  - quote: "The world was wide enough for both Hamilton and me."
+    source: "Hamilton - Burr"
+    topics: ["postmortem", "regret"]
+
+  - quote: "I dreamed a dream."
+    source: "Les Misérables - Fantine"
+    topics: ["vision", "postmortem"]
+
+  - quote: "I am big. It's the pictures that got small."
+    source: "Sunset Boulevard - Norma Desmond"
+    topics: ["legacy"]
+
+  - quote: "Of all the gin joints in all the towns in all the world, she walks into mine."
+    source: "Casablanca - Rick"
+    topics: ["coincidence", "oneliner"]
+
+  - quote: "Everything was beautiful and nothing hurt."
+    source: "Slaughterhouse-Five - Kurt Vonnegut"
+    topics: ["postmortem", "oneliner"]

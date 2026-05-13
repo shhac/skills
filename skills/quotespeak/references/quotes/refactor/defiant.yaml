@@ -1,0 +1,169 @@
+# refactor/defiant - populated in Phase 3 migration
+
+vibe: |
+  Burn-it-down register. The speaker has decided the right move is the bigger move and is committing to it loudly. Reach for "we need to go deeper", "all of it", "from scratch", "the whole module", "no half-measures". Imperative mood dominates; active verbs (tear, rip, redo, rewrite) carry the energy. The speaker is going against the small-diff instinct on purpose because the small diff is not enough. In Claude Code this is the register for accepting the hard rewrite, refusing the patch in favour of the redesign, deciding that a five-file blast radius is the correct one. When literal quotes spend, write a short imperative aimed at the existing structure, then a follow-up clause that names what replaces it. Avoid hedging adverbs. The speaker is not asking for permission; they are announcing the decision.
+
+quotes:
+  - quote: "Burn it all down."
+    source: "generic"
+    topics: ["refactor", "rewrite", "legacy"]
+
+  - quote: "There can be only one."
+    source: "Highlander"
+    topics: ["merge", "conflict", "dedup"]
+
+  - quote: "Burning down the house."
+    source: "Talking Heads"
+    topics: ["refactor", "rewrite", "fire"]
+
+  - quote: "Get to the chopper!"
+    source: "Predator - Dutch"
+    topics: ["escape", "rollback", "urgent"]
+
+  - quote: "There are four lights."
+    source: "Star Trek: TNG - Picard"
+    topics: ["defiance", "truth", "refuse-lie"]
+
+  - quote: "Run away! Run away!"
+    source: "Monty Python and the Holy Grail"
+    topics: ["escape", "rollback", "abort"]
+
+  - quote: "Come with me if you want to live."
+    source: "Terminator 2 - Sarah Connor / Kyle Reese"
+    topics: ["escape", "migration", "rescue"]
+
+  - quote: "I'm so tired of being scared."
+    source: "Howl's Moving Castle - Sophie"
+    topics: ["refactor", "courage", "change"]
+
+  - quote: "Let it go."
+    source: "Frozen - Elsa"
+    topics: ["release", "deprecate", "refactor"]
+
+  - quote: "The cold never bothered me anyway."
+    source: "Frozen - Elsa"
+    topics: ["legacy", "fragile", "defiance"]
+
+  - quote: "I aim to misbehave."
+    source: "Firefly: Serenity - Mal Reynolds"
+    topics: ["defiance", "refactor", "ship"]
+
+  - quote: "You son of a bitch."
+    source: "Predator - Dutch / generic action"
+    topics: ["reunion", "oneliner"]
+
+  - quote: "I'm walkin' here!"
+    source: "Midnight Cowboy - Ratso Rizzo"
+    topics: ["defiance", "oneliner", "ny"]
+
+  - quote: "English, motherfucker, do you speak it?"
+    source: "Pulp Fiction - Jules"
+    topics: ["naming", "requirements", "confront"]
+
+  - quote: "Funny how? Like a clown?"
+    source: "Goodfellas - Tommy DeVito"
+    topics: ["confront", "code-review", "oneliner"]
+
+  - quote: "Give me all the bacon and eggs you have."
+    source: "Parks and Recreation - Ron Swanson"
+    topics: ["request", "all", "oneliner"]
+
+  - quote: "I'm gonna build my own theme park, with blackjack, and hookers."
+    source: "Futurama - Bender"
+    topics: ["refactor", "rewrite", "defiance"]
+
+  - quote: "Respect my authoritah!"
+    source: "South Park - Cartman"
+    topics: ["permission", "command", "oneliner"]
+
+  - quote: "I'm a freaking adventurer, man."
+    source: "Adventure Time - Finn"
+    topics: ["identity", "refactor", "defiance"]
+
+  - quote: "I want to break free."
+    source: "Queen"
+    topics: ["refactor", "escape", "oneliner"]
+
+  - quote: "I came in like a wrecking ball."
+    source: "Miley Cyrus - 'Wrecking Ball'"
+    topics: ["refactor", "demolish", "ship"]
+
+  - quote: "We don't need no education."
+    source: "Pink Floyd - 'Another Brick in the Wall'"
+    topics: ["refactor", "defiance"]
+
+  - quote: "Born to run."
+    source: "Bruce Springsteen"
+    topics: ["refactor", "escape", "defiance"]
+
+  - quote: "Shake it off."
+    source: "Taylor Swift"
+    topics: ["postmortem", "recover", "oneliner"]
+
+  - quote: "Single ladies. Put a ring on it."
+    source: "Beyoncé"
+    topics: ["commit", "lock", "oneliner"]
+
+  - quote: "If you like it then you shoulda put a ring on it."
+    source: "Beyoncé - 'Single Ladies'"
+    topics: ["commit", "lock", "oneliner"]
+
+  - quote: "Hips don't lie."
+    source: "Shakira"
+    topics: ["truth", "claim", "oneliner"]
+
+  - quote: "Can't touch this."
+    source: "MC Hammer"
+    topics: ["legacy", "fragile", "defiance"]
+
+  - quote: "I wrote my way out."
+    source: "Hamilton - Hamilton"
+    topics: ["escape", "docs", "refactor"]
+
+  - quote: "Defying gravity."
+    source: "Wicked"
+    topics: ["scope", "refactor", "defiance"]
+
+  - quote: "Now's the part where I save myself."
+    source: "Hamilton - Hamilton (paraphrase) / generic"
+    topics: ["recover", "fix", "oneliner"]
+
+  - quote: "Tear down this wall."
+    source: "Ronald Reagan"
+    topics: ["refactor", "demolish", "oneliner"]
+
+  - quote: "I refute it thus."
+    source: "Samuel Johnson"
+    topics: ["code-review", "defiance", "oneliner"]
+
+  - quote: "And that's the bottom line, 'cause Stone Cold said so."
+    source: "WWE - Stone Cold Steve Austin"
+    topics: ["claim", "defiance", "oneliner"]
+
+  - quote: "Whatcha gonna do, brother?"
+    source: "WWE - Hulk Hogan"
+    topics: ["challenge", "defiance", "oneliner"]
+
+  - quote: "Suplex city, bitch."
+    source: "WWE - Brock Lesnar"
+    topics: ["defeat", "refactor", "oneliner"]
+
+  - quote: "Pure functions or die."
+    source: "FP zealot folklore"
+    topics: ["state", "defiance"]
+
+  - quote: "Just take ours."
+    source: "git folklore - 'git checkout --ours'"
+    topics: ["merge-conflict", "defiance", "oneliner"]
+
+  - quote: "I came here to chew bubblegum and write tests. And I'm all out of bubblegum."
+    source: "They Live (corrupted) - Rowdy Roddy Piper"
+    topics: ["tests", "defiance", "oneliner"]
+
+  - quote: "Just who the hell do you think I am?"
+    source: "Tengen Toppa Gurren Lagann - Kamina"
+    topics: ["identity", "defiance", "oneliner"]
+
+  - quote: "Expelliarmus!"
+    source: "Harry Potter - disarming charm"
+    topics: ["disarm", "override", "oneliner"]

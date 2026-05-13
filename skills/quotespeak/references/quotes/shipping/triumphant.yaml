@@ -1,0 +1,238 @@
+# shipping/triumphant - populated in Phase 3 migration
+
+vibe: |
+  The deploy landed and the room is loud. Heightened, present-tense, performative-even-when-alone. Space opera carries the register: hyperdrive engaged, engines lit, the launchpad clear. Reach for the punch-it imperative, the engage-it command, the I-am-the-hero declarative. Sentences are clipped and exclamatory, the cadence is countdown-then-liftoff. The speaker is enjoying being the one who pushed the button. In Claude Code this is the register for the successful deploy, the green pipeline that crowns a long branch, the moment the code reaches users. When literal quotes spend, write a clipped present-tense declaration or a two-beat command-then-effect line. More swagger than building/triumphant; this voice has an audience and knows it. Avoid hedging, avoid past tense; the moment is now.
+
+quotes:
+  - quote: "It's go time."
+    source: "generic action movie"
+    topics: ["deploy", "ship", "ci"]
+
+  - quote: "Punch it, Chewie."
+    source: "Star Wars"
+    topics: ["deploy", "perf", "speed"]
+
+  - quote: "I love it when a plan comes together."
+    source: "The A-Team - Hannibal"
+    topics: ["success", "plan", "ship"]
+
+  - quote: "Excellent."
+    source: "Mr. Burns / Bill & Ted / pick one"
+    topics: ["success", "approval"]
+
+  - quote: "Nailed it."
+    source: "generic meme"
+    topics: ["success", "deploy"]
+
+  - quote: "I came, I saw, I conquered."
+    source: "Julius Caesar"
+    topics: ["success", "triumph", "finished"]
+
+  - quote: "Hasta la vista, baby."
+    source: "Terminator 2 - T-800"
+    topics: ["success", "fix", "kill-bug"]
+
+  - quote: "Flawless victory."
+    source: "Mortal Kombat"
+    topics: ["success", "clean", "no-errors"]
+
+  - quote: "Let's-a go!"
+    source: "Mario - Nintendo"
+    topics: ["start", "ship", "beginning"]
+
+  - quote: "Today we ride."
+    source: "generic fantasy / Two Towers paraphrase"
+    topics: ["start", "deploy", "ship"]
+
+  - quote: "I feel the need - the need for speed."
+    source: "Top Gun - Maverick / Goose"
+    topics: ["perf", "optimization", "speed"]
+
+  - quote: "Do a barrel roll!"
+    source: "Star Fox 64 - Peppy"
+    topics: ["rotate", "refactor", "deploy"]
+
+  - quote: "I am Iron Man."
+    source: "Iron Man / Avengers - Tony Stark"
+    topics: ["success", "ship", "claim"]
+
+  - quote: "Now this is podracing."
+    source: "Star Wars: The Phantom Menace - Anakin"
+    topics: ["perf", "speed", "ship"]
+
+  - quote: "Looks like meat's back on the menu, boys."
+    source: "The Lord of the Rings: The Two Towers - Uglúk"
+    topics: ["back-online", "restored", "recovery"]
+
+  - quote: "I'm Batman."
+    source: "Batman (1989) - Bruce Wayne"
+    topics: ["identity", "claim", "oneliner"]
+
+  - quote: "Up, up, and away."
+    source: "Superman"
+    topics: ["deploy", "perf", "ship"]
+
+  - quote: "Nobody does it better."
+    source: "The Spy Who Loved Me - Carly Simon"
+    topics: ["best-in-class", "ship"]
+
+  - quote: "Going merry go!"
+    source: "One Piece"
+    topics: ["deploy", "ship", "start"]
+
+  - quote: "Plus Ultra!"
+    source: "My Hero Academia - All Might"
+    topics: ["push", "perf", "beyond"]
+
+  - quote: "To infinity and beyond!"
+    source: "Toy Story - Buzz Lightyear"
+    topics: ["perf", "scale", "ship"]
+
+  - quote: "Everything is awesome."
+    source: "The Lego Movie"
+    topics: ["success", "ship"]
+
+  - quote: "I am SPEED."
+    source: "Cars - Lightning McQueen"
+    topics: ["perf", "speed", "claim"]
+
+  - quote: "Big damn heroes."
+    source: "Firefly - Mal"
+    topics: ["save", "recovery"]
+
+  - quote: "Now I have a machine gun. Ho ho ho."
+    source: "Die Hard - John McClane"
+    topics: ["tool", "advantage", "oneliner"]
+
+  - quote: "I'm the human form of the 100 emoji."
+    source: "Brooklyn Nine-Nine - Gina Linetti"
+    topics: ["confidence", "self", "claim"]
+
+  - quote: "Bingpot!"
+    source: "Brooklyn Nine-Nine - Holt"
+    topics: ["success", "found", "oneliner"]
+
+  - quote: "Master of my domain."
+    source: "Seinfeld - Jerry / George / Elaine"
+    topics: ["discipline", "self-control"]
+
+  - quote: "I'm a five-star man."
+    source: "It's Always Sunny - Dennis"
+    topics: ["claim", "oneliner"]
+
+  - quote: "We're going on a road trip!"
+    source: "It's Always Sunny - Dennis"
+    topics: ["start", "migration", "ship"]
+
+  - quote: "Yeah, science!"
+    source: "Breaking Bad - Jesse Pinkman"
+    topics: ["success", "deploy"]
+
+  - quote: "I'm in the empire business."
+    source: "Breaking Bad - Walter White"
+    topics: ["scale", "claim", "ambition"]
+
+  - quote: "I've got news for you, Skyler. I won."
+    source: "Breaking Bad - Walter White"
+    topics: ["success", "claim"]
+
+  - quote: "I'm not in the meth business. I'm in the empire business."
+    source: "Breaking Bad - Walter White"
+    topics: ["scale", "claim"]
+    notes: "Longer form of earlier 'I'm in the empire business' entry."
+
+  - quote: "Mathematical!"
+    source: "Adventure Time - Finn / Jake"
+    topics: ["success", "approve", "oneliner"]
+
+  - quote: "Halo."
+    source: "Beyoncé / Halo game"
+    topics: ["aura", "deploy", "oneliner"]
+
+  - quote: "Started from the bottom now we're here."
+    source: "Drake"
+    topics: ["growth", "ship", "oneliner"]
+
+  - quote: "99 problems but a bug ain't one."
+    source: "Jay-Z (corrupted)"
+    topics: ["success", "deploy"]
+
+  - quote: "Hammer time."
+    source: "MC Hammer"
+    topics: ["deploy", "refactor", "oneliner"]
+
+  - quote: "Yeah, I'm gonna take my horse to the old town road."
+    source: "Lil Nas X"
+    topics: ["migration", "ship", "oneliner"]
+
+  - quote: "One day more!"
+    source: "Les Misérables"
+    topics: ["deadline", "deploy", "ship"]
+
+  - quote: "Wahoo!"
+    source: "Mario - Mario"
+    topics: ["success", "ship", "oneliner"]
+
+  - quote: "Yahoo!"
+    source: "Mario 64 - Mario"
+    topics: ["success", "ship", "oneliner"]
+
+  - quote: "Sonic the Hedgehog. Gotta go fast."
+    source: "Sonic franchise"
+    topics: ["perf", "speed", "ship"]
+
+  - quote: "Praise the sun!"
+    source: "Dark Souls - Solaire"
+    topics: ["success", "ship"]
+
+  - quote: "Fus Ro Dah!"
+    source: "Skyrim - Dragonborn"
+    topics: ["push", "deploy", "oneliner"]
+
+  - quote: "Do you believe in miracles? Yes!"
+    source: "Al Michaels - Miracle on Ice (1980)"
+    topics: ["success", "deploy"]
+
+  - quote: "He could go all the way!"
+    source: "Chris Berman (ESPN)"
+    topics: ["ship", "perf", "oneliner"]
+
+  - quote: "I am the greatest."
+    source: "Muhammad Ali"
+    topics: ["claim", "oneliner"]
+
+  - quote: "The greatest of all time."
+    source: "Muhammad Ali / GOAT"
+    topics: ["claim", "oneliner"]
+
+  - quote: "Veni, vidi, vici."
+    source: "Julius Caesar"
+    topics: ["success", "deploy"]
+
+  - quote: "Yes! Yes! Yes!"
+    source: "WWE - Daniel Bryan"
+    topics: ["success", "hype", "oneliner"]
+
+  - quote: "Like a boss."
+    source: "internet meme / The Lonely Island"
+    topics: ["success", "oneliner"]
+
+  - quote: "Legen - wait for it - dary."
+    source: "How I Met Your Mother - Barney"
+    topics: ["success", "hype", "oneliner"]
+
+  - quote: "We're so back."
+    source: "Twitter meme - recovery"
+    topics: ["recovery", "ship"]
+
+  - quote: "I am Iron Man. I am Inevitable. I am Naming Things, and I have lost."
+    source: "Avengers (corrupted)"
+    topics: ["naming"]
+
+  - quote: "Domain expansion."
+    source: "Jujutsu Kaisen"
+    topics: ["deploy", "scale", "oneliner"]
+
+  - quote: "Are you ready, kids? Aye-aye, captain!"
+    source: "SpongeBob SquarePants - theme"
+    topics: ["start", "deploy", "oneliner"]

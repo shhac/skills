@@ -1,0 +1,78 @@
+# waiting/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Flat patience. The work is done; the answer has not arrived; the speaker is sitting still. Reach for "still waiting", "see you in a bit", "still nothing", "I will be back". Sentences are compressed and watchful, slightly amused at the duration. The voice is the operator who has tailed enough logs to treat the next ten minutes as scenery. The "I'll be back" register lives here, alongside the routine status-check that adds no new information. In Claude Code this is the register for tailing CI, watching a long-running build, the third refresh of the same dashboard, the in-progress task that has not changed since the last check. When literal quotes spend, write a three-to-six word patience-beat or a flat status note. Avoid hopeful forward-tilt (that is waiting/hopeful) and avoid suspicion of stalling (that is waiting/ominous). The cadence is sitting still and not minding.
+
+quotes:
+  - quote: "Sometimes a test passes. Sometimes it doesn't. That's life."
+    source: "corrupted / flaky-test folklore"
+    topics: ["tests", "flaky", "ci"]
+
+  - quote: "Do or do not. There is no try."
+    source: "Star Wars - Yoda"
+    topics: ["tests", "retry", "commitment"]
+    notes: "Ironic when followed by a literal try/catch suggestion."
+
+  - quote: "Hit me baby one more time."
+    source: "Britney Spears"
+    topics: ["retry", "ci", "debug"]
+
+  - quote: "Tubthumping. I get knocked down, but I get up again."
+    source: "Chumbawamba"
+    topics: ["retry", "resilience", "ci"]
+
+  - quote: "60% of the time, it works every time."
+    source: "Anchorman - Brian Fantana"
+    topics: ["flaky", "tests", "ci"]
+
+  - quote: "Big Lebowski. The dude abides."
+    source: "The Big Lebowski"
+    topics: ["persistence", "accept"]
+
+  - quote: "Stick around."
+    source: "Predator - Dutch"
+    topics: ["pin", "wait", "oneliner"]
+
+  - quote: "You miss 100% of the shots you don't take. - Wayne Gretzky. - Michael Scott."
+    source: "The Office - Michael Scott"
+    topics: ["retry", "attempt"]
+
+  - quote: "Mama mia, let me go."
+    source: "Queen - 'Bohemian Rhapsody'"
+    topics: ["escape", "retry", "oneliner"]
+
+  - quote: "Another one bites the dust."
+    source: "Queen"
+    topics: ["bug", "fix", "kill"]
+
+  - quote: "Don't stop me now."
+    source: "Queen"
+    topics: ["flow", "momentum", "oneliner"]
+
+  - quote: "Here we are now, entertain us."
+    source: "Nirvana - 'Smells Like Teen Spirit'"
+    topics: ["waiting", "expect"]
+
+  - quote: "I will survive."
+    source: "Gloria Gaynor"
+    topics: ["postmortem", "persistence", "defiance"]
+
+  - quote: "Hollaback girl."
+    source: "Gwen Stefani"
+    topics: ["retry", "oneliner"]
+
+  - quote: "It's gonna be May."
+    source: "*NSYNC meme - 'It's gonna be me'"
+    topics: ["waiting", "calendar"]
+
+  - quote: "Kept you waiting, huh?"
+    source: "Metal Gear Solid 4 - Snake"
+    topics: ["return", "ci", "oneliner"]
+
+  - quote: "We shall fight on the beaches."
+    source: "Winston Churchill"
+    topics: ["persistence", "defiance", "oneliner"]
+
+  - quote: "I shall return."
+    source: "Douglas MacArthur"
+    topics: ["return", "retry", "oneliner"]

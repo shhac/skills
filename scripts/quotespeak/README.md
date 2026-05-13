@@ -1,65 +1,73 @@
 # quotespeak scripts
 
-Helper scripts for maintaining `skills/quotespeak/references/quotes.yaml`.
+Helper scripts for maintaining the `skills/quotespeak/references/quotes/` bank (theme/mood YAML leaves under per-theme directories, plus a `_universal/` cross-cutting layer).
 
 ## Requirements
 
-Both scripts depend on [PyYAML](https://pyyaml.org/). Pick whichever setup you prefer:
+Scripts depend on [PyYAML](https://pyyaml.org/). Pick whichever setup you prefer:
 
-**Option A — `uv` (no setup, recommended):**
+**Option A - `uv` (no setup, recommended):**
 
 ```bash
 uv run --with pyyaml scripts/quotespeak/validate.py
-uv run --with pyyaml scripts/quotespeak/clean.py
 ```
 
-**Option B — virtualenv:**
+**Option B - virtualenv:**
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install pyyaml
 .venv/bin/python scripts/quotespeak/validate.py
-.venv/bin/python scripts/quotespeak/clean.py
 ```
 
-**Option C — system pip (macOS users may need `--break-system-packages`):**
+**Option C - system pip (macOS users may need `--break-system-packages`):**
 
 ```bash
 pip install --user pyyaml
 python3 scripts/quotespeak/validate.py
 ```
 
-If PyYAML isn't installed, each script exits with code `2` and a pointer back to this file.
+If PyYAML isn't installed, the script exits with code `2`.
 
 ## Scripts
 
 ### `validate.py` (read-only)
 
-Exits non-zero if `quotes.yaml` has any of:
+Checks the bank's structural invariants:
 
-- A missing required field on any entry (`quote`, `source`, `topics`, `register`).
-- A `topics` value that isn't a list of strings.
-- A `register` value outside the canonical set of 13.
-- A register token that has leaked into a `topics:` list (registers and topics are separate axes — `foreboding` is a register, not a situational tag).
-- Two entries that share the exact same `quote` text.
+- Every theme directory has a `_vibe.md` and only the moods declared in the matrix have `<mood>.yaml` files.
+- Each `_vibe.md`'s "Available moods" list matches the `.yaml` files in its directory.
+- Every leaf YAML parses, has a non-empty `vibe:` field, and at least 5 quotes (target 8).
+- No quote text appears in both `_universal/<mood>.yaml` and a theme leaf (cross-leaf dedup).
+- `_universal/<mood>.yaml` counts stay under their per-mood cap (30 for most moods, 200 for `deadpan` which is the genuine cross-cutting catchall).
 
-Reports every issue it finds, not just the first.
+Reports every issue. Exits non-zero if any errors. Warnings (e.g. bloated theme leaves, thin leaves between 5 and 8 quotes) are surfaced but do not fail the run.
 
-### `clean.py` (writes in place)
+### `migrate.py` (historical)
 
-Applies two safe, idempotent fixes:
+Encodes the routing rules used to migrate the v1 flat `quotes.yaml` into the v2 theme/mood structure. Preserved for reproducibility and as documentation of the routing decisions taken on 2026-05-13. Not part of the day-to-day workflow.
 
-1. **Removes duplicate quote entries** — keeps the first occurrence, drops the rest.
-2. **Strips register tokens from `topics:` lists** — removes the offending tag and leaves the rest intact.
+## When to run validate.py
 
-Edits happen line-by-line so YAML comments, section dividers, and entry ordering are preserved. The result is re-parsed after writing; if parsing fails the original file is restored.
+- After editing any leaf YAML.
+- After adding new entries (especially from bulk imports).
+- After moving entries between leaves.
+- After running any bulk text replacement (e.g. character substitutions in source attributions).
 
-Running `clean.py` twice in a row is a no-op.
+Not wired into a git hook by design; run manually when you touch the bank.
 
-## When to run
+## Bank structure recap
 
-- **Before committing** any change to `quotes.yaml` — `clean.py` first to apply the safe fixes, then `validate.py` to confirm nothing else is wrong.
-- **After bulk imports** — large batches of new entries are the most common source of accidental duplicates.
-- **After a refactor of the topic taxonomy** — `validate.py` catches register/topic crossover that's easy to introduce when renaming tags.
+```
+skills/quotespeak/
+  SKILL.md
+  references/
+    themes.md             # taxonomy and theme x mood matrix
+    examples.md           # corruption examples (substitutive vs additive)
+    quotes/
+      _universal/<mood>.yaml      # 10 always-loaded cross-cutters
+      <theme>/_vibe.md            # theme overview, mood map, transitions
+      <theme>/<mood>.yaml         # theme-specific quotes
+```
 
-Neither script is wired into a git hook by design; run them when you touch the bank.
+11 themes (investigation, building, refactor, shipping, incident, planning, delegation, mentorship, waiting, archaeology, deprecation) by 10 moods (curious, deadpan, triumphant, ominous, exasperated, hopeful, philosophical, wistful, defiant, unhinged), with 62 valid theme/mood combinations per the matrix in `references/themes.md`.

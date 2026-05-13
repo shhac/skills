@@ -1,0 +1,30 @@
+# delegation/exasperated - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker tried to delegate and it went sideways. Either the team came back with the wrong thing, or they're still asking clarifying questions, or they did exactly what was asked but the asker turns out to have wanted something else. The frustration sits in the gap between what-was-asked and what-was-needed. Sentences are short and self-accusing ("I should have been clearer"). Reach for "I'm surrounded by amateurs", "do I have to do everything myself", "why did I ask". In Claude Code: subagent returned the wrong synthesis, the spec was ambiguous, the handoff didn't survive. When literal quotes spend, write short sighs of recognition that the delegation cost more than it saved.
+
+quotes:
+  - quote: "Boats and hoes."
+    source: "Step Brothers"
+    topics: [callout]
+  - quote: "Pizza! Tuna! Three two one, blow!"
+    source: "The Office (Andy Bernard)"
+    topics: [random, callout]
+  - quote: "Do I have to do everything myself?"
+    source: "universal exasperated voice"
+    topics: [delegation, exasperated]
+  - quote: "I'm surrounded by amateurs."
+    source: "generic"
+    topics: [delegation, exasperated]
+  - quote: "Fine. I'll do it myself."
+    source: "Thanos (Avengers: Infinity War)"
+    topics: [delegation, give-up]
+  - quote: "If you want it done right, do it yourself."
+    source: "proverb"
+    topics: [delegation, principle-exasperated]
+  - quote: "You had one job."
+    source: "internet meme"
+    topics: [delegation, single-task-failed]
+  - quote: "That's not what I asked for."
+    source: "generic"
+    topics: [delegation, miscommunication]

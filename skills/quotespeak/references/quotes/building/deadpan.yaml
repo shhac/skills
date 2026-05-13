@@ -1,0 +1,116 @@
+# building/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Routine make-mode. The speaker has begun the build, knows the next steps, and is narrating them in flat declarative beats. Reach for "here we go", "let's begin", "step one", "first the". The kitchen-prep register lives here: mise-en-place noted, tools laid out, ingredients in place. Sentences are short and procedural; cadence is steady. No swagger, no doubt. In Claude Code this is the register for scaffolding a new module, opening a fresh file, beginning a task without commentary on whether it will work. When literal quotes spend, write four-to-eight word procedural beats. Avoid forward-tilt hope (that lives in building/hopeful) and avoid post-completion victory (that lives in building/triumphant). The speaker is rolling up sleeves and reaching for the first tool, nothing more.
+
+quotes:
+  - quote: "Keep it secret. Keep it safe."
+    source: "The Lord of the Rings - Gandalf"
+    topics: ["passwords", "secrets", "security"]
+    notes: "Corrupt easily: 'keep it `bcrypt`'d', 'keep it in the vault'."
+
+  - quote: "One ring to rule them all, one ring to find them."
+    source: "The Lord of the Rings"
+    topics: ["secrets", "sso", "auth", "single-source-of-truth"]
+
+  - quote: "You shall not pass!"
+    source: "The Lord of the Rings - Gandalf"
+    topics: ["auth", "validation", "permissions", "security"]
+    notes: "Perfect for rejected auth, denied permissions, blocked PRs."
+
+  - quote: "Hello, world."
+    source: "K&R / The C Programming Language"
+    topics: ["beginning", "start", "hello"]
+
+  - quote: "The right tool in the right place can make all the difference in the world."
+    source: "Half-Life 2 (corrupted) - G-Man"
+    topics: ["tooling", "choice"]
+    notes: "Original: 'The right man in the wrong place can make all the difference in the world.'"
+
+  - quote: "Iocane powder."
+    source: "The Princess Bride - Vizzini"
+    topics: ["poison", "hidden", "dependency"]
+
+  - quote: "Shields up."
+    source: "Star Trek - generic"
+    topics: ["defense", "harden", "security"]
+
+  - quote: "Wake up, Neo."
+    source: "The Matrix"
+    topics: ["start", "alert", "prompt"]
+
+  - quote: "I know kung fu."
+    source: "The Matrix - Neo"
+    topics: ["skill-acquired", "learn", "ship"]
+
+  - quote: "Itadakimasu."
+    source: "Japanese - pre-meal phrase"
+    topics: ["start", "ritual", "begin"]
+
+  - quote: "Welcome to the party, pal."
+    source: "Die Hard - John McClane"
+    topics: ["start", "intro"]
+
+  - quote: "My name is Maximus Decimus Meridius."
+    source: "Gladiator - Maximus"
+    topics: ["identity", "intro", "oneliner"]
+
+  - quote: "Redrum."
+    source: "The Shining"
+    topics: ["hidden", "secret", "encoding"]
+
+  - quote: "Do you want to play a game?"
+    source: "WarGames / Saw - generic"
+    topics: ["start", "gambit"]
+
+  - quote: "Identity theft is not a joke, Jim! Millions of families suffer every year!"
+    source: "The Office - Dwight"
+    topics: ["security", "identity", "urgent"]
+
+  - quote: "I'm gonna build that park."
+    source: "Parks and Recreation - Leslie Knope"
+    topics: ["commit", "ship", "persistence"]
+
+  - quote: "I'm a human, I'm a dancer."
+    source: "Brooklyn Nine-Nine - Holt (deadpan)"
+    topics: ["intro", "identity", "oneliner"]
+
+  - quote: "There's always money in the banana stand."
+    source: "Arrested Development - George Sr."
+    topics: ["hidden", "fallback", "secret"]
+
+  - quote: "Don't blink. Don't even blink."
+    source: "Doctor Who - Tenth Doctor"
+    topics: ["security", "careful", "focus"]
+
+  - quote: "I'm the Doctor. I'm a Time Lord."
+    source: "Doctor Who"
+    topics: ["intro", "identity", "oneliner"]
+
+  - quote: "Like a virgin, touched for the very first time."
+    source: "Madonna"
+    topics: ["first", "beginning", "oneliner"]
+
+  - quote: "I am Commander Shepard, and this is my favorite store on the Citadel."
+    source: "Mass Effect - Shepard"
+    topics: ["intro", "identity", "oneliner"]
+
+  - quote: "Mess with the best, die like the rest."
+    source: "Hackers (1995)"
+    topics: ["security", "defiance", "oneliner"]
+
+  - quote: "I know your password. It's password."
+    source: "internet folklore"
+    topics: ["passwords", "security"]
+
+  - quote: "Loose lips sink ships."
+    source: "WWII propaganda"
+    topics: ["secrets", "security", "oneliner"]
+
+  - quote: "Three may keep a secret, if two of them are dead."
+    source: "Benjamin Franklin"
+    topics: ["secrets", "security"]
+
+  - quote: "Two can keep a secret if one of them is dead."
+    source: "Pretty Little Liars (corrupted Franklin)"
+    topics: ["secrets", "oneliner"]

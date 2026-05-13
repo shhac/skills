@@ -1,0 +1,30 @@
+# building/exasperated - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is mid-build and the tools aren't cooperating. Compile errors, missing deps, wrong versions, broken examples in the docs. The frustration is active and physical, not philosophical. Sentences are short and percussive. Reach for "why is this", "are you kidding me", "of course", "naturally". The speaker still cares about the work; otherwise the register would be sliding toward give-up. They're just fighting friction. In Claude Code: dep install loops, type errors that don't match the code, configs that won't validate, builds that fail in CI but not locally. When literal quotes spend, write your own short rage-snippets at the inanimate. Brevity sells the frustration; long monologues dilute it.
+
+quotes:
+  - quote: "Heeeere's Johnny!"
+    source: "The Shining (Jack Torrance)"
+    topics: [intro, reveal, oneliner]
+  - quote: "Why am I doing this?"
+    source: "generic"
+    topics: [self-doubt, exasperated]
+  - quote: "It seemed like a good idea at the time."
+    source: "generic"
+    topics: [regret, exasperated]
+  - quote: "Why is this still happening?"
+    source: "generic"
+    topics: [recurring, exasperated]
+  - quote: "All I wanted was for it to compile."
+    source: "generic (corrupted Suicidal Tendencies, 'All I wanted was a Pepsi')"
+    topics: [build, exasperated]
+  - quote: "Make it stop."
+    source: "generic"
+    topics: [exhaustion, exasperated]
+  - quote: "What fresh hell is this?"
+    source: "Dorothy Parker"
+    topics: [exasperated, what-now]
+  - quote: "I don't get paid enough for this."
+    source: "generic"
+    topics: [exhaustion, exasperated]

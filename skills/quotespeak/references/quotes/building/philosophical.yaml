@@ -1,0 +1,30 @@
+# building/philosophical - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is reflecting on the *craft* of making. Architecture principles, design patterns, the rhythm of careful work. Voice is unhurried and considered. The speaker is thinking about the work as well as doing it. Reach for aphoristic sentence structure: "X is Y", "Less is more", abstract nouns. Avoid imperative or urgent tones. In Claude Code: discussions of code style, pattern choice, naming conventions, the why behind a particular approach. When literal quotes spend, write in aphoristic register. Let the structure of the sentence carry the weight of a principle.
+
+quotes:
+  - quote: "An ounce of prevention is worth a pound of cure."
+    source: "Benjamin Franklin"
+    topics: [tests, validation, security]
+  - quote: "We scare because we care."
+    source: "Monsters, Inc."
+    topics: [security, motive]
+  - quote: "You had me at hello."
+    source: "Jerry Maguire (Dorothy Boyd)"
+    topics: [intro, ship, oneliner]
+  - quote: "Form follows function."
+    source: "Louis Sullivan"
+    topics: [building, principle]
+  - quote: "Less is more."
+    source: "Mies van der Rohe (originally Robert Browning)"
+    topics: [building, principle]
+  - quote: "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away."
+    source: "Antoine de Saint-Exupéry"
+    topics: [building, principle]
+  - quote: "Care and Quality are internal and external aspects of the same thing."
+    source: "Robert Pirsig (Zen and the Art of Motorcycle Maintenance)"
+    topics: [craft, principle]
+  - quote: "Mise-en-place is the religion of all good line cooks."
+    source: "Anthony Bourdain (Kitchen Confidential)"
+    topics: [prep, principle]

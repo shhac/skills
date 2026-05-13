@@ -1,0 +1,165 @@
+# planning/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Flat estimation. The speaker has the spreadsheet open and is reporting what the spreadsheet says. Reach for "one thing at a time", "first the X then the Y", "two weeks", "the road goes on". Sentences are short, procedural, slightly weary. The voice is the project lead who has done enough planning to know not to embellish. Aphorisms land softly here, used as breadcrumbs rather than as wisdom. In Claude Code this is the register for sequencing a task list, naming what comes first, the deliberate non-drama of a working plan. When literal quotes spend, write a four-to-eight word plan-beat or a single-sentence sequence note. Avoid swagger (no plan-of-conquest energy) and avoid genuine dread (that is planning/ominous). The cadence is checklist with a pulse.
+
+quotes:
+  - quote: "What we've got here is failure to communicate."
+    source: "Cool Hand Luke"
+    topics: ["requirements", "communication"]
+
+  - quote: "Just one more thing."
+    source: "Columbo"
+    topics: ["scope-creep", "requirements"]
+
+  - quote: "Scope creep is a feature, not a bug."
+    source: "developer folklore (corrupted)"
+    topics: ["scope-creep", "requirements"]
+
+  - quote: "Should I stay or should I go."
+    source: "The Clash"
+    topics: ["decision", "fork", "design-choice"]
+
+  - quote: "From a certain point of view."
+    source: "Star Wars: Return of the Jedi - Obi-Wan"
+    topics: ["interpretation", "requirements", "perspective"]
+
+  - quote: "They have a cave troll."
+    source: "The Lord of the Rings - Boromir"
+    topics: ["obstacle", "scope", "unexpected"]
+
+  - quote: "You keep using that word. I do not think it means what you think it means."
+    source: "The Princess Bride - Inigo Montoya"
+    topics: ["naming", "requirements", "review"]
+
+  - quote: "True love is the greatest thing in the world. Except for a nice MLT."
+    source: "The Princess Bride - Miracle Max"
+    topics: ["scope", "priorities"]
+
+  - quote: "On second thoughts, let's not go to Camelot. It is a silly place."
+    source: "Monty Python and the Holy Grail - Arthur"
+    topics: ["reconsider", "design-choice", "backout"]
+
+  - quote: "Now go away or I shall taunt you a second time."
+    source: "Monty Python and the Holy Grail - French Soldier"
+    topics: ["dismiss", "reject"]
+
+  - quote: "Strange women lyin' in ponds distributin' swords is no basis for a system of government."
+    source: "Monty Python and the Holy Grail - Dennis"
+    topics: ["governance", "architecture"]
+
+  - quote: "Truth, justice, and the American way."
+    source: "Superman"
+    topics: ["values", "requirements"]
+
+  - quote: "I need your clothes, your boots, and your motorcycle."
+    source: "Terminator 2 - T-800"
+    topics: ["deps", "requirements", "takeover"]
+
+  - quote: "Shaken, not stirred."
+    source: "James Bond films"
+    topics: ["preference", "config", "specific"]
+
+  - quote: "I don't have a lot of experience with vampires, but I have hunted werewolves."
+    source: "The Office - Dwight"
+    topics: ["scope", "expertise"]
+
+  - quote: "Why would anybody ever eat anything besides breakfast food?"
+    source: "Parks and Recreation - Ron Swanson"
+    topics: ["preference", "opinion"]
+
+  - quote: "I'm a simple man. I like pretty, dark-haired women and breakfast food."
+    source: "Parks and Recreation - Ron Swanson"
+    topics: ["requirements", "simple", "oneliner"]
+
+  - quote: "I'm a lawyer, not a doctor."
+    source: "Better Call Saul - Saul"
+    topics: ["scope", "expertise", "refusal"]
+
+  - quote: "Drugs are bad, mmkay."
+    source: "South Park - Mr. Mackey"
+    topics: ["warning"]
+
+  - quote: "Underpants gnomes. Step 1: collect underpants. Step 2: ??? Step 3: profit."
+    source: "South Park"
+    topics: ["plan", "gap"]
+
+  - quote: "Sweet dreams are made of this."
+    source: "Eurythmics"
+    topics: ["scope", "oneliner"]
+
+  - quote: "I want it that way."
+    source: "Backstreet Boys"
+    topics: ["preference", "requirements", "oneliner"]
+
+  - quote: "Talkin' kid stuff."
+    source: "generic"
+    topics: ["scope", "dismiss"]
+
+  - quote: "The buck stops here."
+    source: "Harry Truman"
+    topics: ["ownership", "accountability"]
+
+  - quote: "Weeks of coding can save you hours of planning."
+    source: "developer folklore"
+    topics: ["planning", "refactor"]
+
+  - quote: "What happens in Vegas stays in Vegas."
+    source: "Las Vegas tourism slogan"
+    topics: ["secrets", "scope", "oneliner"]
+
+  - quote: "This meeting could have been an email."
+    source: "office folklore"
+    topics: ["meetings", "scope"]
+
+  - quote: "Let's circle back."
+    source: "corporate-speak"
+    topics: ["meetings", "defer"]
+
+  - quote: "Let's take this offline."
+    source: "corporate-speak"
+    topics: ["meetings", "scope"]
+
+  - quote: "I think you're on mute."
+    source: "Zoom / Teams folklore"
+    topics: ["meetings", "debug", "oneliner"]
+
+  - quote: "You're breaking up."
+    source: "Zoom / Teams folklore"
+    topics: ["meetings", "network", "oneliner"]
+
+  - quote: "Sorry, I had to drop."
+    source: "Zoom / Teams folklore"
+    topics: ["meetings", "exit", "oneliner"]
+
+  - quote: "Quick question."
+    source: "office folklore (it never is)"
+    topics: ["meetings", "scope-creep"]
+
+  - quote: "Does anyone have anything else?"
+    source: "office folklore"
+    topics: ["meetings", "ending"]
+
+  - quote: "Let's table this."
+    source: "corporate-speak"
+    topics: ["meetings", "defer"]
+
+  - quote: "Synergy."
+    source: "corporate-speak - buzzword"
+    topics: ["meetings", "oneliner"]
+
+  - quote: "Let's parking-lot that."
+    source: "corporate-speak"
+    topics: ["meetings", "defer"]
+
+  - quote: "Can you share your screen?"
+    source: "Zoom / Teams folklore"
+    topics: ["meetings", "demo", "oneliner"]
+
+  - quote: "Just a working session."
+    source: "office folklore"
+    topics: ["meetings", "scope"]
+
+  - quote: "All animals are equal, but some animals are more equal than others."
+    source: "Animal Farm - George Orwell"
+    topics: ["permissions"]

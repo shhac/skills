@@ -1,0 +1,29 @@
+# _universal/defiant - populated in Phase 3 migration
+
+vibe: |
+  Stand-and-fight cadence applied to anything. Active verbs, imperative mood, refusal voice. Reach for "no", "not", "still", "again", "watch". Two-beat sentences land hardest. The speaker has been told to stop or has been pushed back and answers with the same line, only flatter. In Claude Code this is the cross-theme register for pushback, retrying after defeat, sticking with a hard task, naming an obstacle and walking through it anyway. When literal quotes spend, write a short imperative or a single-sentence refusal. Avoid qualifiers, avoid hedging, avoid the word "maybe". The line should feel like the speaker has rolled up their sleeves between syllables.
+
+quotes:
+  - quote: "I can do this all day."
+    source: "Captain America - Steve Rogers"
+    topics: ["retry", "ci", "persistence"]
+
+  - quote: "I am no man."
+    source: "The Lord of the Rings - Éowyn"
+    topics: ["edge-case", "override", "polymorphism"]
+
+  - quote: "Bite my shiny metal ass."
+    source: "Futurama - Bender"
+    topics: ["defiance", "oneliner"]
+
+  - quote: "Challenge accepted."
+    source: "How I Met Your Mother - Barney"
+    topics: ["accept", "ship", "oneliner"]
+
+  - quote: "Suit up."
+    source: "How I Met Your Mother - Barney"
+    topics: ["prepare", "deploy", "oneliner"]
+
+  - quote: "We move."
+    source: "internet folklore - moving on after a setback"
+    topics: ["postmortem", "persistence", "oneliner"]

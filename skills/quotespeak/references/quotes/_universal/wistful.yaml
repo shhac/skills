@@ -1,0 +1,30 @@
+# _universal/wistful - populated in Phase 4 gap fill
+
+vibe: |
+  Soft consonants, past tense intruding into the present. The speaker is thinking about something that has already been lost or is about to be. Names carry weight; pauses do too. Reach for "we", "always", "still", "once". Sentence fragments are welcome. The register tolerates silence at the end of a line. In Claude Code this is the cross-theme register for farewells, end-of-cycle reflections, last-time-doing-this moments, gentle apologies. When literal quotes spend, write one balanced sentence with a soft verb (remember, leave, stay, hold) and let it trail. Avoid sharp consonants and active battle verbs. The mood is tender, never bitter.
+
+quotes:
+  - quote: "I'm sorry, Morty."
+    source: "Rick and Morty (Rick)"
+    topics: [apology, postmortem]
+  - quote: "Hello darkness, my old friend."
+    source: "Simon & Garfunkel (The Sound of Silence)"
+    topics: [legacy, greeting]
+  - quote: "After all this time? Always."
+    source: "Harry Potter (Snape)"
+    topics: [persistence, dependency]
+  - quote: "Always."
+    source: "Harry Potter (Snape)"
+    topics: [persistence, dependency]
+  - quote: "Such is life."
+    source: "Ned Kelly (and generic)"
+    topics: [wistful, acceptance]
+  - quote: "C'est la vie."
+    source: "French proverb"
+    topics: [wistful, acceptance]
+  - quote: "Things change."
+    source: "generic"
+    topics: [wistful, acceptance]
+  - quote: "It was a good run."
+    source: "generic"
+    topics: [wistful, ending]

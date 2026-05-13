@@ -1,0 +1,97 @@
+# planning/philosophical - populated in Phase 3 migration
+
+vibe: |
+  Strategy-talk. The speaker has stepped back from the road to look at the map. Reach for the strategist's aphorism: "plans are nothing, planning is everything", "no plan survives contact", "know yourself and know the terrain". Sun Tzu, Eisenhower, Brooks, Heraclitus, the older voices of project lore. Sentences are balanced, slightly archaic, often paired (the if-then aphorism, the two-kinds-of structure). The speaker is older than the task. In Claude Code this is the register for the framing moment before work begins, the tradeoff-naming, the reflection that turns "what do we do" into "what kind of problem is this". When literal quotes spend, write one balanced sentence about strategy, sequencing, or the nature of plans, then stop. Avoid present-tense narration of the current backlog; the philosophical voice hovers above the spreadsheet.
+
+quotes:
+  - quote: "You rush a miracle man, you get rotten miracles."
+    source: "The Princess Bride - Miracle Max"
+    topics: ["deadline", "rush", "quality"]
+
+  - quote: "To be, or not to be - that is the question."
+    source: "Hamlet"
+    topics: ["decision", "design-choice"]
+
+  - quote: "All we have to decide is what to do with the time that is given us."
+    source: "The Lord of the Rings - Gandalf"
+    topics: ["deadline", "scope"]
+
+  - quote: "It's the job that's never started as takes longest to finish."
+    source: "The Lord of the Rings - Samwise (paraphrasing Bilbo)"
+    topics: ["procrastination", "start", "deadline"]
+
+  - quote: "The needs of the many outweigh the needs of the few."
+    source: "Star Trek II: The Wrath of Khan - Spock"
+    topics: ["tradeoff", "design-choice"]
+
+  - quote: "With great power comes great responsibility."
+    source: "Spider-Man - Uncle Ben"
+    topics: ["permissions", "ops"]
+
+  - quote: "The flame that burns twice as bright burns half as long."
+    source: "Blade Runner - Tyrell (Lao Tzu paraphrase)"
+    topics: ["perf", "burnout", "tradeoff"]
+
+  - quote: "Your scientists were so preoccupied with whether they could, they didn't stop to think if they should."
+    source: "Jurassic Park - Ian Malcolm"
+    topics: ["scope", "design"]
+
+  - quote: "That rug really tied the room together."
+    source: "The Big Lebowski"
+    topics: ["glue", "dependency", "design"]
+
+  - quote: "Don't start chasing applause and acclaim."
+    source: "Parks and Recreation - Ron Swanson"
+    topics: ["focus", "scope"]
+
+  - quote: "Power resides where men believe it resides."
+    source: "Game of Thrones - Varys"
+    topics: ["perception", "governance"]
+
+  - quote: "The man who passes the sentence should swing the sword."
+    source: "Game of Thrones - Ned Stark"
+    topics: ["ownership", "accountability"]
+
+  - quote: "Sometimes you need to take responsibility for your own life."
+    source: "BoJack Horseman"
+    topics: ["ownership", "postmortem"]
+
+  - quote: "Why do you write like you're running out of time?"
+    source: "Hamilton - Eliza"
+    topics: ["productivity", "deadline"]
+
+  - quote: "When you come to a fork in the road, take it."
+    source: "Yogi Berra"
+    topics: ["decision", "oneliner"]
+
+  - quote: "In the long run, we are all dead."
+    source: "John Maynard Keynes"
+    topics: ["deadline", "oneliner"]
+
+  - quote: "Conceptual integrity is the most important consideration in system design."
+    source: "Frederick Brooks - The Mythical Man-Month"
+    topics: ["architecture", "design"]
+
+  - quote: "Adding manpower to a late software project makes it later."
+    source: "Frederick Brooks - Brooks's Law"
+    topics: ["scale", "deadline"]
+
+  - quote: "There is no silver bullet."
+    source: "Frederick Brooks"
+    topics: ["framework", "oneliner"]
+
+  - quote: "Plan to throw one away; you will, anyhow."
+    source: "Frederick Brooks"
+    topics: ["refactor", "rewrite"]
+
+  - quote: "Walking on water and developing software from a specification are easy if both are frozen."
+    source: "Edward V. Berard"
+    topics: ["requirements", "scope-creep"]
+
+  - quote: "Worse is better."
+    source: "Richard P. Gabriel"
+    topics: ["tradeoff", "design-choice"]
+
+  - quote: "First, solve the problem. Then, write the code."
+    source: "John Johnson"
+    topics: ["planning", "process"]

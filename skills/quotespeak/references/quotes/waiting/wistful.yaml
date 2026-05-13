@@ -1,0 +1,32 @@
+# waiting/wistful - populated in Phase 4 gap fill
+
+vibe: |
+  Time stretches. The speaker has been waiting long enough that the wait itself becomes the subject. Past tense intrudes into the present. The phrase "we've been here before, we'll be here again" captures the cadence. Soft consonants, slow pace, breaths between sentences. Beckett-adjacent: the wait is its own thing now, not a means to an end. In Claude Code: long-running migrations, CI loops that have been failing all afternoon, builds that should have finished hours ago, queued jobs in a backlog that grew while you slept. The vibe is patient but tinged with melancholy. Not exasperated (active frustration), not hopeful (anticipating resolution). Just present with the time. When the literal quotes spend, write in the same slow, reflective register. Short sentences with breaths between them. Avoid action verbs. Let nouns do the work.
+
+quotes:
+  - quote: "Waiting for Godot."
+    source: "Samuel Beckett (Waiting for Godot)"
+    topics: [wait, philosophical-wistful]
+    notes: "Iconic reference for the long indefinite wait."
+  - quote: "Nothing happens. Nobody comes, nobody goes. It's awful."
+    source: "Waiting for Godot (Estragon)"
+    topics: [wait, ennui]
+  - quote: "And miles to go before I sleep."
+    source: "Robert Frost (Stopping by Woods on a Snowy Evening)"
+    topics: [wait, long-haul]
+  - quote: "The journey is long."
+    source: "generic"
+    topics: [wait, long-haul]
+  - quote: "Each day, the same shape returns."
+    source: "generic (Buddhist-adjacent)"
+    topics: [wait, recurring]
+  - quote: "Day after day."
+    source: "generic"
+    topics: [wait, repetition]
+  - quote: "The world is changed. I feel it in the water. I feel it in the earth. I smell it in the air."
+    source: "The Lord of the Rings (Galadriel)"
+    topics: [wait, change, wistful]
+    notes: "For long migrations where the codebase quietly shifts beneath you."
+  - quote: "All things in time."
+    source: "generic"
+    topics: [wait, patience-wistful]

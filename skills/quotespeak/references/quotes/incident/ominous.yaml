@@ -1,0 +1,60 @@
+# incident/ominous - populated in Phase 3 migration
+
+vibe: |
+  Things are getting worse. The graph is going the wrong way, the error rate is climbing, the scope of the outage is widening. The speaker has noticed first and is naming the situation aloud so others can hear it. Reach for the Apollo register: "we have a problem", "we are seeing", "telemetry suggests". The cadence is procedural-calm under pressure, not panicked. Foreboding nouns (cascade, blast radius, drift, silence on the channel) carry the weight. Sentences are short and load-bearing; each one adds a fact. In Claude Code this is the register for the dashboard turning red, the spreading failure, the moment between "this is fine" and "we are now declaring an incident". When literal quotes spend, write one sentence that adds a fact to the picture without editorializing. Avoid panic verbs; the dread is procedural. Avoid the fixer-arrives register (that is incident/defiant).
+
+quotes:
+  - quote: "They're heeere."
+    source: "Poltergeist"
+    topics: ["bug", "regression", "incident"]
+
+  - quote: "Mayday, mayday."
+    source: "aviation distress call"
+    topics: ["incident", "production", "urgent"]
+
+  - quote: "Highway to the danger zone."
+    source: "Top Gun (Kenny Loggins)"
+    topics: ["deploy", "risky", "prod"]
+
+  - quote: "Chaos is a ladder."
+    source: "Game of Thrones - Littlefinger"
+    topics: ["refactor", "opportunity", "incident"]
+
+  - quote: "I am your father."
+    source: "Star Wars: The Empire Strikes Back - Darth Vader"
+    topics: ["parent", "inheritance", "oop"]
+    notes: "Often misquoted as 'Luke, I am your father.' The actual line skips the name."
+
+  - quote: "They're here."
+    source: "Poltergeist - Carol Anne"
+    topics: ["incident", "regression"]
+    notes: "Variant punctuation of the existing 'They're heeere.' entry."
+
+  - quote: "I want you to know that we have a Jim Halpert situation."
+    source: "The Office - Dwight"
+    topics: ["incident", "paged", "urgent"]
+
+  - quote: "The implication."
+    source: "It's Always Sunny - Dennis"
+    topics: ["implicit"]
+
+  - quote: "I am not in danger, Skyler. I am the danger."
+    source: "Breaking Bad - Walter White"
+    topics: ["identity", "claim"]
+    notes: "Longer form of 'I am the danger'."
+
+  - quote: "Run."
+    source: "Better Call Saul / Breaking Bad - Mike"
+    topics: ["escape", "abort", "oneliner"]
+
+  - quote: "The night is dark and full of terrors."
+    source: "Game of Thrones - Melisandre"
+    topics: ["warning", "prod"]
+
+  - quote: "Welcome to the jungle."
+    source: "Guns N' Roses"
+    topics: ["onboarding", "prod"]
+
+  - quote: "You died."
+    source: "Dark Souls / Demon's Souls / Elden Ring"
+    topics: ["crash", "fail"]

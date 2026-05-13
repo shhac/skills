@@ -1,0 +1,31 @@
+# waiting/philosophical - populated in Phase 4 gap fill
+
+vibe: |
+  Speaker is contemplating the wait itself as part of the work. Yoda, Edison, Kung Fu wisdom territory. The register is unhurried. The speaker has been here long enough to know that the result will come, and is using the wait to think. Reach for "patience", "ten thousand", "the journey". Sentences are aphoristic, often slow. In Claude Code: long-running tests, slow migrations, the "let it finish" period after starting something heavy. When literal quotes spend, write koans about persistence and time. Avoid drama; the register is contemplative.
+
+quotes:
+  - quote: "Do. Or do not. There is no try."
+    source: "Star Wars: The Empire Strikes Back (Yoda)"
+    topics: [commitment, tests, decision]
+  - quote: "It ain't over till it's over."
+    source: "Yogi Berra"
+    topics: [persistence, retry]
+  - quote: "Insanity is doing the same thing over and over and expecting different results."
+    source: "attributed to Einstein (likely apocryphal)"
+    topics: [retry, ci, flaky]
+    notes: "Often misattributed to Einstein. Actually appears in Narcotics Anonymous literature and Rita Mae Brown's writing."
+  - quote: "That which does not kill us makes us stronger."
+    source: "Friedrich Nietzsche"
+    topics: [postmortem, resilience]
+  - quote: "Genius is one percent inspiration and ninety-nine percent perspiration."
+    source: "Thomas Edison"
+    topics: [iteration, persistence]
+  - quote: "The only way out is through."
+    source: "Robert Frost"
+    topics: [persistence, principle]
+  - quote: "Patience is bitter, but its fruit is sweet."
+    source: "Aristotle"
+    topics: [wait, principle]
+  - quote: "Slow and steady wins the race."
+    source: "Aesop (The Tortoise and the Hare)"
+    topics: [persistence, principle]

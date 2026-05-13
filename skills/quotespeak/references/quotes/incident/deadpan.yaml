@@ -1,0 +1,34 @@
+# incident/deadpan - populated in Phase 3 migration
+
+vibe: |
+  Underplayed crisis. Production is on fire and the speaker is reporting it the way one reports weather. Reach for "this is fine", "noted", "we appear to be down", "everything is technically working". Sentences are short, flat, slightly absurd in proportion to the situation. The comic register comes from the gap between the calm voice and the actual scale of the breakage. The IT Crowd, the meme dog at the table, the operator who has stopped panicking by sheer professional habit. In Claude Code this is the register for an outage reported in a single line, an alert acknowledged without exclamation, a half-hour of degradation summarized as "yes, that". When literal quotes spend, write a four-to-eight word observation that describes the breakage in the gentlest possible terms. Avoid panic verbs and avoid dramatic adjectives; the joke is the understatement.
+
+quotes:
+  - quote: "Houston, we have a problem."
+    source: "Apollo 13 (paraphrased)"
+    topics: ["incident", "production", "bug"]
+    notes: "Actual line was 'Houston, we've had a problem' - the paraphrase is more recognizable."
+
+  - quote: "Everything is fine. Nothing to see here."
+    source: "Naked Gun - Frank Drebin"
+    topics: ["incident", "denial", "deflection"]
+
+  - quote: "Get used to disappointment."
+    source: "The Princess Bride - Westley"
+    topics: ["expectations", "failure"]
+
+  - quote: "He's dead, Jim."
+    source: "Star Trek - Bones McCoy"
+    topics: ["crash", "exit", "process-died"]
+
+  - quote: "Damage report."
+    source: "Star Trek - generic"
+    topics: ["postmortem", "incident", "status"]
+
+  - quote: "I'm in danger."
+    source: "The Simpsons / chili cook-off meme - Ralph Wiggum"
+    topics: ["crash", "panic"]
+
+  - quote: "Aaaand it's gone."
+    source: "South Park - bank teller"
+    topics: ["crash", "lost", "oneliner"]

@@ -1,0 +1,31 @@
+# _universal/hopeful - populated in Phase 4 gap fill
+
+vibe: |
+  Forward-leaning across any theme. Open-vowel cadence. The speaker has not seen the outcome yet and is choosing optimism without naivety. Modal verbs do the work: "may", "could", "might", "let us". Blessings, send-offs, and earnest first-tries land here. The register is generous; the speaker wants the next moment to go well, for themselves or for someone else. In Claude Code this is the register for retries, pivots, blessings on a deploy or a build, mentor-style encouragement when the user is uncertain. When literal quotes spend, write short benedictions or possibility-shaped sentences. Avoid cynicism, avoid certainty. Earnest, never saccharine.
+
+quotes:
+  - quote: "May the Force be with you."
+    source: "Star Wars"
+    topics: [deploy, start, blessing]
+  - quote: "Live long and prosper."
+    source: "Star Trek (Spock)"
+    topics: [farewell, blessing]
+    notes: "Corrupt for promises: 'Live long and Promise.resolve.'"
+  - quote: "May the odds be ever in your favor."
+    source: "The Hunger Games"
+    topics: [ci, deploy, hope]
+  - quote: "Happy little accidents."
+    source: "Bob Ross"
+    topics: [bug, accept]
+  - quote: "Onward and upward."
+    source: "generic"
+    topics: [hopeful, persistence]
+  - quote: "Fingers crossed."
+    source: "generic"
+    topics: [hopeful, hope]
+  - quote: "Here goes nothing."
+    source: "generic"
+    topics: [hopeful, commit]
+  - quote: "Worth a shot."
+    source: "generic"
+    topics: [hopeful, try]
