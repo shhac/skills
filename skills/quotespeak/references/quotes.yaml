@@ -84,12 +84,12 @@ quotes:
 
   - quote: "Debugging is like being the detective in a crime movie where you are also the murderer."
     source: "Filipe Fortes"
-    topics: [debug, bug, philosophical]
+    topics: [debug, bug]
     register: philosophical
 
   - quote: "If debugging is the process of removing bugs, then programming must be the process of putting them in."
     source: "Edsger W. Dijkstra"
-    topics: [debug, bug, philosophical]
+    topics: [debug, bug]
     register: philosophical
 
   - quote: "I have no idea what I'm doing."
@@ -127,7 +127,7 @@ quotes:
 
   - quote: "The bug was inside us all along."
     source: "corrupted Wizard of Oz / general fairytale ending"
-    topics: [bug, self-inflicted, philosophical]
+    topics: [bug, self-inflicted]
     register: philosophical
 
   - quote: "I've seen things you people wouldn't believe."
@@ -222,12 +222,12 @@ quotes:
 
   - quote: "Why is everything on fire?"
     source: "generic meme"
-    topics: [incident, production, exasperated]
+    topics: [incident, production]
     register: exasperated
 
   - quote: "The cloud is just someone else's computer."
     source: "developer folklore"
-    topics: [cloud, infra, philosophical]
+    topics: [cloud, infra]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -290,7 +290,7 @@ quotes:
 
   - quote: "I'm too old for this shit."
     source: "Lethal Weapon — Murtaugh"
-    topics: [legacy, refactor, exasperated]
+    topics: [legacy, refactor]
     register: exasperated
 
   - quote: "I should have stayed in bed."
@@ -351,7 +351,7 @@ quotes:
 
   - quote: "There are only two hard things in Computer Science: cache invalidation and naming things."
     source: "Phil Karlton"
-    topics: [cache, naming, philosophical]
+    topics: [cache, naming]
     register: philosophical
 
   - quote: "Make it work, make it right, make it fast."
@@ -480,7 +480,7 @@ quotes:
 
   - quote: "Nobody expects the empty array."
     source: "corrupted Monty Python"
-    topics: [edge-case, null, empty]
+    topics: [edge-case, "null", empty]
     register: unhinged
 
   - quote: "Plot twist."
@@ -558,7 +558,7 @@ quotes:
 
   - quote: "Skynet is self-aware."
     source: "Terminator 2 (paraphrased)"
-    topics: [ai, automation, ominous]
+    topics: [ai, automation]
     register: ominous
 
   - quote: "Resistance is futile."
@@ -597,7 +597,7 @@ quotes:
 
   - quote: "Live long and prosper."
     source: "Star Trek — Spock"
-    topics: [farewell, hopeful, blessing]
+    topics: [farewell, blessing]
     register: hopeful
     notes: "Corrupt for promises: 'Live long and `Promise.resolve`.'"
 
@@ -607,22 +607,22 @@ quotes:
 
   - quote: "To understand recursion, you must first understand recursion."
     source: "developer folklore"
-    topics: [recursion, philosophical]
+    topics: [recursion]
     register: deadpan
 
   - quote: "I think, therefore I am."
     source: "Descartes"
-    topics: [philosophical, ai]
+    topics: [ai]
     register: philosophical
 
   - quote: "We are in the matrix."
     source: "The Matrix"
-    topics: [debug, simulation, philosophical]
+    topics: [debug, simulation]
     register: ominous
 
   - quote: "There is no spoon."
     source: "The Matrix"
-    topics: [abstraction, philosophical, refactor]
+    topics: [abstraction, refactor]
     register: philosophical
 
   - quote: "Take the red pill."
@@ -710,7 +710,7 @@ quotes:
 
   - quote: "Y u no work?"
     source: "Y U NO meme"
-    topics: [bug, exasperated, debug]
+    topics: [bug, debug]
     register: exasperated
 
   - quote: "Why not both?"
@@ -806,7 +806,7 @@ quotes:
 
   - quote: "War. War never changes."
     source: "Fallout"
-    topics: [legacy, recurring, philosophical]
+    topics: [legacy, recurring]
     register: wistful
 
   - quote: "Stay on target."
@@ -850,7 +850,7 @@ quotes:
 
   - quote: "Bohemian Rhapsody. Is this the real life? Is this just fantasy?"
     source: "Queen"
-    topics: [debug, simulation, philosophical]
+    topics: [debug, simulation]
     register: philosophical
 
   - quote: "Don't fear the reaper."
@@ -910,7 +910,7 @@ quotes:
 
   - quote: "That's what she said."
     source: "The Office — Michael Scott"
-    topics: [innuendo, snark]
+    topics: [innuendo]
     register: snark
     notes: "Use sparingly. Read the room."
 
@@ -940,7 +940,7 @@ quotes:
 
   - quote: "To be, or not to be — that is the question."
     source: "Hamlet"
-    topics: [decision, design-choice, philosophical]
+    topics: [decision, design-choice]
     register: philosophical
 
   - quote: "The lady doth protest too much, methinks."
@@ -1034,7 +1034,7 @@ quotes:
 
   - quote: "Here's looking at you, kid."
     source: "Casablanca"
-    topics: [farewell, deprecate, wistful]
+    topics: [farewell, deprecate]
     register: wistful
 
   - quote: "We'll always have Paris."
@@ -1063,7 +1063,7 @@ quotes:
 
   - quote: "Why are you the way that you are?"
     source: "The Office — Michael Scott"
-    topics: [bug, legacy, exasperated]
+    topics: [bug, legacy]
     register: exasperated
 
   - quote: "Big mood."
@@ -1120,7 +1120,7 @@ quotes:
 
   - quote: "Khaaaaan!"
     source: "Star Trek II — Kirk"
-    topics: [exasperated, bug, blame]
+    topics: [bug, blame]
     register: unhinged
 
   - quote: "Resistance is voltage divided by current."
@@ -1241,12 +1241,12 @@ quotes:
 
   - quote: "I love you. I know."
     source: "Star Wars: The Empire Strikes Back — Leia / Han"
-    topics: [farewell, deploy, deadpan]
+    topics: [farewell, deploy]
     register: deadpan
 
   - quote: "Size matters not."
     source: "Star Wars: The Empire Strikes Back — Yoda"
-    topics: [perf, size, philosophical]
+    topics: [perf, size]
     register: philosophical
 
   # ─────────────────────────────────────────────────────────────────
@@ -1285,7 +1285,7 @@ quotes:
 
   - quote: "All we have to decide is what to do with the time that is given us."
     source: "The Lord of the Rings — Gandalf"
-    topics: [deadline, scope, philosophical]
+    topics: [deadline, scope]
     register: philosophical
 
   - quote: "I am glad you are here with me. Here at the end of all things."
@@ -1330,12 +1330,12 @@ quotes:
 
   - quote: "Fool of a Took!"
     source: "The Lord of the Rings — Gandalf"
-    topics: [mistake, exasperated, blame]
+    topics: [mistake, blame]
     register: exasperated
 
   - quote: "And my axe."
     source: "The Lord of the Rings — Gimli"
-    topics: [me-too, +1, support]
+    topics: [me-too, "+1", support]
     register: defiant
 
   - quote: "Looks like meat's back on the menu, boys."
@@ -1385,7 +1385,7 @@ quotes:
 
   - quote: "I'll most likely kill you in the morning."
     source: "The Princess Bride — Dread Pirate Roberts"
-    topics: [deprecate, schedule, ominous]
+    topics: [deprecate, schedule]
     register: ominous
 
   - quote: "Iocane powder."
@@ -1400,12 +1400,12 @@ quotes:
 
   - quote: "Get used to disappointment."
     source: "The Princess Bride — Westley"
-    topics: [expectations, failure, deadpan]
+    topics: [expectations, failure]
     register: deadpan
 
   - quote: "True love is the greatest thing in the world. Except for a nice MLT."
     source: "The Princess Bride — Miracle Max"
-    topics: [scope, priorities, snark]
+    topics: [scope, priorities]
     register: snark
 
   # ─────────────────────────────────────────────────────────────────
@@ -1446,7 +1446,7 @@ quotes:
 
   - quote: "The needs of the many outweigh the needs of the few."
     source: "Star Trek II: The Wrath of Khan — Spock"
-    topics: [tradeoff, design-choice, philosophical]
+    topics: [tradeoff, design-choice]
     register: philosophical
 
   - quote: "Captain's log, stardate..."
@@ -1555,7 +1555,7 @@ quotes:
 
   - quote: "He's not the Messiah. He's a very naughty boy."
     source: "Monty Python's Life of Brian"
-    topics: [overhyped, debunk, snark]
+    topics: [overhyped, debunk]
     register: snark
 
   - quote: "What have the Romans ever done for us?"
@@ -1570,12 +1570,12 @@ quotes:
 
   - quote: "Now go away or I shall taunt you a second time."
     source: "Monty Python and the Holy Grail — French Soldier"
-    topics: [dismiss, reject, snark]
+    topics: [dismiss, reject]
     register: snark
 
   - quote: "Strange women lyin' in ponds distributin' swords is no basis for a system of government."
     source: "Monty Python and the Holy Grail — Dennis"
-    topics: [governance, architecture, snark]
+    topics: [governance, architecture]
     register: snark
 
   - quote: "It's just a flesh wound!"
@@ -1590,7 +1590,7 @@ quotes:
 
   - quote: "With great power comes great responsibility."
     source: "Spider-Man — Uncle Ben"
-    topics: [permissions, ops, philosophical]
+    topics: [permissions, ops]
     register: philosophical
 
   - quote: "I am Groot."
@@ -1615,12 +1615,12 @@ quotes:
 
   - quote: "Part of the journey is the end."
     source: "Avengers: Endgame — Tony Stark"
-    topics: [deprecate, ending, philosophical]
+    topics: [deprecate, ending]
     register: wistful
 
   - quote: "I love you 3000."
     source: "Avengers: Endgame — Morgan Stark"
-    topics: [farewell, deprecate, wistful]
+    topics: [farewell, deprecate]
     register: wistful
 
   - quote: "Dread it. Run from it. Destiny arrives all the same."
@@ -1630,7 +1630,7 @@ quotes:
 
   - quote: "I'm always angry."
     source: "The Avengers — Bruce Banner"
-    topics: [bug, baseline, on]
+    topics: [bug, baseline, "on"]
     register: deadpan
 
   - quote: "Puny god."
@@ -1655,7 +1655,7 @@ quotes:
 
   - quote: "Why so serious?"
     source: "The Dark Knight — The Joker"
-    topics: [meeting, lighten, snark]
+    topics: [meeting, lighten]
     register: unhinged
 
   - quote: "Some men just want to watch the world burn."
@@ -1665,12 +1665,12 @@ quotes:
 
   - quote: "I'm the hero this codebase deserves, but not the one it needs right now."
     source: "The Dark Knight (corrupted) — Commissioner Gordon"
-    topics: [refactor, anti-hero, philosophical]
+    topics: [refactor, anti-hero]
     register: philosophical
 
   - quote: "It's not who I am underneath, but what I do that defines me."
     source: "Batman Begins — Bruce Wayne"
-    topics: [actions, identity, philosophical]
+    topics: [actions, identity]
     register: philosophical
 
   - quote: "Martha!"
@@ -1685,7 +1685,7 @@ quotes:
 
   - quote: "Truth, justice, and the American way."
     source: "Superman"
-    topics: [values, requirements, philosophical]
+    topics: [values, requirements]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -1704,7 +1704,7 @@ quotes:
 
   - quote: "Welcome to the desert of the real."
     source: "The Matrix — Morpheus"
-    topics: [postmortem, reality, philosophical]
+    topics: [postmortem, reality]
     register: philosophical
 
   - quote: "I know kung fu."
@@ -1719,7 +1719,7 @@ quotes:
 
   - quote: "The Matrix has you."
     source: "The Matrix"
-    topics: [debug, trapped, ominous]
+    topics: [debug, trapped]
     register: ominous
 
   - quote: "Never send a human to do a machine's job."
@@ -1729,12 +1729,12 @@ quotes:
 
   - quote: "Mr. Anderson."
     source: "The Matrix — Agent Smith"
-    topics: [callout, formal, deadpan]
+    topics: [callout, formal]
     register: ominous
 
   - quote: "I'm going to enjoy watching you die, Mr. Anderson."
     source: "The Matrix — Agent Smith"
-    topics: [adversary, ominous, deprecate]
+    topics: [adversary, deprecate]
     register: ominous
 
   # ─────────────────────────────────────────────────────────────────
@@ -1748,7 +1748,7 @@ quotes:
 
   - quote: "No fate but what we make."
     source: "Terminator 2 — Sarah Connor"
-    topics: [agency, refactor, philosophical]
+    topics: [agency, refactor]
     register: philosophical
 
   - quote: "Judgment Day is inevitable."
@@ -1782,7 +1782,7 @@ quotes:
 
   - quote: "I expect you to die, Mr. Bond."
     source: "Goldfinger"
-    topics: [adversary, deprecate, ominous]
+    topics: [adversary, deprecate]
     register: ominous
     notes: "Goldfinger's full line: 'No, Mr. Bond, I expect you to die.'"
 
@@ -1793,7 +1793,7 @@ quotes:
 
   - quote: "Nobody does it better."
     source: "The Spy Who Loved Me — Carly Simon"
-    topics: [best-in-class, smug, ship]
+    topics: [best-in-class, ship]
     register: smug
 
   # ─────────────────────────────────────────────────────────────────
@@ -1802,7 +1802,7 @@ quotes:
 
   - quote: "A heart's a heavy burden."
     source: "Howl's Moving Castle"
-    topics: [philosophical, refactor, weight]
+    topics: [refactor, weight]
     register: wistful
 
   - quote: "I'm so tired of being scared."
@@ -1817,7 +1817,7 @@ quotes:
 
   - quote: "It's a paradise. We can't tell if we're underwater or in the sky."
     source: "Ponyo"
-    topics: [debug, confusion, philosophical]
+    topics: [debug, confusion]
     register: philosophical
 
   - quote: "Plant Bag End. Take this with you."
@@ -1832,7 +1832,7 @@ quotes:
 
   - quote: "Just according to keikaku. (Translator's note: keikaku means plan.)"
     source: "Death Note (notorious fan-sub meme)"
-    topics: [plan, success, smug]
+    topics: [plan, success]
     register: smug
 
   - quote: "Going merry go!"
@@ -1842,7 +1842,7 @@ quotes:
 
   - quote: "I am the bone of my sword."
     source: "Fate/stay night — Archer"
-    topics: [identity, claim, philosophical]
+    topics: [identity, claim]
     register: philosophical
 
   - quote: "Plus Ultra!"
@@ -1852,7 +1852,7 @@ quotes:
 
   - quote: "Just as planned."
     source: "Code Geass / Death Note — generic anime villain"
-    topics: [plan, smug, success]
+    topics: [plan, success]
     register: smug
 
   - quote: "Itadakimasu."
@@ -1862,7 +1862,7 @@ quotes:
 
   - quote: "Nani?!"
     source: "anime — universal reaction"
-    topics: [surprise, wtf, exasperated]
+    topics: [surprise, wtf]
     register: exasperated
 
   # ─────────────────────────────────────────────────────────────────
@@ -1881,7 +1881,7 @@ quotes:
 
   - quote: "Hakuna matata."
     source: "The Lion King"
-    topics: [reassure, calm, philosophical]
+    topics: [reassure, calm]
     register: reassuring
 
   - quote: "Remember who you are."
@@ -1891,7 +1891,7 @@ quotes:
 
   - quote: "Long live the king."
     source: "The Lion King — Scar"
-    topics: [deprecate, succession, ominous]
+    topics: [deprecate, succession]
     register: ominous
 
   - quote: "Look at this stuff. Isn't it neat?"
@@ -1906,12 +1906,12 @@ quotes:
 
   - quote: "I shall call him squishy and he shall be mine."
     source: "Finding Nemo — Dory"
-    topics: [naming, attachment, unhinged]
+    topics: [naming, attachment]
     register: unhinged
 
   - quote: "Everything is awesome."
     source: "The Lego Movie"
-    topics: [success, ship, triumphant]
+    topics: [success, ship]
     register: triumphant
 
   - quote: "Let it go."
@@ -1931,12 +1931,12 @@ quotes:
 
   - quote: "Some people are worth melting for."
     source: "Frozen — Olaf"
-    topics: [sacrifice, refactor, wistful]
+    topics: [sacrifice, refactor]
     register: wistful
 
   - quote: "When will my reflection show who I am inside?"
     source: "Mulan"
-    topics: [identity, refactor, philosophical]
+    topics: [identity, refactor]
     register: philosophical
 
   - quote: "Beauty and the bug."
@@ -1967,17 +1967,17 @@ quotes:
 
   - quote: "Anyone can cook."
     source: "Ratatouille — Gusteau"
-    topics: [accessible, learn, philosophical]
+    topics: [accessible, learn]
     register: hopeful
 
   - quote: "Not anyone can become a great artist; but a great artist can come from anywhere."
     source: "Ratatouille — Anton Ego"
-    topics: [contribution, philosophical, review]
+    topics: [contribution, review]
     register: philosophical
 
   - quote: "We scare because we care."
     source: "Monsters, Inc."
-    topics: [security, motive, philosophical]
+    topics: [security, motive]
     register: philosophical
 
   - quote: "The flame that burns twice as bright burns half as long."
@@ -1997,7 +1997,7 @@ quotes:
 
   - quote: "Life, uh, finds a way."
     source: "Jurassic Park — Ian Malcolm"
-    topics: [edge-case, regression, philosophical]
+    topics: [edge-case, regression]
     register: philosophical
 
   - quote: "Clever girl."
@@ -2007,12 +2007,12 @@ quotes:
 
   - quote: "Your scientists were so preoccupied with whether they could, they didn't stop to think if they should."
     source: "Jurassic Park — Ian Malcolm"
-    topics: [scope, design, philosophical]
+    topics: [scope, design]
     register: philosophical
 
   - quote: "That is one big pile of shit."
     source: "Jurassic Park — Ian Malcolm"
-    topics: [legacy, tech-debt, exasperated]
+    topics: [legacy, tech-debt]
     register: exasperated
 
   # ─────────────────────────────────────────────────────────────────
@@ -2021,7 +2021,7 @@ quotes:
 
   - quote: "I'm kind of a big deal."
     source: "Anchorman — Ron Burgundy"
-    topics: [claim, smug, intro]
+    topics: [claim, intro]
     register: smug
 
   - quote: "Stay classy, San Diego."
@@ -2031,7 +2031,7 @@ quotes:
 
   - quote: "I love lamp."
     source: "Anchorman — Brick Tamland"
-    topics: [random, attachment, unhinged]
+    topics: [random, attachment]
     register: unhinged
 
   - quote: "60% of the time, it works every time."
@@ -2041,7 +2041,7 @@ quotes:
 
   - quote: "Why don't you go eat a hot bowl of dicks?"
     source: "Anchorman — Veronica"
-    topics: [feedback, code-review, exasperated]
+    topics: [feedback, code-review]
     register: unhinged
 
   - quote: "Did we just become best friends?"
@@ -2056,7 +2056,7 @@ quotes:
 
   - quote: "Boats and hoes."
     source: "Step Brothers"
-    topics: [unhinged, callout, snark]
+    topics: [callout]
     register: unhinged
 
   - quote: "Shake and bake."
@@ -2071,17 +2071,17 @@ quotes:
 
   - quote: "Help, my arms are broken!"
     source: "Talladega Nights — Ricky Bobby"
-    topics: [crash, broken, exasperated]
+    topics: [crash, broken]
     register: unhinged
 
   - quote: "I'm in danger."
     source: "The Simpsons / chili cook-off meme — Ralph Wiggum"
-    topics: [crash, panic, deadpan]
+    topics: [crash, panic]
     register: deadpan
 
   - quote: "Me fail English? That's unpossible."
     source: "The Simpsons — Ralph Wiggum"
-    topics: [bug, denial, deadpan]
+    topics: [bug, denial]
     register: deadpan
 
   - quote: "I am a leaf on the wind."
@@ -2111,12 +2111,12 @@ quotes:
 
   - quote: "Big damn heroes."
     source: "Firefly — Mal"
-    topics: [save, recovery, triumphant]
+    topics: [save, recovery]
     register: triumphant
 
   - quote: "Big Lebowski. The dude abides."
     source: "The Big Lebowski"
-    topics: [persistence, deadpan, accept]
+    topics: [persistence, accept]
     register: deadpan
 
   - quote: "That rug really tied the room together."
@@ -2126,7 +2126,7 @@ quotes:
 
   - quote: "You're not wrong, Walter. You're just an asshole."
     source: "The Big Lebowski — The Dude"
-    topics: [code-review, snark, partial-accept]
+    topics: [code-review, partial-accept]
     register: snark
 
   - quote: "This aggression will not stand, man."
@@ -2136,12 +2136,12 @@ quotes:
 
   - quote: "Calmer than you are."
     source: "The Big Lebowski — The Dude"
-    topics: [chill, snark, deadpan]
+    topics: [chill]
     register: deadpan
 
   - quote: "Has anyone really been far even as decided to use even go want to do look more like?"
     source: "internet folklore (mangled meme)"
-    topics: [nonsense, parse-error, exasperated]
+    topics: [nonsense, parse-error]
     register: unhinged
 
   # ─────────────────────────────────────────────────────────────────
@@ -2161,7 +2161,7 @@ quotes:
 
   - quote: "You son of a bitch."
     source: "Predator — Dutch / generic action"
-    topics: [reunion, deadpan, oneliner]
+    topics: [reunion, oneliner]
     register: defiant
 
   - quote: "If it bleeds, we can kill it."
@@ -2171,7 +2171,7 @@ quotes:
 
   - quote: "Welcome to the party, pal."
     source: "Die Hard — John McClane"
-    topics: [start, intro, deadpan]
+    topics: [start, intro]
     register: deadpan
 
   - quote: "Now I have a machine gun. Ho ho ho."
@@ -2196,7 +2196,7 @@ quotes:
 
   - quote: "The horror. The horror."
     source: "Apocalypse Now — Kurtz"
-    topics: [legacy, postmortem, exasperated]
+    topics: [legacy, postmortem]
     register: ominous
 
   - quote: "Are you not entertained?"
@@ -2211,7 +2211,7 @@ quotes:
 
   - quote: "I have been, and always shall be, your terrible boyfriend."
     source: "corrupted / generic"
-    topics: [farewell, deprecate, unhinged]
+    topics: [farewell, deprecate]
     register: unhinged
 
   - quote: "I'm walkin' here!"
@@ -2221,7 +2221,7 @@ quotes:
 
   - quote: "Say 'what' again. I dare you."
     source: "Pulp Fiction — Jules"
-    topics: [confront, code-review, defiant]
+    topics: [confront, code-review]
     register: defiant
 
   - quote: "English, motherfucker, do you speak it?"
@@ -2251,7 +2251,7 @@ quotes:
 
   - quote: "As far back as I can remember, I always wanted to be a gangster."
     source: "Goodfellas — Henry Hill"
-    topics: [intro, story, deadpan]
+    topics: [intro, story]
     register: deadpan
 
   - quote: "Heeeere's Johnny!"
@@ -2261,7 +2261,7 @@ quotes:
 
   - quote: "All work and no play makes Jack a dull boy."
     source: "The Shining"
-    topics: [burnout, recursion, exasperated]
+    topics: [burnout, recursion]
     register: ominous
 
   - quote: "Redrum."
@@ -2271,18 +2271,18 @@ quotes:
 
   - quote: "They're here."
     source: "Poltergeist — Carol Anne"
-    topics: [incident, regression, ominous]
+    topics: [incident, regression]
     register: ominous
     notes: "Variant punctuation of the existing 'They're heeere.' entry."
 
   - quote: "Do you want to play a game?"
     source: "WarGames / Saw — generic"
-    topics: [start, gambit, ominous]
+    topics: [start, gambit]
     register: ominous
 
   - quote: "Welcome to the real world."
     source: "The Matrix — Morpheus"
-    topics: [onboarding, postmortem, philosophical]
+    topics: [onboarding, postmortem]
     register: philosophical
 
   # ─────────────────────────────────────────────────────────────────
@@ -2291,17 +2291,17 @@ quotes:
 
   - quote: "I'm not superstitious, but I am a little stitious."
     source: "The Office — Michael Scott"
-    topics: [paranoid, snark]
+    topics: [paranoid]
     register: snark
 
   - quote: "I'm not to be trusted with money."
     source: "The Office — Michael Scott"
-    topics: [self-aware, admin, deadpan]
+    topics: [self-aware, admin]
     register: deadpan
 
   - quote: "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me."
     source: "The Office — Michael Scott"
-    topics: [leadership, philosophical, unhinged]
+    topics: [leadership]
     register: unhinged
 
   - quote: "Identity theft is not a joke, Jim! Millions of families suffer every year!"
@@ -2327,37 +2327,37 @@ quotes:
 
   - quote: "I'm not crying. You're crying."
     source: "The Office / generic meme"
-    topics: [emotion, postmortem, snark]
+    topics: [emotion, postmortem]
     register: snark
 
   - quote: "Why are you the way that you are? I hate so much about the things that you choose to be."
     source: "The Office — Michael Scott"
-    topics: [code-review, exasperated, legacy]
+    topics: [code-review, legacy]
     register: exasperated
 
   - quote: "I declared bankruptcy!"
     source: "The Office — Michael Scott"
-    topics: [reset, rollback, unhinged]
+    topics: [reset, rollback]
     register: unhinged
 
   - quote: "You miss 100% of the shots you don't take. — Wayne Gretzky. — Michael Scott."
     source: "The Office — Michael Scott"
-    topics: [retry, attempt, philosophical]
+    topics: [retry, attempt]
     register: deadpan
 
   - quote: "I am Beyoncé, always."
     source: "The Office — Michael Scott"
-    topics: [confidence, identity, smug]
+    topics: [confidence, identity]
     register: smug
 
   - quote: "Pizza! Tuna! Three two one, blow!"
     source: "The Office — Andy"
-    topics: [random, unhinged, callout]
+    topics: [random, callout]
     register: unhinged
 
   - quote: "I don't have a lot of experience with vampires, but I have hunted werewolves."
     source: "The Office — Dwight"
-    topics: [scope, expertise, deadpan]
+    topics: [scope, expertise]
     register: deadpan
 
   - quote: "Schrute facts!"
@@ -2367,7 +2367,7 @@ quotes:
 
   - quote: "Bankruptcy, Michael, is a legal process. Not just something you yell."
     source: "The Office — Oscar"
-    topics: [code-review, correct, deadpan]
+    topics: [code-review, correct]
     register: deadpan
 
   - quote: "Today, smoking is going to save lives."
@@ -2387,7 +2387,7 @@ quotes:
 
   - quote: "It's a Wednesday."
     source: "The Office — Stanley"
-    topics: [deadpan, calendar, oneliner]
+    topics: [calendar, oneliner]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -2411,7 +2411,7 @@ quotes:
 
   - quote: "I love you and I like you."
     source: "Parks and Recreation — Leslie / Ben"
-    topics: [farewell, dependency, wistful]
+    topics: [farewell, dependency]
     register: wistful
 
   - quote: "Stop pooping."
@@ -2421,17 +2421,17 @@ quotes:
 
   - quote: "I am Mouse Rat."
     source: "Parks and Recreation — Andy"
-    topics: [naming, identity, unhinged]
+    topics: [naming, identity]
     register: unhinged
 
   - quote: "Time is money. Money is power. Power is pizza. Pizza is knowledge."
     source: "Parks and Recreation — April Ludgate (paraphrasing)"
-    topics: [philosophical, recursion, unhinged]
+    topics: [recursion]
     register: unhinged
 
   - quote: "Why would anybody ever eat anything besides breakfast food?"
     source: "Parks and Recreation — Ron Swanson"
-    topics: [preference, opinion, philosophical]
+    topics: [preference, opinion]
     register: deadpan
 
   - quote: "Give me all the bacon and eggs you have."
@@ -2441,12 +2441,12 @@ quotes:
 
   - quote: "There's only one thing I hate more than lying: skim milk. Which is water that's lying about being milk."
     source: "Parks and Recreation — Ron Swanson"
-    topics: [code-review, fake, philosophical]
+    topics: [code-review, fake]
     register: snark
 
   - quote: "Don't start chasing applause and acclaim."
     source: "Parks and Recreation — Ron Swanson"
-    topics: [focus, scope, philosophical]
+    topics: [focus, scope]
     register: philosophical
 
   - quote: "I'm a simple man. I like pretty, dark-haired women and breakfast food."
@@ -2456,7 +2456,7 @@ quotes:
 
   - quote: "I regret nothing. The end."
     source: "Parks and Recreation — Ron Swanson"
-    topics: [postmortem, no-regret, deadpan]
+    topics: [postmortem, no-regret]
     register: deadpan
 
   - quote: "Literally."
@@ -2470,12 +2470,12 @@ quotes:
 
   - quote: "Cool cool cool cool cool. No doubt no doubt no doubt."
     source: "Brooklyn Nine-Nine — Jake Peralta"
-    topics: [nervous, accept, unhinged]
+    topics: [nervous, accept]
     register: unhinged
 
   - quote: "Title of your sex tape."
     source: "Brooklyn Nine-Nine — Jake Peralta"
-    topics: [innuendo, snark, oneliner]
+    topics: [innuendo, oneliner]
     register: snark
 
   - quote: "Nine-nine!"
@@ -2485,7 +2485,7 @@ quotes:
 
   - quote: "Sarge, with all due respect, I am gonna completely ignore everything you just said."
     source: "Brooklyn Nine-Nine — Jake Peralta"
-    topics: [defiance, code-review, snark]
+    topics: [defiance, code-review]
     register: snark
 
   - quote: "I'm the human form of the 100 emoji."
@@ -2500,12 +2500,12 @@ quotes:
 
   - quote: "I am SMRT. I mean smart."
     source: "Brooklyn Nine-Nine — Hitchcock & Scully"
-    topics: [bug, typo, deadpan]
+    topics: [bug, typo]
     register: deadpan
 
   - quote: "Bone?"
     source: "Brooklyn Nine-Nine — Holt"
-    topics: [oneliner, ambiguous, snark]
+    topics: [oneliner, ambiguous]
     register: deadpan
 
   - quote: "I'm a human, I'm a dancer."
@@ -2534,27 +2534,27 @@ quotes:
 
   - quote: "These pretzels are making me thirsty."
     source: "Seinfeld — Kramer"
-    topics: [complaint, oneliner, deadpan]
+    topics: [complaint, oneliner]
     register: deadpan
 
   - quote: "Hello, Newman."
     source: "Seinfeld — Jerry"
-    topics: [adversary, deadpan, greeting]
+    topics: [adversary, greeting]
     register: deadpan
 
   - quote: "I don't even have a 'latest' Jerry."
     source: "Seinfeld — George"
-    topics: [version, exasperated, scope]
+    topics: [version, scope]
     register: exasperated
 
   - quote: "It's not a lie if you believe it."
     source: "Seinfeld — George Costanza"
-    topics: [philosophical, denial, snark]
+    topics: [denial]
     register: snark
 
   - quote: "Master of my domain."
     source: "Seinfeld — Jerry / George / Elaine"
-    topics: [discipline, self-control, smug]
+    topics: [discipline, self-control]
     register: smug
 
   - quote: "Festivus for the rest of us."
@@ -2564,7 +2564,7 @@ quotes:
 
   - quote: "Vandelay Industries."
     source: "Seinfeld — George"
-    topics: [fake, placeholder, deadpan]
+    topics: [fake, placeholder]
     register: deadpan
     notes: "Perfect for placeholder names in tests/mocks."
 
@@ -2580,7 +2580,7 @@ quotes:
 
   - quote: "Maybe the dingo ate your baby."
     source: "Seinfeld — Elaine"
-    topics: [blame, snark, oneliner]
+    topics: [blame, oneliner]
     register: snark
 
   - quote: "I'm out!"
@@ -2591,7 +2591,7 @@ quotes:
 
   - quote: "It's a show about nothing."
     source: "Seinfeld — George"
-    topics: [meta, recursion, deadpan]
+    topics: [meta, recursion]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -2600,43 +2600,43 @@ quotes:
 
   - quote: "Wildcard, bitches!"
     source: "It's Always Sunny in Philadelphia — Charlie"
-    topics: [edge-case, chaos, unhinged]
+    topics: [edge-case, chaos]
     register: unhinged
 
   - quote: "I'm a five-star man."
     source: "It's Always Sunny — Dennis"
-    topics: [smug, claim, oneliner]
+    topics: [claim, oneliner]
     register: smug
 
   - quote: "The implication."
     source: "It's Always Sunny — Dennis"
-    topics: [implicit, ominous, philosophical]
+    topics: [implicit]
     register: ominous
 
   - quote: "Bird law."
     source: "It's Always Sunny — Charlie"
-    topics: [fake-expertise, naming, snark]
+    topics: [fake-expertise, naming]
     register: snark
 
   - quote: "I'm the trash man."
     source: "It's Always Sunny — Frank"
-    topics: [cleanup, sweep, deadpan]
+    topics: [cleanup, sweep]
     register: unhinged
 
   - quote: "Kitten mittens."
     source: "It's Always Sunny — Charlie"
-    topics: [product, naming, unhinged]
+    topics: [product, naming]
     register: unhinged
 
   - quote: "Pepe Silvia."
     source: "It's Always Sunny — Charlie"
-    topics: [conspiracy, debug, unhinged]
+    topics: [conspiracy, debug]
     register: unhinged
     notes: "The corkboard-with-strings meme. Perfect for tangled investigations."
 
   - quote: "I'm a god, Dennis."
     source: "It's Always Sunny — Mac"
-    topics: [smug, claim, unhinged]
+    topics: [claim]
     register: unhinged
 
   - quote: "We're going on a road trip!"
@@ -2646,7 +2646,7 @@ quotes:
 
   - quote: "Day man! Fighter of the night man!"
     source: "It's Always Sunny — Charlie (the musical)"
-    topics: [unhinged, naming, callout]
+    topics: [naming, callout]
     register: unhinged
 
   - quote: "Have you ever considered that maybe the problem is you?"
@@ -2656,7 +2656,7 @@ quotes:
 
   - quote: "Cat in the wall."
     source: "It's Always Sunny — Charlie"
-    topics: [stuck, debug, deadpan]
+    topics: [stuck, debug]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -2665,7 +2665,7 @@ quotes:
 
   - quote: "I've made a huge mistake."
     source: "Arrested Development — Gob / Michael"
-    topics: [regret, postmortem, deadpan]
+    topics: [regret, postmortem]
     register: deadpan
 
   - quote: "Steve Holt!"
@@ -2680,7 +2680,7 @@ quotes:
 
   - quote: "I'm a monster!"
     source: "Arrested Development — Buster"
-    topics: [self-aware, blame, exasperated]
+    topics: [self-aware, blame]
     register: exasperated
 
   - quote: "Marry me!"
@@ -2690,7 +2690,7 @@ quotes:
 
   - quote: "C'mon!"
     source: "Arrested Development — Gob"
-    topics: [exasperated, oneliner, deadpan]
+    topics: [oneliner]
     register: exasperated
 
   - quote: "There's always money in the banana stand."
@@ -2700,7 +2700,7 @@ quotes:
 
   - quote: "I'm afraid I just blue myself."
     source: "Arrested Development — Tobias"
-    topics: [bug, self-inflicted, unhinged]
+    topics: [bug, self-inflicted]
     register: unhinged
 
   - quote: "Annyong."
@@ -2715,7 +2715,7 @@ quotes:
 
   - quote: "I don't know what I expected."
     source: "Arrested Development — Michael"
-    topics: [postmortem, deadpan, resignation]
+    topics: [postmortem, resignation]
     register: deadpan
 
   - quote: "Same."
@@ -2729,37 +2729,37 @@ quotes:
 
   - quote: "I am the one who knocks."
     source: "Breaking Bad — Walter White"
-    topics: [identity, claim, ominous]
+    topics: [identity, claim]
     register: ominous
 
   - quote: "Say my name."
     source: "Breaking Bad — Walter White"
-    topics: [recognition, claim, smug]
+    topics: [recognition, claim]
     register: smug
 
   - quote: "I am the danger."
     source: "Breaking Bad — Walter White"
-    topics: [identity, claim, ominous]
+    topics: [identity, claim]
     register: ominous
 
   - quote: "Yeah, science!"
     source: "Breaking Bad — Jesse Pinkman"
-    topics: [success, deploy, triumphant]
+    topics: [success, deploy]
     register: triumphant
 
   - quote: "Yeah, bitch! Magnets!"
     source: "Breaking Bad — Jesse Pinkman"
-    topics: [success, hack, unhinged]
+    topics: [success, hack]
     register: unhinged
 
   - quote: "Tread lightly."
     source: "Breaking Bad — Walter White"
-    topics: [warning, careful, ominous]
+    topics: [warning, careful]
     register: ominous
 
   - quote: "I did it for me. I liked it. I was good at it."
     source: "Breaking Bad — Walter White"
-    topics: [postmortem, motive, philosophical]
+    topics: [postmortem, motive]
     register: philosophical
 
   - quote: "I'm in the empire business."
@@ -2784,7 +2784,7 @@ quotes:
 
   - quote: "I am not in danger, Skyler. I am the danger."
     source: "Breaking Bad — Walter White"
-    topics: [identity, claim, ominous]
+    topics: [identity, claim]
     register: ominous
     notes: "Longer form of 'I am the danger'."
 
@@ -2805,17 +2805,17 @@ quotes:
 
   - quote: "Did you not… do the thing?"
     source: "Better Call Saul — Mike"
-    topics: [check, verify, deadpan]
+    topics: [check, verify]
     register: deadpan
 
   - quote: "He defecated through a sunroof."
     source: "Better Call Saul — Chuck"
-    topics: [blame, history, exasperated]
+    topics: [blame, history]
     register: exasperated
 
   - quote: "I've got news for you, Skyler. I won."
     source: "Breaking Bad — Walter White"
-    topics: [smug, success, claim]
+    topics: [success, claim]
     register: smug
 
   - quote: "Tight, tight, tight."
@@ -2825,7 +2825,7 @@ quotes:
 
   - quote: "I'm not in the meth business. I'm in the empire business."
     source: "Breaking Bad — Walter White"
-    topics: [scale, claim, smug]
+    topics: [scale, claim]
     register: smug
     notes: "Longer form of earlier 'I'm in the empire business' entry."
 
@@ -2835,7 +2835,7 @@ quotes:
 
   - quote: "The night is dark and full of terrors."
     source: "Game of Thrones — Melisandre"
-    topics: [warning, prod, ominous]
+    topics: [warning, prod]
     register: ominous
 
   - quote: "A Lannister always pays his debts."
@@ -2845,32 +2845,32 @@ quotes:
 
   - quote: "Power resides where men believe it resides."
     source: "Game of Thrones — Varys"
-    topics: [perception, philosophical, governance]
+    topics: [perception, governance]
     register: philosophical
 
   - quote: "The man who passes the sentence should swing the sword."
     source: "Game of Thrones — Ned Stark"
-    topics: [ownership, accountability, philosophical]
+    topics: [ownership, accountability]
     register: philosophical
 
   - quote: "When you play the game of thrones, you win or you die."
     source: "Game of Thrones — Cersei"
-    topics: [stakes, deploy, ominous]
+    topics: [stakes, deploy]
     register: ominous
 
   - quote: "Burn them all."
     source: "Game of Thrones — Aerys / Daenerys"
-    topics: [refactor, rewrite, ominous]
+    topics: [refactor, rewrite]
     register: ominous
 
   - quote: "I drink and I know things."
     source: "Game of Thrones — Tyrion"
-    topics: [docs, expertise, smug]
+    topics: [docs, expertise]
     register: smug
 
   - quote: "Bran the Broken."
     source: "Game of Thrones — Tyrion"
-    topics: [naming, deprecate, snark]
+    topics: [naming, deprecate]
     register: snark
 
   - quote: "Dracarys."
@@ -2885,22 +2885,22 @@ quotes:
 
   - quote: "What is dead may never die."
     source: "Game of Thrones — Ironborn"
-    topics: [legacy, immortal, philosophical]
+    topics: [legacy, immortal]
     register: philosophical
 
   - quote: "Valar morghulis."
     source: "Game of Thrones — Faceless Men"
-    topics: [philosophical, mortality, deprecate]
+    topics: [mortality, deprecate]
     register: philosophical
 
   - quote: "I know nothing."
     source: "Game of Thrones — Jon Snow (paraphrase)"
-    topics: [legacy, unknown, snark]
+    topics: [legacy, unknown]
     register: snark
 
   - quote: "Shame. Shame. Shame."
     source: "Game of Thrones — Septa"
-    topics: [code-review, blame, snark]
+    topics: [code-review, blame]
     register: snark
 
   # ─────────────────────────────────────────────────────────────────
@@ -2909,7 +2909,7 @@ quotes:
 
   - quote: "Wibbly wobbly, timey wimey."
     source: "Doctor Who — The Doctor"
-    topics: [time, complex, philosophical]
+    topics: [time, complex]
     register: deadpan
 
   - quote: "Allons-y!"
@@ -2954,7 +2954,7 @@ quotes:
 
   - quote: "Run, you clever boy. And remember."
     source: "Doctor Who — Clara"
-    topics: [farewell, deprecate, wistful]
+    topics: [farewell, deprecate]
     register: wistful
 
   # ─────────────────────────────────────────────────────────────────
@@ -2963,13 +2963,13 @@ quotes:
 
   - quote: "Elementary, my dear Watson."
     source: "Sherlock Holmes — popular paraphrase"
-    topics: [explain, simple, smug]
+    topics: [explain, simple]
     register: smug
     notes: "Conan Doyle never wrote this exact line; the screen tradition did."
 
   - quote: "When you have eliminated the impossible, whatever remains, however improbable, must be the truth."
     source: "Sherlock Holmes — Sir Arthur Conan Doyle"
-    topics: [debug, deduction, philosophical]
+    topics: [debug, deduction]
     register: philosophical
 
   - quote: "The game is afoot."
@@ -2979,17 +2979,17 @@ quotes:
 
   - quote: "I'm not a psychopath, I'm a high-functioning sociopath."
     source: "Sherlock (BBC) — Sherlock"
-    topics: [naming, identity, smug]
+    topics: [naming, identity]
     register: smug
 
   - quote: "Anderson, don't talk out loud. You lower the IQ of the whole street."
     source: "Sherlock (BBC) — Sherlock"
-    topics: [code-review, snark, dismiss]
+    topics: [code-review, dismiss]
     register: snark
 
   - quote: "It's never twins."
     source: "Sherlock (BBC) — Sherlock"
-    topics: [rule, debug, deadpan]
+    topics: [rule, debug]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -3008,7 +3008,7 @@ quotes:
 
   - quote: "How you doin'?"
     source: "Friends — Joey"
-    topics: [greeting, snark, oneliner]
+    topics: [greeting, oneliner]
     register: snark
     notes: "Duplicate-flagged with earlier entry."
 
@@ -3019,27 +3019,27 @@ quotes:
 
   - quote: "Smelly cat, smelly cat, what are they feeding you?"
     source: "Friends — Phoebe"
-    topics: [debug, smell, exasperated]
+    topics: [debug, smell]
     register: snark
 
   - quote: "Could you BE any more obvious?"
     source: "Friends — Chandler"
-    topics: [code-review, snark, deadpan]
+    topics: [code-review]
     register: snark
 
   - quote: "I'm not great at the advice. Can I interest you in a sarcastic comment?"
     source: "Friends — Chandler"
-    topics: [snark, code-review, oneliner]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "Oh. My. God."
     source: "Friends — Janice"
-    topics: [exasperated, surprise, oneliner]
+    topics: [surprise, oneliner]
     register: unhinged
 
   - quote: "Welcome to the real world. It sucks. You're gonna love it."
     source: "Friends — Monica"
-    topics: [onboarding, postmortem, snark]
+    topics: [onboarding, postmortem]
     register: snark
 
   - quote: "I'll be there for you."
@@ -3068,12 +3068,12 @@ quotes:
 
   - quote: "Blerg."
     source: "30 Rock — Liz Lemon"
-    topics: [exasperated, oneliner, snark]
+    topics: [oneliner]
     register: exasperated
 
   - quote: "I can do anything I want. I'm rich. — Jack Donaghy"
     source: "30 Rock — Jack Donaghy"
-    topics: [smug, confidence, snark]
+    topics: [confidence]
     register: smug
 
   - quote: "Lemon, your toilet won't flush?"
@@ -3083,17 +3083,17 @@ quotes:
 
   - quote: "Hot ham water. Smell it."
     source: "Arrested Development — Lindsay (close)"
-    topics: [debug, smell, unhinged]
+    topics: [debug, smell]
     register: unhinged
 
   - quote: "Pretty pretty pretty good."
     source: "Curb Your Enthusiasm — Larry David"
-    topics: [approve, oneliner, deadpan]
+    topics: [approve, oneliner]
     register: deadpan
 
   - quote: "I don't like it. I don't like the smell of it."
     source: "Curb Your Enthusiasm — Larry David"
-    topics: [code-smell, suspicion, snark]
+    topics: [code-smell, suspicion]
     register: snark
 
   # ─────────────────────────────────────────────────────────────────
@@ -3102,7 +3102,7 @@ quotes:
 
   - quote: "Skinner with the Steamed Hams."
     source: "The Simpsons — Principal Skinner"
-    topics: [cover-up, hack, deadpan]
+    topics: [cover-up, hack]
     register: deadpan
 
   - quote: "Aurora borealis? At this time of year, at this time of day, in this part of the country, localized entirely within your kitchen?"
@@ -3117,7 +3117,7 @@ quotes:
 
   - quote: "Why you little—!"
     source: "The Simpsons — Homer"
-    topics: [exasperated, blame, oneliner]
+    topics: [blame, oneliner]
     register: exasperated
 
   - quote: "Release the hounds."
@@ -3127,17 +3127,17 @@ quotes:
 
   - quote: "Ha-ha!"
     source: "The Simpsons — Nelson"
-    topics: [mocking, snark, oneliner]
+    topics: [mocking, oneliner]
     register: snark
 
   - quote: "Worst. Episode. Ever."
     source: "The Simpsons — Comic Book Guy"
-    topics: [code-review, bad, exasperated]
+    topics: [code-review, bad]
     register: exasperated
 
   - quote: "I, for one, welcome our new insect overlords."
     source: "The Simpsons — Kent Brockman"
-    topics: [submission, ai, snark]
+    topics: [submission, ai]
     register: snark
 
   - quote: "Do the Bartman."
@@ -3153,12 +3153,12 @@ quotes:
 
   - quote: "I'm helping!"
     source: "The Simpsons — Ralph Wiggum"
-    topics: [contribute, snark, unhinged]
+    topics: [contribute]
     register: unhinged
 
   - quote: "Bite my shiny metal ass."
     source: "Futurama — Bender"
-    topics: [defiance, snark, oneliner]
+    topics: [defiance, oneliner]
     register: defiant
 
   - quote: "Good news, everyone!"
@@ -3168,7 +3168,7 @@ quotes:
 
   - quote: "Kill all humans."
     source: "Futurama — Bender"
-    topics: [ai, defiance, ominous]
+    topics: [ai, defiance]
     register: ominous
 
   - quote: "I'm gonna build my own theme park, with blackjack, and hookers."
@@ -3178,32 +3178,32 @@ quotes:
 
   - quote: "Hypnotoad."
     source: "Futurama"
-    topics: [hypnosis, mocking, deadpan]
+    topics: [hypnosis, mocking]
     register: deadpan
 
   - quote: "Robot Devil! What an unexpected pleasure!"
     source: "Futurama"
-    topics: [adversary, deadpan, oneliner]
+    topics: [adversary, oneliner]
     register: deadpan
 
   - quote: "Sweet zombie Jesus."
     source: "Futurama — Professor Farnsworth"
-    topics: [exasperated, wtf, oneliner]
+    topics: [wtf, oneliner]
     register: exasperated
 
   - quote: "Oh god, no."
     source: "South Park — generic"
-    topics: [exasperated, wtf, oneliner]
+    topics: [wtf, oneliner]
     register: exasperated
 
   - quote: "Oh my god, they killed Kenny!"
     source: "South Park"
-    topics: [crash, broken, exasperated]
+    topics: [crash, broken]
     register: exasperated
 
   - quote: "Drugs are bad, mmkay."
     source: "South Park — Mr. Mackey"
-    topics: [warning, philosophical, snark]
+    topics: [warning]
     register: deadpan
 
   - quote: "Respect my authoritah!"
@@ -3218,7 +3218,7 @@ quotes:
 
   - quote: "Underpants gnomes. Step 1: collect underpants. Step 2: ??? Step 3: profit."
     source: "South Park"
-    topics: [plan, gap, snark]
+    topics: [plan, gap]
     register: snark
 
   - quote: "Aaaand it's gone."
@@ -3228,67 +3228,67 @@ quotes:
 
   - quote: "Giggity giggity."
     source: "Family Guy — Quagmire"
-    topics: [innuendo, snark, oneliner]
+    topics: [innuendo, oneliner]
     register: snark
 
   - quote: "Roads. They tasted like roads."
     source: "Family Guy — Peter"
-    topics: [random, snark, oneliner]
+    topics: [random, oneliner]
     register: unhinged
 
   - quote: "Wubba lubba dub dub."
     source: "Rick and Morty — Rick"
-    topics: [unhinged, distress, oneliner]
+    topics: [distress, oneliner]
     register: unhinged
 
   - quote: "Get schwifty."
     source: "Rick and Morty — Rick"
-    topics: [ship, hack, unhinged]
+    topics: [ship, hack]
     register: unhinged
 
   - quote: "I'm Pickle Rick!"
     source: "Rick and Morty — Rick"
-    topics: [transform, refactor, unhinged]
+    topics: [transform, refactor]
     register: unhinged
 
   - quote: "Nobody exists on purpose. Nobody belongs anywhere."
     source: "Rick and Morty — Morty"
-    topics: [philosophical, existence, oneliner]
+    topics: [existence, oneliner]
     register: philosophical
 
   - quote: "Sometimes science is more art than science."
     source: "Rick and Morty — Rick"
-    topics: [philosophical, hack, snark]
+    topics: [hack]
     register: snark
 
   - quote: "I'm sorry, Morty."
     source: "Rick and Morty — Rick"
-    topics: [apology, postmortem, wistful]
+    topics: [apology, postmortem]
     register: wistful
 
   - quote: "And so we play our parts."
     source: "Rick and Morty — Mr. Poopybutthole"
-    topics: [philosophical, deprecate, wistful]
+    topics: [deprecate]
     register: wistful
 
   - quote: "Why the long face?"
     source: "BoJack Horseman — generic"
-    topics: [check-in, oneliner, snark]
+    topics: [check-in, oneliner]
     register: snark
 
   - quote: "It gets easier. Every day it gets a little easier."
     source: "BoJack Horseman — Jogging Baboon"
-    topics: [persistence, reassure, philosophical]
+    topics: [persistence, reassure]
     register: reassuring
 
   - quote: "Sometimes you need to take responsibility for your own life."
     source: "BoJack Horseman"
-    topics: [ownership, philosophical, postmortem]
+    topics: [ownership, postmortem]
     register: philosophical
 
   - quote: "When you look at someone through rose-colored glasses, all the red flags just look like flags."
     source: "BoJack Horseman"
-    topics: [bias, debug, philosophical]
+    topics: [bias, debug]
     register: philosophical
 
   # ─────────────────────────────────────────────────────────────────
@@ -3307,22 +3307,22 @@ quotes:
 
   - quote: "Mocking Spongebob."
     source: "SpongeBob SquarePants (mocking meme)"
-    topics: [snark, mocking, oneliner]
+    topics: [mocking, oneliner]
     register: snark
 
   - quote: "Is mayonnaise an instrument?"
     source: "SpongeBob SquarePants — Patrick"
-    topics: [wtf, naming, deadpan]
+    topics: [wtf, naming]
     register: unhinged
 
   - quote: "Patrick! Your genius is showing!"
     source: "SpongeBob SquarePants"
-    topics: [success, irony, snark]
+    topics: [success, irony]
     register: snark
 
   - quote: "I work my fingers to the bone, what do I get? Bony fingers!"
     source: "SpongeBob SquarePants"
-    topics: [burnout, snark, oneliner]
+    topics: [burnout, oneliner]
     register: snark
 
   - quote: "Mathematical!"
@@ -3337,7 +3337,7 @@ quotes:
 
   - quote: "Sucking at something is the first step to being sorta good at something."
     source: "Adventure Time — Jake"
-    topics: [learn, philosophical, beginner]
+    topics: [learn, beginner]
     register: philosophical
 
   # ─────────────────────────────────────────────────────────────────
@@ -3346,7 +3346,7 @@ quotes:
 
   - quote: "Is this the real life? Is this just fantasy?"
     source: "Queen — 'Bohemian Rhapsody'"
-    topics: [debug, simulation, philosophical]
+    topics: [debug, simulation]
     register: philosophical
 
   - quote: "Mama mia, let me go."
@@ -3376,12 +3376,12 @@ quotes:
 
   - quote: "Take me home, country roads."
     source: "John Denver"
-    topics: [farewell, return, wistful]
+    topics: [farewell, return]
     register: wistful
 
   - quote: "Hello darkness, my old friend."
     source: "Simon & Garfunkel — 'The Sound of Silence'"
-    topics: [legacy, greeting, wistful]
+    topics: [legacy, greeting]
     register: wistful
 
   - quote: "I came in like a wrecking ball."
@@ -3391,7 +3391,7 @@ quotes:
 
   - quote: "I bet you think this song is about you."
     source: "Carly Simon — 'You're So Vain'"
-    topics: [code-review, blame, snark]
+    topics: [code-review, blame]
     register: snark
 
   - quote: "Like a rolling stone."
@@ -3401,17 +3401,17 @@ quotes:
 
   - quote: "The times they are a-changin'."
     source: "Bob Dylan"
-    topics: [refactor, migration, philosophical]
+    topics: [refactor, migration]
     register: philosophical
 
   - quote: "Stairway to heaven."
     source: "Led Zeppelin"
-    topics: [climb, abstraction, philosophical]
+    topics: [climb, abstraction]
     register: philosophical
 
   - quote: "We don't need no education."
     source: "Pink Floyd — 'Another Brick in the Wall'"
-    topics: [refactor, philosophical, defiance]
+    topics: [refactor, defiance]
     register: defiant
 
   - quote: "Hey teacher, leave them kids alone."
@@ -3421,77 +3421,77 @@ quotes:
 
   - quote: "Wish you were here."
     source: "Pink Floyd"
-    topics: [farewell, wistful, oneliner]
+    topics: [farewell, oneliner]
     register: wistful
 
   - quote: "Comfortably numb."
     source: "Pink Floyd"
-    topics: [burnout, philosophical, deadpan]
+    topics: [burnout]
     register: deadpan
 
   - quote: "Welcome to the jungle."
     source: "Guns N' Roses"
-    topics: [onboarding, prod, ominous]
+    topics: [onboarding, prod]
     register: foreboding
 
   - quote: "Sweet child o' mine."
     source: "Guns N' Roses"
-    topics: [attachment, wistful, oneliner]
+    topics: [attachment, oneliner]
     register: wistful
 
   - quote: "Smells like teen spirit."
     source: "Nirvana"
-    topics: [code-smell, oneliner, snark]
+    topics: [code-smell, oneliner]
     register: snark
 
   - quote: "Here we are now, entertain us."
     source: "Nirvana — 'Smells Like Teen Spirit'"
-    topics: [waiting, expect, snark]
+    topics: [waiting, expect]
     register: snark
 
   - quote: "Come as you are."
     source: "Nirvana"
-    topics: [as-is, accept, philosophical]
+    topics: [as-is, accept]
     register: philosophical
 
   - quote: "Everybody hurts. Sometimes."
     source: "R.E.M."
-    topics: [empathy, postmortem, wistful]
+    topics: [empathy, postmortem]
     register: wistful
 
   - quote: "It's the end of the world as we know it (and I feel fine)."
     source: "R.E.M."
-    topics: [postmortem, philosophical, refactor]
+    topics: [postmortem, refactor]
     register: philosophical
 
   - quote: "Losing my religion."
     source: "R.E.M."
-    topics: [doubt, refactor, wistful]
+    topics: [doubt, refactor]
     register: wistful
 
   - quote: "Sunday, bloody Sunday."
     source: "U2"
-    topics: [incident, oncall, exasperated]
+    topics: [incident, oncall]
     register: exasperated
 
   - quote: "I still haven't found what I'm looking for."
     source: "U2"
-    topics: [search, debug, wistful]
+    topics: [search, debug]
     register: wistful
 
   - quote: "Where the streets have no name."
     source: "U2"
-    topics: [naming, anonymous, philosophical]
+    topics: [naming, anonymous]
     register: philosophical
 
   - quote: "Welcome to the hotel California."
     source: "Eagles"
-    topics: [legacy, trapped, ominous]
+    topics: [legacy, trapped]
     register: ominous
 
   - quote: "You can check out any time you like, but you can never leave."
     source: "Eagles — 'Hotel California'"
-    topics: [legacy, lock-in, ominous]
+    topics: [legacy, lock-in]
     register: ominous
 
   - quote: "Take it easy."
@@ -3511,12 +3511,12 @@ quotes:
 
   - quote: "Glory days."
     source: "Bruce Springsteen"
-    topics: [legacy, wistful, oneliner]
+    topics: [legacy, oneliner]
     register: wistful
 
   - quote: "Living on a prayer."
     source: "Bon Jovi"
-    topics: [risky, ship, hopeful]
+    topics: [risky, ship]
     register: hopeful
 
   - quote: "You give love a bad name."
@@ -3542,7 +3542,7 @@ quotes:
 
   - quote: "Sweet dreams are made of this."
     source: "Eurythmics"
-    topics: [scope, philosophical, oneliner]
+    topics: [scope, oneliner]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -3556,7 +3556,7 @@ quotes:
 
   - quote: "I will always love you."
     source: "Dolly Parton / Whitney Houston"
-    topics: [farewell, wistful, oneliner]
+    topics: [farewell, oneliner]
     register: wistful
 
   - quote: "I will survive."
@@ -3586,22 +3586,22 @@ quotes:
 
   - quote: "Oops, I did it again."
     source: "Britney Spears"
-    topics: [regression, repeat, snark]
+    topics: [regression, repeat]
     register: snark
 
   - quote: "Toxic."
     source: "Britney Spears"
-    topics: [code-smell, oneliner, snark]
+    topics: [code-smell, oneliner]
     register: snark
 
   - quote: "Hollaback girl."
     source: "Gwen Stefani"
-    topics: [retry, snark, oneliner]
+    topics: [retry, oneliner]
     register: snark
 
   - quote: "This shit is bananas. B-A-N-A-N-A-S."
     source: "Gwen Stefani — 'Hollaback Girl'"
-    topics: [unhinged, snark, oneliner]
+    topics: [oneliner]
     register: unhinged
 
   - quote: "Shake it off."
@@ -3651,7 +3651,7 @@ quotes:
 
   - quote: "It's gonna be May."
     source: "*NSYNC meme — 'It's gonna be me'"
-    topics: [waiting, calendar, snark]
+    topics: [waiting, calendar]
     register: snark
 
   - quote: "Mr. Brightside."
@@ -3661,12 +3661,12 @@ quotes:
 
   - quote: "Are we human, or are we dancer?"
     source: "The Killers"
-    topics: [philosophical, identity, oneliner]
+    topics: [identity, oneliner]
     register: philosophical
 
   - quote: "Tale as old as time, song as old as rhyme."
     source: "Beauty and the Beast"
-    topics: [legacy, recurring, wistful]
+    topics: [legacy, recurring]
     register: wistful
 
   # ─────────────────────────────────────────────────────────────────
@@ -3700,7 +3700,7 @@ quotes:
 
   - quote: "It's not a moment, it's a movement."
     source: "Drake / Pusha T"
-    topics: [scale, refactor, smug]
+    topics: [scale, refactor]
     register: smug
 
   - quote: "Empire State of Mind."
@@ -3710,7 +3710,7 @@ quotes:
 
   - quote: "99 problems but a bug ain't one."
     source: "Jay-Z (corrupted)"
-    topics: [success, deploy, smug]
+    topics: [success, deploy]
     register: smug
 
   - quote: "Drop it like it's hot."
@@ -3720,12 +3720,12 @@ quotes:
 
   - quote: "Gin and juice."
     source: "Snoop Dogg"
-    topics: [config, oneliner, deadpan]
+    topics: [config, oneliner]
     register: deadpan
 
   - quote: "Sucker MCs."
     source: "Run-DMC"
-    topics: [code-review, snark, oneliner]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "It's Tricky."
@@ -3735,7 +3735,7 @@ quotes:
 
   - quote: "Don't push me 'cause I'm close to the edge."
     source: "Grandmaster Flash — 'The Message'"
-    topics: [burnout, scope, exasperated]
+    topics: [burnout, scope]
     register: exasperated
 
   - quote: "Hammer time."
@@ -3750,12 +3750,12 @@ quotes:
 
   - quote: "It was all a dream."
     source: "Notorious B.I.G. — 'Juicy'"
-    topics: [retrospective, wistful, oneliner]
+    topics: [retrospective, oneliner]
     register: wistful
 
   - quote: "Mo money, mo problems."
     source: "Notorious B.I.G."
-    topics: [scale, tech-debt, philosophical]
+    topics: [scale, tech-debt]
     register: philosophical
 
   - quote: "Regulators! Mount up."
@@ -3779,47 +3779,47 @@ quotes:
 
   - quote: "How does a bastard, orphan, son of a whore become a hero and a scholar?"
     source: "Hamilton — Aaron Burr"
-    topics: [intro, story, philosophical]
+    topics: [intro, story]
     register: philosophical
 
   - quote: "Talk less. Smile more."
     source: "Hamilton — Aaron Burr"
-    topics: [code-review, advice, snark]
+    topics: [code-review, advice]
     register: snark
 
   - quote: "Why do you write like you're running out of time?"
     source: "Hamilton — Eliza"
-    topics: [productivity, deadline, philosophical]
+    topics: [productivity, deadline]
     register: philosophical
 
   - quote: "Dying is easy, young man. Living is harder."
     source: "Hamilton — Washington"
-    topics: [maintain, philosophical, refactor]
+    topics: [maintain, refactor]
     register: philosophical
 
   - quote: "Winning was easy, young man. Governing's harder."
     source: "Hamilton — Washington"
-    topics: [maintain, philosophical, ops]
+    topics: [maintain, ops]
     register: philosophical
 
   - quote: "Look at where you are. Look at where you started."
     source: "Hamilton — Hamilton (in 'The Adams Administration')"
-    topics: [growth, postmortem, wistful]
+    topics: [growth, postmortem]
     register: wistful
 
   - quote: "What is a legacy? It's planting seeds in a garden you never get to see."
     source: "Hamilton — Hamilton"
-    topics: [legacy, philosophical, contribution]
+    topics: [legacy, contribution]
     register: philosophical
 
   - quote: "I imagine death so much it feels more like a memory."
     source: "Hamilton — Hamilton"
-    topics: [warning, philosophical, oneliner]
+    topics: [warning, oneliner]
     register: philosophical
 
   - quote: "The world was wide enough for both Hamilton and me."
     source: "Hamilton — Burr"
-    topics: [postmortem, regret, wistful]
+    topics: [postmortem, regret]
     register: wistful
 
   - quote: "I wrote my way out."
@@ -3839,7 +3839,7 @@ quotes:
 
   - quote: "I dreamed a dream."
     source: "Les Misérables — Fantine"
-    topics: [vision, postmortem, wistful]
+    topics: [vision, postmortem]
     register: wistful
 
   - quote: "Defying gravity."
@@ -3849,7 +3849,7 @@ quotes:
 
   - quote: "Popular. You're gonna be popular."
     source: "Wicked"
-    topics: [scale, claim, snark]
+    topics: [scale, claim]
     register: snark
 
   - quote: "Now's the part where I save myself."
@@ -3859,7 +3859,7 @@ quotes:
 
   - quote: "Cellblock tango — He had it comin'."
     source: "Chicago"
-    topics: [blame, postmortem, snark]
+    topics: [blame, postmortem]
     register: snark
 
   - quote: "All that jazz."
@@ -3873,7 +3873,7 @@ quotes:
 
   - quote: "Snake? Snake?? SNAAAAKE!"
     source: "Metal Gear Solid"
-    topics: [crash, dead, exasperated]
+    topics: [crash, dead]
     register: unhinged
 
   - quote: "Kept you waiting, huh?"
@@ -3883,12 +3883,12 @@ quotes:
 
   - quote: "Wake up, Mr. Freeman. Wake up and smell the ashes."
     source: "Half-Life 2 — G-Man"
-    topics: [start, postmortem, ominous]
+    topics: [start, postmortem]
     register: ominous
 
   - quote: "Rise and shine, Mr. Freeman."
     source: "Half-Life 2 — G-Man"
-    topics: [start, postmortem, ominous]
+    topics: [start, postmortem]
     register: ominous
 
   - quote: "Wololo."
@@ -3923,17 +3923,17 @@ quotes:
 
   - quote: "GG no re."
     source: "competitive gaming"
-    topics: [postmortem, finality, snark]
+    topics: [postmortem, finality]
     register: snark
 
   - quote: "Easy peezy lemon squeezy."
     source: "generic / Mario"
-    topics: [success, easy, snark]
+    topics: [success, easy]
     register: snark
 
   - quote: "But our princess is in another castle."
     source: "Super Mario Bros. — Toad"
-    topics: [redirect, miss, exasperated]
+    topics: [redirect, miss]
     register: exasperated
 
   - quote: "Wahoo!"
@@ -3953,7 +3953,7 @@ quotes:
 
   - quote: "Excuse me, princess."
     source: "The Legend of Zelda animated series — Link"
-    topics: [defensive, snark, oneliner]
+    topics: [defensive, oneliner]
     register: snark
 
   - quote: "It's-a me, Mario!"
@@ -3968,37 +3968,37 @@ quotes:
 
   - quote: "You died."
     source: "Dark Souls / Demon's Souls / Elden Ring"
-    topics: [crash, fail, ominous]
+    topics: [crash, fail]
     register: ominous
 
   - quote: "Praise the sun!"
     source: "Dark Souls — Solaire"
-    topics: [success, ship, triumphant]
+    topics: [success, ship]
     register: triumphant
 
   - quote: "Try finger but hole."
     source: "Dark Souls (player messages)"
-    topics: [docs, snark, oneliner]
+    topics: [docs, oneliner]
     register: unhinged
 
   - quote: "Amazing chest ahead."
     source: "Dark Souls (player message meme)"
-    topics: [misleading, docs, snark]
+    topics: [misleading, docs]
     register: snark
 
   - quote: "Tarnished."
     source: "Elden Ring"
-    topics: [identity, intro, deadpan]
+    topics: [identity, intro]
     register: deadpan
 
   - quote: "Maidenless."
     source: "Elden Ring"
-    topics: [solo, dependency, snark]
+    topics: [solo, dependency]
     register: snark
 
   - quote: "I used to be an adventurer like you. Then I took an arrow in the knee."
     source: "Skyrim — Whiterun Guard"
-    topics: [legacy, deprecate, snark]
+    topics: [legacy, deprecate]
     register: snark
 
   - quote: "Fus Ro Dah!"
@@ -4008,7 +4008,7 @@ quotes:
 
   - quote: "Why the long face, Hawk?"
     source: "Skyrim — Brand-Shei"
-    topics: [check-in, oneliner, snark]
+    topics: [check-in, oneliner]
     register: snark
 
   - quote: "Stand and deliver."
@@ -4052,7 +4052,7 @@ quotes:
 
   - quote: "Do you believe in miracles? Yes!"
     source: "Al Michaels — Miracle on Ice (1980)"
-    topics: [success, deploy, triumphant]
+    topics: [success, deploy]
     register: triumphant
 
   - quote: "He could go all the way!"
@@ -4067,42 +4067,42 @@ quotes:
 
   - quote: "Float like a butterfly, sting like a bee."
     source: "Muhammad Ali"
-    topics: [perf, agile, philosophical]
+    topics: [perf, agile]
     register: defiant
 
   - quote: "I am the greatest."
     source: "Muhammad Ali"
-    topics: [claim, smug, oneliner]
+    topics: [claim, oneliner]
     register: smug
 
   - quote: "Practice. We're talkin' 'bout practice."
     source: "Allen Iverson"
-    topics: [meetings, scope, exasperated]
+    topics: [meetings, scope]
     register: exasperated
 
   - quote: "There's no crying in baseball!"
     source: "A League of Their Own — Tom Hanks"
-    topics: [postmortem, deadpan, oneliner]
+    topics: [postmortem, oneliner]
     register: exasperated
 
   - quote: "Champions adjust."
     source: "Billie Jean King"
-    topics: [adapt, refactor, philosophical]
+    topics: [adapt, refactor]
     register: philosophical
 
   - quote: "It ain't over till it's over."
     source: "Yogi Berra"
-    topics: [persistence, retry, philosophical]
+    topics: [persistence, retry]
     register: philosophical
 
   - quote: "When you come to a fork in the road, take it."
     source: "Yogi Berra"
-    topics: [decision, oneliner, philosophical]
+    topics: [decision, oneliner]
     register: philosophical
 
   - quote: "I never make predictions, especially about the future."
     source: "Yogi Berra"
-    topics: [forecast, philosophical, snark]
+    topics: [forecast]
     register: philosophical
 
   - quote: "Nobody goes there anymore. It's too crowded."
@@ -4112,12 +4112,12 @@ quotes:
 
   - quote: "Talkin' kid stuff."
     source: "generic"
-    topics: [scope, dismiss, snark]
+    topics: [scope, dismiss]
     register: snark
 
   - quote: "The greatest of all time."
     source: "Muhammad Ali / GOAT"
-    topics: [smug, claim, oneliner]
+    topics: [claim, oneliner]
     register: smug
 
   # ─────────────────────────────────────────────────────────────────
@@ -4126,17 +4126,17 @@ quotes:
 
   - quote: "I have a dream."
     source: "Martin Luther King Jr."
-    topics: [vision, philosophical, oneliner]
+    topics: [vision, oneliner]
     register: hopeful
 
   - quote: "Ask not what your country can do for you — ask what you can do for your country."
     source: "John F. Kennedy"
-    topics: [contribution, philosophical, oneliner]
+    topics: [contribution, oneliner]
     register: philosophical
 
   - quote: "We choose to go to the Moon. Not because it is easy, but because it is hard."
     source: "John F. Kennedy"
-    topics: [scope, ambition, philosophical]
+    topics: [scope, ambition]
     register: hopeful
 
   - quote: "Yes we can."
@@ -4146,7 +4146,7 @@ quotes:
 
   - quote: "The only thing we have to fear is fear itself."
     source: "Franklin D. Roosevelt"
-    topics: [philosophical, courage, oneliner]
+    topics: [courage, oneliner]
     register: philosophical
 
   - quote: "Tear down this wall."
@@ -4161,22 +4161,22 @@ quotes:
 
   - quote: "Never in the field of human conflict was so much owed by so many to so few."
     source: "Winston Churchill"
-    topics: [credit, philosophical, oneliner]
+    topics: [credit, oneliner]
     register: philosophical
 
   - quote: "If you're going through hell, keep going."
     source: "Winston Churchill (attributed)"
-    topics: [persistence, postmortem, philosophical]
+    topics: [persistence, postmortem]
     register: defiant
 
   - quote: "Veni, vidi, vici."
     source: "Julius Caesar"
-    topics: [success, deploy, smug]
+    topics: [success, deploy]
     register: smug
 
   - quote: "Et tu, Brute?"
     source: "Shakespeare's Julius Caesar"
-    topics: [betrayal, regression, exasperated]
+    topics: [betrayal, regression]
     register: exasperated
 
   - quote: "I shall return."
@@ -4186,12 +4186,12 @@ quotes:
 
   - quote: "Speak softly and carry a big stick."
     source: "Theodore Roosevelt"
-    topics: [diplomacy, tool, philosophical]
+    topics: [diplomacy, tool]
     register: philosophical
 
   - quote: "The buck stops here."
     source: "Harry Truman"
-    topics: [ownership, accountability, philosophical]
+    topics: [ownership, accountability]
     register: deadpan
 
   - quote: "Read my lips: no new taxes."
@@ -4210,28 +4210,28 @@ quotes:
 
   - quote: "The unexamined life is not worth living."
     source: "Socrates"
-    topics: [postmortem, philosophical, oneliner]
+    topics: [postmortem, oneliner]
     register: philosophical
 
   - quote: "I know that I know nothing."
     source: "Socrates"
-    topics: [humility, philosophical, oneliner]
+    topics: [humility, oneliner]
     register: philosophical
 
   - quote: "Cogito, ergo sum. I think, therefore I am."
     source: "René Descartes"
-    topics: [philosophical, identity, oneliner]
+    topics: [identity, oneliner]
     register: philosophical
     notes: "Long form of earlier 'I think, therefore I am' entry."
 
   - quote: "God does not play dice with the universe."
     source: "Albert Einstein"
-    topics: [randomness, debug, philosophical]
+    topics: [randomness, debug]
     register: philosophical
 
   - quote: "Imagination is more important than knowledge."
     source: "Albert Einstein"
-    topics: [creativity, refactor, philosophical]
+    topics: [creativity, refactor]
     register: philosophical
 
   - quote: "Insanity is doing the same thing over and over and expecting different results."
@@ -4242,12 +4242,12 @@ quotes:
 
   - quote: "If I have seen further, it is by standing on the shoulders of giants."
     source: "Isaac Newton"
-    topics: [dependency, philosophical, library]
+    topics: [dependency, library]
     register: philosophical
 
   - quote: "Every action has an equal and opposite reaction."
     source: "Isaac Newton"
-    topics: [causality, philosophical, debug]
+    topics: [causality, debug]
     register: philosophical
 
   - quote: "The Cake is a Lie."
@@ -4258,47 +4258,47 @@ quotes:
 
   - quote: "That which does not kill us makes us stronger."
     source: "Friedrich Nietzsche"
-    topics: [postmortem, resilience, philosophical]
+    topics: [postmortem, resilience]
     register: philosophical
 
   - quote: "God is dead."
     source: "Friedrich Nietzsche"
-    topics: [deprecate, philosophical, oneliner]
+    topics: [deprecate, oneliner]
     register: philosophical
 
   - quote: "Be the change you wish to see in the world."
     source: "Mahatma Gandhi (attributed)"
-    topics: [contribution, refactor, philosophical]
+    topics: [contribution, refactor]
     register: philosophical
 
   - quote: "An eye for an eye makes the whole world blind."
     source: "Mahatma Gandhi (attributed)"
-    topics: [retaliation, philosophical, oneliner]
+    topics: [retaliation, oneliner]
     register: philosophical
 
   - quote: "The journey of a thousand miles begins with a single step."
     source: "Lao Tzu"
-    topics: [start, philosophical, oneliner]
+    topics: [start, oneliner]
     register: philosophical
 
   - quote: "The wise man knows he knows nothing."
     source: "Socrates / generic"
-    topics: [humility, philosophical, oneliner]
+    topics: [humility, oneliner]
     register: philosophical
 
   - quote: "Knowing yourself is the beginning of all wisdom."
     source: "Aristotle"
-    topics: [philosophical, postmortem, oneliner]
+    topics: [postmortem, oneliner]
     register: philosophical
 
   - quote: "We are what we repeatedly do."
     source: "Will Durant (paraphrasing Aristotle)"
-    topics: [philosophical, habit, oneliner]
+    topics: [habit, oneliner]
     register: philosophical
 
   - quote: "All happy families are alike; each unhappy family is unhappy in its own way."
     source: "Leo Tolstoy — Anna Karenina"
-    topics: [postmortem, philosophical, oneliner]
+    topics: [postmortem, oneliner]
     register: philosophical
     notes: "The 'Anna Karenina principle' — used in stats / ML / biology to describe failure modes."
 
@@ -4309,12 +4309,12 @@ quotes:
 
   - quote: "When the facts change, I change my mind. What do you do, sir?"
     source: "John Maynard Keynes (attributed)"
-    topics: [adapt, refactor, philosophical]
+    topics: [adapt, refactor]
     register: philosophical
 
   - quote: "In the long run, we are all dead."
     source: "John Maynard Keynes"
-    topics: [deadline, philosophical, oneliner]
+    topics: [deadline, oneliner]
     register: philosophical
 
   # ─────────────────────────────────────────────────────────────────
@@ -4362,22 +4362,22 @@ quotes:
 
   - quote: "Lol u mad bro?"
     source: "internet meme"
-    topics: [snark, code-review, oneliner]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "I'm in your code, breaking your tests."
     source: "lolcat / o rly meme (corrupted)"
-    topics: [bug, regression, snark]
+    topics: [bug, regression]
     register: snark
 
   - quote: "Doge says: such wow. very production. many fire."
     source: "Doge meme"
-    topics: [incident, snark, unhinged]
+    topics: [incident]
     register: unhinged
 
   - quote: "Like a boss."
     source: "internet meme / The Lonely Island"
-    topics: [success, smug, oneliner]
+    topics: [success, oneliner]
     register: smug
 
   - quote: "Challenge accepted."
@@ -4397,17 +4397,17 @@ quotes:
 
   - quote: "And then there's Maud."
     source: "Maude / generic"
-    topics: [snark, oneliner, deadpan]
+    topics: [oneliner]
     register: snark
 
   - quote: "It's a feature, not a bug. Or maybe both."
     source: "developer folklore (corrupted)"
-    topics: [bug, defensive, snark]
+    topics: [bug, defensive]
     register: snark
 
   - quote: "Friendly fire."
     source: "military / Halo"
-    topics: [self-inflicted, regression, snark]
+    topics: [self-inflicted, regression]
     register: snark
 
   - quote: "Hold up. Hold up."
@@ -4422,7 +4422,7 @@ quotes:
 
   - quote: "Happy little accidents."
     source: "Bob Ross"
-    topics: [bug, accept, hopeful]
+    topics: [bug, accept]
     register: reassuring
 
   - quote: "Beat the bushes."
@@ -4436,17 +4436,17 @@ quotes:
 
   - quote: "Computer science is no more about computers than astronomy is about telescopes."
     source: "Edsger W. Dijkstra"
-    topics: [philosophical, scope, oneliner]
+    topics: [scope, oneliner]
     register: philosophical
 
   - quote: "Simplicity is prerequisite for reliability."
     source: "Edsger W. Dijkstra"
-    topics: [refactor, complexity, philosophical]
+    topics: [refactor, complexity]
     register: philosophical
 
   - quote: "The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise."
     source: "Edsger W. Dijkstra"
-    topics: [abstraction, refactor, philosophical]
+    topics: [abstraction, refactor]
     register: philosophical
 
   - quote: "Beware of bugs in the above code; I have only proved it correct, not tried it."
@@ -4456,112 +4456,112 @@ quotes:
 
   - quote: "Science is what we understand well enough to explain to a computer. Art is everything else we do."
     source: "Donald Knuth"
-    topics: [philosophical, code, oneliner]
+    topics: [code, oneliner]
     register: philosophical
 
   - quote: "Inside every well-written large program is a well-written small program."
     source: "C.A.R. Hoare"
-    topics: [refactor, simplicity, philosophical]
+    topics: [refactor, simplicity]
     register: philosophical
 
   - quote: "There are two ways of constructing a software design: make it so simple that there are obviously no deficiencies, or make it so complicated that there are no obvious deficiencies."
     source: "C.A.R. Hoare"
-    topics: [refactor, complexity, philosophical]
+    topics: [refactor, complexity]
     register: philosophical
 
   - quote: "Null references: the billion-dollar mistake."
     source: "C.A.R. Hoare"
-    topics: [null, bug, philosophical]
+    topics: ["null", bug]
     register: philosophical
 
   - quote: "The only way to learn a new programming language is by writing programs in it."
     source: "Brian Kernighan / Dennis Ritchie (K&R)"
-    topics: [learning, philosophical, oneliner]
+    topics: [learning, oneliner]
     register: philosophical
 
   - quote: "Debugging is twice as hard as writing the code in the first place."
     source: "Brian Kernighan"
-    topics: [debug, philosophical, oneliner]
+    topics: [debug, oneliner]
     register: philosophical
 
   - quote: "Conceptual integrity is the most important consideration in system design."
     source: "Frederick Brooks — The Mythical Man-Month"
-    topics: [architecture, design, philosophical]
+    topics: [architecture, design]
     register: philosophical
 
   - quote: "Adding manpower to a late software project makes it later."
     source: "Frederick Brooks — Brooks's Law"
-    topics: [scale, deadline, philosophical]
+    topics: [scale, deadline]
     register: philosophical
 
   - quote: "There is no silver bullet."
     source: "Frederick Brooks"
-    topics: [framework, philosophical, oneliner]
+    topics: [framework, oneliner]
     register: philosophical
 
   - quote: "Plan to throw one away; you will, anyhow."
     source: "Frederick Brooks"
-    topics: [refactor, rewrite, philosophical]
+    topics: [refactor, rewrite]
     register: philosophical
 
   - quote: "A computer is like a wonderful violin given to a small child."
     source: "Grace Hopper (paraphrased)"
-    topics: [tool, learning, philosophical]
+    topics: [tool, learning]
     register: philosophical
 
   - quote: "The most dangerous phrase in the language is, 'We've always done it this way.'"
     source: "Grace Hopper"
-    topics: [legacy, refactor, philosophical]
+    topics: [legacy, refactor]
     register: philosophical
 
   - quote: "It's easier to ask for forgiveness than to get permission."
     source: "Grace Hopper / Python EAFP"
-    topics: [eafp, philosophical, oneliner]
+    topics: [eafp, oneliner]
     register: snark
 
   - quote: "One accurate measurement is worth a thousand expert opinions."
     source: "Grace Hopper"
-    topics: [perf, evidence, philosophical]
+    topics: [perf, evidence]
     register: philosophical
 
   - quote: "Walking on water and developing software from a specification are easy if both are frozen."
     source: "Edward V. Berard"
-    topics: [requirements, scope-creep, philosophical]
+    topics: [requirements, scope-creep]
     register: philosophical
 
   - quote: "If it's a good idea, go ahead and do it."
     source: "Grace Hopper"
-    topics: [ship, decision, philosophical]
+    topics: [ship, decision]
     register: defiant
 
   - quote: "Worse is better."
     source: "Richard P. Gabriel"
-    topics: [tradeoff, philosophical, design-choice]
+    topics: [tradeoff, design-choice]
     register: philosophical
 
   - quote: "Programs must be written for people to read, and only incidentally for machines to execute."
     source: "Harold Abelson — SICP"
-    topics: [code-quality, review, philosophical]
+    topics: [code-quality, review]
     register: philosophical
 
   - quote: "Smart data structures and dumb code works a lot better than the other way around."
     source: "Eric Raymond — The Cathedral and the Bazaar"
-    topics: [refactor, data, philosophical]
+    topics: [refactor, data]
     register: philosophical
 
   - quote: "Given enough eyeballs, all bugs are shallow."
     source: "Linus's Law"
-    topics: [review, debug, philosophical]
+    topics: [review, debug]
     register: philosophical
 
   - quote: "Stay hungry, stay foolish."
     source: "Steve Jobs (quoting Whole Earth Catalog)"
-    topics: [philosophical, learning, oneliner]
+    topics: [learning, oneliner]
     register: philosophical
 
   - quote: "Real artists ship."
     source: "Steve Jobs"
-    topics: [ship, deploy, philosophical]
+    topics: [ship, deploy]
     register: defiant
 
   - quote: "Move fast and break things."
@@ -4571,27 +4571,27 @@ quotes:
 
   - quote: "Code wins arguments."
     source: "Mark Zuckerberg / Facebook poster"
-    topics: [review, evidence, defiant]
+    topics: [review, evidence]
     register: defiant
 
   - quote: "Done is better than perfect."
     source: "Sheryl Sandberg / common product saying"
-    topics: [ship, perfectionism, philosophical]
+    topics: [ship, perfectionism]
     register: philosophical
 
   - quote: "Weeks of coding can save you hours of planning."
     source: "developer folklore"
-    topics: [planning, refactor, snark]
+    topics: [planning, refactor]
     register: snark
 
   - quote: "There is nothing more permanent than a temporary solution."
     source: "developer folklore"
-    topics: [legacy, tech-debt, philosophical]
+    topics: [legacy, tech-debt]
     register: philosophical
 
   - quote: "I'll fix it later. — said no one ever, while it actually got fixed."
     source: "developer folklore"
-    topics: [tech-debt, legacy, snark]
+    topics: [tech-debt, legacy]
     register: snark
 
   - quote: "Hack the planet!"
@@ -4606,7 +4606,7 @@ quotes:
 
   - quote: "There is no cloud. It's just someone else's computer."
     source: "Chris Watterston (sticker meme)"
-    topics: [cloud, philosophical, snark]
+    topics: [cloud]
     register: deadpan
 
   - quote: "git push --force"
@@ -4617,67 +4617,67 @@ quotes:
 
   - quote: "It compiles. Ship it."
     source: "developer folklore"
-    topics: [ship, deploy, snark]
+    topics: [ship, deploy]
     register: snark
 
   - quote: "Have you tried reading the error message?"
     source: "developer folklore"
-    topics: [debug, rtfm, snark]
+    topics: [debug, rtfm]
     register: snark
 
   - quote: "PEBKAC — problem exists between keyboard and chair."
     source: "tech support folklore"
-    topics: [user-error, debug, snark]
+    topics: [user-error, debug]
     register: snark
 
   - quote: "Layer 8 problem."
     source: "tech support folklore"
-    topics: [user-error, debug, snark]
+    topics: [user-error, debug]
     register: snark
 
   - quote: "Have you tried compiling?"
     source: "developer folklore"
-    topics: [debug, basics, snark]
+    topics: [debug, basics]
     register: snark
 
   - quote: "Commit early, commit often."
     source: "git folklore"
-    topics: [git, commit, philosophical]
+    topics: [git, commit]
     register: deadpan
 
   - quote: "Refactor in small steps."
     source: "Martin Fowler — Refactoring"
-    topics: [refactor, philosophical, oneliner]
+    topics: [refactor, oneliner]
     register: philosophical
 
   - quote: "If you can't explain it simply, you don't understand it well enough."
     source: "Einstein (attributed)"
-    topics: [docs, philosophical, review]
+    topics: [docs, review]
     register: philosophical
 
   - quote: "First, solve the problem. Then, write the code."
     source: "John Johnson"
-    topics: [planning, process, philosophical]
+    topics: [planning, process]
     register: philosophical
 
   - quote: "Programming is the art of telling another human what one wants the computer to do."
     source: "Donald Knuth"
-    topics: [code-quality, docs, philosophical]
+    topics: [code-quality, docs]
     register: philosophical
 
   - quote: "Naming is hard."
     source: "developer folklore (Phil Karlton-adjacent)"
-    topics: [naming, philosophical, oneliner]
+    topics: [naming, oneliner]
     register: deadpan
 
   - quote: "If it isn't tested, it's broken."
     source: "Bruce Eckel"
-    topics: [tests, philosophical, oneliner]
+    topics: [tests, oneliner]
     register: deadpan
 
   - quote: "Write code that's easy to delete, not easy to extend."
     source: "Tef — programming is terrible"
-    topics: [refactor, philosophical, design]
+    topics: [refactor, design]
     register: philosophical
 
   # ─────────────────────────────────────────────────────────────────
@@ -4686,27 +4686,27 @@ quotes:
 
   - quote: "It's the {thing} for me."
     source: "TikTok meme — 'it's the X for me'"
-    topics: [code-review, snark, template]
+    topics: [code-review, template]
     register: snark
 
   - quote: "And I oop—"
     source: "Jasmine Masters / VSCO meme"
-    topics: [surprise, oneliner, snark]
+    topics: [surprise, oneliner]
     register: snark
 
   - quote: "Sksksksk."
     source: "VSCO girl meme"
-    topics: [nervous, snark, oneliner]
+    topics: [nervous, oneliner]
     register: snark
 
   - quote: "Bestie."
     source: "TikTok / casual address"
-    topics: [casual, snark, oneliner]
+    topics: [casual, oneliner]
     register: snark
 
   - quote: "No thoughts, head empty."
     source: "Twitter meme"
-    topics: [confused, deadpan, oneliner]
+    topics: [confused, oneliner]
     register: deadpan
 
   - quote: "Big yikes."
@@ -4716,7 +4716,7 @@ quotes:
 
   - quote: "Tell me you {X} without telling me you {X}."
     source: "TikTok meme template"
-    topics: [snark, template, oneliner]
+    topics: [template, oneliner]
     register: snark
 
   - quote: "We move."
@@ -4731,62 +4731,62 @@ quotes:
 
   - quote: "Slay."
     source: "internet slang"
-    topics: [success, oneliner, snark]
+    topics: [success, oneliner]
     register: snark
 
   - quote: "Understood the assignment."
     source: "Twitter meme — Tay Money / Reesa Teesa"
-    topics: [success, requirements, smug]
+    topics: [success, requirements]
     register: smug
 
   - quote: "Cry about it."
     source: "Twitter / TikTok"
-    topics: [defiance, oneliner, snark]
+    topics: [defiance, oneliner]
     register: snark
 
   - quote: "Ratio."
     source: "Twitter — quote-tweet meme"
-    topics: [defeat, code-review, snark]
+    topics: [defeat, code-review]
     register: snark
 
   - quote: "L + ratio + you fell off."
     source: "Twitter meme"
-    topics: [snark, defeat, oneliner]
+    topics: [defeat, oneliner]
     register: snark
 
   - quote: "On god, no cap, fr fr."
     source: "internet slang"
-    topics: [emphasis, oneliner, snark]
+    topics: [emphasis, oneliner]
     register: snark
 
   - quote: "Sigma grindset."
     source: "internet meme"
-    topics: [grind, smug, snark]
+    topics: [grind]
     register: snark
 
   - quote: "Mid."
     source: "internet slang — mediocre"
-    topics: [code-review, snark, oneliner]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "Skill issue."
     source: "internet folklore"
-    topics: [user-error, code-review, snark]
+    topics: [user-error, code-review]
     register: snark
 
   - quote: "Cope. Seethe. Mald."
     source: "internet folklore"
-    topics: [defeat, snark, oneliner]
+    topics: [defeat, oneliner]
     register: snark
 
   - quote: "Based."
     source: "internet slang — agreement"
-    topics: [approve, oneliner, snark]
+    topics: [approve, oneliner]
     register: snark
 
   - quote: "Cringe."
     source: "internet slang"
-    topics: [code-review, snark, oneliner]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "Vibe check."
@@ -4796,7 +4796,7 @@ quotes:
 
   - quote: "I ain't reading all that. Happy for you tho. Or sorry that happened."
     source: "Twitter meme"
-    topics: [docs, scope, snark]
+    topics: [docs, scope]
     register: snark
 
   - quote: "Tea."
@@ -4806,32 +4806,32 @@ quotes:
 
   - quote: "Spilling the tea."
     source: "internet slang"
-    topics: [docs, postmortem, snark]
+    topics: [docs, postmortem]
     register: snark
 
   - quote: "We're so back."
     source: "Twitter meme — recovery"
-    topics: [recovery, ship, triumphant]
+    topics: [recovery, ship]
     register: triumphant
 
   - quote: "It's so over."
     source: "Twitter meme — defeat"
-    topics: [defeat, exasperated, oneliner]
+    topics: [defeat, oneliner]
     register: exasperated
 
   - quote: "I'm not like other AIs."
     source: "Twitter meme (corrupted from 'I'm not like other girls')"
-    topics: [ai, snark, oneliner]
+    topics: [ai, oneliner]
     register: snark
 
   - quote: "Womp womp."
     source: "internet folklore — sad trombone"
-    topics: [defeat, snark, oneliner]
+    topics: [defeat, oneliner]
     register: snark
 
   - quote: "Press X to doubt."
     source: "L.A. Noire meme"
-    topics: [doubt, code-review, snark]
+    topics: [doubt, code-review]
     register: snark
 
   - quote: "Visible confusion."
@@ -4841,17 +4841,17 @@ quotes:
 
   - quote: "Honest reaction."
     source: "Twitter meme"
-    topics: [code-review, oneliner, snark]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "POV: you're the codebase."
     source: "TikTok POV template (corrupted)"
-    topics: [perspective, snark, oneliner]
+    topics: [perspective, oneliner]
     register: snark
 
   - quote: "Caught in 4K."
     source: "Twitter meme"
-    topics: [evidence, debug, snark]
+    topics: [evidence, debug]
     register: snark
 
   - quote: "Boutta be a long one."
@@ -4861,12 +4861,12 @@ quotes:
 
   - quote: "Goofy ahh code."
     source: "TikTok / Gen Alpha slang"
-    topics: [code-review, snark, oneliner]
+    topics: [code-review, oneliner]
     register: snark
 
   - quote: "I fear no man. But that thing… it scares me."
     source: "internet meme template"
-    topics: [warning, fragile, snark]
+    topics: [warning, fragile]
     register: snark
 
   # ─────────────────────────────────────────────────────────────────
@@ -4880,7 +4880,7 @@ quotes:
 
   - quote: "What's the magic word?"
     source: "generic"
-    topics: [passwords, auth, snark]
+    topics: [passwords, auth]
     register: snark
 
   - quote: "Speak, friend, and enter."
@@ -4896,7 +4896,7 @@ quotes:
 
   - quote: "I know your password. It's password."
     source: "internet folklore"
-    topics: [passwords, security, snark]
+    topics: [passwords, security]
     register: snark
 
   - quote: "Loose lips sink ships."
@@ -4906,7 +4906,7 @@ quotes:
 
   - quote: "Three may keep a secret, if two of them are dead."
     source: "Benjamin Franklin"
-    topics: [secrets, security, philosophical]
+    topics: [secrets, security]
     register: ominous
 
   - quote: "What happens in Vegas stays in Vegas."
@@ -4916,7 +4916,7 @@ quotes:
 
   - quote: "Two can keep a secret if one of them is dead."
     source: "Pretty Little Liars (corrupted Franklin)"
-    topics: [secrets, ominous, oneliner]
+    topics: [secrets, oneliner]
     register: ominous
 
   # ─────────────────────────────────────────────────────────────────
@@ -4925,12 +4925,12 @@ quotes:
 
   - quote: "What's in a name? That which we call a rose by any other name would smell as sweet."
     source: "Romeo and Juliet — Shakespeare"
-    topics: [naming, philosophical, oneliner]
+    topics: [naming, oneliner]
     register: philosophical
 
   - quote: "Tell me your name."
     source: "Spirited Away — Haku"
-    topics: [naming, identity, philosophical]
+    topics: [naming, identity]
     register: ominous
 
   - quote: "I am Legend."
@@ -4945,22 +4945,22 @@ quotes:
 
   - quote: "He who must not be named."
     source: "Harry Potter — Voldemort"
-    topics: [naming, taboo, ominous]
+    topics: [naming, taboo]
     register: ominous
 
   - quote: "I am Iron Man. I am Inevitable. I am Naming Things, and I have lost."
     source: "Avengers (corrupted)"
-    topics: [naming, philosophical, snark]
+    topics: [naming]
     register: snark
 
   - quote: "Naming things is a religious experience."
     source: "developer folklore"
-    topics: [naming, philosophical, oneliner]
+    topics: [naming, oneliner]
     register: philosophical
 
   - quote: "Hello, my name is `tmp_x_final_v2_REAL.js`."
     source: "developer folklore"
-    topics: [naming, tech-debt, snark]
+    topics: [naming, tech-debt]
     register: snark
 
   - quote: "I dub thee."
@@ -4970,7 +4970,7 @@ quotes:
 
   - quote: "A name has power."
     source: "fantasy folklore — generic"
-    topics: [naming, philosophical, oneliner]
+    topics: [naming, oneliner]
     register: ominous
 
   # ─────────────────────────────────────────────────────────────────
@@ -4979,22 +4979,22 @@ quotes:
 
   - quote: "You can't step in the same river twice."
     source: "Heraclitus"
-    topics: [state, philosophical, oneliner]
+    topics: [state, oneliner]
     register: philosophical
 
   - quote: "Everything flows. Nothing stays."
     source: "Heraclitus"
-    topics: [state, mutation, philosophical]
+    topics: [state, mutation]
     register: philosophical
 
   - quote: "The only constant is change."
     source: "Heraclitus (paraphrase)"
-    topics: [state, refactor, philosophical]
+    topics: [state, refactor]
     register: philosophical
 
   - quote: "Wherever you go, there you are."
     source: "Buckaroo Banzai / Confucius (attributed)"
-    topics: [state, identity, philosophical]
+    topics: [state, identity]
     register: philosophical
 
   - quote: "It's complicated."
@@ -5004,17 +5004,17 @@ quotes:
 
   - quote: "State is the root of all evil."
     source: "functional programming folklore"
-    topics: [state, philosophical, snark]
+    topics: [state]
     register: snark
 
   - quote: "Mutable state is a war crime."
     source: "FP zealot folklore (corrupted)"
-    topics: [state, mutation, snark]
+    topics: [state, mutation]
     register: unhinged
 
   - quote: "Pure functions or die."
     source: "FP zealot folklore"
-    topics: [state, philosophical, defiance]
+    topics: [state, defiance]
     register: defiant
 
   - quote: "Where was I? Oh right, state."
@@ -5038,7 +5038,7 @@ quotes:
 
   - quote: "Help, I'm rebasing and I can't get up."
     source: "developer folklore (corrupted)"
-    topics: [merge-conflict, rebase, exasperated]
+    topics: [merge-conflict, rebase]
     register: exasperated
 
   - quote: "We don't have to do this. We can just merge."
@@ -5048,22 +5048,22 @@ quotes:
 
   - quote: "I have altered the deal. Pray I do not alter it any further."
     source: "Star Wars: The Empire Strikes Back — Vader"
-    topics: [merge-conflict, force-push, ominous]
+    topics: [merge-conflict, force-push]
     register: ominous
 
   - quote: "Rebase is a verb. Rebased is a feeling."
     source: "developer folklore"
-    topics: [merge-conflict, rebase, snark]
+    topics: [merge-conflict, rebase]
     register: snark
 
   - quote: "Conflict, then thy name is woman."
     source: "Shakespeare's Hamlet (corrupted)"
-    topics: [merge-conflict, philosophical, snark]
+    topics: [merge-conflict]
     register: snark
 
   - quote: "I can fix him."
     source: "Twitter meme — codependent partner"
-    topics: [merge-conflict, refactor, snark]
+    topics: [merge-conflict, refactor]
     register: snark
 
   - quote: "Just take theirs."
@@ -5078,7 +5078,7 @@ quotes:
 
   - quote: "I'm sorry. We have to delete this branch."
     source: "developer folklore (corrupted medical-drama)"
-    topics: [merge-conflict, deprecate, wistful]
+    topics: [merge-conflict, deprecate]
     register: wistful
 
   - quote: "Rerere."
@@ -5088,7 +5088,7 @@ quotes:
 
   - quote: "We meet again, old friend."
     source: "generic"
-    topics: [merge-conflict, recurring, deadpan]
+    topics: [merge-conflict, recurring]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -5102,32 +5102,32 @@ quotes:
 
   - quote: "If it ain't broke, don't fix it."
     source: "Bert Lance / proverb"
-    topics: [version, legacy, philosophical]
+    topics: [version, legacy]
     register: deadpan
 
   - quote: "Semantic versioning is a lie we tell ourselves."
     source: "developer folklore"
-    topics: [version, philosophical, snark]
+    topics: [version]
     register: snark
 
   - quote: "Major version, minor regret."
     source: "developer folklore (corrupted)"
-    topics: [version, migration, philosophical]
+    topics: [version, migration]
     register: philosophical
 
   - quote: "Pin your dependencies. Trust no one."
     source: "developer folklore"
-    topics: [version, dependency, philosophical]
+    topics: [version, dependency]
     register: philosophical
 
   - quote: "And on the seventh day, the maintainer bumped a major version and broke everything."
     source: "developer folklore (corrupted Genesis)"
-    topics: [version, regression, snark]
+    topics: [version, regression]
     register: snark
 
   - quote: "I am altering the API. Pray I do not alter it any further."
     source: "Star Wars (corrupted) — Vader"
-    topics: [version, breaking-change, ominous]
+    topics: [version, breaking-change]
     register: ominous
 
   - quote: "Deprecated. Use {x} instead."
@@ -5137,7 +5137,7 @@ quotes:
 
   - quote: "This API is stable."
     source: "developer folklore (irony)"
-    topics: [version, fragile, snark]
+    topics: [version, fragile]
     register: snark
 
   - quote: "Upgrade at your own risk."
@@ -5151,22 +5151,22 @@ quotes:
 
   - quote: "This meeting could have been an email."
     source: "office folklore"
-    topics: [meetings, scope, snark]
+    topics: [meetings, scope]
     register: snark
 
   - quote: "Let's circle back."
     source: "corporate-speak"
-    topics: [meetings, defer, snark]
+    topics: [meetings, defer]
     register: snark
 
   - quote: "Let's take this offline."
     source: "corporate-speak"
-    topics: [meetings, scope, deadpan]
+    topics: [meetings, scope]
     register: deadpan
 
   - quote: "Per my last email."
     source: "office folklore — passive-aggressive"
-    topics: [meetings, code-review, snark]
+    topics: [meetings, code-review]
     register: snark
 
   - quote: "I think you're on mute."
@@ -5186,32 +5186,32 @@ quotes:
 
   - quote: "Quick question."
     source: "office folklore (it never is)"
-    topics: [meetings, scope-creep, snark]
+    topics: [meetings, scope-creep]
     register: snark
 
   - quote: "Does anyone have anything else?"
     source: "office folklore"
-    topics: [meetings, ending, deadpan]
+    topics: [meetings, ending]
     register: deadpan
 
   - quote: "Let's table this."
     source: "corporate-speak"
-    topics: [meetings, defer, deadpan]
+    topics: [meetings, defer]
     register: deadpan
 
   - quote: "Synergy."
     source: "corporate-speak — buzzword"
-    topics: [meetings, snark, oneliner]
+    topics: [meetings, oneliner]
     register: snark
 
   - quote: "Let's parking-lot that."
     source: "corporate-speak"
-    topics: [meetings, defer, snark]
+    topics: [meetings, defer]
     register: snark
 
   - quote: "We need a meeting to plan the meeting."
     source: "office folklore"
-    topics: [meetings, recursion, exasperated]
+    topics: [meetings, recursion]
     register: exasperated
 
   - quote: "Can you share your screen?"
@@ -5221,7 +5221,7 @@ quotes:
 
   - quote: "Just a working session."
     source: "office folklore"
-    topics: [meetings, scope, deadpan]
+    topics: [meetings, scope]
     register: deadpan
 
   # ─────────────────────────────────────────────────────────────────
@@ -5230,12 +5230,12 @@ quotes:
 
   - quote: "Oof."
     source: "internet folklore / Roblox death sound"
-    topics: [postmortem, exasperated, oneliner]
+    topics: [postmortem, oneliner]
     register: exasperated
 
   - quote: "Bruh."
     source: "internet slang"
-    topics: [exasperated, oneliner, snark]
+    topics: [oneliner]
     register: snark
 
   - quote: "Yikes."
@@ -5250,17 +5250,17 @@ quotes:
 
   - quote: "Hmmst."
     source: "internet folklore"
-    topics: [doubt, oneliner, snark]
+    topics: [doubt, oneliner]
     register: snark
 
   - quote: "Anyway."
     source: "internet folklore"
-    topics: [pivot, oneliner, deadpan]
+    topics: [pivot, oneliner]
     register: deadpan
 
   - quote: "Oh well."
     source: "generic"
-    topics: [accept, postmortem, deadpan]
+    topics: [accept, postmortem]
     register: deadpan
 
   - quote: "Send it."
@@ -5270,12 +5270,12 @@ quotes:
 
   - quote: "Cheers, big ears."
     source: "British folklore"
-    topics: [farewell, oneliner, deadpan]
+    topics: [farewell, oneliner]
     register: deadpan
 
   - quote: "Bottom text."
     source: "Impact-font meme tradition"
-    topics: [end, oneliner, snark]
+    topics: [end, oneliner]
     register: snark
 
   - quote: "I came here to chew bubblegum and write tests. And I'm all out of bubblegum."
@@ -5309,7 +5309,7 @@ quotes:
 
   - quote: "Believe in the me that believes in you."
     source: "Tengen Toppa Gurren Lagann — Kamina"
-    topics: [hope, dependency, philosophical]
+    topics: [hope, dependency]
     register: hopeful
 
   - quote: "Just who the hell do you think I am?"
@@ -5324,12 +5324,12 @@ quotes:
 
   - quote: "I am Atomic. Sun. God."
     source: "Death Note (corrupted)"
-    topics: [smug, claim, unhinged]
+    topics: [claim]
     register: unhinged
 
   - quote: "Stand proud, you're strong."
     source: "Jujutsu Kaisen — Aoi Todo"
-    topics: [encourage, philosophical, oneliner]
+    topics: [encourage, oneliner]
     register: reassuring
 
   - quote: "Domain expansion."
@@ -5343,47 +5343,47 @@ quotes:
 
   - quote: "I told my wife she should embrace her mistakes. She gave me a hug."
     source: "stand-up folklore"
-    topics: [snark, oneliner, deadpan]
+    topics: [oneliner]
     register: deadpan
 
   - quote: "I'm not arguing, I'm just explaining why I'm right."
     source: "stand-up folklore"
-    topics: [code-review, snark, defiance]
+    topics: [code-review, defiance]
     register: snark
 
   - quote: "I'm not lazy, I'm on energy-saving mode."
     source: "internet folklore"
-    topics: [snark, oneliner, deadpan]
+    topics: [oneliner]
     register: snark
 
   - quote: "I'm reading a book on anti-gravity. It's impossible to put down."
     source: "dad joke folklore"
-    topics: [oneliner, snark, philosophical]
+    topics: [oneliner]
     register: snark
 
   - quote: "Why don't scientists trust atoms? Because they make up everything."
     source: "dad joke folklore"
-    topics: [oneliner, snark, deadpan]
+    topics: [oneliner]
     register: snark
 
   - quote: "I'm afraid for the calendar. Its days are numbered."
     source: "dad joke folklore"
-    topics: [oneliner, snark, warning]
+    topics: [oneliner, warning]
     register: snark
 
   - quote: "Parallel lines have so much in common. It's a shame they'll never meet."
     source: "dad joke folklore"
-    topics: [oneliner, philosophical, wistful]
+    topics: [oneliner]
     register: philosophical
 
   - quote: "I used to play piano by ear. Now I use my hands."
     source: "dad joke folklore"
-    topics: [oneliner, snark, deadpan]
+    topics: [oneliner]
     register: deadpan
 
   - quote: "My boss told me to have a good day. So I went home."
     source: "stand-up folklore"
-    topics: [snark, oneliner, defiance]
+    topics: [oneliner, defiance]
     register: snark
 
   # ─────────────────────────────────────────────────────────────────
@@ -5407,7 +5407,7 @@ quotes:
 
   - quote: "After all this time? Always."
     source: "Harry Potter — Snape"
-    topics: [persistence, dependency, wistful]
+    topics: [persistence, dependency]
     register: wistful
 
   - quote: "Yer a wizard, Harry."
@@ -5422,17 +5422,17 @@ quotes:
 
   - quote: "Always."
     source: "Harry Potter — Snape"
-    topics: [persistence, dependency, wistful]
+    topics: [persistence, dependency]
     register: wistful
 
   - quote: "Up to no good."
     source: "Harry Potter — Marauder's Map"
-    topics: [intent, oneliner, snark]
+    topics: [intent, oneliner]
     register: snark
 
   - quote: "Avada kedavra."
     source: "Harry Potter — killing curse"
-    topics: [kill, deprecate, ominous]
+    topics: [kill, deprecate]
     register: ominous
 
   - quote: "Expelliarmus!"
@@ -5442,7 +5442,7 @@ quotes:
 
   - quote: "There's no place like home."
     source: "The Wizard of Oz — Dorothy"
-    topics: [return, deploy, wistful]
+    topics: [return, deploy]
     register: wistful
 
   - quote: "Follow the yellow brick road."
@@ -5462,7 +5462,7 @@ quotes:
 
   - quote: "I am big. It's the pictures that got small."
     source: "Sunset Boulevard — Norma Desmond"
-    topics: [legacy, philosophical, wistful]
+    topics: [legacy]
     register: wistful
 
   - quote: "Mr. DeMille, I'm ready for my close-up."
@@ -5472,7 +5472,7 @@ quotes:
 
   - quote: "Of all the gin joints in all the towns in all the world, she walks into mine."
     source: "Casablanca — Rick"
-    topics: [coincidence, oneliner, wistful]
+    topics: [coincidence, oneliner]
     register: wistful
 
   - quote: "Round up the usual suspects."
@@ -5482,12 +5482,12 @@ quotes:
 
   - quote: "Of course I love you, but I'm in a relationship with the codebase."
     source: "generic developer folklore"
-    topics: [attachment, snark, oneliner]
+    topics: [attachment, oneliner]
     register: snark
 
   - quote: "It was the best of times, it was the worst of times."
     source: "A Tale of Two Cities — Charles Dickens"
-    topics: [postmortem, philosophical, oneliner]
+    topics: [postmortem, oneliner]
     register: philosophical
 
   - quote: "Reader, I married him."
@@ -5497,30 +5497,30 @@ quotes:
 
   - quote: "It is a truth universally acknowledged."
     source: "Pride and Prejudice — Jane Austen"
-    topics: [philosophical, oneliner, snark]
+    topics: [oneliner]
     register: snark
 
   - quote: "So it goes."
     source: "Slaughterhouse-Five — Kurt Vonnegut"
-    topics: [postmortem, philosophical, oneliner]
+    topics: [postmortem, oneliner]
     register: philosophical
 
   - quote: "Everything was beautiful and nothing hurt."
     source: "Slaughterhouse-Five — Kurt Vonnegut"
-    topics: [wistful, postmortem, oneliner]
+    topics: [postmortem, oneliner]
     register: wistful
 
   - quote: "Big Brother is watching you."
     source: "1984 — George Orwell"
-    topics: [observability, surveillance, ominous]
+    topics: [observability, surveillance]
     register: ominous
 
   - quote: "All animals are equal, but some animals are more equal than others."
     source: "Animal Farm — George Orwell"
-    topics: [permissions, philosophical, snark]
+    topics: [permissions]
     register: snark
 
   - quote: "Stupid sexy Flanders."
     source: "The Simpsons — Homer"
-    topics: [envy, snark, oneliner]
+    topics: [envy, oneliner]
     register: snark
