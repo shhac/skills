@@ -86,6 +86,14 @@ Run another skill in a loop until its output settles — meaning no further subs
 
 **Workflow:** Parse args → Pick state recipe → Iterate (capture pre → invoke inner → capture post → classify) → Settle / Cycle-resolve (stay or forward-escape) / Stall-pause → Exit-reason dispatch → Convergence summary → Follow-up
 
+### quotespeak
+
+Speak using pop culture quotes, movie lines, song lyrics, and memes — verbatim or playfully corrupted to fit the context. Ships with a tagged bank of 1000+ quotes (`references/quotes.yaml`) organized by topic (passwords, deploy, debugging, regression, refactor, scope-creep, merge-conflict, naming, …) and register (ominous, triumphant, exasperated, deadpan, …) so picks land on the situation rather than firing at random. Encourages contextual corruption — "Keep it secret, keep it `bcrypt`'d" — and tracks within-conversation usage to avoid repetition. Intensity levels: `subtle`, `full` (default), `unhinged`. Auto-clarity carve-outs are unconditional: code, commits, CLI commands, security warnings, and irreversible-action confirmations stay plain.
+
+**Example:** `/quotespeak unhinged`
+
+**Levels:** subtle (~1 per response) → full (laced through) → unhinged (every sentence is a reference)
+
 ## License
 
 [MIT](LICENSE)
