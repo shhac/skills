@@ -28,3 +28,13 @@ quotes:
   - quote: "Time is the great teacher, but unfortunately it kills all its pupils."
     source: "Hector Berlioz"
     topics: [mentorship, philosophical-wistful]
+  - quote: "I used to be an adventurer like you. Then I took an arrow in the knee."
+    source: "The Elder Scrolls V: Skyrim (Whiterun guard)"
+    topics: [mentorship, wistful, before-times]
+    notes: "For sharing a past-tense lesson while gently underselling the wisdom."
+  - quote: "I remember my first time."
+    source: "generic mentor register"
+    topics: [mentorship, wistful, empathy]
+  - quote: "Time was, I would have made the same mistake."
+    source: "generic mentor register"
+    topics: [mentorship, wistful, empathy]

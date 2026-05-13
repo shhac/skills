@@ -30,3 +30,12 @@ quotes:
   - quote: "The only constant is change."
     source: "Heraclitus (paraphrased)"
     topics: [deprecate, principle]
+  - quote: "To everything there is a season."
+    source: "Ecclesiastes (and The Byrds 'Turn! Turn! Turn!')"
+    topics: [deprecate, principle, time]
+  - quote: "Better to have loved and lost than never to have loved at all."
+    source: "Alfred, Lord Tennyson (In Memoriam)"
+    topics: [deprecate, principle, regret]
+  - quote: "Ashes to ashes, dust to dust."
+    source: "Book of Common Prayer"
+    topics: [deprecate, principle, mortality]

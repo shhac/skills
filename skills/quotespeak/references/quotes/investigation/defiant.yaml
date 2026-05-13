@@ -6,34 +6,35 @@ vibe: |
 quotes:
   - quote: "Talk is cheap. Show me the code."
     source: "Linus Torvalds"
-    topics: ["tests", "review", "evidence"]
+    topics: [tests, review, evidence]
     notes: "Can be shortened to 'Show me the code.' for deadpan brevity."
-
   - quote: "Hello. My name is Inigo Montoya. You killed my father. Prepare to die."
-    source: "The Princess Bride - Inigo Montoya"
-    topics: ["bug", "retribution", "debug"]
-
+    source: "The Princess Bride (Inigo Montoya)"
+    topics: [bug, retribution, debug]
   - quote: "It's just a flesh wound!"
-    source: "Monty Python and the Holy Grail - Black Knight"
-    topics: ["denial", "partial-failure", "defiance"]
-    notes: "Variant punctuation of the earlier entry - both are common."
-
+    source: "Monty Python and the Holy Grail (Black Knight)"
+    topics: [denial, partial-failure, defiance]
   - quote: "This aggression will not stand, man."
-    source: "The Big Lebowski - The Dude"
-    topics: ["defiance", "regression", "push-back"]
-
+    source: "The Big Lebowski (The Dude)"
+    topics: [defiance, regression, push-back]
   - quote: "If it bleeds, we can kill it."
-    source: "Predator - Dutch"
-    topics: ["debug", "killable", "vulnerable"]
-
+    source: "Predator (Dutch)"
+    topics: [debug, killable, vulnerable]
   - quote: "The game is afoot."
     source: "Sherlock Holmes"
-    topics: ["start", "debug", "oneliner"]
-
+    topics: [start, debug, oneliner]
   - quote: "We were on a break!"
-    source: "Friends - Ross"
-    topics: ["ambiguous", "requirements", "blame"]
-
+    source: "Friends (Ross)"
+    topics: [ambiguous, requirements, blame]
   - quote: "Code wins arguments."
     source: "Mark Zuckerberg / Facebook poster"
-    topics: ["review", "evidence"]
+    topics: [review, evidence]
+  - quote: "I'm not letting this go."
+    source: "generic dogged-detective register"
+    topics: [investigation, defiance, persistence]
+  - quote: "Watch me find it."
+    source: "generic"
+    topics: [investigation, defiance]
+  - quote: "There's a logic here, and I'll find it."
+    source: "generic detective register"
+    topics: [investigation, defiance, methods]

@@ -28,3 +28,12 @@ quotes:
   - quote: "There is nothing new under the sun."
     source: "Ecclesiastes"
     topics: [philosophical, recurrence]
+  - quote: "Necessity is the mother of invention."
+    source: "proverb (often attributed to Plato)"
+    topics: [philosophical, invention]
+  - quote: "Time is money."
+    source: "Benjamin Franklin"
+    topics: [philosophical, time, value]
+  - quote: "Actions speak louder than words."
+    source: "proverb"
+    topics: [philosophical, evidence]
