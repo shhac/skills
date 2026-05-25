@@ -78,6 +78,12 @@ Analyze and improve code structure across a repo or targeted scope. Spawns paral
 
 **Workflow:** Analyze (parallel) → Synthesize → Approve → Implement (sequential) → Dead-code sweep + per-finding audit → Validate
 
+### seam-audit
+
+Diagnostic pass over a codebase's module *boundaries*, not the code inside them. Defines a "seam" as the import-direction edge between two interfaces; enumerates every module's incoming and outgoing seams; produces a layered ASCII topology diagram; classifies each module as narrow, hub-by-design, or accidental hub. Outputs a flagged-for-review list plus a sanity-check "not actioned" list. Diagnostic only — emits no code changes, hands off to a refactor skill if action is wanted. Sibling to `improve-code-structure`: that one fixes problems inside modules, this one identifies whether the boundaries are in the right places.
+
+**Workflow:** Define module granularity → Enumerate seams → Diagram → Classify + flag accidental hubs / cycles / layer violations
+
 ### repeat-until-settled
 
 Run another skill in a loop until its output settles — meaning no further substantive changes or recommendations. Domain-agnostic: works on code in a git repo, prose in a manuscript directory, image files, configs, anything. Detects cycles (oscillation between two or more states) and resolves them forward — never backwards: either Stay (current state is a fixed point) or Forward-escape (instruct the inner skill toward the better alternate). Detects stalls (recommendations that won't land), pauses with an orchestration-layer-aware diagnosis, and switches to a deeper-stall pause that drops "retry" once it's clear retry isn't working. Optionally chains to a follow-up skill on settle. No iteration cap by default; explicit `max=N` opt-in.
