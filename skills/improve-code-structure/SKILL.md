@@ -1,6 +1,6 @@
 ---
 name: improve-code-structure
-description: Analyzes and improves code structure — decomposes long functions and files, reduces complexity, extracts shared patterns, assesses test coverage on critical paths, and cleans up dead, unreachable, or orphaned code that accumulates as a side effect of refactoring. Use when the user wants to refactor for clarity, split large files, reduce nesting, DRY up code, improve testability, or sweep for dead code after restructuring. Not for feature changes, bug fixes, or performance optimization — this is structural refactoring only.
+description: Analyzes and improves code structure — decomposes long functions and files, reduces complexity, extracts shared patterns, reframes complexity so whole branches or layers disappear, flags abstractions that don't fit (thin wrappers, over-generalization, reinvented helpers), assesses test coverage on critical paths, and cleans up dead, unreachable, or orphaned code that accumulates as a side effect of refactoring. Use when the user wants to refactor for clarity, split large files, reduce nesting, DRY up code, simplify an over-engineered or wrong-fit abstraction, replace a reinvented helper with the repo's canonical one, improve testability, or sweep for dead code after restructuring. Not for feature changes, bug fixes, or performance optimization — this is structural refactoring only.
 ---
 
 # Improve Code Structure
@@ -54,10 +54,12 @@ Once all analysts report:
    - A function split may create a file-split opportunity — link them
    - A pattern extraction may obviate a complexity reduction — note it
    - Don't recommend both splitting a function AND extracting its internals as a shared pattern — pick one
+   - When a structural-simplification finding would delete code that another finding proposes to decompose, dedup, or polish, prefer the delete-finding and drop the rearrange-finding — don't present both for the same code
 2. Order recommendations by impact and natural dependency (what enables what)
 3. Present to the user as a prioritized plan:
    - Group by area of code, not by lens
    - For each recommendation: what to change, why, and what it enables
+   - For any recommendation carrying a `Risk` note (restructurings that span files or remove a layer/abstraction), surface that blast radius alongside it — the user needs it to weigh ambition against risk at this gate
    - Flag any recommendations that are in tension with each other — let the user decide
 
 **Present the prioritized plan and wait for approval** — the user picks which recommendations to implement (all, some, or none). Do not proceed past this point without explicit approval. The pause mechanism depends on the harness (interactive prompt, return to caller, etc.) — what matters is that no Phase 2 changes happen until approval is in.
@@ -75,7 +77,7 @@ The lead implements approved changes directly, in dependency order.
 
 #### Per-change loop
 
-Sequentially, **one logical change at a time** — don't batch a file split, a function extraction, and a dedup into a single step; each should be independently verifiable. For each change:
+Sequentially, **one logical change at a time** — don't batch a file split, a function extraction, and a dedup into a single step; each should be independently verifiable. A structural-simplification change is still *one* logical change even when it spans several files or removes a layer — keep it atomic and verify it as a unit; don't split it into half-applied intermediate states, and don't pad it with unrelated cleanups. For each change:
 
 1. Make the change. If it involves moves or renames, update all call sites — grep to verify nothing is missed.
 2. Run the [verification loop](references/conventions.md#verification-loop).

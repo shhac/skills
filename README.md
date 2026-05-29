@@ -74,7 +74,7 @@ Extract and sharpen the user's mental model through targeted questioning. Interv
 
 ### improve-code-structure
 
-Analyze and improve code structure across a repo or targeted scope. Spawns parallel analysts — one per lens (function decomposition, file decomposition, complexity reduction, pattern deduplication, test coverage; extensible) — then implements approved changes sequentially with full verification (tests + typecheck + lint) between each. After refactoring, sweeps for dead/unreachable/orphaned code introduced as side effects, audits each finding deeply against false-positive traps, and removes anything confirmed dead while verification stays green. Harness-portable (Claude Code, Agent SDK, API).
+Analyze and improve code structure across a repo or targeted scope. Spawns parallel analysts — one per lens (function decomposition, file decomposition, complexity reduction, pattern deduplication, test coverage, structural simplification, abstraction fit; extensible) — then implements approved changes sequentially with full verification (tests + typecheck + lint) between each. After refactoring, sweeps for dead/unreachable/orphaned code introduced as side effects, audits each finding deeply against false-positive traps, and removes anything confirmed dead while verification stays green. Harness-portable (Claude Code, Agent SDK, API).
 
 **Workflow:** Analyze (parallel) → Synthesize → Approve → Implement (sequential) → Dead-code sweep + per-finding audit → Validate
 

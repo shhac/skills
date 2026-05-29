@@ -88,7 +88,7 @@ References alone don't always mean the symbol is alive in the user's sense. Thes
 
 ## Step 3d — Removal
 
-Maintain five named accumulators across this step:
+Maintain one named accumulator per outcome category across this step:
 
 - `removed` — findings where the code was deleted and verification passed.
 - `rejected` — findings the auditor classified `not-dead`.

@@ -26,7 +26,8 @@ Every subagent reports findings in this exact format:
 ### Findings (prioritized)
 1. **[impact: high/medium/low]** **{file:line}** — {what's wrong and why it matters}
    - Suggestion: {concrete recommendation}
-   - Improves: {testability, readability, reuse, maintainability, safety}
+   - Improves: {testability, readability, reuse, maintainability, safety, simplicity}
+   - Risk: {blast radius of the change — what it touches, what could break, and the assumption being made about why the existing code is shaped this way. Omit for small local changes; required for any restructuring that spans files or removes a layer/abstraction.}
    - Verdict: {confirmed-dead | not-dead | uncertain}    # Phase 3c auditors only
    - Dependencies: {other findings this interacts with, if any}
 
@@ -34,7 +35,7 @@ Every subagent reports findings in this exact format:
 {1–2 sentences}
 ```
 
-The `Verdict` line is included only by Phase 3c deep auditors. Phase 1 analysts and Phase 3b broad scanners omit it.
+The `Verdict` line is included only by Phase 3c deep auditors. Phase 1 analysts and Phase 3b broad scanners omit it. The `Risk` line is included by any finding that proposes a restructuring spanning multiple files or the removal of a layer or abstraction (structural-simplification and abstraction-fit findings most often); small local changes omit it.
 
 ## Verification loop
 

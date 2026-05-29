@@ -17,6 +17,7 @@ The lead receives N reports, synthesizes them into a prioritized plan grouped by
 
 ### Area: src/payments/
 1. **[high]** Split src/payments/processor.ts (842 lines) into orchestrator + adapters
+   - Risk: touches every importer of processor.ts (~9 files) for the new paths; assumes the adapter boundary matches the existing payment-method split. Interfaces preserved.
    ...
 2. **[high]** Extract shared validation helpers used in 4 call sites
    ...
@@ -41,7 +42,7 @@ The lead pauses for approval. *(In Claude Code that's an interactive prompt; in 
 - *3b:* Spawns one broad-scan subagent. Returns 6 findings.
 - *3c:* 6 ≤ 10, so spawns 6 deep auditors in parallel. Verdicts: 4 `confirmed-dead`, 1 `not-dead` (re-export consumed via barrel file), 1 `uncertain` (auditor: "is this referenced from the Storybook config?").
 - *3d:* Verification tooling exists (npm scripts). Lead presents the 4 `confirmed-dead` findings with auditor justifications and asks all/some/none. **User approves 3 of 4** (skips one they want to keep for now). Lead removes them sequentially. 2 pass verification; 1 fails (an integration test depended on the function via a string lookup the audit missed) — the verification loop reverts that one removal automatically.
-- *3e:* Report covers all five accumulators.
+- *3e:* Report covers every accumulator.
 
 **Phase 4 — Validation.** Final verification loop run across the whole project — green. The lead summarizes: 3 refactors landed, 2 dead-code removals landed, 1 reverted, 1 not-dead, 1 uncertain pending user decision, 1 coverage follow-up recommended.
 
