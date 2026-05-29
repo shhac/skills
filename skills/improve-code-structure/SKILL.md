@@ -41,6 +41,7 @@ Spawn one subagent per lens listed in [references/lenses.md](references/lenses.m
 Each subagent receives:
 
 - The lens content from lenses.md (one section, verbatim) as its role.
+- The module-boundary note from the top of lenses.md (self-scoping; intra-module lenses can disregard it).
 - The scope (full repo, directory, or file).
 - The standard fields per [conventions.md](references/conventions.md#subagent-conventions).
 

@@ -4,6 +4,23 @@ Phase 1 spawns one subagent per lens. Each subagent receives one section of this
 
 **Every lens below must run on every Phase 1 invocation.** Adding a new lens is straightforward — append a numbered section. Removing or skipping a lens is not — each one covers a distinct failure mode that the others miss, so the value comes from running the full sweep. If a lens genuinely has nothing to report on a given codebase, its analyst returns an empty findings list, which is the correct outcome.
 
+## A note on module boundaries
+
+Pass this note to every analyst alongside its lens section. It is self-scoping — intra-module lenses can disregard it.
+
+Most of these lenses operate *inside* a module — decomposing functions, flattening conditionals, deduping within a file. Those changes don't touch module boundaries and need no special care; decompose as granularly as clarity warrants. A few lenses do cross boundaries — extracting code to a shared location (file decomposition, pattern deduplication) and removing a layer (structural simplification). For those, one thing matters: don't add *accidental cross-module coupling*.
+
+- **Reuse through interfaces, not internals.** When a change makes one module depend on another, route through its public interface. Don't introduce a new edge that deep-links into another module's internals to reach the shared code.
+- **Don't scatter one import location into many across modules.** The concern is a consumer being forced to import a cohesive concept from several modules where it used to come from one. The reverse — *reducing* import locations by consolidating scattered code — is a win, not a regression.
+
+These are all fine and need no second thought:
+
+- Splitting `getFoo({x}|{y}|{z})` into `getFooByX/Y/Z` exported from the same entry point — the import location is unchanged and call sites get clearer and better-typed.
+- Extracting genuinely shared library code consumed widely by callers that share a real concept — a healthy intentional hub.
+- Consolidating scattered helpers into one module — fewer import locations.
+
+If a finding hinges on *whether a boundary sits in the right place* rather than the code inside it, that's a boundary question — flag it and note it as out of scope for this pass.
+
 ## 1. Function decomposition
 
 Find functions that are too long or handle multiple concerns. Look for:
