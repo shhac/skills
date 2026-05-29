@@ -2,6 +2,19 @@
 
 Shared definitions used across all phases of this skill. SKILL.md links here instead of repeating these definitions in each phase, so any update lands in one place.
 
+## Terminology
+
+Use these terms consistently across SKILL.md and all reference files. They are load-bearing — don't introduce synonyms.
+
+- **lead** — the orchestrator running the skill. Spawns subagents, synthesizes, implements, and talks to the user. There is exactly one.
+- **subagent** — the umbrella term for any spawned worker. Each plays one of three roles depending on phase:
+  - **analyst** — Phase 1 worker running one lens over the scope, emitting findings.
+  - **scanner** — Phase 3b worker doing the single broad dead-code sweep.
+  - **auditor** — Phase 3c worker verifying one dead-code finding and returning a verdict.
+- **finding** — a single issue a subagent reports, in the Finding Record schema. The atomic unit of analysis.
+- **recommendation** — a synthesized, user-facing plan item the lead produces from one or more findings. Findings are internal; recommendations are what the user approves.
+- **lens** — one analysis perspective from lenses.md. One analyst runs one lens.
+
 ## Subagent conventions
 
 When a phase says "spawn a subagent", the lead:

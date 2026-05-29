@@ -60,7 +60,7 @@ Find changes where a cleaner reframing could delete whole categories of complexi
 Constraints (this skill is behavior-preserving):
 
 - Every finding must preserve observable behavior and public interfaces.
-- For any finding that is a genuine restructuring rather than a local extraction, include a blast-radius note: what it touches, the risk, and why it's worth doing now — and state the assumption you're making about why the existing complexity exists, so the user can weigh it at the approval gate.
+- For any finding that is a genuine restructuring rather than a local extraction, fill in the schema's `Risk` field with the blast radius: what it touches, what could break, why it's worth doing now, and the assumption you're making about why the existing complexity exists — so the user can weigh it at the approval gate.
 - Prefer a few high-conviction "this whole thing could go away" findings over many speculative reframings.
 
 ## 7. Abstraction fit
