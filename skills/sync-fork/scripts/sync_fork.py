@@ -311,11 +311,13 @@ def build_graph(
     """
     parents: Dict[str, str] = {}
     orphaned: List[str] = []
+    targets: Dict[str, str] = {}
     all_candidates = list(shared) + list(branches)
 
     for branch in branches:
         best_parent = None
         best_distance = float("inf")
+        contained_target = None
 
         for candidate in all_candidates:
             if candidate == branch:
@@ -331,6 +333,11 @@ def build_graph(
                 candidate_ref = candidate
 
             if not git_test("merge-base", "--is-ancestor", candidate_ref, branch):
+                if (
+                    candidate in shared
+                    and git_test("merge-base", "--is-ancestor", branch, candidate_ref)
+                ):
+                    contained_target = candidate
                 continue
 
             distance = git_count(f"{candidate_ref}..{branch}")
@@ -339,7 +346,10 @@ def build_graph(
                 best_parent = candidate
 
         if best_parent is None:
-            orphaned.append(branch)
+            if contained_target:
+                targets[branch] = contained_target
+            else:
+                orphaned.append(branch)
         else:
             parents[branch] = best_parent
 
@@ -347,7 +357,7 @@ def build_graph(
     order = _topo_sort(parents, branches, shared)
 
     # Trace each branch to its root shared branch
-    targets = _resolve_targets(parents, shared)
+    targets = _resolve_targets(parents, shared, targets)
 
     return DependencyGraph(
         parents=parents,
@@ -381,6 +391,11 @@ def generate_plan(fork: str, upstream: str) -> dict:
                 rebase_actions.append(f"{branch} onto {parent}")
             elif parent:
                 rebase_actions.append(f"{branch} onto {parent} (--onto)")
+            elif graph.targets.get(branch):
+                target = graph.targets[branch]
+                rebase_actions.append(
+                    f"{branch} onto {target} (contained in pre-reset {target})"
+                )
             else:
                 rebase_actions.append(f"{branch} (orphaned, needs user input)")
 
@@ -449,11 +464,13 @@ def _topo_sort(
 
 
 def _resolve_targets(
-    parents: Dict[str, str], shared: List[str]
+    parents: Dict[str, str],
+    shared: List[str],
+    initial: Optional[Dict[str, str]] = None,
 ) -> Dict[str, str]:
     """Trace each branch to its root shared branch."""
     shared_set = set(shared)
-    targets: Dict[str, str] = {}
+    targets: Dict[str, str] = dict(initial or {})
 
     for branch in parents:
         current = branch
@@ -465,6 +482,8 @@ def _resolve_targets(
             current = parents[current]
         if current in shared_set:
             targets[branch] = current
+        elif current in targets:
+            targets[branch] = targets[current]
 
     return targets
 

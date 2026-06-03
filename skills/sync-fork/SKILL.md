@@ -89,7 +89,7 @@ Reference files live in two directories adjacent to this skill:
    ```
    This shows per-branch commit counts and flags.
 
-   - ⚠️ If any branch shows `rewrite=true` AND `fork_merges_only=false` → **STOP and read `edge-cases/history-rewrite.md`** before proceeding. (When `fork_merges_only=true`, the fork-only commits are just merge commits from previous syncs — this is normal, not a history rewrite.)
+   - ⚠️ If any branch shows `rewrite=true` AND `fork_merges_only=false` → **STOP and read `edge-cases/history-rewrite.md`** before proceeding. This may be a real upstream rewrite, or it may be expected patched-upstream divergence where fork-only branch commits are already merged into the fork's shared branch.
    - ⚠️ If any branch shows `reverts>0` → **STOP and read `edge-cases/upstream-reverts.md`** before proceeding.
 
 5. **Dry-run plan.** Run:
@@ -145,6 +145,7 @@ python3 <script> --fork <fork> --upstream <upstream> graph \
 The output provides: parent map, topological order, orphaned branches, and merge targets.
 
 - ⚠️ If `orphaned` is not `(none)` → **read `edge-cases/orphaned-branches.md`**.
+- If a branch has no `parent` but does have a `target`, it is already contained in the pre-reset shared branch. Treat it as an independent branch targeting that shared branch, not as an orphan.
 
 #### 3b. MANDATORY: Read the matching topology reference
 
@@ -171,6 +172,7 @@ For each fork-only branch (parents first, children last — use the `order` from
 2. **Rebase:**
    - **If parent is a shared branch:** `git rebase --empty=drop <shared-branch> <branch>`
    - **If parent is another fork-only branch:** `git rebase --empty=drop --onto <parent> sync-fork/pre-rebase/<parent> <branch>`
+   - **If no parent but `target=<shared-branch>`:** `git rebase --empty=drop <shared-branch> <branch>`
    - `--empty=drop` automatically discards commits already in upstream. If Git < 2.26, omit the flag and use `git rebase --skip` when prompted.
    - If rebase conflicts occur, resolve them. Show the user what you resolved and why.
 
@@ -196,11 +198,12 @@ For each shared branch that has fork-only branches targeting it (use the `target
 ### Phase 5: Clean Up
 
 1. Delete remote branches (`git push <fork> --delete <branch>`) that are fully merged into upstream.
-2. Delete all backup branches: `git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`
-3. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
-4. If changes were stashed in Phase 0, restore them: `git stash pop`.
-5. List any local tracking branches that can be pruned.
-6. Show the user a final summary of what was synced, rebased, merged, deleted, and what branches remain.
+2. Verify the replayed patch stack when shared branches were reset: compare old backups to new shared branches with `git range-diff <old-base>..sync-fork/pre-reset/<branch> <upstream>/<branch>..<branch>` before deleting backups.
+3. Delete all backup branches: `git for-each-ref --format='%(refname:short)' 'refs/heads/sync-fork/' | xargs git branch -D`
+4. Restore the original branch saved in Phase 0: `git checkout <saved-branch>`.
+5. If changes were stashed in Phase 0, restore them: `git stash pop`.
+6. List any local tracking branches that can be pruned.
+7. Show the user a final summary of what was synced, rebased, merged, deleted, and what branches remain.
 
 ### Rules
 

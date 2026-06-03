@@ -11,6 +11,8 @@ The branch is disconnected from all known branches. Possible causes:
 - The branch was created from a completely unrelated history (e.g., `git checkout --orphan`).
 - The branch was rebased onto a commit that is no longer reachable from any current branch.
 
+Do not treat a branch as truly orphaned if it is already contained in a pre-reset shared branch. In patched-upstream forks, a fork-only branch may have been merged into `fork/main` during the previous sync, so its tip can be an ancestor of `sync-fork/pre-reset/main` even though no shared branch is an ancestor of the branch.
+
 ## What to do
 
 1. **Report to the user:**
@@ -18,6 +20,10 @@ The branch is disconnected from all known branches. Possible causes:
 
 2. **Show context to help the user decide:**
    ```bash
+   # If this succeeds, the branch is not truly orphaned. Treat it as
+   # independent and targeting the containing shared branch.
+   git merge-base --is-ancestor <branch> sync-fork/pre-reset/<shared-branch>
+
    # What's the closest thing to an ancestor?
    git merge-base <default-shared-branch> <branch>
    # Show the branch's root commits
