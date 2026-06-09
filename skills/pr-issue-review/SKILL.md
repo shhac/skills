@@ -1,6 +1,6 @@
 ---
 name: pr-issue-review
-description: Review a GitHub pull request at passive, neutral, assertive, or adversarial strength by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an "[AI Review]" top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
+description: Review a GitHub pull request using the passive, neutral, assertive, or adversarial profile by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an emoji-marked top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
 ---
 
 # PR Issue Review
@@ -11,20 +11,20 @@ Review a GitHub pull request with one primary question:
 
 This is a focused, context-aware review for PRs that ask for the user's review. It is not a full multi-perspective review or refactor audit.
 
-## Review Strength
+## Review Profile
 
-The caller may specify review strength as `passive`, `neutral`, `assertive`, or `adversarial`. An explicit caller-specified strength always wins.
+The caller may specify review profile as `passive`, `neutral`, `assertive`, or `adversarial`. An explicit caller-specified profile always wins.
 
-- `passive` is the restrained unblocker strength.
-- `neutral` is the balanced code-quality strength.
-- `assertive` is the nitpicky maintainer strength. It uses a stricter reviewer posture and additional lenses.
-- `adversarial` is the skeptical gatekeeper strength. Its goal is to find reasons not to approve.
+- `passive` is the restrained unblocker profile.
+- `neutral` is the balanced code-quality profile.
+- `assertive` is the nitpicky maintainer profile. It uses a stricter reviewer posture and additional lenses.
+- `adversarial` is the skeptical gatekeeper profile. Its goal is to find reasons not to approve.
 
-All strengths are read-only, stack-aware, and non-blocking except for malicious-looking changes.
+All profiles are read-only, stack-aware, and non-blocking except for malicious-looking changes.
 
-If the caller does not specify strength, choose strength at review start from PR metadata, comments, and existing reviews:
+If the caller does not specify profile, choose one at review start from PR metadata, comments, and existing reviews:
 
-1. If the most recent previous review from this skill has a strength marker, match that strength.
+1. If the most recent previous review from this skill has a profile marker, match that profile.
 2. If the PR appears to have been written by an AI agent or LLM, use `assertive`.
 3. If this PR has no existing reviews at review start, use `assertive`.
 4. If this PR has exactly one existing GitHub review submission at review start, excluding CI/check annotations and non-review issue comments, use `neutral`.
@@ -35,22 +35,29 @@ AI-authorship signals include bot-like authorship, branch names, PR descriptions
 Previous reviews from this skill are identified by a top-level review body starting with:
 
 ```text
-[AI Review][strength: passive]
-[AI Review][strength: neutral]
-[AI Review][strength: assertive]
-[AI Review][strength: adversarial]
+🦎🍃
+🦎🧭
+🦎🔎
+🦎⚔️
 ```
 
-Older `[AI Review]` comments without one of these exact strength markers cannot be matched by strength; continue through the fallback rules.
+The lizard marks the review as an AI review. The second emoji marks profile:
 
-Load exactly one strength plan:
+- `🍃` passive
+- `🧭` neutral
+- `🔎` assertive
+- `⚔️` adversarial
 
-- `passive` -> read `plans/passive.md`
-- `neutral` -> read `plans/neutral.md`
-- `assertive` -> read `plans/assertive.md`
-- `adversarial` -> read `plans/adversarial.md`
+Comments without one of these exact opening markers cannot be matched by profile; continue through the fallback rules.
 
-Then read only the lens files listed by that plan. Some lenses are shared and some are strength-specific; the loaded plan controls which lenses apply and how readily to leave inline comments.
+Load exactly one profile file:
+
+- `passive` -> read `profiles/passive.md`
+- `neutral` -> read `profiles/neutral.md`
+- `assertive` -> read `profiles/assertive.md`
+- `adversarial` -> read `profiles/adversarial.md`
+
+Then read only the lens files listed by that profile. Some lenses are shared and some are profile-specific; the loaded profile controls which lenses apply and how readily to leave inline comments.
 
 ## Core Rules
 
@@ -62,7 +69,7 @@ Then read only the lens files listed by that plan. Some lenses are shared and so
 - Apply the loaded lenses directly. Do not spawn a panel of reviewer subagents.
 - Default to `APPROVE` or `COMMENT`. Use request-changes/blocking language only if the PR appears malicious or intentionally dangerous.
 - Prefer one GitHub review containing:
-  - A top-level review body that starts with the exact selected strength marker, such as `[AI Review][strength: neutral]`
+  - A top-level review body that starts with the exact selected emoji marker, such as `🦎🧭`
   - Inline review comments for concrete, line-specific findings
   - `suggestion` fenced blocks when the author can accept a quick fix directly
 - Do not require broad pattern changes. If a different pattern would be better, mention it as optional context, not as a blocker.
@@ -164,9 +171,9 @@ Do not commit `.ai-cache/`.
 ## Review Procedure
 
 1. Gather PR context and cache discovered remote context.
-2. Select review strength and load exactly one plan from `plans/`.
-3. Load only the lens files named by that plan.
-4. Apply the plan's posture to the loaded lenses.
+2. Select review profile and load exactly one file from `profiles/`.
+3. Load only the lens files named by that profile.
+4. Apply the profile's posture to the loaded lenses.
 5. Submit one GitHub review with a top-level body and any useful inline comments.
 
 ## Review Output
@@ -177,15 +184,40 @@ Submit a GitHub review, not a loose collection of unrelated comments.
 
 The body must start with one of:
 
-- `[AI Review][strength: passive]`
-- `[AI Review][strength: neutral]`
-- `[AI Review][strength: assertive]`
-- `[AI Review][strength: adversarial]`
+- `🦎🍃` for passive
+- `🦎🧭` for neutral
+- `🦎🔎` for assertive
+- `🦎⚔️` for adversarial
+
+Line 1 should be the emoji marker plus a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that.
+
+Profile voices for line 1:
+
+- `passive`: low-friction unblocker; keep the PR moving without making a scene.
+- `neutral`: practical maintainer/referee; balanced, mildly dry, focused on whether the PR earned trust.
+- `assertive`: positive but exacting; the direction is good, and the review helps sharpen it.
+- `adversarial`: skeptical gatekeeper; grudging when approving, pointed when pausing.
+
+Example line 1 options:
+
+```markdown
+🦎🍃 Nothing here seems worth making a scene about.
+🦎🍃 Looks good enough to keep the conveyor belt moving.
+
+🦎🧭 This seems proportionate; the paperwork has been filed.
+🦎🧭 I found a few things to note, but no red flags waving dramatically.
+
+🦎🔎 Solid direction; I found a few edges worth sharpening.
+🦎🔎 The shape is good, and the nits have clocked in for duty.
+
+🦎⚔️ I tried to dislike this and mostly failed.
+🦎⚔️ I found a real reason to pause here.
+```
 
 Use this shape:
 
 ```markdown
-[AI Review][strength: assertive] Approve/comment summary in one sentence.
+🦎🔎 Solid direction; I found a few edges worth sharpening.
 
 Why:
 - ...
@@ -223,7 +255,7 @@ return records.filter((record) => record.active || record.archived)
 ```
 ````
 
-Avoid inline comments for broad preferences or speculative rewrites. The loaded strength plan determines whether style, convention, naming, or decomposition nits are in scope.
+Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope.
 
 ### GitHub Inline Comment Positioning
 
@@ -258,9 +290,9 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 
 When running in a loop for PRs requesting the user's review:
 
-1. Skip PRs already reviewed by this workflow at the current head SHA for the selected strength unless explicitly rerun.
-2. Treat `passive`, `neutral`, `assertive`, and `adversarial` as separate review strengths; a PR can receive one review per `{head SHA, strength}`.
+1. Skip PRs already reviewed by this workflow at the current head SHA for the selected profile unless explicitly rerun.
+2. Treat `passive`, `neutral`, `assertive`, and `adversarial` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
 3. Reuse the temp repo and `.ai-cache/` context for the same repo.
 4. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
-5. Leave exactly one review per `{head SHA, strength}`.
-6. If metadata or context fetching partially fails, continue with available information and state the limitation in `[AI Review]`.
+5. Leave exactly one review per `{head SHA, profile}`.
+6. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.

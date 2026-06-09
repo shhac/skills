@@ -1,6 +1,6 @@
 # Passive Plan
 
-Use this plan for `passive` strength.
+Use this profile for `passive` reviews.
 
 ## Posture
 
@@ -26,4 +26,4 @@ Read these lens files, and no assertive-only lenses:
 - Use `suggestion` blocks for small quick wins when useful, but do not hunt for nits.
 - Do not request changes unless the PR appears malicious or intentionally dangerous.
 
-Keep the top-level `[AI Review][strength: passive]` body short: state whether the PR solves the issue, why, what context was checked, and any limitations.
+Keep the top-level `🦎🍃` body short. Line 1 should sound like a low-friction unblocker trying to keep the PR moving without making a scene, with a small wink if it fits. Then state whether the PR solves the issue, why, what context was checked, and any limitations.

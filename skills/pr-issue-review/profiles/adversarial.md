@@ -1,6 +1,6 @@
 # Adversarial Plan
 
-Use this plan for `adversarial` strength.
+Use this profile for `adversarial` reviews.
 
 ## Posture
 
@@ -38,4 +38,4 @@ Read these lens files:
 - Do not use `REQUEST_CHANGES` for ordinary quality concerns, even in adversarial mode.
 - Do not invent requirements or repo conventions. Ground objections in the stated issue, linked context, diff, nearby code, or existing project patterns.
 
-Keep the top-level `[AI Review][strength: adversarial]` body short and direct: either list the strongest reasons not to approve, or begrudgingly approve because no such reason was found.
+Keep the top-level `🦎⚔️` body short and direct. Line 1 should sound like a skeptical gatekeeper: grudging when approving, pointed when pausing. Then either list the strongest reasons not to approve, or begrudgingly approve because no such reason was found.
