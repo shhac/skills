@@ -37,7 +37,7 @@ repo_dir="$tmp_root/<host>/<owner>/<repo>"
 mkdir -p "$repo_dir"
 ```
 
-Use a shallow fetch of only the PR refs/commits needed for static inspection. Do not clone full history unless shallow fetch is impossible.
+Use a shallow fetch of only the PR refs/commits needed for static inspection. If shallow fetch is unavailable or insufficient, fall back to GitHub PR diff/patch and file-content APIs/connectors. Ask the user before any full-history clone.
 
 Recommended shape:
 
@@ -45,13 +45,13 @@ Recommended shape:
 git init "$repo_dir"
 cd "$repo_dir"
 git remote add origin <repo-url> 2>/dev/null || git remote set-url origin <repo-url>
-git fetch --no-tags --depth=1 origin pull/<number>/head:pr-<number>
+git fetch --no-tags --depth=1 origin +pull/<number>/head:refs/remotes/origin/pr-<number>
 ```
 
 Fetch the base ref or base SHA shallowly as needed to compute diffs and read base files:
 
 ```bash
-git fetch --no-tags --depth=1 origin <base-ref-or-sha>
+git fetch --no-tags --depth=1 origin +<base-ref-or-sha>:refs/remotes/origin/base-<number>
 ```
 
 If the repo already exists in the temp checkout, reuse it and fetch the latest PR head/base refs shallowly.
@@ -85,6 +85,8 @@ If the following skills are available, use them for the matching references:
 - `agent-notion` for Notion pages or database entries
 
 If a referenced source cannot be fetched, note that in the review context instead of blocking the review.
+
+Use private remote context to inform the review, but do not paste sensitive or unnecessary private details into GitHub. Cite source names and summarize only what is needed to explain the review.
 
 ### Context Cache
 
@@ -124,6 +126,7 @@ Keep the review streamlined. Apply these lenses directly; do not spawn a panel o
 - Does the diff plausibly solve that problem?
 - Are any acceptance criteria missing, contradicted, or only partially handled?
 - If this is one PR in a stack, is this PR a reasonable partial step?
+- If no stated issue or acceptance criteria can be identified after checking PR metadata and discovered references, do not invent one. Use `COMMENT` and state that the review could not verify issue fit.
 
 ### Correctness And Edge Cases
 
