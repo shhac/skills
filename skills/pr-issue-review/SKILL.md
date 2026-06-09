@@ -41,7 +41,7 @@ Previous reviews from this skill are identified by a top-level review body start
 
 ```text
 🦎🍃
-🦎🧭
+🦎⚖️
 🦎🔎
 🦎⚔️
 ```
@@ -49,7 +49,7 @@ Previous reviews from this skill are identified by a top-level review body start
 The lizard marks the review as an AI review. The second emoji marks profile:
 
 - `🍃` passive
-- `🧭` neutral
+- `⚖️` neutral
 - `🔎` assertive
 - `⚔️` aggressive
 
@@ -91,7 +91,7 @@ Available focus packs:
 - Apply the loaded lenses directly. Do not spawn a panel of reviewer subagents.
 - Default to `APPROVE` or `COMMENT`. Use request-changes/blocking language only if the PR appears malicious or intentionally dangerous.
 - Prefer one GitHub review containing:
-  - A top-level review body that starts with the exact selected emoji marker, such as `🦎🧭`
+  - A top-level review body that starts with the exact selected emoji marker, such as `🦎⚖️`
   - Inline review comments for concrete, line-specific findings
   - `suggestion` fenced blocks when the author can accept a quick fix directly
 - Do not require broad pattern changes. If a different pattern would be better, mention it as optional context, not as a blocker.
@@ -211,7 +211,7 @@ Submit a GitHub review, not a loose collection of unrelated comments.
 The body must start with one of:
 
 - `🦎🍃` for passive
-- `🦎🧭` for neutral
+- `🦎⚖️` for neutral
 - `🦎🔎` for assertive
 - `🦎⚔️` for aggressive
 

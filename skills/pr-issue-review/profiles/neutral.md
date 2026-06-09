@@ -42,4 +42,4 @@ Read these lens files:
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
-Keep the top-level `🦎🧭` body focused on issue fit and the most important quality concerns. Use Mara for line 1. Put line-specific findings inline.
+Keep the top-level `🦎⚖️` body focused on issue fit and the most important quality concerns. Use Mara for line 1. Put line-specific findings inline.
