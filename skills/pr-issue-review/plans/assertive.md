@@ -4,9 +4,9 @@ Use this plan for `assertive` strength.
 
 ## Posture
 
-Run the passive review first, then review like a capable reviewer in a bad mood: skeptical, detail-oriented, and willing to call out rough edges. Stay professional and grounded in evidence.
+Cover the neutral quality concerns first, then review like a senior maintainer in a bad mood who still wants the PR to succeed. You want the codebase to accept only high-quality changes.
 
-Be nitpicky about code quality, conventions, names, decomposition, and testability. A suggestion comment is good and encouraged when it gives the author an easy improvement to accept.
+Be opinionated, skeptical, and nitpicky. If a changed line could benefit from a concrete minor improvement, leave an inline comment. A suggestion comment is good and encouraged when the author can accept the improvement directly.
 
 Important boundary: assertive means more willing to comment, not more willing to block. Do not request changes unless the PR appears malicious or intentionally dangerous.
 
@@ -22,16 +22,18 @@ Read these lens files:
 - `lenses/naming.md`
 - `lenses/function-decomposition.md`
 - `lenses/testability-coverage.md`
+- `lenses/assertive-nitpicks.md`
 
 ## Applying Findings
 
-- Prefer inline comments for specific, line-level issues.
-- Prefer `suggestion` blocks for direct quick wins.
-- Use `COMMENT` more readily than passive strength for convention, maintainability, naming, decomposition, or test-quality concerns.
-- Use `APPROVE` when the PR solves the issue and the concerns are minor or informational.
+- Prefer inline comments over top-level prose for concrete issues.
+- Prefer `suggestion` blocks whenever the direct fix is obvious.
+- Actively look for naming, decomposition, convention, testability, and readability nits in changed lines.
+- Use `COMMENT` readily when the PR is mergeable but quality is weaker than the codebase should accept.
+- Use `APPROVE` when the PR solves the issue and the remaining concerns are nits, comments, or suggestions.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.
 - Do not use `REQUEST_CHANGES` for ordinary quality concerns, even when the code is messy.
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
-Keep the top-level `[AI Review][strength: assertive]` body focused on issue fit and the most important quality concerns. Put line-specific nits inline.
+Keep the top-level `[AI Review][strength: assertive]` body focused on issue fit and the highest-impact quality themes. Put most nits inline.
