@@ -25,7 +25,7 @@ All profiles are read-only, stack-aware, and non-blocking except for malicious-l
 If the caller does not specify profile, choose one at review start from PR metadata, comments, and existing reviews:
 
 1. If the most recent previous review on this PR from this skill has a profile marker, match that profile.
-2. If the PR appears to have been written by an AI agent or LLM, use `assertive`.
+2. If the PR appears to have been written by an AI agent or LLM, use `adversarial`.
 3. If this PR has no existing reviews at review start, use `assertive`.
 4. If this PR has exactly one existing GitHub review submission at review start, excluding CI/check annotations and non-review issue comments, use `neutral`.
 5. Otherwise use `passive`, since the review is probably acting as an unblocker.
