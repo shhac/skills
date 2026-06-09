@@ -62,7 +62,7 @@ Load exactly one profile file:
 - `assertive` -> read `profiles/assertive.md`
 - `aggressive` -> read `profiles/aggressive.md`
 
-Then read only the lens files listed by that profile. Some lenses are shared and some are profile-specific; the loaded profile controls which lenses apply and how readily to leave inline comments. For lens files with an explicit `Use this lens when...` gate, load them when listed by the profile, but apply findings only when that gate matches the PR.
+Then read only the character file and lens files listed by that profile. The character file controls the top-level review voice only; the profile controls approval thresholds, strictness, and how readily to leave inline comments. Some lenses are shared and some are profile-specific. For lens files with an explicit `Use this lens when...` gate, load them when listed by the profile, but apply findings only when that gate matches the PR.
 
 ## Focus Packs
 
@@ -196,10 +196,11 @@ Do not commit `.ai-cache/`.
 
 1. Gather PR context and cache discovered remote context.
 2. Select review profile and load exactly one file from `profiles/`.
-3. Load only the lens files named by that profile.
-4. Load any clearly relevant focus packs from `references/focus-packs/`.
-5. Apply the profile's posture to the loaded lenses and focus packs.
-6. Submit one GitHub review with a top-level body and any useful inline comments.
+3. Load the character file named by that profile.
+4. Load only the lens files named by that profile.
+5. Load any clearly relevant focus packs from `references/focus-packs/`.
+6. Apply the profile's posture to the loaded lenses and focus packs, and the character's voice to line 1.
+7. Submit one GitHub review with a top-level body and any useful inline comments.
 
 ## Review Output
 
@@ -214,12 +215,12 @@ The body must start with one of:
 - `🦎🔎` for assertive
 - `🦎⚔️` for aggressive
 
-Line 1 should be the emoji marker plus a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded profile file for the line-one voice and examples.
+Line 1 should be the emoji marker, the loaded character name, and a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded character file for the line-one voice and examples.
 
 Use this shape:
 
 ```markdown
-<emoji marker> <profile verdict sentence>.
+<emoji marker> <Character>: <profile verdict sentence>.
 
 Why:
 - <severity>: <short finding title>. See inline comments.
