@@ -247,7 +247,7 @@ Notes:
 
 Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. If a finding has a stable diff position, put the evidence and direction inline and reference it briefly from the top-level body. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
 
-Use `Focus checked` to name the main axes applied by the loaded profile and changed area, such as issue fit, local repo guidance, user-visible text/localization, batch failure behavior, runtime contracts, testability, or conventions.
+Use `Focus checked` to name the main axes applied by the loaded profile and changed area, such as issue fit, local repo guidance, failure modes/scale, user-visible text/localization, batch failure behavior, runtime contracts, testability, or conventions.
 
 If a previous review from this skill exists on the same PR, include `Previous findings` when useful. Summarize what was resolved, what remains open, and what is new at the current head SHA.
 

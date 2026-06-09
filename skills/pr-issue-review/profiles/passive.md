@@ -14,6 +14,7 @@ Read these lens files, and no assertive-only lenses:
 
 - `lenses/issue-fit.md`
 - `lenses/correctness-edge-cases.md`
+- `lenses/failure-modes-scale.md`
 - `lenses/user-visible-text.md`
 - `lenses/batch-failure-behavior.md`
 - `lenses/structure-boundaries.md`
