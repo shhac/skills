@@ -16,6 +16,9 @@ Read these lens files:
 
 - `lenses/issue-fit.md`
 - `lenses/correctness-edge-cases.md`
+- `lenses/user-visible-text.md`
+- `lenses/batch-failure-behavior.md`
+- `lenses/runtime-contracts.md`
 - `lenses/structure-boundaries.md`
 - `lenses/safety.md`
 - `lenses/conventions.md`
@@ -32,9 +35,10 @@ Read these lens files:
 - Actively look for naming, decomposition, complexity-shape, convention, testability, and readability nits in changed lines.
 - Assertive nitpicks are encouraged: if a minor inline suggestion would make the code meaningfully clearer, more conventional, or easier to maintain, leave it.
 - Use `COMMENT` readily when the PR is mergeable but quality is weaker than the codebase should accept.
-- Use `APPROVE` when the PR solves the issue and the remaining concerns are nits, comments, or suggestions.
+- Approval threshold: `APPROVE` is allowed only when all findings are `💅 P3` or `ℹ️ FYI`.
+- Use `COMMENT` for any `⚠️ P1` or `🔧 P2` finding.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.
-- Do not use `REQUEST_CHANGES` for ordinary quality concerns, even when the code is messy.
+- Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes, never for ordinary quality concerns.
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 

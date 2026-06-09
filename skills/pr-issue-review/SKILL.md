@@ -115,6 +115,7 @@ Use GitHub metadata and static file reads only. Useful sources:
 - PR title, body, branch name, base/head refs and SHAs
 - PR comments, review comments, and review summaries
 - Changed files, patch/diff, and relevant surrounding source files
+- Local repo guidance near changed files, such as `AGENTS.md`, `CLAUDE.md`, package docs, style guides, localization rules, or testing conventions
 - Existing CI status/check conclusions, if available through GitHub metadata
 - Linked issues, stacked PRs, and references in branch names or text
 
@@ -197,19 +198,57 @@ Use this shape:
 <emoji marker> <profile verdict sentence>.
 
 Why:
-- ...
-- ...
+- <severity>: <short finding title>. See inline comments.
+- <severity>: <short top-level-only finding with evidence/impact/direction if no inline anchor exists>.
+- ℹ️ FYI: <context-only note, if useful>.
+
+Focus checked:
+- Issue fit
+- Local repo guidance
+- <loaded lens or domain focus>
 
 Context checked:
 - PR description and diff
 - Linear ENG-1234
 - Slack thread ...
 
+Previous findings:
+- Resolved: ...
+- Still open: ...
+- New: ...
+
 Notes:
 - ...
 ```
 
-Keep it concise. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
+Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. If a finding has a stable diff position, put the evidence and direction inline and reference it briefly from the top-level body. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
+
+Use `Focus checked` to name the main axes applied by the loaded profile and changed area, such as issue fit, local repo guidance, user-visible text/localization, batch failure behavior, runtime contracts, testability, or conventions.
+
+If a previous review from this skill exists on the same PR, include `Previous findings` when useful. Summarize what was resolved, what remains open, and what is new at the current head SHA.
+
+### Finding Severity
+
+Prefix actionable findings in the top-level body and inline comments with a severity marker:
+
+- `🚨 P0` — malicious-looking or intentionally dangerous behavior. This is the only severity that permits `REQUEST_CHANGES`.
+- `⚠️ P1` — a real reason not to approve yet: likely issue-fit gap, correctness bug, safety problem, or missing behavior that matters.
+- `🔧 P2` — should-fix quality or testability concern: strong suggestion, but not enough by itself to block all profiles.
+- `💅 P3` — nit, polish, naming, local cleanup, or easy suggestion.
+- `ℹ️ FYI` — context, limitation, stack note, or observation with no action implied.
+
+Use the loaded profile's approval threshold when deciding between `APPROVE` and `COMMENT`. Severity affects that decision and the tone of the review, but it does not change the blocking policy: only `🚨 P0` can use `REQUEST_CHANGES`.
+
+Failing or pending CI that is already a merge blocker does not count as a review finding for profile approval thresholds. If CI is the only reason not to approve, approve and mention that the PR should be good to go once CI is fixed.
+
+Example top-level finding bullets:
+
+```markdown
+Why:
+- ⚠️ P1: Retry behavior from the linked issue still appears uncovered. See inline comments.
+- 🔧 P2: The parsing helper is hard to exercise directly. See inline comments.
+- 💅 P3: I left a naming suggestion inline.
+```
 
 ### Inline Comments
 
@@ -218,21 +257,26 @@ Use inline comments for specific, line-level findings. Prefer them over burying 
 Good inline comments:
 
 - Point to the exact changed line
-- Explain the issue in terms of the stated goal or user-visible behavior
+- Explain the issue in terms of the stated goal, user-visible behavior, local repo guidance, or codebase contract
+- For `⚠️ P1` and `🔧 P2`, use a compact evidence/impact/direction shape
 - Offer a small fix when possible
 - Use a `suggestion` block for direct quick wins
 
 Example:
 
 ````markdown
-This branch handles the empty result, but the stated issue also mentioned archived records. Would this filter need to include them?
+⚠️ P1 — Archived records are still excluded here.
+
+Evidence: the linked issue mentions archived records, but this filter only keeps active records.
+Impact: the PR can still miss the records the user asked to recover.
+Direction: include archived records here, or explain why that path is handled elsewhere.
 
 ```suggestion
 return records.filter((record) => record.active || record.archived)
 ```
 ````
 
-Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope.
+Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope. If a finding cannot be anchored cleanly to a changed line, keep it in the top-level body with the same severity and evidence/impact/direction discipline.
 
 ### GitHub Inline Comment Positioning
 
@@ -255,8 +299,8 @@ For `suggestion` blocks:
 
 ### Review Decision
 
-- `APPROVE`: The PR appears to solve the stated issue, possibly with minor inline suggestions or optional notes.
-- `COMMENT`: The PR may be incomplete, ambiguous, or has non-blocking concerns that the author should consider.
+- `APPROVE`: The PR appears to solve the stated issue and all findings are within the loaded profile's approval threshold.
+- `COMMENT`: The PR may be incomplete, ambiguous, or has findings above the loaded profile's approval threshold.
 - `REQUEST_CHANGES`: Only for malicious-looking or intentionally dangerous changes.
 
 If the only reason not to approve is a failing or pending CI check that is itself a merge blocker, use `APPROVE` and mention that the PR should be good to go once CI is fixed. Do not duplicate branch protection by withholding approval for CI alone.

@@ -14,6 +14,9 @@ Read these lens files:
 
 - `lenses/issue-fit.md`
 - `lenses/correctness-edge-cases.md`
+- `lenses/user-visible-text.md`
+- `lenses/batch-failure-behavior.md`
+- `lenses/runtime-contracts.md`
 - `lenses/structure-boundaries.md`
 - `lenses/safety.md`
 - `lenses/conventions.md`
@@ -27,9 +30,10 @@ Read these lens files:
 - Prefer inline comments for specific, line-level issues.
 - Prefer `suggestion` blocks for direct quick wins.
 - Use `COMMENT` more readily than the passive profile for material convention, maintainability, naming, decomposition, or test-quality concerns.
-- Use `APPROVE` when the PR solves the issue and the concerns are minor or informational.
+- Approval threshold: `APPROVE` is allowed only when all findings are `💅 P3` or `ℹ️ FYI`.
+- Use `COMMENT` for any `⚠️ P1` or `🔧 P2` finding.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.
-- Do not use `REQUEST_CHANGES` for ordinary quality concerns, even when the code is messy.
+- Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes, never for ordinary quality concerns.
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
