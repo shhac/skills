@@ -219,6 +219,8 @@ Avoid inline comments for broad preferences or speculative rewrites. The loaded 
 - `COMMENT`: The PR may be incomplete, ambiguous, or has non-blocking concerns that the author should consider.
 - `REQUEST_CHANGES`: Only for malicious-looking or intentionally dangerous changes.
 
+If the only reason not to approve is a failing or pending CI check that is itself a merge blocker, use `APPROVE` and mention that the PR should be good to go once CI is fixed. Do not duplicate branch protection by withholding approval for CI alone.
+
 Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 
 ## Automation Behavior

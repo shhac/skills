@@ -29,6 +29,7 @@ Read these lens files:
 - Prefer `suggestion` blocks for direct quick wins.
 - Use `COMMENT` more readily than passive strength for convention, maintainability, naming, decomposition, or test-quality concerns.
 - Use `APPROVE` when the PR solves the issue and the concerns are minor or informational.
+- Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.
 - Do not use `REQUEST_CHANGES` for ordinary quality concerns, even when the code is messy.
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.

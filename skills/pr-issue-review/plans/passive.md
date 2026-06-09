@@ -21,6 +21,7 @@ Read these lens files, and no assertive-only lenses:
 
 - Prefer `APPROVE` when the PR appears to solve the stated issue.
 - Use `COMMENT` when issue fit is incomplete, ambiguous, or cannot be verified.
+- Approve when the only remaining blocker is a failing or pending CI check that already blocks merge.
 - Leave inline comments only for concrete, line-specific findings that materially affect the review.
 - Use `suggestion` blocks for small quick wins when useful, but do not hunt for nits.
 - Do not request changes unless the PR appears malicious or intentionally dangerous.
