@@ -26,11 +26,16 @@ If the caller does not specify profile, choose one at review start from PR metad
 
 1. If the most recent previous review on this PR from this skill has a profile marker, match that profile.
 2. If the PR appears to have been written by an AI agent or LLM, use `adversarial`.
-3. If this PR has no existing reviews at review start, use `assertive`.
-4. If this PR has exactly one existing GitHub review submission at review start, excluding CI/check annotations and non-review issue comments, use `neutral`.
-5. Otherwise use `passive`, since the review is probably acting as an unblocker.
+3. If the PR appears malicious-looking or intentionally dangerous, use `adversarial`.
+4. If the PR is high-risk, broad, or touches sensitive/runtime-contract surfaces, use `adversarial`.
+5. If this PR has no existing GitHub review submissions by anyone at review start, excluding CI/check annotations and non-review issue comments, use `adversarial`.
+6. Otherwise use `assertive`.
+
+Never choose `neutral` or `passive` by fallback. Those profiles require an explicit caller request or continuity from a previous exact profile marker on the same PR.
 
 AI-authorship signals include bot-like authorship, branch names, PR descriptions, commit messages, comments, or co-author lines that mention AI agents, LLMs, Codex, Claude, Copilot, ChatGPT, Devin, Cursor, or similar tooling. Treat this as a heuristic, not a claim about authorship.
+
+High-risk signals include security, auth, permissions, payments, privacy, data deletion, migrations, backfills, schema changes, public API or protocol contracts, generated clients, background jobs, queues, batch workflows, retries, idempotency, production incidents, data correctness bugs, customer-visible bug fixes, broad file spread, or changes spanning several domains.
 
 Previous reviews from this skill are identified by a top-level review body starting with:
 
@@ -58,6 +63,23 @@ Load exactly one profile file:
 - `adversarial` -> read `profiles/adversarial.md`
 
 Then read only the lens files listed by that profile. Some lenses are shared and some are profile-specific; the loaded profile controls which lenses apply and how readily to leave inline comments.
+
+## Focus Packs
+
+After loading the profile and lenses, inspect changed file paths, file extensions, imports/includes, config files, PR title/body, and discovered context for optional focus packs under `references/focus-packs/`.
+
+Load only packs that clearly match the PR. Prefer zero to three packs; load more only when the PR genuinely spans several specialist domains. Focus packs add domain-specific review questions, but they do not change the selected profile, approval thresholds, severity scale, or P0-only blocking policy. Local repo guidance always wins over a generic focus pack.
+
+Available focus packs:
+
+- `grpc-protobuf.md` — `.proto`, protobuf, gRPC, RPC schema evolution, generated RPC clients/servers
+- `graphql-clients.md` — GraphQL schemas/operations/fragments, client caches, pagination, generated GraphQL types
+- `database-migrations.md` — migrations, schema changes, backfills, data repairs, indexes, rollbacks
+- `background-jobs-queues.md` — workers, queues, retries, scheduled jobs, async processors, idempotent jobs
+- `auth-permissions.md` — authentication, authorization, roles, scopes, permissions, tenant boundaries
+- `accessibility.md` — interactive UI, semantics, keyboard behavior, focus, labels, contrast, assistive technology
+- `localization.md` — locale files, translation keys, pluralization, user-visible copy across languages
+- `code-structure-boundaries.md` — broad structural changes, module seams, accidental hubs, large functions/files, wrong-fit abstractions
 
 ## Core Rules
 
@@ -164,6 +186,7 @@ Examples:
 - The stated issue as understood from PR and remote context
 - Acceptance criteria or expected behavior, if present
 - Related PRs or stack notes
+- The selected profile, loaded lenses, and loaded focus packs
 - Any unavailable references
 - The timestamp/source of each cached context file
 
@@ -174,8 +197,9 @@ Do not commit `.ai-cache/`.
 1. Gather PR context and cache discovered remote context.
 2. Select review profile and load exactly one file from `profiles/`.
 3. Load only the lens files named by that profile.
-4. Apply the profile's posture to the loaded lenses.
-5. Submit one GitHub review with a top-level body and any useful inline comments.
+4. Load any clearly relevant focus packs from `references/focus-packs/`.
+5. Apply the profile's posture to the loaded lenses and focus packs.
+6. Submit one GitHub review with a top-level body and any useful inline comments.
 
 ## Review Output
 
