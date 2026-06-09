@@ -30,6 +30,12 @@ Review code changes from multiple specialist perspectives in parallel. Spawns fi
 
 **Reviewers:** Security, Performance, Correctness, Test Coverage, Edge & Ripple
 
+### pr-issue-review
+
+Review a GitHub pull request against its stated issue. Statically reads the PR diff, metadata, comments, and discovered Linear/Slack/Notion/GitHub context; caches fetched context under `.ai-cache/`; then leaves an `[AI Review]` GitHub review with a concise top-level rationale plus targeted inline comments and suggestion blocks for quick wins. Designed for automated review loops: never runs code, usually approves or comments, and only blocks malicious-looking changes.
+
+**Workflow:** Fetch PR shallowly -> Discover context -> Cache context -> Review issue fit -> Approve or comment with inline suggestions
+
 ### brainstorm
 
 Brainstorm competing solutions to a problem using parallel agents. Each proposer independently designs an approach, then all proposers peer-review each other's work. Revised proposals are compared in a structured trade-off matrix.
