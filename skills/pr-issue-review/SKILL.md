@@ -18,7 +18,7 @@ The caller may specify review profile as `passive`, `neutral`, `assertive`, or `
 - `passive` is the restrained unblocker profile.
 - `neutral` is the balanced code-quality profile.
 - `assertive` is the nitpicky maintainer profile. It uses a stricter reviewer posture and additional lenses.
-- `adversarial` is the skeptical gatekeeper profile. Its goal is to find reasons not to approve.
+- `adversarial` is the skeptical-but-friendly profile. Its goal is to find reasons not to approve while keeping the delivery clearly lighthearted.
 
 All profiles are read-only, stack-aware, and non-blocking except for malicious-looking changes.
 
