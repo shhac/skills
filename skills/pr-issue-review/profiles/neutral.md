@@ -1,4 +1,4 @@
-# Neutral Plan
+# Neutral Profile
 
 Use this profile for `neutral` reviews.
 
@@ -34,3 +34,11 @@ Read these lens files:
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
 Keep the top-level `🦎🧭` body focused on issue fit and the most important quality concerns. Line 1 should sound like a practical maintainer/referee: balanced, mildly dry, and focused on whether the PR earned trust. Put line-specific findings inline.
+
+Line 1 examples:
+
+```markdown
+🦎🧭 This seems proportionate; the paperwork has been filed.
+🦎🧭 I found a few things to note, but no red flags waving dramatically.
+🦎🧭 The tradeoffs look reasonable from the cheap seats.
+```

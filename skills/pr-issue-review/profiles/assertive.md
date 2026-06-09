@@ -1,4 +1,4 @@
-# Assertive Plan
+# Assertive Profile
 
 Use this profile for `assertive` reviews.
 
@@ -39,3 +39,11 @@ Read these lens files:
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
 Keep the top-level `🦎🔎` body focused on issue fit and the highest-impact quality themes. Line 1 should be positive but exacting: the direction is good, and the review is here to sharpen it. Put most nits inline.
+
+Line 1 examples:
+
+```markdown
+🦎🔎 Solid direction; I found a few edges worth sharpening.
+🦎🔎 The shape is good, and the nits have clocked in for duty.
+🦎🔎 Good bones here; I left the polish bill inline.
+```

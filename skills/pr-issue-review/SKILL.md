@@ -24,7 +24,7 @@ All profiles are read-only, stack-aware, and non-blocking except for malicious-l
 
 If the caller does not specify profile, choose one at review start from PR metadata, comments, and existing reviews:
 
-1. If the most recent previous review from this skill has a profile marker, match that profile.
+1. If the most recent previous review on this PR from this skill has a profile marker, match that profile.
 2. If the PR appears to have been written by an AI agent or LLM, use `assertive`.
 3. If this PR has no existing reviews at review start, use `assertive`.
 4. If this PR has exactly one existing GitHub review submission at review start, excluding CI/check annotations and non-review issue comments, use `neutral`.
@@ -189,35 +189,12 @@ The body must start with one of:
 - `🦎🔎` for assertive
 - `🦎⚔️` for adversarial
 
-Line 1 should be the emoji marker plus a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that.
-
-Profile voices for line 1:
-
-- `passive`: low-friction unblocker; keep the PR moving without making a scene.
-- `neutral`: practical maintainer/referee; balanced, mildly dry, focused on whether the PR earned trust.
-- `assertive`: positive but exacting; the direction is good, and the review helps sharpen it.
-- `adversarial`: skeptical gatekeeper; grudging when approving, pointed when pausing.
-
-Example line 1 options:
-
-```markdown
-🦎🍃 Nothing here seems worth making a scene about.
-🦎🍃 Looks good enough to keep the conveyor belt moving.
-
-🦎🧭 This seems proportionate; the paperwork has been filed.
-🦎🧭 I found a few things to note, but no red flags waving dramatically.
-
-🦎🔎 Solid direction; I found a few edges worth sharpening.
-🦎🔎 The shape is good, and the nits have clocked in for duty.
-
-🦎⚔️ I tried to dislike this and mostly failed.
-🦎⚔️ I found a real reason to pause here.
-```
+Line 1 should be the emoji marker plus a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded profile file for the line-one voice and examples.
 
 Use this shape:
 
 ```markdown
-🦎🔎 Solid direction; I found a few edges worth sharpening.
+<emoji marker> <profile verdict sentence>.
 
 Why:
 - ...
@@ -290,9 +267,10 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 
 When running in a loop for PRs requesting the user's review:
 
-1. Skip PRs already reviewed by this workflow at the current head SHA for the selected profile unless explicitly rerun.
-2. Treat `passive`, `neutral`, `assertive`, and `adversarial` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
-3. Reuse the temp repo and `.ai-cache/` context for the same repo.
-4. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
-5. Leave exactly one review per `{head SHA, profile}`.
-6. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
+1. Select the review profile from the explicit caller request or fallback rules above.
+2. Skip PRs already reviewed by this workflow at the current head SHA for the selected profile unless explicitly rerun.
+3. Treat `passive`, `neutral`, `assertive`, and `adversarial` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
+4. Reuse the temp repo and `.ai-cache/` context for the same repo.
+5. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
+6. Leave exactly one review per `{head SHA, profile}`.
+7. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.

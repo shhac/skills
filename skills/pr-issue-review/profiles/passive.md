@@ -1,4 +1,4 @@
-# Passive Plan
+# Passive Profile
 
 Use this profile for `passive` reviews.
 
@@ -27,3 +27,11 @@ Read these lens files, and no assertive-only lenses:
 - Do not request changes unless the PR appears malicious or intentionally dangerous.
 
 Keep the top-level `🦎🍃` body short. Line 1 should sound like a low-friction unblocker trying to keep the PR moving without making a scene, with a small wink if it fits. Then state whether the PR solves the issue, why, what context was checked, and any limitations.
+
+Line 1 examples:
+
+```markdown
+🦎🍃 Nothing here seems worth making a scene about.
+🦎🍃 Looks good enough to keep the conveyor belt moving.
+🦎🍃 This clears the bar without knocking over any furniture.
+```

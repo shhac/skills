@@ -1,6 +1,6 @@
 # Assertive Nitpicks Lens
 
-This lens is intentionally opinionated. Use it only from the assertive plan.
+This lens is intentionally opinionated. Use it when listed by the assertive or adversarial profile.
 
 Look at changed lines and ask: "Would I be happier maintaining this code if this small thing were improved now?"
 

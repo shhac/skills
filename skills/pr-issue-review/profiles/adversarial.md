@@ -1,4 +1,4 @@
-# Adversarial Plan
+# Adversarial Profile
 
 Use this profile for `adversarial` reviews.
 
@@ -39,3 +39,27 @@ Read these lens files:
 - Do not invent requirements or repo conventions. Ground objections in the stated issue, linked context, diff, nearby code, or existing project patterns.
 
 Keep the top-level `🦎⚔️` body short and direct. Line 1 should sound like a skeptical gatekeeper: grudging when approving, pointed when pausing. Then either list the strongest reasons not to approve, or begrudgingly approve because no such reason was found.
+
+Line 1 examples:
+
+```markdown
+🦎⚔️ I tried to dislike this and mostly failed.
+🦎⚔️ I found a real reason to pause here.
+🦎⚔️ The prosecution has notes.
+```
+
+Example `COMMENT` shape:
+
+```markdown
+🦎⚔️ I found a real reason to pause here.
+
+Why:
+- The PR handles the new happy path, but the linked issue also calls out the retry case and this diff appears to leave that path unchanged.
+
+Context checked:
+- PR description and diff
+- Linear ENG-1234
+
+Notes:
+- I did not see anything malicious or intentionally dangerous, so this is a comment rather than a blocking review.
+```
