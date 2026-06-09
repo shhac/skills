@@ -1,6 +1,6 @@
 ---
 name: pr-issue-review
-description: Review a GitHub pull request using the passive, neutral, assertive, or adversarial profile by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an emoji-marked top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
+description: Review a GitHub pull request using the passive, neutral, assertive, or aggressive profile by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an emoji-marked top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
 ---
 
 # PR Issue Review
@@ -13,22 +13,22 @@ This is a focused, context-aware review for PRs that ask for the user's review. 
 
 ## Review Profile
 
-The caller may specify review profile as `passive`, `neutral`, `assertive`, or `adversarial`. An explicit caller-specified profile always wins.
+The caller may specify review profile as `passive`, `neutral`, `assertive`, or `aggressive`. An explicit caller-specified profile always wins.
 
 - `passive` is the restrained unblocker profile.
 - `neutral` is the balanced code-quality profile.
 - `assertive` is the nitpicky maintainer profile. It uses a stricter reviewer posture and additional lenses.
-- `adversarial` is the skeptical-but-friendly profile. Its goal is to find reasons not to approve while keeping the delivery clearly lighthearted.
+- `aggressive` is the skeptical-but-friendly profile. Its goal is to find reasons not to approve while keeping the delivery clearly lighthearted.
 
 All profiles are read-only, stack-aware, and non-blocking except for malicious-looking changes.
 
 If the caller does not specify profile, choose one at review start from PR metadata, comments, and existing reviews:
 
 1. If the most recent previous review on this PR from this skill has a profile marker, match that profile.
-2. If the PR appears to have been written by an AI agent or LLM, use `adversarial`.
-3. If the PR appears malicious-looking or intentionally dangerous, use `adversarial`.
-4. If the PR is high-risk, broad, or touches sensitive/runtime-contract surfaces, use `adversarial`.
-5. If this PR has no existing GitHub review submissions by anyone at review start, excluding CI/check annotations and non-review issue comments, use `adversarial`.
+2. If the PR appears to have been written by an AI agent or LLM, use `aggressive`.
+3. If the PR appears malicious-looking or intentionally dangerous, use `aggressive`.
+4. If the PR is high-risk, broad, or touches sensitive/runtime-contract surfaces, use `aggressive`.
+5. If this PR has no existing GitHub review submissions by anyone at review start, excluding CI/check annotations and non-review issue comments, use `aggressive`.
 6. Otherwise use `assertive`.
 
 Never choose `neutral` or `passive` by fallback. Those profiles require an explicit caller request or continuity from a previous exact profile marker on the same PR.
@@ -51,7 +51,7 @@ The lizard marks the review as an AI review. The second emoji marks profile:
 - `🍃` passive
 - `🧭` neutral
 - `🔎` assertive
-- `⚔️` adversarial
+- `⚔️` aggressive
 
 Comments without one of these exact opening markers cannot be matched by profile; continue through the fallback rules.
 
@@ -60,7 +60,7 @@ Load exactly one profile file:
 - `passive` -> read `profiles/passive.md`
 - `neutral` -> read `profiles/neutral.md`
 - `assertive` -> read `profiles/assertive.md`
-- `adversarial` -> read `profiles/adversarial.md`
+- `aggressive` -> read `profiles/aggressive.md`
 
 Then read only the lens files listed by that profile. Some lenses are shared and some are profile-specific; the loaded profile controls which lenses apply and how readily to leave inline comments. For lens files with an explicit `Use this lens when...` gate, load them when listed by the profile, but apply findings only when that gate matches the PR.
 
@@ -212,7 +212,7 @@ The body must start with one of:
 - `🦎🍃` for passive
 - `🦎🧭` for neutral
 - `🦎🔎` for assertive
-- `🦎⚔️` for adversarial
+- `🦎⚔️` for aggressive
 
 Line 1 should be the emoji marker plus a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded profile file for the line-one voice and examples.
 
@@ -337,7 +337,7 @@ When running in a loop for PRs requesting the user's review:
 
 1. Select the review profile from the explicit caller request or fallback rules above.
 2. Skip PRs already reviewed by this workflow at the current head SHA for the selected profile unless explicitly rerun.
-3. Treat `passive`, `neutral`, `assertive`, and `adversarial` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
+3. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
 4. Reuse the temp repo and `.ai-cache/` context for the same repo.
 5. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
 6. Leave exactly one review per `{head SHA, profile}`.

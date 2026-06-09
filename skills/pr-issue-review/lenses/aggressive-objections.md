@@ -1,6 +1,6 @@
-# Adversarial Objections Lens
+# Aggressive Objections Lens
 
-This lens is intentionally skeptical. Use it only from the adversarial profile.
+This lens is intentionally skeptical. Use it only from the aggressive profile.
 
 Try to disprove that the PR is ready to approve.
 

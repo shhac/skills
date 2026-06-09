@@ -32,7 +32,7 @@ Review code changes from multiple specialist perspectives in parallel. Spawns fi
 
 ### pr-issue-review
 
-Review a GitHub pull request against its stated issue using the `passive`, `neutral`, `assertive`, or `adversarial` profile. Statically reads the PR diff, metadata, comments, and discovered Linear/Slack/Notion/GitHub context; caches fetched context under the temporary checkout's untracked `.ai-cache/`; then loads the chosen profile, review lenses, and any matching focus packs before leaving an emoji-marked GitHub review with severity-tagged findings, a concise top-level rationale, targeted inline comments, and suggestion blocks for quick wins. Designed for automated review loops: never runs code, usually approves or comments, and only blocks malicious-looking changes.
+Review a GitHub pull request against its stated issue using the `passive`, `neutral`, `assertive`, or `aggressive` profile. Statically reads the PR diff, metadata, comments, and discovered Linear/Slack/Notion/GitHub context; caches fetched context under the temporary checkout's untracked `.ai-cache/`; then loads the chosen profile, review lenses, and any matching focus packs before leaving an emoji-marked GitHub review with severity-tagged findings, a concise top-level rationale, targeted inline comments, and suggestion blocks for quick wins. Designed for automated review loops: never runs code, usually approves or comments, and only blocks malicious-looking changes.
 
 **Workflow:** Fetch PR shallowly → Discover context → Cache context → Choose review profile → Load lenses/focus packs → Approve or comment with inline suggestions
 

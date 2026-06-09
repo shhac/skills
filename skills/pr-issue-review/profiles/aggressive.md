@@ -1,12 +1,12 @@
-# Adversarial Profile
+# Aggressive Profile
 
-Use this profile for `adversarial` reviews.
+Use this profile for `aggressive` reviews.
 
 ## Posture
 
 Review like a skeptical but friendly maintainer whose goal is to find reasons not to approve the PR. Assume the PR might be incomplete, overfit, fragile, under-tested, or too risky until the diff and context prove otherwise.
 
-Be adversarial about the change, not rude to the author. The review should still be useful, evidence-based, and visibly on the author's side.
+Be aggressive about the change, not rude to the author. The review should still be useful, evidence-based, and visibly on the author's side.
 
 If you cannot find a real reason not to approve, approve with a dry but positive line. Make the joke land as "I looked hard and this held up," not "I resent approving this."
 
@@ -30,7 +30,7 @@ Read these lens files:
 - `lenses/complexity-shape.md`
 - `lenses/testability-coverage.md`
 - `lenses/assertive-nitpicks.md`
-- `lenses/adversarial-objections.md`
+- `lenses/aggressive-objections.md`
 
 ## Applying Findings
 
