@@ -1,6 +1,6 @@
 ---
 name: pr-issue-review
-description: Review a GitHub pull request at passive, neutral, or assertive strength by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an "[AI Review]" top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
+description: Review a GitHub pull request at passive, neutral, assertive, or adversarial strength by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an "[AI Review]" top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
 ---
 
 # PR Issue Review
@@ -13,11 +13,12 @@ This is a focused, context-aware review for PRs that ask for the user's review. 
 
 ## Review Strength
 
-The caller may specify review strength as `passive`, `neutral`, or `assertive`. An explicit caller-specified strength always wins.
+The caller may specify review strength as `passive`, `neutral`, `assertive`, or `adversarial`. An explicit caller-specified strength always wins.
 
 - `passive` is the restrained unblocker strength.
 - `neutral` is the balanced code-quality strength.
 - `assertive` is the nitpicky maintainer strength. It uses a stricter reviewer posture and additional lenses.
+- `adversarial` is the skeptical gatekeeper strength. Its goal is to find reasons not to approve.
 
 All strengths are read-only, stack-aware, and non-blocking except for malicious-looking changes.
 
@@ -37,6 +38,7 @@ Previous reviews from this skill are identified by a top-level review body start
 [AI Review][strength: passive]
 [AI Review][strength: neutral]
 [AI Review][strength: assertive]
+[AI Review][strength: adversarial]
 ```
 
 Older `[AI Review]` comments without one of these exact strength markers cannot be matched by strength; continue through the fallback rules.
@@ -46,6 +48,7 @@ Load exactly one strength plan:
 - `passive` -> read `plans/passive.md`
 - `neutral` -> read `plans/neutral.md`
 - `assertive` -> read `plans/assertive.md`
+- `adversarial` -> read `plans/adversarial.md`
 
 Then read only the lens files listed by that plan. Some lenses are shared and some are strength-specific; the loaded plan controls which lenses apply and how readily to leave inline comments.
 
@@ -177,6 +180,7 @@ The body must start with one of:
 - `[AI Review][strength: passive]`
 - `[AI Review][strength: neutral]`
 - `[AI Review][strength: assertive]`
+- `[AI Review][strength: adversarial]`
 
 Use this shape:
 
@@ -221,6 +225,25 @@ return records.filter((record) => record.active || record.archived)
 
 Avoid inline comments for broad preferences or speculative rewrites. The loaded strength plan determines whether style, convention, naming, or decomposition nits are in scope.
 
+### GitHub Inline Comment Positioning
+
+When leaving inline review comments:
+
+- Attach comments to the changed line in the PR diff whenever possible.
+- Use the right side/new line for added or modified code.
+- Use the left side/old line only when the issue is specifically about removed code.
+- Use multi-line comments only for a contiguous changed range.
+- If the concern spans several files, unchanged context, or architecture outside the diff, put it in the top-level review body instead of forcing a weak inline anchor.
+- If there is no stable diff position for the comment, do not leave an inline comment.
+
+For `suggestion` blocks:
+
+- Use a suggestion only when the replacement is exact, local, and safe for the author to apply directly.
+- The block must contain only the replacement code for the commented line or contiguous range.
+- Preserve indentation and surrounding style.
+- Do not include placeholders, ellipses, line numbers, or explanatory prose inside the `suggestion` block.
+- Avoid suggestions for changes that require edits outside the commented range.
+
 ### Review Decision
 
 - `APPROVE`: The PR appears to solve the stated issue, possibly with minor inline suggestions or optional notes.
@@ -236,7 +259,7 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 When running in a loop for PRs requesting the user's review:
 
 1. Skip PRs already reviewed by this workflow at the current head SHA for the selected strength unless explicitly rerun.
-2. Treat `passive`, `neutral`, and `assertive` as separate review strengths; a PR can receive one review per `{head SHA, strength}`.
+2. Treat `passive`, `neutral`, `assertive`, and `adversarial` as separate review strengths; a PR can receive one review per `{head SHA, strength}`.
 3. Reuse the temp repo and `.ai-cache/` context for the same repo.
 4. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
 5. Leave exactly one review per `{head SHA, strength}`.

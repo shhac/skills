@@ -32,9 +32,9 @@ Review code changes from multiple specialist perspectives in parallel. Spawns fi
 
 ### pr-issue-review
 
-Review a GitHub pull request against its stated issue at `passive`, `neutral`, or `assertive` strength. Statically reads the PR diff, metadata, comments, and discovered Linear/Slack/Notion/GitHub context; caches fetched context under the temporary checkout's untracked `.ai-cache/`; then loads the chosen strength plan and its listed review lenses before leaving an `[AI Review]` GitHub review with a concise top-level rationale plus targeted inline comments and suggestion blocks for quick wins. Designed for automated review loops: never runs code, usually approves or comments, and only blocks malicious-looking changes.
+Review a GitHub pull request against its stated issue at `passive`, `neutral`, `assertive`, or `adversarial` strength. Statically reads the PR diff, metadata, comments, and discovered Linear/Slack/Notion/GitHub context; caches fetched context under the temporary checkout's untracked `.ai-cache/`; then loads the chosen strength plan and its listed review lenses before leaving an `[AI Review]` GitHub review with a concise top-level rationale plus targeted inline comments and suggestion blocks for quick wins. Designed for automated review loops: never runs code, usually approves or comments, and only blocks malicious-looking changes.
 
-**Workflow:** Fetch PR shallowly → Discover context → Cache context → Passive / neutral / assertive review → Approve or comment with inline suggestions
+**Workflow:** Fetch PR shallowly → Discover context → Cache context → Passive / neutral / assertive / adversarial review → Approve or comment with inline suggestions
 
 ### brainstorm
 
