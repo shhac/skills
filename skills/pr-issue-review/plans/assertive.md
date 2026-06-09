@@ -21,6 +21,7 @@ Read these lens files:
 - `lenses/conventions.md`
 - `lenses/naming.md`
 - `lenses/function-decomposition.md`
+- `lenses/complexity-shape.md`
 - `lenses/testability-coverage.md`
 - `lenses/assertive-nitpicks.md`
 
@@ -28,7 +29,8 @@ Read these lens files:
 
 - Prefer inline comments over top-level prose for concrete issues.
 - Prefer `suggestion` blocks whenever the direct fix is obvious.
-- Actively look for naming, decomposition, convention, testability, and readability nits in changed lines.
+- Actively look for naming, decomposition, complexity-shape, convention, testability, and readability nits in changed lines.
+- Assertive nitpicks are encouraged: if a minor inline suggestion would make the code meaningfully clearer, more conventional, or easier to maintain, leave it.
 - Use `COMMENT` readily when the PR is mergeable but quality is weaker than the codebase should accept.
 - Use `APPROVE` when the PR solves the issue and the remaining concerns are nits, comments, or suggestions.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.

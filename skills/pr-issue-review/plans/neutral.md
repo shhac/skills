@@ -19,6 +19,7 @@ Read these lens files:
 - `lenses/conventions.md`
 - `lenses/naming.md`
 - `lenses/function-decomposition.md`
+- `lenses/complexity-shape.md`
 - `lenses/testability-coverage.md`
 
 ## Applying Findings

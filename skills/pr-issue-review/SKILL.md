@@ -19,14 +19,14 @@ The caller may specify review strength as `passive`, `neutral`, or `assertive`. 
 - `neutral` is the balanced code-quality strength.
 - `assertive` is the nitpicky maintainer strength. It uses a stricter reviewer posture and additional lenses.
 
-Both strengths are read-only, stack-aware, and non-blocking except for malicious-looking changes.
+All strengths are read-only, stack-aware, and non-blocking except for malicious-looking changes.
 
 If the caller does not specify strength, choose strength at review start from PR metadata, comments, and existing reviews:
 
 1. If the most recent previous review from this skill has a strength marker, match that strength.
 2. If the PR appears to have been written by an AI agent or LLM, use `assertive`.
 3. If this PR has no existing reviews at review start, use `assertive`.
-4. If this PR has exactly one existing review at review start, use `neutral`.
+4. If this PR has exactly one existing GitHub review submission at review start, excluding CI/check annotations and non-review issue comments, use `neutral`.
 5. Otherwise use `passive`, since the review is probably acting as an unblocker.
 
 AI-authorship signals include bot-like authorship, branch names, PR descriptions, commit messages, comments, or co-author lines that mention AI agents, LLMs, Codex, Claude, Copilot, ChatGPT, Devin, Cursor, or similar tooling. Treat this as a heuristic, not a claim about authorship.
@@ -59,7 +59,7 @@ Then read only the lens files listed by that plan. Some lenses are shared and so
 - Apply the loaded lenses directly. Do not spawn a panel of reviewer subagents.
 - Default to `APPROVE` or `COMMENT`. Use request-changes/blocking language only if the PR appears malicious or intentionally dangerous.
 - Prefer one GitHub review containing:
-  - A top-level review body that starts with `[AI Review]`
+  - A top-level review body that starts with the exact selected strength marker, such as `[AI Review][strength: neutral]`
   - Inline review comments for concrete, line-specific findings
   - `suggestion` fenced blocks when the author can accept a quick fix directly
 - Do not require broad pattern changes. If a different pattern would be better, mention it as optional context, not as a blocker.
@@ -235,7 +235,7 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 
 When running in a loop for PRs requesting the user's review:
 
-1. Skip PRs already reviewed by this workflow at the current head SHA unless explicitly rerun.
+1. Skip PRs already reviewed by this workflow at the current head SHA for the selected strength unless explicitly rerun.
 2. Treat `passive`, `neutral`, and `assertive` as separate review strengths; a PR can receive one review per `{head SHA, strength}`.
 3. Reuse the temp repo and `.ai-cache/` context for the same repo.
 4. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.

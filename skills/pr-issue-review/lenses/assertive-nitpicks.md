@@ -8,6 +8,8 @@ Leave inline comments for concrete improvements in:
 
 - Names that could be more precise, conventional, shorter, or more domain-specific
 - Branching that could be flatter, clearer, or split into guard clauses
+- Functions that are long, return-heavy, or stateful enough to be annoying to reason about
+- Files that are accumulating unrelated behavior or becoming harder to navigate
 - Functions that mix concerns or hide testable logic inside IO/framework glue
 - Tests that cover the implementation but not the behavior, or miss an obvious edge case
 - Assertions that are too broad, too weak, or hard to diagnose when they fail
