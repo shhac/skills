@@ -1,6 +1,6 @@
 # Passive Plan
 
-Use this plan for the default `passive` mode.
+Use this plan for `passive` strength.
 
 ## Posture
 
@@ -25,4 +25,4 @@ Read these lens files, and no assertive-only lenses:
 - Use `suggestion` blocks for small quick wins when useful, but do not hunt for nits.
 - Do not request changes unless the PR appears malicious or intentionally dangerous.
 
-Keep the top-level `[AI Review]` body short: state whether the PR solves the issue, why, what context was checked, and any limitations.
+Keep the top-level `[AI Review][strength: passive]` body short: state whether the PR solves the issue, why, what context was checked, and any limitations.

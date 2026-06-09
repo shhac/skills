@@ -1,6 +1,6 @@
 ---
 name: pr-issue-review
-description: Review a GitHub pull request in passive or assertive mode by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an "[AI Review]" top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
+description: Review a GitHub pull request at passive or assertive strength by statically reading the PR diff, metadata, comments, and discovered issue/context links to determine whether it solves the stated issue. Use for automated or manual PR review flows that should leave an "[AI Review]" top-level review plus targeted inline comments or suggestion blocks, without running code or blocking except for malicious-looking changes.
 ---
 
 # PR Issue Review
@@ -11,21 +11,39 @@ Review a GitHub pull request with one primary question:
 
 This is a focused, context-aware review for PRs that ask for the user's review. It is not a full multi-perspective review or refactor audit.
 
-## Review Mode
+## Review Strength
 
-The caller may specify `passive` or `assertive`.
+The caller may specify review strength as `passive` or `assertive`. An explicit caller-specified strength always wins.
 
-- `passive` is the default. Use it when the caller does not specify a mode.
+- `passive` is the restrained unblocker strength.
 - `assertive` uses a stricter reviewer posture and additional lenses.
 
-Both modes are read-only, stack-aware, and non-blocking except for malicious-looking changes.
+Both strengths are read-only, stack-aware, and non-blocking except for malicious-looking changes.
 
-Load exactly one mode plan:
+If the caller does not specify strength, choose strength at review start from PR metadata, comments, and existing reviews:
+
+1. If this PR has no existing reviews at review start, use `assertive`.
+2. If the PR appears to have been written by an AI agent or LLM, use `assertive`.
+3. If the most recent previous review from this skill has a strength marker, match that strength.
+4. Otherwise use `passive`, since the review is probably acting as an unblocker.
+
+AI-authorship signals include bot-like authorship, branch names, PR descriptions, commit messages, comments, or co-author lines that mention AI agents, LLMs, Codex, Claude, Copilot, ChatGPT, Devin, Cursor, or similar tooling. Treat this as a heuristic, not a claim about authorship.
+
+Previous reviews from this skill are identified by a top-level review body starting with:
+
+```text
+[AI Review][strength: passive]
+[AI Review][strength: assertive]
+```
+
+Older `[AI Review]` comments without a strength marker cannot be matched by strength; continue through the fallback rules.
+
+Load exactly one strength plan:
 
 - `passive` -> read `plans/passive.md`
 - `assertive` -> read `plans/assertive.md`
 
-Then read only the lens files listed by that plan. Lens files are mode-neutral; the loaded plan controls how strongly to apply them and how readily to leave inline comments.
+Then read only the lens files listed by that plan. Lens files are strength-neutral; the loaded plan controls how strongly to apply them and how readily to leave inline comments.
 
 ## Core Rules
 
@@ -139,7 +157,7 @@ Do not commit `.ai-cache/`.
 ## Review Procedure
 
 1. Gather PR context and cache discovered remote context.
-2. Load exactly one mode plan from `plans/`.
+2. Select review strength and load exactly one plan from `plans/`.
 3. Load only the lens files named by that plan.
 4. Apply the plan's posture to the loaded lenses.
 5. Submit one GitHub review with a top-level body and any useful inline comments.
@@ -150,12 +168,12 @@ Submit a GitHub review, not a loose collection of unrelated comments.
 
 ### Top-Level Review Body
 
-The body must start with `[AI Review]`.
+The body must start with `[AI Review][strength: passive]` or `[AI Review][strength: assertive]`.
 
 Use this shape:
 
 ```markdown
-[AI Review] Approve/comment summary in one sentence.
+[AI Review][strength: assertive] Approve/comment summary in one sentence.
 
 Why:
 - ...
@@ -193,7 +211,7 @@ return records.filter((record) => record.active || record.archived)
 ```
 ````
 
-Avoid inline comments for broad preferences or speculative rewrites. The loaded mode plan determines whether style, convention, naming, or decomposition nits are in scope.
+Avoid inline comments for broad preferences or speculative rewrites. The loaded strength plan determines whether style, convention, naming, or decomposition nits are in scope.
 
 ### Review Decision
 
@@ -208,8 +226,8 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 When running in a loop for PRs requesting the user's review:
 
 1. Skip PRs already reviewed by this workflow at the current head SHA unless explicitly rerun.
-2. Treat `passive` and `assertive` as separate review modes; a PR can receive one review per `{head SHA, mode}`.
+2. Treat `passive` and `assertive` as separate review strengths; a PR can receive one review per `{head SHA, strength}`.
 3. Reuse the temp repo and `.ai-cache/` context for the same repo.
 4. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
-5. Leave exactly one review per `{head SHA, mode}`.
+5. Leave exactly one review per `{head SHA, strength}`.
 6. If metadata or context fetching partially fails, continue with available information and state the limitation in `[AI Review]`.
