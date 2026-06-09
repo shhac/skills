@@ -62,7 +62,7 @@ Load exactly one profile file:
 - `assertive` -> read `profiles/assertive.md`
 - `adversarial` -> read `profiles/adversarial.md`
 
-Then read only the lens files listed by that profile. Some lenses are shared and some are profile-specific; the loaded profile controls which lenses apply and how readily to leave inline comments.
+Then read only the lens files listed by that profile. Some lenses are shared and some are profile-specific; the loaded profile controls which lenses apply and how readily to leave inline comments. For lens files with an explicit `Use this lens when...` gate, load them when listed by the profile, but apply findings only when that gate matches the PR.
 
 ## Focus Packs
 
