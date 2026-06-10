@@ -123,6 +123,48 @@ Inline comment rules:
 - `line` is the file's line number on the chosen side, not a diff offset. `side` is `RIGHT` for added/modified lines, `LEFT` for removed lines.
 - For a multi-line comment, set `start_line`/`start_side` for the first line of the range and `line`/`side` for the last; the whole range must be contiguous changed lines in one hunk.
 - Every anchor must be a line that is part of the PR diff. Anchoring to an unchanged or out-of-diff line fails the whole POST with HTTP 422.
-- `suggestion` blocks replace exactly the commented line or range, and only work on `RIGHT`-side anchors.
+- `suggestion` blocks replace exactly the commented line or range, and only work on `RIGHT`-side anchors. Build and verify every suggestion with the protocol below.
+
+## Suggestion Block Protocol
+
+When the author clicks apply, GitHub replaces exactly lines `start_line..line` of the head file with the block content and commits the result. Anchors and block content must therefore be derived from the PR head and verified mechanically, never estimated from the unified diff; eyeballed line arithmetic from `@@` hunk headers is the main source of wrong anchors and broken applied commits.
+
+These commands use the refs fetched in Setup (`origin/pr-<number>` for the head, `origin/base-<number>` for the base).
+
+1. Derive the anchor from the file, not the diff. Find the target line's number in the head file:
+
+   ```bash
+   git grep -n 'records.filter((record) => record.active)' origin/pr-<number> -- src/records/filter.ts
+   ```
+
+   That line number is `line` with `"side": "RIGHT"`. If the pattern matches more than once, narrow it until the intended occurrence is unambiguous. Then confirm the anchor is a changed line: the `+<start>,<count>` in each hunk header of
+
+   ```bash
+   git diff -U0 origin/base-<number> origin/pr-<number> -- src/records/filter.ts
+   ```
+
+   lists the new-side changed ranges, and the anchor (and every line of a multi-line range) must fall inside one of them.
+
+2. Build the block by copy-then-edit. Print the exact anchored range from the head file:
+
+   ```bash
+   git show origin/pr-<number>:src/records/filter.ts | sed -n '<start_line>,<line>p'
+   ```
+
+   Copy those lines into the `suggestion` block verbatim, then apply the minimal edit. Never retype code from memory: indentation (tabs versus spaces), quoting, and trailing characters must survive exactly.
+
+3. Verify the splice before submitting. For every suggestion, check:
+
+   - Every line the fix changes lies inside `start_line..line`.
+   - Every line of the anchored range is accounted for in the block, either unchanged or deliberately edited; anything missing gets deleted on apply.
+   - Splicing the block into the file in place of the range leaves it well formed (balanced brackets, commas, fences, indentation consistent with neighbors).
+
+4. Downgrade when verification fails. If the fix needs a line outside the anchored range, widen the anchor to the contiguous changed range that covers it; if the needed lines are not contiguous changed lines, do not use a suggestion. Use a plain fenced code block with a prose direction instead. A described fix beats a misapplied one.
+
+5. Guardrails:
+
+   - `start_line` must be strictly less than `line`, both with `"side"`/`"start_side"` of `RIGHT`.
+   - Suggestion ranges in the same file must not overlap. For directly adjacent ranges, prefer one merged multi-line suggestion over two back-to-back ones, since authors often batch-apply.
+   - If the replacement itself contains triple backticks, fence the suggestion with four backticks.
 
 If the POST fails with a 422, the most likely cause is one bad anchor. Identify the offending comment from the error message, move that finding into the top-level `body` with the same severity, and resubmit, rather than dropping the review or scattering loose comments.

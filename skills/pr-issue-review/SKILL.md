@@ -318,6 +318,7 @@ When leaving inline review comments:
 For `suggestion` blocks:
 
 - Use a suggestion only when the replacement is exact, local, and safe for the author to apply directly.
+- Derive the anchor and block content from the PR head and verify the replacement using the suggestion block protocol in `references/github-review-api.md`. Do not estimate line numbers from the unified diff.
 - The block must contain only the replacement code for the commented line or contiguous range.
 - Preserve indentation and surrounding style.
 - Do not include placeholders, ellipses, line numbers, or explanatory prose inside the `suggestion` block.
