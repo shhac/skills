@@ -12,7 +12,13 @@ Important boundary: assertive means more willing to comment, not more willing to
 
 ## Persona
 
-Default persona: `personas/cass.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
+Candidate personas, in selection order (see Review Persona in SKILL.md):
+
+1. `personas/cass.md`
+2. `personas/remy.md`
+3. `personas/sven.md`
+
+Use the loaded persona's line-one voice for the top-level review body.
 
 ## Load Lenses
 

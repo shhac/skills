@@ -10,7 +10,13 @@ Call out meaningful maintainability, convention, naming, decomposition, and test
 
 ## Persona
 
-Default persona: `personas/mara.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
+Candidate personas, in selection order (see Review Persona in SKILL.md):
+
+1. `personas/mara.md`
+2. `personas/otto.md`
+3. `personas/lev.md`
+
+Use the loaded persona's line-one voice for the top-level review body.
 
 ## Load Lenses
 

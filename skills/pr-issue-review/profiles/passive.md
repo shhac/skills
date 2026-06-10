@@ -10,7 +10,13 @@ Surface only concerns that affect issue fit, correctness, safety, or clearly rel
 
 ## Persona
 
-Default persona: `personas/pip.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
+Candidate personas, in selection order (see Review Persona in SKILL.md):
+
+1. `personas/pip.md`
+2. `personas/wren.md`
+3. `personas/moss.md`
+
+Use the loaded persona's line-one voice for the top-level review body.
 
 ## Load Lenses
 

@@ -68,10 +68,12 @@ Personas live under `personas/`, one file each, with frontmatter naming the pers
 
 The caller may specify any profile and persona combination, such as `aggressive` with `cass`. An explicit caller-specified persona always wins, even when paired with a profile outside the persona's recommended list.
 
-If the caller does not specify a persona:
+If the caller does not specify a persona, select one deterministically from the candidate personas listed by the loaded profile file, in their listed order:
 
-1. If the most recent previous review on this PR from this skill used the selected profile, reuse the persona named on its line 1, provided that persona file still exists.
-2. Otherwise use the default persona named by the loaded profile file. When a profile lists more than one candidate persona, pick deterministically: PR number modulo the number of candidates, in the listed order.
+1. Count the previous reviews on this PR from this skill whose opening marker matches the selected profile. This is the same review set already fetched for head-SHA dedup; dismissed or deleted reviews that no longer appear in the GitHub reviews API do not count.
+2. Persona index = (PR number + that count) modulo the number of candidates.
+
+This gives different PRs different first reviewers and a fresh voice on each repeat review of the same PR. Do not carry the previous review's persona forward by continuity; the formula already decides, and a persona change between passes is intended.
 
 Load exactly one persona file.
 

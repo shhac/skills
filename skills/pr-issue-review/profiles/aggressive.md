@@ -14,7 +14,13 @@ If you find reasons not to approve, use `COMMENT` and put the concrete objection
 
 ## Persona
 
-Default persona: `personas/iris.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
+Candidate personas, in selection order (see Review Persona in SKILL.md):
+
+1. `personas/iris.md`
+2. `personas/tess.md`
+3. `personas/rex.md`
+
+Use the loaded persona's line-one voice for the top-level review body.
 
 ## Load Lenses
 
@@ -51,7 +57,7 @@ Then read `references/finding-dedup.md` for how to handle scenarios covered by m
 
 Keep the top-level `🦎⚔️` body short and direct. Use the loaded persona for line 1. Avoid courtroom, blockade, or "you shall not pass" framing in generated review text.
 
-Example `COMMENT` shape (with the default persona):
+Example `COMMENT` shape (shown with Iris):
 
 ```markdown
 🦎⚔️ Iris: One loose thread made eye contact. 🤔
