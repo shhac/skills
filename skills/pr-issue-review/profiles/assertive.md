@@ -33,6 +33,8 @@ Read these lens files:
 - `lenses/testability-coverage.md`
 - `lenses/assertive-nitpicks.md`
 
+Then read `references/finding-dedup.md` for how to handle scenarios covered by more than one loaded lens or focus pack.
+
 ## Applying Findings
 
 - Prefer inline comments over top-level prose for concrete issues.
@@ -40,7 +42,7 @@ Read these lens files:
 - Actively look for naming, decomposition, complexity-shape, convention, testability, and readability nits in changed lines.
 - Assertive nitpicks are encouraged: if a minor inline suggestion would make the code meaningfully clearer, more conventional, or easier to maintain, leave it.
 - Use `COMMENT` readily when the PR is mergeable but quality is weaker than the codebase should accept.
-- Approval threshold: `APPROVE` is allowed only when all findings are `💅 P3` or `ℹ️ FYI`.
+- Approval threshold: `APPROVE` is allowed only when all findings are `💅 P3`, `💭 P4`, or `ℹ️ FYI`.
 - Use `COMMENT` for any `⚠️ P1` or `🔧 P2` finding.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.
 - Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes, never for ordinary quality concerns.

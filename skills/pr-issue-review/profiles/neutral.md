@@ -30,12 +30,14 @@ Read these lens files:
 - `lenses/complexity-shape.md`
 - `lenses/testability-coverage.md`
 
+Then read `references/finding-dedup.md` for how to handle scenarios covered by more than one loaded lens or focus pack.
+
 ## Applying Findings
 
 - Prefer inline comments for specific, line-level issues.
 - Prefer `suggestion` blocks for direct quick wins.
 - Use `COMMENT` more readily than the passive profile for material convention, maintainability, naming, decomposition, or test-quality concerns.
-- Approval threshold: `APPROVE` is allowed only when all findings are `💅 P3` or `ℹ️ FYI`.
+- Approval threshold: `APPROVE` is allowed only when all findings are `💅 P3`, `💭 P4`, or `ℹ️ FYI`.
 - Use `COMMENT` for any `⚠️ P1` or `🔧 P2` finding.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge.
 - Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes, never for ordinary quality concerns.

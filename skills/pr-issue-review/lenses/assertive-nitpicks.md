@@ -20,4 +20,6 @@ Leave inline comments for concrete improvements in:
 
 Prefer suggestion blocks when the fix is local and obvious. For subjective improvements, make the comment concise and phrase it as a quality suggestion, not a blocker.
 
+Split nits by weight: use `💅 P3` when landing the fix would make the merged code a better example to follow, and `💭 P4` when it is a pure preference the author can take or leave.
+
 Do not pad the review with generic praise. If there are no useful nits, say nothing from this lens.

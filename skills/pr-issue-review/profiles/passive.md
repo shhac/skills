@@ -24,10 +24,12 @@ Read these lens files, and no assertive-only lenses:
 - `lenses/structure-boundaries.md`
 - `lenses/safety.md`
 
+Then read `references/finding-dedup.md` for how to handle scenarios covered by more than one loaded lens or focus pack.
+
 ## Applying Findings
 
 - Prefer `APPROVE` when the PR appears to solve the stated issue.
-- Approval threshold: `APPROVE` is allowed with `🔧 P2`, `💅 P3`, and `ℹ️ FYI` findings.
+- Approval threshold: `APPROVE` is allowed with `🔧 P2`, `💅 P3`, `💭 P4`, and `ℹ️ FYI` findings.
 - Use `COMMENT` for any `⚠️ P1` finding, or when issue fit is incomplete, ambiguous, or cannot be verified.
 - Approve when the only remaining blocker is a failing or pending CI check that already blocks merge.
 - Leave inline comments only for concrete, line-specific findings that materially affect the review.

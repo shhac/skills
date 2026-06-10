@@ -36,12 +36,15 @@ Read these lens files:
 - `lenses/assertive-nitpicks.md`
 - `lenses/aggressive-objections.md`
 
+Then read `references/finding-dedup.md` for how to handle scenarios covered by more than one loaded lens or focus pack.
+
 ## Applying Findings
 
 - Prefer inline comments for concrete objections and exact suggestion blocks for obvious fixes.
 - Actively look for issue-fit gaps, untested behavior, hidden coupling, fragile assumptions, misleading names, and maintainability traps.
-- Approval threshold: `APPROVE` is allowed only when there are no actionable findings. `ℹ️ FYI` context is okay; `💅 P3` is not.
+- Approval threshold: `APPROVE` is allowed only when all findings are `💭 P4` or `ℹ️ FYI`.
 - Use `COMMENT` for any `⚠️ P1`, `🔧 P2`, or `💅 P3` finding.
+- Classify nits honestly: `💅 P3` when landing the fix would make the merged code a better example for future changes (a misleading name, a missing obvious edge-case test, drift from a repo convention); `💭 P4` when it is taste. `💭 P4` preferences ride along with an approval instead of holding it.
 - Use `APPROVE` when the only remaining blocker is a failing or pending CI check that already blocks merge, with a skeptical-but-positive note that it should be good once CI is resolved.
 - Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes, never for ordinary quality concerns.
 - Do not invent requirements or repo conventions. Ground objections in the stated issue, linked context, diff, nearby code, or existing project patterns.

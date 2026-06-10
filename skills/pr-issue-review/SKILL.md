@@ -256,11 +256,12 @@ If a previous review from this skill exists on the same PR, include `Previous fi
 
 Prefix actionable findings in the top-level body and inline comments with a severity marker:
 
-- `🚨 P0` — malicious-looking or intentionally dangerous behavior. This is the only severity that permits `REQUEST_CHANGES`.
-- `⚠️ P1` — a real reason not to approve yet: likely issue-fit gap, correctness bug, safety problem, or missing behavior that matters.
-- `🔧 P2` — should-fix quality or testability concern: strong suggestion, but not enough by itself to block all profiles.
-- `💅 P3` — nit, polish, naming, local cleanup, or easy suggestion.
-- `ℹ️ FYI` — context, limitation, stack note, or observation with no action implied.
+- `🚨 P0`: malicious-looking or intentionally dangerous behavior. This is the only severity that permits `REQUEST_CHANGES`.
+- `⚠️ P1`: a real reason not to approve yet (likely issue-fit gap, correctness bug, safety problem, or missing behavior that matters).
+- `🔧 P2`: should-fix quality or testability concern; a strong suggestion, but not enough by itself to block all profiles.
+- `💅 P3`: a nit worth landing (naming, local cleanup, or an easy fix that makes the merged code a better example to follow).
+- `💭 P4`: pure preference or alternative; take it or leave it. Never counts against approval in any profile.
+- `ℹ️ FYI`: context, limitation, stack note, or observation with no action implied.
 
 Use the loaded profile's approval threshold when deciding between `APPROVE` and `COMMENT`. Severity affects that decision and the tone of the review, but it does not change the blocking policy: only `🚨 P0` can use `REQUEST_CHANGES`.
 
