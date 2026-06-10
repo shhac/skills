@@ -242,6 +242,9 @@ Why:
 - <severity>: <short top-level-only finding with evidence/impact/direction if no inline anchor exists>.
 - ℹ️ FYI: <context-only note, if useful>.
 
+<details>
+<summary>Review context</summary>
+
 Focus checked:
 - Issue fit
 - Local repo guidance
@@ -259,9 +262,13 @@ Previous findings:
 
 Notes:
 - ...
+
+</details>
 ```
 
-Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. If a finding has a stable diff position, put the evidence and direction inline and reference it briefly from the top-level body. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
+Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. Keep line 1 and `Why:` visible. If a finding has a stable diff position, put the evidence and direction inline and reference it briefly from the top-level body. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
+
+Use one `<details>` block titled `Review context` for supporting audit-trail sections when they are non-trivial: `Focus checked`, `Context checked`, `Previous findings`, and `Notes`. Skip the `<details>` block when the review is already short. Do not hide actionable findings, inline findings, or suggestion blocks inside collapsed sections.
 
 Use `Focus checked` to name the main axes applied by the loaded profile and changed area, such as issue fit, local repo guidance, failure modes/scale, user-visible text/localization, batch failure behavior, runtime contracts, testability, or conventions.
 
