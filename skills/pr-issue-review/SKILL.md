@@ -130,6 +130,8 @@ If the repo already exists in the temp checkout, reuse it and fetch the latest P
 
 ## Gather PR Context
 
+Read `references/github-review-api.md` for the exact `gh` commands to fetch PR metadata, diffs, checks, and existing reviews, and to submit the review.
+
 Use GitHub metadata and static file reads only. Useful sources:
 
 - PR title, body, branch name, base/head refs and SHAs
@@ -202,7 +204,7 @@ Do not commit `.ai-cache/`.
 
 ## Review Output
 
-Submit a GitHub review, not a loose collection of unrelated comments.
+Submit a GitHub review, not a loose collection of unrelated comments. Use a single review submission carrying the top-level body and all inline comments, as shown in `references/github-review-api.md`.
 
 ### Top-Level Review Body
 
@@ -335,7 +337,7 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 When running in a loop for PRs requesting the user's review:
 
 1. Select the review profile from the explicit caller request or fallback rules above.
-2. Skip PRs already reviewed by this workflow at the current head SHA for the selected profile unless explicitly rerun.
+2. Identify previous reviews from this skill by their emoji markers, and read each matching review's `commit_id` from the GitHub reviews API to learn which head SHA it covered. Skip the PR if a review from this skill already exists for the current head SHA and selected profile, unless explicitly rerun.
 3. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
 4. Reuse the temp repo and `.ai-cache/` context for the same repo.
 5. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
