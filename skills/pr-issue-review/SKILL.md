@@ -17,7 +17,7 @@ The caller may specify review profile as `passive`, `neutral`, `assertive`, or `
 
 - `passive` is the restrained unblocker profile.
 - `neutral` is the balanced code-quality profile.
-- `assertive` is the nitpicky maintainer profile. It uses a stricter reviewer posture and additional lenses.
+- `assertive` is the nitpicky maintainer profile. It uses a stricter reviewer posture.
 - `aggressive` is the skeptical-but-friendly profile. Its goal is to find reasons not to approve while keeping the delivery clearly lighthearted.
 
 All profiles are read-only, stack-aware, and non-blocking except for malicious-looking changes.
@@ -25,11 +25,9 @@ All profiles are read-only, stack-aware, and non-blocking except for malicious-l
 If the caller does not specify profile, choose one at review start from PR metadata, comments, and existing reviews:
 
 1. If the most recent previous review on this PR from this skill has a profile marker, match that profile.
-2. If the PR appears to have been written by an AI agent or LLM, use `aggressive`.
-3. If the PR appears malicious-looking or intentionally dangerous, use `aggressive`.
-4. If the PR is high-risk, broad, or touches sensitive/runtime-contract surfaces, use `aggressive`.
-5. If this PR has no existing GitHub review submissions by anyone at review start, excluding CI/check annotations and non-review issue comments, use `aggressive`.
-6. Otherwise use `assertive`.
+2. If the PR appears AI-authored, malicious-looking, or high-risk, use `aggressive`.
+3. If someone else has already submitted a GitHub review, excluding CI/check annotations and non-review issue comments, use `assertive`.
+4. Otherwise use `aggressive`.
 
 Never choose `neutral` or `passive` by fallback. Those profiles require an explicit caller request or continuity from a previous exact profile marker on the same PR.
 
