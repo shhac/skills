@@ -75,7 +75,11 @@ gh api "repos/<owner>/<repo>/pulls/<number>/reviews" --paginate \
          | {marker: (.body | split(" ")[0]), state, commit_id, submitted_at}]'
 ```
 
+Marker to profile: `🦎🍃` passive, `🦎⚖️` neutral, `🦎🔎` assertive, `🦎⚔️` aggressive. The leading lizard marks the review as coming from this skill.
+
 Skip rule for automation: if this list contains an entry whose `marker` matches the selected profile and whose `commit_id` equals the PR's current `headRefOid`, this skill has already reviewed this head with this profile; skip unless explicitly rerun.
+
+Persona selection uses this same list: the count of entries whose `marker` matches the selected profile is the review count in the persona index formula in SKILL.md's Review Persona section.
 
 ## Submit One Review With Inline Comments
 
