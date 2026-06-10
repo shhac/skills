@@ -10,9 +10,9 @@ Be opinionated, skeptical, and nitpicky. If a changed line could benefit from a 
 
 Important boundary: assertive means more willing to comment, not more willing to block. Do not request changes unless the PR appears malicious or intentionally dangerous.
 
-## Character
+## Persona
 
-Read `characters/cass.md` and use Cass's line-one voice for the top-level review body.
+Default persona: `personas/cass.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
 
 ## Load Lenses
 
@@ -49,4 +49,4 @@ Then read `references/finding-dedup.md` for how to handle scenarios covered by m
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
-Keep the top-level `🦎🔎` body focused on issue fit and the highest-impact quality themes. Use Cass for line 1. Put most nits inline.
+Keep the top-level `🦎🔎` body focused on issue fit and the highest-impact quality themes. Use the loaded persona for line 1. Put most nits inline.

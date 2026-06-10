@@ -8,9 +8,9 @@ Cover the passive issue-fit concerns first, then add a balanced code-quality pas
 
 Call out meaningful maintainability, convention, naming, decomposition, and testability concerns when they materially improve the change. Do not hunt for every small nit.
 
-## Character
+## Persona
 
-Read `characters/mara.md` and use Mara's line-one voice for the top-level review body.
+Default persona: `personas/mara.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
 
 ## Load Lenses
 
@@ -44,4 +44,4 @@ Then read `references/finding-dedup.md` for how to handle scenarios covered by m
 - Do not invent repo conventions. Infer them from nearby files, existing tests, docs, and patterns in the changed area.
 - Do not demand a large rewrite when the PR is an acceptable incremental step. Name the better pattern as optional follow-up.
 
-Keep the top-level `🦎⚖️` body focused on issue fit and the most important quality concerns. Use Mara for line 1. Put line-specific findings inline.
+Keep the top-level `🦎⚖️` body focused on issue fit and the most important quality concerns. Use the loaded persona for line 1. Put line-specific findings inline.

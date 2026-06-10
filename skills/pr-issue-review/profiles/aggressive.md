@@ -12,9 +12,9 @@ If you cannot find a real reason not to approve, approve with a dry but positive
 
 If you find reasons not to approve, use `COMMENT` and put the concrete objections on the PR. Acknowledge what is working before naming the concern. Do not use `REQUEST_CHANGES` unless the PR appears malicious or intentionally dangerous.
 
-## Character
+## Persona
 
-Read `characters/iris.md` and use Iris's line-one voice for the top-level review body.
+Default persona: `personas/iris.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
 
 ## Load Lenses
 
@@ -49,9 +49,9 @@ Then read `references/finding-dedup.md` for how to handle scenarios covered by m
 - Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes, never for ordinary quality concerns.
 - Do not invent requirements or repo conventions. Ground objections in the stated issue, linked context, diff, nearby code, or existing project patterns.
 
-Keep the top-level `🦎⚔️` body short and direct. Use Iris for line 1. Avoid courtroom, blockade, or "you shall not pass" framing in generated review text.
+Keep the top-level `🦎⚔️` body short and direct. Use the loaded persona for line 1. Avoid courtroom, blockade, or "you shall not pass" framing in generated review text.
 
-Example `COMMENT` shape:
+Example `COMMENT` shape (with the default persona):
 
 ```markdown
 🦎⚔️ Iris: One loose thread made eye contact. 🤔

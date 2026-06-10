@@ -8,9 +8,9 @@ Be focused, restrained, and issue-oriented. The review asks whether the PR solve
 
 Surface only concerns that affect issue fit, correctness, safety, or clearly relevant maintainability. Avoid style nits, speculative rewrites, and broad best-practice commentary.
 
-## Character
+## Persona
 
-Read `characters/pip.md` and use Pip's line-one voice for the top-level review body.
+Default persona: `personas/pip.md`. Use the loaded persona's line-one voice for the top-level review body. See SKILL.md for how the persona is selected when the caller names one.
 
 ## Load Lenses
 
@@ -36,4 +36,4 @@ Then read `references/finding-dedup.md` for how to handle scenarios covered by m
 - Use `suggestion` blocks for small quick wins when useful, but do not hunt for nits.
 - Use `REQUEST_CHANGES` only for `🚨 P0` malicious-looking or intentionally dangerous changes.
 
-Keep the top-level `🦎🍃` body short. Use Pip for line 1, then state whether the PR solves the issue, why, what context was checked, and any limitations.
+Keep the top-level `🦎🍃` body short. Use the loaded persona for line 1, then state whether the PR solves the issue, why, what context was checked, and any limitations.

@@ -60,7 +60,20 @@ Load exactly one profile file:
 - `assertive` -> read `profiles/assertive.md`
 - `aggressive` -> read `profiles/aggressive.md`
 
-Then read only the character file and lens files listed by that profile. The character file controls the top-level review voice only; the profile controls approval thresholds, strictness, and how readily to leave inline comments. Some lenses are shared and some are profile-specific. For lens files with an explicit `Use this lens when...` gate, load them when listed by the profile, but apply findings only when that gate matches the PR.
+Then read the selected persona file (see Review Persona below) and only the lens files listed by that profile. The persona file controls the top-level review voice only; the profile controls approval thresholds, strictness, and how readily to leave inline comments. Some lenses are shared and some are profile-specific. For lens files with an explicit `Use this lens when...` gate, load them when listed by the profile, but apply findings only when that gate matches the PR.
+
+## Review Persona
+
+Personas live under `personas/`, one file each, with frontmatter naming the persona and its recommended profiles. A persona controls the line-one voice of the top-level review body and nothing else: it never changes approval thresholds, lens selection, severity, or blocking policy. The line-one emoji marker always comes from the selected profile, not from the persona.
+
+The caller may specify any profile and persona combination, such as `aggressive` with `cass`. An explicit caller-specified persona always wins, even when paired with a profile outside the persona's recommended list.
+
+If the caller does not specify a persona:
+
+1. If the most recent previous review on this PR from this skill used the selected profile, reuse the persona named on its line 1, provided that persona file still exists.
+2. Otherwise use the default persona named by the loaded profile file. When a profile lists more than one candidate persona, pick deterministically: PR number modulo the number of candidates, in the listed order.
+
+Load exactly one persona file.
 
 ## Focus Packs
 
@@ -186,7 +199,7 @@ Examples:
 - The stated issue as understood from PR and remote context
 - Acceptance criteria or expected behavior, if present
 - Related PRs or stack notes
-- The selected profile, loaded lenses, and loaded focus packs
+- The selected profile, loaded persona, loaded lenses, and loaded focus packs
 - Any unavailable references
 - The timestamp/source of each cached context file
 
@@ -196,10 +209,10 @@ Do not commit `.ai-cache/`.
 
 1. Gather PR context and cache discovered remote context.
 2. Select review profile and load exactly one file from `profiles/`.
-3. Load the character file named by that profile.
+3. Select and load exactly one persona file (see Review Persona).
 4. Load only the lens files named by that profile.
 5. Load any clearly relevant focus packs from `references/focus-packs/`.
-6. Apply the profile's posture to the loaded lenses and focus packs, and the character's voice to line 1.
+6. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
 7. Submit one GitHub review with a top-level body and any useful inline comments.
 
 ## Review Output
@@ -215,12 +228,12 @@ The body must start with one of:
 - `🦎🔎` for assertive
 - `🦎⚔️` for aggressive
 
-Line 1 should be the emoji marker, the loaded character name, and a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded character file for the line-one voice and examples.
+Line 1 should be the emoji marker, the loaded persona name, and a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded persona file for the line-one voice and examples.
 
 Use this shape:
 
 ```markdown
-<emoji marker> <Character>: <profile verdict sentence>.
+<emoji marker> <Persona>: <profile verdict sentence>.
 
 Why:
 - <severity>: <short finding title>. See inline comments.
