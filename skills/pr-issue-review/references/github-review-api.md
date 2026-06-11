@@ -10,10 +10,10 @@ At startup, fetch only the fields needed to select a profile and decide whether 
 gh pr view <number> --repo <owner>/<repo> --json \
   number,title,body,author,isDraft,state,url,\
 baseRefName,headRefName,headRefOid,\
-files,reviews,comments,latestReviews
+files,reviews,comments,latestReviews,closingIssuesReferences
 ```
 
-Then fetch previous reviews from this skill as shown below. If skip/deduplication decides this run should review the PR, add the in-progress reaction before fetching the full context.
+Then fetch previous reviews from this skill as shown below. If exact head-SHA deduplication does not skip the PR, add the in-progress reaction before checking diff equivalence or fetching the full context.
 
 ## Fetch Full PR Metadata
 
@@ -80,23 +80,36 @@ gh api "repos/<owner>/<repo>/issues/<number>/comments" --paginate
 
 ## Find Previous Reviews From This Skill
 
-Filter reviews whose body starts with the lizard marker, and extract the marker and covered head SHA:
+Filter reviews whose body starts with the lizard marker, and extract the marker, covered head SHA, and hidden metadata when present:
 
 ```bash
 gh api "repos/<owner>/<repo>/pulls/<number>/reviews" --paginate \
   --jq '[.[] | select(.body | test("^🦎(🍃|⚖️|🔎|⚔️)"))
-         | {marker: (.body | split(" ")[0]), state, commit_id, submitted_at}]'
+         | .body as $body
+         | {
+             marker: ($body | split(" ")[0]),
+             state,
+             commit_id,
+             submitted_at,
+             metadata: (
+               try ($body
+                    | capture("<!-- pr-issue-review:v1 profile=(?<profile>[^ ]+) head=(?<head>[^ ]+) diff=(?<diff>[^ ]+) context=(?<context>[^ ]+) -->"))
+               catch null
+             )
+           }]'
 ```
 
 Marker to profile: `🦎🍃` passive, `🦎⚖️` neutral, `🦎🔎` assertive, `🦎⚔️` aggressive. The leading lizard marks the review as coming from this skill.
 
-Skip rule for automation: if this list contains an entry whose `marker` matches the selected profile and whose `commit_id` equals the PR's current `headRefOid`, this skill has already reviewed this head with this profile; skip unless explicitly rerun.
+Exact head-SHA skip rule for automation: if this list contains an entry whose `marker` matches the selected profile and whose `commit_id` equals the PR's current `headRefOid`, this skill has already reviewed this head with this profile; skip unless explicitly rerun.
+
+Diff-equivalence skip rule for automation: after adding the in-progress reaction, use `references/diff-equivalence.md` to compute current `diff` and `context` fingerprints. If a previous review's hidden metadata has the same selected `profile`, same non-`unknown` `diff`, and same non-`unknown` `context`, remove the reaction and stop without posting another review.
 
 Persona selection uses this same list: the count of entries whose `marker` matches the selected profile is the review count in the persona index formula in SKILL.md's Review Persona section.
 
 ## Add and Remove the In-Progress Reaction
 
-Immediately after skip/deduplication checks decide the run will perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before shallow fetches, full diff review, remote context discovery, or cache writes:
+Immediately after exact head-SHA deduplication decides the run might perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before diff-equivalence checks, shallow fetches, full diff review, remote context discovery, or cache writes:
 
 ```bash
 reaction_id="$(gh api --method POST \
@@ -108,7 +121,7 @@ reaction_id="$(gh api --method POST \
 
 If `reaction_id` is empty, continue without an in-progress signal.
 
-After submitting the review, or before exiting after a later skip/failure, remove only the exact reaction created by this run:
+After submitting the review, or before exiting after a diff-equivalence skip/failure, remove only the exact reaction created by this run:
 
 ```bash
 if [ -n "${reaction_id:-}" ]; then
@@ -129,7 +142,7 @@ cat > "$repo_dir/.ai-cache/review-payload.json" <<'EOF'
 {
   "commit_id": "<headRefOid>",
   "event": "COMMENT",
-  "body": "🦎⚔️ Iris: One loose thread made eye contact. 🤔\n\nWhy:\n- ⚠️ P1: ...",
+  "body": "🦎⚔️ Iris: One loose thread made eye contact. 🤔\n\nWhy:\n- ⚠️ P1: ...\n\n<!-- pr-issue-review:v1 profile=aggressive head=<headRefOid> diff=<diff-fingerprint> context=<context-fingerprint> -->",
   "comments": [
     {
       "path": "src/records/filter.ts",

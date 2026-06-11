@@ -94,6 +94,12 @@ Available focus packs:
 - `localization.md` — locale files, translation keys, pluralization, user-visible copy across languages
 - `code-structure-boundaries.md` — broad structural changes, module seams, accidental hubs, large functions/files, wrong-fit abstractions
 
+## Review Deduplication
+
+Use `references/diff-equivalence.md` when deciding whether a changed head SHA still represents a diff already reviewed by this skill.
+
+Every submitted review must include the hidden metadata described there so future automation can identify equivalent rebases or merge-refreshes without posting another review.
+
 ## Core Rules
 
 - Read only. Never run project code, tests, build scripts, package scripts, migrations, app CLIs, or CI commands.
@@ -212,20 +218,23 @@ Do not commit `.ai-cache/`.
 1. Fetch only the lightweight startup metadata needed for profile selection, previous-review detection, and skip/deduplication: PR number/title/body/author/refs/head SHA/branch names, review summaries, issue comments, changed file names, and existing reviews from this skill.
 2. Select review profile and load exactly one file from `profiles/`.
 3. Select and load exactly one persona file (see Review Persona).
-4. After skip/deduplication checks decide this run will perform a review, add the in-progress reaction described below and store the returned reaction ID for cleanup.
-5. Gather full PR context, perform the shallow checkout/fetch if needed, discover remote context, and cache discovered remote context.
-6. Load only the lens files named by that profile.
-7. Load any clearly relevant focus packs from `references/focus-packs/`.
-8. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
-9. Submit one GitHub review with a top-level body and any useful inline comments.
-10. Remove the exact in-progress reaction created by this run.
+4. If exact head-SHA deduplication shows this `{head SHA, profile}` was already reviewed, stop without adding a reaction.
+5. Add the in-progress reaction described below and store the returned reaction ID for cleanup.
+6. Read `references/diff-equivalence.md`, compute the current diff and startup context fingerprints, and compare them with hidden metadata from prior reviews by this skill on the same PR/profile.
+7. If diff-equivalence deduplication says this is the same effective diff and same startup context as a previous review, remove the in-progress reaction and stop without posting a review.
+8. Gather full PR context, perform the shallow checkout/fetch if needed, discover remote context, and cache discovered remote context.
+9. Load only the lens files named by that profile.
+10. Load any clearly relevant focus packs from `references/focus-packs/`.
+11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
+12. Submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
+13. Remove the exact in-progress reaction created by this run.
 
 ## In-Progress Signal
 
 Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions.
 
-- Add the reaction only after the run has determined it will perform a review, not before skip/deduplication checks.
-- Do not wait for shallow fetches, full diff review, remote context discovery, or cache writes before adding the reaction.
+- Add the reaction after exact head-SHA deduplication decides this head/profile was not already reviewed.
+- Add the reaction before diff-equivalence deduplication, shallow fetches, full diff review, remote context discovery, or cache writes.
 - Store the reaction ID returned by GitHub in run-local state or `.ai-cache/`.
 - After submitting the review, remove only the exact reaction ID created by this run.
 - If review submission is intentionally skipped after the reaction is created, remove the exact reaction ID before exiting.
@@ -280,11 +289,15 @@ Notes:
 - ...
 
 </details>
+
+<!-- pr-issue-review:v1 profile=<profile> head=<headRefOid> diff=<diff-fingerprint> context=<context-fingerprint> -->
 ```
 
 Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. Keep line 1 and `Why:` visible. If a finding has a stable diff position, put the evidence and recommended next step inline and reference it briefly from the top-level body. For top-level-only findings, keep the finding sentence short and put the action on an indented `Recommendation:` line under that bullet so the recommendation is easy to scan without adding another section. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
 
 Use one `<details>` block titled `Review context` for supporting audit-trail sections when they are non-trivial: `Focus checked`, `Context checked`, `Previous findings`, and `Notes`. Skip the `<details>` block when the review is already short. Do not hide actionable findings, inline findings, or suggestion blocks inside collapsed sections.
+
+Always append the hidden metadata line from `references/diff-equivalence.md` as the final line of the top-level review body. It must not contain findings, severity, or private context.
 
 Use `Focus checked` to name the main axes applied by the loaded profile and changed area, such as issue fit, local repo guidance, failure modes/scale, user-visible text/localization, batch failure behavior, runtime contracts, testability, or conventions.
 
@@ -386,11 +399,12 @@ Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 When running in a loop for PRs requesting the user's review:
 
 1. Select the review profile from the explicit caller request or fallback rules above.
-2. Identify previous reviews from this skill by their emoji markers, and read each matching review's `commit_id` from the GitHub reviews API to learn which head SHA it covered. Skip the PR if a review from this skill already exists for the current head SHA and selected profile, unless explicitly rerun.
-3. Add the in-progress reaction immediately after the skip check in step 2 decides this PR/head/profile should be reviewed, before shallow fetches, full diff review, remote context discovery, or cache writes.
-4. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
-5. Reuse the temp repo and `.ai-cache/` context for the same repo.
-6. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
-7. Leave exactly one review per `{head SHA, profile}`.
-8. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
-9. Always make a best-effort cleanup attempt for any in-progress reaction created by the current run.
+2. Identify previous reviews from this skill by their emoji markers, hidden metadata, and `commit_id` from the GitHub reviews API.
+3. Skip without adding a reaction if a review from this skill already exists for the current head SHA and selected profile, unless explicitly rerun.
+4. Add the in-progress reaction immediately after exact head-SHA deduplication decides this PR/head/profile might need review.
+5. Run the diff-equivalence check from `references/diff-equivalence.md`; if it finds the same effective diff and same startup context as a previous review on this PR/profile, remove the in-progress reaction and stop without posting a review.
+6. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}` unless diff-equivalence deduplication suppresses a rebase or merge-refresh duplicate.
+7. Reuse the temp repo and `.ai-cache/` context for the same repo.
+8. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
+9. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
+10. Always make a best-effort cleanup attempt for any in-progress reaction created by the current run.
