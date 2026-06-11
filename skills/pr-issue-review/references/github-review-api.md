@@ -2,7 +2,20 @@
 
 Exact `gh` commands for fetching PR data and submitting the review. All commands accept `--repo <owner>/<repo>` (or the `GH_REPO` env var); `gh api` additionally accepts `--hostname` for GitHub Enterprise hosts.
 
-## Fetch PR Metadata
+## Fetch Startup Metadata
+
+At startup, fetch only the fields needed to select a profile and decide whether this `{head SHA, profile}` has already been reviewed. Do this before any shallow checkout, full diff read, remote context discovery, or cache writes:
+
+```bash
+gh pr view <number> --repo <owner>/<repo> --json \
+  number,title,body,author,isDraft,state,url,\
+baseRefName,headRefName,headRefOid,\
+files,reviews,comments,latestReviews
+```
+
+Then fetch previous reviews from this skill as shown below. If skip/deduplication decides this run should review the PR, add the in-progress reaction before fetching the full context.
+
+## Fetch Full PR Metadata
 
 ```bash
 gh pr view <number> --repo <owner>/<repo> --json \
@@ -83,7 +96,7 @@ Persona selection uses this same list: the count of entries whose `marker` match
 
 ## Add and Remove the In-Progress Reaction
 
-After skip/deduplication checks decide the run will perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID:
+Immediately after skip/deduplication checks decide the run will perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before shallow fetches, full diff review, remote context discovery, or cache writes:
 
 ```bash
 reaction_id="$(gh api --method POST \
