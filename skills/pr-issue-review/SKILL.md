@@ -239,7 +239,7 @@ Use this shape:
 
 Why:
 - <severity>: <short finding title>. See inline comments.
-- <severity>: <short top-level-only finding with evidence/impact/direction if no inline anchor exists>.
+- <severity>: <short top-level-only finding with a recommended next step and enough evidence/impact if no inline anchor exists>.
 - ℹ️ FYI: <context-only note, if useful>.
 
 <details>
@@ -306,25 +306,34 @@ Good inline comments:
 
 - Point to the exact changed line
 - Explain the issue in terms of the stated goal, user-visible behavior, local repo guidance, or codebase contract
-- For `⚠️ P1` and `🔧 P2`, use a compact evidence/impact/direction shape
-- Offer a small fix when possible
-- Use a `suggestion` block for direct quick wins
+- Lead with the severity, a short finding title, and a visible recommended next step
+- Use a `suggestion` block for direct quick wins when the replacement is exact, local, and safe
+- Move longer evidence and impact into a `<details>` block titled `Why this matters` when the comment would otherwise be bulky
 
 Example:
 
 ````markdown
 ⚠️ P1 — Archived records are still excluded here.
 
-Evidence: the linked issue mentions archived records, but this filter only keeps active records.
-Impact: the PR can still miss the records the user asked to recover.
-Direction: include archived records here, or explain why that path is handled elsewhere.
+Recommended next step: include archived records here, or explain why that path is handled elsewhere.
 
 ```suggestion
 return records.filter((record) => record.active || record.archived)
 ```
+
+<details>
+<summary>Why this matters</summary>
+
+Evidence: the linked issue mentions archived records, but this filter only keeps active records.
+
+Impact: the PR can still miss the records the user asked to recover.
+
+</details>
 ````
 
-Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope. If a finding cannot be anchored cleanly to a changed line, keep it in the top-level body with the same severity and evidence/impact/direction discipline.
+Keep inline findings action-first. Do not hide the severity, finding title, recommended next step, or `suggestion` block inside collapsed sections. For short comments, skip `<details>` and keep the evidence/impact inline. For comments with no exact local fix, use `Recommended next step:` without a suggestion block.
+
+Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope. If a finding cannot be anchored cleanly to a changed line, keep it in the top-level body with the same severity, visible recommended next step, and enough evidence/impact to justify the finding.
 
 ### GitHub Inline Comment Positioning
 
