@@ -239,7 +239,8 @@ Use this shape:
 
 Why:
 - <severity>: <short finding title>. See inline comments.
-- <severity>: <short top-level-only finding with a recommended next step and enough evidence/impact if no inline anchor exists>.
+- <severity>: <short top-level-only finding title, if no inline anchor exists>.
+  Recommendation: <recommended next step for this top-level-only finding>.
 - ℹ️ FYI: <context-only note, if useful>.
 
 <details>
@@ -266,7 +267,7 @@ Notes:
 </details>
 ```
 
-Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. Keep line 1 and `Why:` visible. If a finding has a stable diff position, put the evidence and direction inline and reference it briefly from the top-level body. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
+Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. Keep line 1 and `Why:` visible. If a finding has a stable diff position, put the evidence and recommended next step inline and reference it briefly from the top-level body. For top-level-only findings, keep the finding sentence short and put the action on an indented `Recommendation:` line under that bullet so the recommendation is easy to scan without adding another section. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
 
 Use one `<details>` block titled `Review context` for supporting audit-trail sections when they are non-trivial: `Focus checked`, `Context checked`, `Previous findings`, and `Notes`. Skip the `<details>` block when the review is already short. Do not hide actionable findings, inline findings, or suggestion blocks inside collapsed sections.
 
@@ -315,7 +316,7 @@ Example:
 ````markdown
 ⚠️ P1 — Archived records are still excluded here.
 
-Recommended next step: include archived records here, or explain why that path is handled elsewhere.
+**Recommendation:** Include archived records here, or explain why that path is handled elsewhere.
 
 ```suggestion
 return records.filter((record) => record.active || record.archived)
@@ -331,7 +332,7 @@ Impact: the PR can still miss the records the user asked to recover.
 </details>
 ````
 
-Keep inline findings action-first. Do not hide the severity, finding title, recommended next step, or `suggestion` block inside collapsed sections. For short comments, skip `<details>` and keep the evidence/impact inline. For comments with no exact local fix, use `Recommended next step:` without a suggestion block.
+Keep inline findings action-first. Do not hide the severity, finding title, `**Recommendation:**` line, or `suggestion` block inside collapsed sections. For short comments, skip `<details>` and keep the evidence/impact inline. If the recommendation is exact, local, and safe enough for GitHub to apply directly, put the `suggestion` block immediately after the recommendation. If the fix is not that clear, use a visible `**Recommendation:**` line without a suggestion block.
 
 Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope. If a finding cannot be anchored cleanly to a changed line, keep it in the top-level body with the same severity, visible recommended next step, and enough evidence/impact to justify the finding.
 

@@ -96,7 +96,7 @@ cat > "$repo_dir/.ai-cache/review-payload.json" <<'EOF'
       "path": "src/records/filter.ts",
       "line": 42,
       "side": "RIGHT",
-      "body": "⚠️ P1 — Archived records are still excluded here.\n\nRecommended next step: include archived records here, or explain why that path is handled elsewhere.\n\n```suggestion\nreturn records.filter((record) => record.active || record.archived)\n```\n\n<details>\n<summary>Why this matters</summary>\n\nEvidence: ...\n\nImpact: ...\n\n</details>"
+      "body": "⚠️ P1 — Archived records are still excluded here.\n\n**Recommendation:** Include archived records here, or explain why that path is handled elsewhere.\n\n```suggestion\nreturn records.filter((record) => record.active || record.archived)\n```\n\n<details>\n<summary>Why this matters</summary>\n\nEvidence: ...\n\nImpact: ...\n\n</details>"
     },
     {
       "path": "src/records/filter.test.ts",
