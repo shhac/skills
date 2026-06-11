@@ -81,6 +81,32 @@ Skip rule for automation: if this list contains an entry whose `marker` matches 
 
 Persona selection uses this same list: the count of entries whose `marker` matches the selected profile is the review count in the persona index formula in SKILL.md's Review Persona section.
 
+## Add and Remove the In-Progress Reaction
+
+After skip/deduplication checks decide the run will perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID:
+
+```bash
+reaction_id="$(gh api --method POST \
+  "repos/<owner>/<repo>/issues/<number>/reactions" \
+  -H "Accept: application/vnd.github+json" \
+  -f content=eyes \
+  --jq '.id' 2>/dev/null || true)"
+```
+
+If `reaction_id` is empty, continue without an in-progress signal.
+
+After submitting the review, or before exiting after a later skip/failure, remove only the exact reaction created by this run:
+
+```bash
+if [ -n "${reaction_id:-}" ]; then
+  gh api --method DELETE \
+    "repos/<owner>/<repo>/reactions/$reaction_id" \
+    --silent || true
+fi
+```
+
+Do not remove a reaction unless its ID came from the `POST` response in the current run.
+
 ## Submit One Review With Inline Comments
 
 Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr comment` (creates an issue comment, not a review). Build a JSON payload and POST it as a single review:

@@ -145,7 +145,7 @@ If the repo already exists in the temp checkout, reuse it and fetch the latest P
 
 ## Gather PR Context
 
-Read `references/github-review-api.md` for the exact `gh` commands to fetch PR metadata, diffs, checks, and existing reviews, and to submit the review.
+Read `references/github-review-api.md` for the exact `gh` commands to fetch PR metadata, diffs, checks, and existing reviews, add/remove the in-progress reaction, and submit the review.
 
 Use GitHub metadata and static file reads only. Useful sources:
 
@@ -212,10 +212,23 @@ Do not commit `.ai-cache/`.
 1. Gather PR context and cache discovered remote context.
 2. Select review profile and load exactly one file from `profiles/`.
 3. Select and load exactly one persona file (see Review Persona).
-4. Load only the lens files named by that profile.
-5. Load any clearly relevant focus packs from `references/focus-packs/`.
-6. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
-7. Submit one GitHub review with a top-level body and any useful inline comments.
+4. After skip/deduplication checks decide this run will perform a review, add the in-progress reaction described below and store the returned reaction ID for cleanup.
+5. Load only the lens files named by that profile.
+6. Load any clearly relevant focus packs from `references/focus-packs/`.
+7. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
+8. Submit one GitHub review with a top-level body and any useful inline comments.
+9. Remove the exact in-progress reaction created by this run.
+
+## In-Progress Signal
+
+Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions.
+
+- Add the reaction only after the run has determined it will perform a review, not before skip/deduplication checks.
+- Store the reaction ID returned by GitHub in run-local state or `.ai-cache/`.
+- After submitting the review, remove only the exact reaction ID created by this run.
+- If review submission is intentionally skipped after the reaction is created, remove the exact reaction ID before exiting.
+- If the run fails, make a best-effort attempt to remove the exact reaction ID before exiting.
+- If adding the reaction fails, continue the review without an in-progress signal.
 
 ## Review Output
 
@@ -372,8 +385,10 @@ When running in a loop for PRs requesting the user's review:
 
 1. Select the review profile from the explicit caller request or fallback rules above.
 2. Identify previous reviews from this skill by their emoji markers, and read each matching review's `commit_id` from the GitHub reviews API to learn which head SHA it covered. Skip the PR if a review from this skill already exists for the current head SHA and selected profile, unless explicitly rerun.
-3. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
-4. Reuse the temp repo and `.ai-cache/` context for the same repo.
-5. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
-6. Leave exactly one review per `{head SHA, profile}`.
-7. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
+3. Add the in-progress reaction only after the skip check in step 2 decides this PR/head/profile should be reviewed.
+4. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}`.
+5. Reuse the temp repo and `.ai-cache/` context for the same repo.
+6. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
+7. Leave exactly one review per `{head SHA, profile}`.
+8. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
+9. Always make a best-effort cleanup attempt for any in-progress reaction created by the current run.
