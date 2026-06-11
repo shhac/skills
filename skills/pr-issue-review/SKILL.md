@@ -128,7 +128,12 @@ repo_dir="$tmp_root/<host>/<owner>/<repo>"
 mkdir -p "$repo_dir"
 ```
 
-After startup metadata has been fetched, skip/deduplication has decided to review, and the in-progress reaction has been added, use a shallow fetch of only the PR refs/commits needed for static inspection. If shallow fetch is unavailable or insufficient, fall back to GitHub PR diff/patch and file-content APIs/connectors. Ask the user before any full-history clone.
+After startup metadata has been fetched, exact head-SHA deduplication has decided this head/profile might need review, and the in-progress reaction has been added, use shallow fetches in two stages:
+
+- For diff-equivalence deduplication, fetch only the minimal base/head refs needed to compute the fingerprint from `references/diff-equivalence.md`.
+- If diff-equivalence deduplication does not skip the PR, reuse those refs for static inspection and fetch any additional base/head refs needed for surrounding file reads.
+
+If shallow fetch is unavailable or insufficient, fall back to GitHub PR diff/patch and file-content APIs/connectors. Ask the user before any full-history clone.
 
 Recommended shape:
 
@@ -222,7 +227,7 @@ Do not commit `.ai-cache/`.
 5. Add the in-progress reaction described below and store the returned reaction ID for cleanup.
 6. Read `references/diff-equivalence.md`, compute the current diff and startup context fingerprints, and compare them with hidden metadata from prior reviews by this skill on the same PR/profile.
 7. If diff-equivalence deduplication says this is the same effective diff and same startup context as a previous review, remove the in-progress reaction and stop without posting a review.
-8. Gather full PR context, perform the shallow checkout/fetch if needed, discover remote context, and cache discovered remote context.
+8. Gather full PR context, reuse the fingerprint refs or perform additional shallow checkout/fetches if needed, discover remote context, and cache discovered remote context.
 9. Load only the lens files named by that profile.
 10. Load any clearly relevant focus packs from `references/focus-packs/`.
 11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
@@ -234,7 +239,8 @@ Do not commit `.ai-cache/`.
 Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions.
 
 - Add the reaction after exact head-SHA deduplication decides this head/profile was not already reviewed.
-- Add the reaction before diff-equivalence deduplication, shallow fetches, full diff review, remote context discovery, or cache writes.
+- Add the reaction before diff-equivalence deduplication, including any minimal shallow fetch needed only to compute the fingerprint.
+- Do not wait for full diff review, remote context discovery, cache writes, or surrounding-source exploration before adding the reaction.
 - Store the reaction ID returned by GitHub in run-local state or `.ai-cache/`.
 - After submitting the review, remove only the exact reaction ID created by this run.
 - If review submission is intentionally skipped after the reaction is created, remove the exact reaction ID before exiting.

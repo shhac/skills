@@ -29,7 +29,7 @@ After exact head-SHA deduplication says this head has not been reviewed with the
 4. If a previous review has the same `diff` and the same `context`, remove the reaction and stop without posting a review.
 5. Otherwise continue with full context gathering and review as normal.
 
-Do not do remote context discovery, lens loading, shallow source exploration, or full review reasoning before this check. The point is to avoid the slow work when the PR is only a rebase or merge refresh.
+It is okay to shallow-fetch the minimal base/head refs needed only for fingerprinting after the in-progress reaction is added. Do not do remote context discovery, lens loading, surrounding-source exploration, or full review reasoning before this check. The point is to avoid the slow work when the PR is only a rebase or merge refresh.
 
 ## Diff Fingerprint
 

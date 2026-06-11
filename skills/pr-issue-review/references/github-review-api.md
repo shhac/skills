@@ -109,7 +109,7 @@ Persona selection uses this same list: the count of entries whose `marker` match
 
 ## Add and Remove the In-Progress Reaction
 
-Immediately after exact head-SHA deduplication decides the run might perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before diff-equivalence checks, shallow fetches, full diff review, remote context discovery, or cache writes:
+Immediately after exact head-SHA deduplication decides the run might perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before diff-equivalence checks, full diff review, remote context discovery, cache writes, or source exploration. The diff-equivalence check may then do only the minimal shallow fetch needed to compute the fingerprint:
 
 ```bash
 reaction_id="$(gh api --method POST \
