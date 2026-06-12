@@ -328,6 +328,8 @@ Example top-level finding bullets:
 
 ```markdown
 Why:
+- ⚠️ P1: I could not verify issue fit because this non-trivial PR has no summary or linked context.
+  Recommendation: Add a short PR body describing the intended behavior change, scope, and any follow-up or stack context.
 - ⚠️ P1: Retry behavior from the linked issue still appears uncovered. See inline comments.
 - 🔧 P2: The parsing helper is hard to exercise directly. See inline comments.
 - 💅 P3: I left a naming suggestion inline.
@@ -397,6 +399,8 @@ For `suggestion` blocks:
 - `REQUEST_CHANGES`: Only for malicious-looking or intentionally dangerous changes.
 
 If the only reason not to approve is a failing or pending CI check that is itself a merge blocker, use `APPROVE` and mention that the PR should be good to go once CI is fixed. Do not duplicate branch protection by withholding approval for CI alone.
+
+Do not approve a non-trivial PR when the reviewer cannot determine why it exists. Missing PR body alone is not the finding; unverifiable issue fit is.
 
 Do not use "must fix" unless the review decision is `REQUEST_CHANGES`.
 
