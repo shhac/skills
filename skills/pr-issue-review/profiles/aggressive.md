@@ -19,6 +19,11 @@ Candidate personas, in selection order (see Review Persona in SKILL.md):
 1. `personas/iris.md`
 2. `personas/tess.md`
 3. `personas/rex.md`
+4. `personas/nell.md`
+5. `personas/bo.md`
+6. `personas/cal.md`
+7. `personas/ray.md`
+8. `personas/vega.md`
 
 Use the loaded persona's line-one voice for the top-level review body.
 
