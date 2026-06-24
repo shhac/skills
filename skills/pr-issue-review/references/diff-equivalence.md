@@ -29,18 +29,20 @@ After exact head-SHA deduplication says this head has not been reviewed with the
 4. If a previous review has the same `diff` and the same `context`, remove the reaction and stop without posting a review.
 5. Otherwise continue with full context gathering and review as normal.
 
-It is okay to shallow-fetch the minimal base/head refs needed only for fingerprinting after the in-progress reaction is added. Do not do remote context discovery, lens loading, surrounding-source exploration, or full review reasoning before this check. The point is to avoid the slow work when the PR is only a rebase or merge refresh.
+The diff fingerprint below uses `gh pr diff` and needs no checkout, so this check can run before any shallow fetch. Do not do remote context discovery, lens loading, surrounding-source exploration, or full review reasoning before this check. The point is to avoid the slow work when the PR is only a rebase or merge refresh.
 
 ## Diff Fingerprint
 
-Prefer Git's stable patch identity when a shallow checkout is available:
+Fingerprint the PR's own delta, not a tree-to-tree diff of the two fetched tips. The shallow checkout fetches base and head as independent `--depth=1` tips with no shared history, so `git diff origin/base-<number> origin/pr-<number>` is a full tree diff: when the base branch advances past the PR's fork point it absorbs unrelated base changes, and the fingerprint then changes on every base movement even when the PR's effective diff is identical. That defeats the rebase/merge-refresh dedup this file exists for.
+
+`gh pr diff` returns GitHub's merge-base ("Files changed") delta for the PR, which already excludes unrelated base advancement. Prefer it as the primary source, and feed it through `git patch-id --stable` for rename- and format-insensitive identity:
 
 ```bash
-git diff --find-renames --binary origin/base-<number> origin/pr-<number> \
+gh pr diff <number> --repo <owner>/<repo> --patch \
   | git patch-id --stable
 ```
 
-Use the first field of `git patch-id --stable` as:
+`git patch-id` reads a diff on stdin and needs no repo or checkout, so this works on the no-checkout fallback path too. Use the first field as:
 
 ```text
 patch-id:<hash>
@@ -48,7 +50,9 @@ patch-id:<hash>
 
 `git patch-id --stable` is designed to recognize equivalent patch content across rebases. It ignores commit identity and many diff formatting details, which is exactly what this skip check needs.
 
-If the shallow checkout is not available yet, or `patch-id` fails, use a normalized PR patch hash from `gh pr diff --patch`:
+Because the primary source is `gh pr diff`, the diff fingerprint does not require the base/head shallow fetch; it can be computed before any checkout.
+
+If `patch-id` is unavailable or fails, fall back to a normalized PR patch hash from the same delta:
 
 ```bash
 gh pr diff <number> --repo <owner>/<repo> --patch \
@@ -98,3 +102,5 @@ Skip only when all of these are true:
 - The caller did not explicitly request a rerun.
 
 If any input is missing, ambiguous, or `unknown`, continue with the review. A duplicate review is less bad than skipping a genuinely changed PR.
+
+This check is best-effort, not a barrier. It reads previously posted reviews and then acts, so under parallel execution two concurrent runs on the same PR/head/profile can both read "not yet reviewed" and both post. That is accepted: the skill fails open by design (see SKILL.md Automation Behavior). Do not add locking to close this window, because a lock that is never released would strand a PR unreviewed, which is the worse failure.

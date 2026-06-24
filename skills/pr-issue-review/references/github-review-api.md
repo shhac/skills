@@ -1,6 +1,6 @@
 # GitHub Review Mechanics
 
-Exact `gh` commands for fetching PR data and submitting the review. All commands accept `--repo <owner>/<repo>` (or the `GH_REPO` env var); `gh api` additionally accepts `--hostname` for GitHub Enterprise hosts.
+Exact `gh` commands for fetching PR data and submitting the review. All commands accept `--repo <owner>/<repo>` (or the `GH_REPO` env var); `gh api` additionally accepts `--hostname` for GitHub Enterprise hosts. When the PR `{host}` is not `github.com`, `gh pr` commands target the wrong host unless `GH_HOST=<host>` is exported (or the host is the active `gh auth` host); set `GH_HOST` for Enterprise PR URLs before running any command here.
 
 ## Fetch Startup Metadata
 
@@ -121,7 +121,9 @@ reaction_id="$(gh api --method POST \
 
 If `reaction_id` is empty, continue without an in-progress signal.
 
-After submitting the review, or before exiting after a diff-equivalence skip/failure, remove only the exact reaction created by this run:
+The reaction is a best-effort cue, not a lock. GitHub deduplicates an identical reaction from the same user, so under concurrent runs on the same PR the POST returns the same reaction ID to every run, and the first run to finish removes the shared reaction. Do not treat the ID as a per-run token or use it for mutual exclusion; concurrent duplicate reviews are accepted (see SKILL.md Automation Behavior).
+
+After submitting the review, or before exiting after a diff-equivalence skip/failure, remove the reaction created by this run on a best-effort basis. The DELETE may 404 if another run already removed the shared reaction; that is not an error:
 
 ```bash
 if [ -n "${reaction_id:-}" ]; then
@@ -135,10 +137,9 @@ Do not remove a reaction unless its ID came from the `POST` response in the curr
 
 ## Submit One Review With Inline Comments
 
-Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr comment` (creates an issue comment, not a review). Build a JSON payload and POST it as a single review:
+Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr comment` (creates an issue comment, not a review). The target payload shape is (fenced with four backticks because a comment body contains a `suggestion` fence):
 
-```bash
-cat > "$repo_dir/.ai-cache/review-payload.json" <<'EOF'
+````json
 {
   "commit_id": "<headRefOid>",
   "event": "COMMENT",
@@ -148,7 +149,7 @@ cat > "$repo_dir/.ai-cache/review-payload.json" <<'EOF'
       "path": "src/records/filter.ts",
       "line": 42,
       "side": "RIGHT",
-      "body": "⚠️ P1 — Archived records are still excluded here.\n\n**Recommendation:** Include archived records here, or explain why that path is handled elsewhere.\n\n```suggestion\nreturn records.filter((record) => record.active || record.archived)\n```\n\n<details>\n<summary>Why this matters</summary>\n\nEvidence: ...\n\nImpact: ...\n\n</details>"
+      "body": "⚠️ P1 — Archived records are still excluded here.\n\n**Recommendation:** ...\n\n```suggestion\nreturn records.filter((record) => record.active || record.archived)\n```"
     },
     {
       "path": "src/records/filter.test.ts",
@@ -160,11 +161,34 @@ cat > "$repo_dir/.ai-cache/review-payload.json" <<'EOF'
     }
   ]
 }
-EOF
+````
+
+Do not hand-write this JSON. The review body and inline comment bodies are multi-line markdown containing newlines, double quotes, and triple backticks; pasting them straight into a JSON string (or a heredoc) produces invalid JSON and the POST fails. Assemble the payload with `jq`, which escapes every string for you. Write each body to its own file so newlines and backticks survive verbatim, load them with `--rawfile`, and supply structural fields with `--arg`/`--argjson`:
+
+Write these scratch files under this run's worktree (`$wt`), never a shared per-repo path, so concurrent runs cannot overwrite each other's payload between build and POST:
+
+```bash
+printf '%s' "$review_body"   > "$wt/body.md"
+printf '%s' "$comment1_body" > "$wt/c1.md"
+
+jq -n \
+  --arg commit "$head_sha" \
+  --rawfile body "$wt/body.md" \
+  --rawfile c1 "$wt/c1.md" \
+  '{
+    commit_id: $commit,
+    event: "COMMENT",
+    body: $body,
+    comments: [
+      { path: "src/records/filter.ts", line: 42, side: "RIGHT", body: $c1 }
+    ]
+  }' > "$wt/review-payload.json"
 
 gh api --method POST "repos/<owner>/<repo>/pulls/<number>/reviews" \
-  --input "$repo_dir/.ai-cache/review-payload.json"
+  --input "$wt/review-payload.json"
 ```
+
+Add one `--rawfile`/comment object per inline finding; use `--argjson comments "$json"` if you build the comments array separately. For an approval with no inline comments, set `event: "APPROVE"` and `comments: []`.
 
 Payload rules:
 
@@ -185,7 +209,7 @@ Inline comment rules:
 
 When the author clicks apply, GitHub replaces exactly lines `start_line..line` of the head file with the block content and commits the result. Anchors and block content must therefore be derived from the PR head and verified mechanically, never estimated from the unified diff; eyeballed line arithmetic from `@@` hunk headers is the main source of wrong anchors and broken applied commits.
 
-These commands use the refs fetched in Setup (`origin/pr-<number>` for the head, `origin/base-<number>` for the base).
+These commands use the refs fetched in Setup (`origin/pr-<number>` for the head, `origin/base-<number>` for the base). Run them from the per-run worktree `$wt` or with `git -C "$repo_dir"`; both see the shared refs (the snippets below omit the prefix for brevity). On the no-checkout fallback path (Setup could not create the shallow checkout, so these refs do not exist locally), this verification cannot run, so do not emit `suggestion` blocks: a `suggestion` is one-click-applied and demands an exact verified anchor. Still show the fix as a language-tagged fenced code block (for example ` ```ts `) so the author can copy it, paired with a `**Recommendation:**` line; the only thing lost is one-click apply, not the code itself. Anchor the comment only to a line you have confirmed is in the diff via `gh pr diff`.
 
 1. Derive the anchor from the file, not the diff. Find the target line's number in the head file:
 
@@ -215,7 +239,7 @@ These commands use the refs fetched in Setup (`origin/pr-<number>` for the head,
    - Every line of the anchored range is accounted for in the block, either unchanged or deliberately edited; anything missing gets deleted on apply.
    - Splicing the block into the file in place of the range leaves it well formed (balanced brackets, commas, fences, indentation consistent with neighbors).
 
-4. Downgrade when verification fails. If the fix needs a line outside the anchored range, widen the anchor to the contiguous changed range that covers it; if the needed lines are not contiguous changed lines, do not use a suggestion. Use a plain fenced code block with a prose direction instead. A described fix beats a misapplied one.
+4. Downgrade when verification fails. If the fix needs a line outside the anchored range, widen the anchor to the contiguous changed range that covers it; if the needed lines are not contiguous changed lines, do not use a suggestion. Show the fix as a language-tagged fenced code block (for example ` ```ts `) with a `**Recommendation:**` line instead, so the author can still copy the code even though it is not one-click-applicable. A copyable, correctly-anchored fix beats a misapplied one.
 
 5. Guardrails:
 

@@ -29,6 +29,8 @@ If the caller does not specify profile, choose one at review start from PR metad
 3. If someone else has already submitted a GitHub review, excluding CI/check annotations and non-review issue comments, use `assertive`.
 4. Otherwise use `aggressive`.
 
+By design `aggressive` is the default reviewer for unspecified PRs (rules 2 and 4); `assertive` is reached only as continuity when a non-skill human review already exists (rule 3). The profile descriptions above rank strictness; they do not imply `assertive` is the common fallback.
+
 Never choose `neutral` or `passive` by fallback. Those profiles require an explicit caller request or continuity from a previous exact profile marker on the same PR.
 
 AI-authorship signals include bot-like authorship, branch names, PR descriptions, commit messages, comments, or co-author lines that mention AI agents, LLMs, Codex, Claude, Copilot, ChatGPT, Devin, Cursor, or similar tooling. Treat this as a heuristic, not a claim about authorship.
@@ -70,7 +72,7 @@ The caller may specify any profile and persona combination, such as `aggressive`
 
 If the caller does not specify a persona, select one deterministically from the candidate personas listed by the loaded profile file, in their listed order:
 
-1. Count the previous reviews on this PR from this skill whose opening marker matches the selected profile. This is the same review set already fetched for head-SHA dedup; dismissed or deleted reviews that no longer appear in the GitHub reviews API do not count.
+1. Count the previous reviews on this PR from this skill whose opening marker matches the selected profile, across all head SHAs, not only the current head. This is the same review set already fetched for head-SHA dedup; dismissed or deleted reviews that no longer appear in the GitHub reviews API do not count.
 2. Persona index = (PR number + that count) modulo the number of candidates.
 
 This gives different PRs different first reviewers and a fresh voice on each repeat review of the same PR. Do not carry the previous review's persona forward by continuity; the formula already decides, and a persona change between passes is intended.
@@ -120,39 +122,51 @@ Every submitted review must include the hidden metadata described there so futur
 
 Given a PR URL, extract `{host, owner, repo, number}`.
 
-Create or reuse a temporary checkout for that repo:
+This skill is built to run many instances in parallel, including concurrent runs on the same repo and on the same PR. Isolate per-run state so concurrent runs cannot clobber each other; share only what is safe to share. Use one object store per repo and one detached worktree per run.
+
+Create or reuse the shared per-repo object store. It is reused across runs and across PRs in the same repo:
 
 ```bash
 tmp_root="${TMPDIR:-/tmp}/pr-issue-review"
-repo_dir="$tmp_root/<host>/<owner>/<repo>"
+repo_dir="$tmp_root/<host>/<owner>/<repo>"   # shared object store, reused across runs
 mkdir -p "$repo_dir"
+
+git init "$repo_dir" 2>/dev/null
+git -C "$repo_dir" remote add origin <repo-url> 2>/dev/null \
+  || git -C "$repo_dir" remote set-url origin <repo-url>
+git -C "$repo_dir" worktree prune            # reap bookkeeping for worktrees left by crashed runs
 ```
 
-After startup metadata has been fetched, exact head-SHA deduplication has decided this head/profile might need review, and the in-progress reaction has been added, use shallow fetches in two stages:
+After startup metadata has been fetched, exact head-SHA deduplication has decided this head/profile might need review, and the in-progress reaction has been added, defer fetching until needed:
 
-- For diff-equivalence deduplication, fetch only the minimal base/head refs needed to compute the fingerprint from `references/diff-equivalence.md`.
-- If diff-equivalence deduplication does not skip the PR, reuse those refs for static inspection and fetch any additional base/head refs needed for surrounding file reads.
+- The diff-equivalence fingerprint in `references/diff-equivalence.md` is computed from `gh pr diff` and needs no checkout, so do not fetch refs just to deduplicate.
+- Only if diff-equivalence deduplication does not skip the PR, shallow-fetch the base/head refs needed for static inspection and surrounding file reads.
 
-If shallow fetch is unavailable or insufficient, fall back to GitHub PR diff/patch and file-content APIs/connectors. Ask the user before any full-history clone.
-
-Recommended shape:
+Fetch the PR head, and the base when needed, into the shared store under PR-scoped ref names. Concurrent runs fetching into the same store can occasionally collide on `FETCH_HEAD.lock`; retry the fetch once on that error rather than aborting the run:
 
 ```bash
-git init "$repo_dir"
-cd "$repo_dir"
-git remote add origin <repo-url> 2>/dev/null || git remote set-url origin <repo-url>
-git fetch --no-tags --depth=1 origin +pull/<number>/head:refs/remotes/origin/pr-<number>
+git -C "$repo_dir" fetch --no-tags --depth=1 origin \
+  +pull/<number>/head:refs/remotes/origin/pr-<number>
+git -C "$repo_dir" fetch --no-tags --depth=1 origin \
+  +<base-ref-or-sha>:refs/remotes/origin/base-<number>
 ```
 
 The leading `+` only allows the local temp ref to be refreshed after a PR force-push. It must never be used as permission to push to the remote.
 
-Fetch the base ref or base SHA shallowly as needed to compute diffs and read base files:
+Add a per-run detached worktree, keyed on the run rather than the PR so two concurrent runs on the same PR do not collide on the path. Remove it on exit and prune its bookkeeping:
 
 ```bash
-git fetch --no-tags --depth=1 origin +<base-ref-or-sha>:refs/remotes/origin/base-<number>
+mkdir -p "$tmp_root/.runs"
+wt="$(mktemp -u "$tmp_root/.runs/<number>-XXXXXX")"   # unique per run, outside repo_dir
+git -C "$repo_dir" worktree add --detach "$wt" refs/remotes/origin/pr-<number>
+trap 'git -C "$repo_dir" worktree remove --force "$wt" 2>/dev/null; git -C "$repo_dir" worktree prune' EXIT
 ```
 
-If the repo already exists in the temp checkout, reuse it and fetch the latest PR head/base refs shallowly.
+Use `$wt` as the working directory and the scratch root for this run's ephemeral files (see Context Cache). Exploration is ref-based (`git -C "$repo_dir" show refs/remotes/origin/pr-<number>:<path>`, `git grep`, `git diff`), so it reads from the shared store and does not depend on the checkout; the worktree exists to isolate per-run scratch and working state, not to enable reads.
+
+Treat the temp repo as untrusted cache. `/tmp` cleanup may delete cold objects by age and leave a partially-corrupt store. If any ref or object read fails, re-fetch the needed refs; if the shallow fetch is unavailable or insufficient, fall back to GitHub PR diff/patch and file-content APIs/connectors. Ask the user before any full-history clone.
+
+If the repo already exists in the temp checkout, reuse it: prune stale worktrees, re-fetch the latest PR head/base refs, and add a fresh per-run worktree as above.
 
 ## Gather Full PR Context After the Reaction
 
@@ -191,20 +205,42 @@ Use private remote context to inform the review, but do not paste sensitive or u
 
 ### Context Cache
 
-Write discovered context into untracked cache files in the temporary checkout so repeated review loops do not re-fetch the same remote context:
+Separate reusable remote context from per-run scratch. The two have different lifetimes and different owners under parallelism.
+
+Reusable remote context (Linear, Slack, Notion, GitHub issues) is shared across runs and across PRs in the same repo. Write it to the shared object store, not the per-run worktree, so it survives worktree teardown and a crashed run never loses it:
 
 ```text
-.ai-cache/REVIEW_CONTEXT.md
-.ai-cache/<reference-name>.md
+$repo_dir/.ai-cache/context/<reference-name>.md
 ```
 
 Examples:
 
 ```text
-.ai-cache/linear-ENG-1234.md
-.ai-cache/slack-C12345678-1712345678.123456.md
-.ai-cache/notion-project-brief.md
-.ai-cache/github-issue-42.md
+$repo_dir/.ai-cache/context/linear-ENG-1234.md
+$repo_dir/.ai-cache/context/slack-C12345678-1712345678.123456.md
+$repo_dir/.ai-cache/context/notion-project-brief.md
+$repo_dir/.ai-cache/context/github-issue-42.md
+```
+
+Write each file atomically so a concurrent run cannot read a half-written file: write to a temp file in the same directory and `mv` it into place (rename is atomic on one filesystem). The same reference id maps to the same content, so last-writer-wins is safe.
+
+Stamp each cache file with a header so reuse can judge freshness:
+
+```text
+<!-- cache: source=<linear|slack|notion|github> ref=<id> cached_at=<ISO8601> source_updated_at=<ISO8601|unknown> -->
+```
+
+Decide before re-fetching a cached reference:
+
+- If the source exposes a last-modified time (Linear and Notion do), fetch only that lightweight metadata and reuse the cache when `source_updated_at` is unchanged.
+- Otherwise apply a TTL: re-fetch when `cached_at` is older than the TTL (default 30 minutes for an active review loop). Sources without a reliable last-modified, such as Slack, rely on the TTL alone.
+- The diff-equivalence context fingerprint does not cover external sources, so this freshness check is the only thing that catches a Linear/Notion/Slack change while the PR diff and body stay unchanged.
+
+Per-run ephemera live in the worktree and are discarded with it. Never write them to a shared path:
+
+```text
+$wt/REVIEW_CONTEXT.md
+$wt/review-payload.json
 ```
 
 `REVIEW_CONTEXT.md` should summarize:
@@ -214,9 +250,9 @@ Examples:
 - Related PRs or stack notes
 - The selected profile, loaded persona, loaded lenses, and loaded focus packs
 - Any unavailable references
-- The timestamp/source of each cached context file
+- The `cached_at`/`source_updated_at` and source of each reused context file
 
-Do not commit `.ai-cache/`.
+Do not commit any cache files.
 
 ## Review Procedure
 
@@ -227,7 +263,7 @@ Do not commit `.ai-cache/`.
 5. Add the in-progress reaction described below and store the returned reaction ID for cleanup.
 6. Read `references/diff-equivalence.md`, compute the current diff and startup context fingerprints, and compare them with hidden metadata from prior reviews by this skill on the same PR/profile.
 7. If diff-equivalence deduplication says this is the same effective diff and same startup context as a previous review, remove the in-progress reaction and stop without posting a review.
-8. Gather full PR context, reuse the fingerprint refs or perform additional shallow checkout/fetches if needed, discover remote context, and cache discovered remote context.
+8. Fetch the head/base refs into the shared store, add the per-run worktree (see Setup), gather full PR context, discover remote context, and cache discovered remote context.
 9. Load only the lens files named by that profile.
 10. Load any clearly relevant focus packs from `references/focus-packs/`.
 11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
@@ -236,16 +272,16 @@ Do not commit `.ai-cache/`.
 
 ## In-Progress Signal
 
-Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions.
+Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions. It is a best-effort visual cue, not a lock. It does not coordinate concurrent runs: GitHub deduplicates an identical reaction from the same user, so two concurrent runs that add `eyes` get the same reaction ID back, and whichever finishes first removes the shared reaction. Do not rely on it for mutual exclusion or to prevent duplicate reviews (see Automation Behavior on accepted duplicates).
 
 - Add the reaction after exact head-SHA deduplication decides this head/profile was not already reviewed.
 - Add the reaction before diff-equivalence deduplication, including any minimal shallow fetch needed only to compute the fingerprint.
 - Do not wait for full diff review, remote context discovery, cache writes, or surrounding-source exploration before adding the reaction.
-- Store the reaction ID returned by GitHub in run-local state or `.ai-cache/`.
+- Store the reaction ID returned by GitHub in run-local state (in `$wt`), not a shared path.
 - After submitting the review, remove only the exact reaction ID created by this run.
 - If review submission is intentionally skipped after the reaction is created, remove the exact reaction ID before exiting.
 - If the run fails, make a best-effort attempt to remove the exact reaction ID before exiting.
-- If adding the reaction fails, continue the review without an in-progress signal.
+- If adding the reaction fails, or a concurrent run already removed the shared reaction, continue without an in-progress signal; a failed removal is not an error.
 
 ## Review Output
 
@@ -413,8 +449,9 @@ When running in a loop for PRs requesting the user's review:
 3. Skip without adding a reaction if a review from this skill already exists for the current head SHA and selected profile, unless explicitly rerun.
 4. Add the in-progress reaction immediately after exact head-SHA deduplication decides this PR/head/profile might need review.
 5. Run the diff-equivalence check from `references/diff-equivalence.md`; if it finds the same effective diff and same startup context as a previous review on this PR/profile, remove the in-progress reaction and stop without posting a review.
-6. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR can receive one review per `{head SHA, profile}` unless diff-equivalence deduplication suppresses a rebase or merge-refresh duplicate.
-7. Reuse the temp repo and `.ai-cache/` context for the same repo.
-8. Refresh PR metadata and diff every run; cached remote context can be reused unless the reference changed.
-9. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
-10. Always make a best-effort cleanup attempt for any in-progress reaction created by the current run.
+6. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR normally receives one review per `{head SHA, profile}` unless diff-equivalence deduplication suppresses a rebase or merge-refresh duplicate.
+7. Deduplication is best-effort, not a barrier. Under parallel execution two runs on the same `{PR, head SHA, profile}` can both pass the read-then-act dedup checks and both post a review. Accept this. Failing open (an occasional duplicate review) is preferable to failing closed (skipping a genuinely changed PR because a prior run left stale state); do not add locking that could strand a PR unreviewed.
+8. Reuse the shared per-repo object store and its `.ai-cache/context/` cache across runs; use a fresh per-run worktree for working state and ephemera.
+9. Refresh PR metadata and diff every run; reuse cached remote context only when its freshness header passes the `source_updated_at`/TTL check in Context Cache.
+10. If metadata or context fetching partially fails, continue with available information and state the limitation in the top-level review body.
+11. Always make a best-effort cleanup attempt for any in-progress reaction and per-run worktree created by the current run.
