@@ -81,20 +81,25 @@ Load exactly one persona file.
 
 ## Focus Packs
 
-After loading the profile and lenses, inspect changed file paths, file extensions, imports/includes, config files, PR title/body, and discovered context for optional focus packs under `references/focus-packs/`.
+After loading the profile and lenses, check every focus pack under `references/focus-packs/` against the PR: changed file paths and extensions, imports/includes, config files, PR title/body, and discovered context.
 
-Load only packs that clearly match the PR. Prefer zero to three packs; load more only when the PR genuinely spans several specialist domains. Focus packs add domain-specific review questions, but they do not change the selected profile, approval thresholds, severity scale, or P0-only blocking policy. Local repo guidance always wins over a generic focus pack.
+Load each pack whose trigger signals below clearly match the PR. Skipping a matching pack is a review-coverage gap, not a tidiness win. A typical PR matches zero to three packs; matching more than that usually means the PR genuinely spans several specialist domains, so load them all. Focus packs add domain-specific review questions, but they do not change the selected profile, approval thresholds, severity scale, or P0-only blocking policy. Local repo guidance always wins over a generic focus pack.
 
-Available focus packs:
+Trigger signals per pack:
 
-- `grpc-protobuf.md` — `.proto`, protobuf, gRPC, RPC schema evolution, generated RPC clients/servers
-- `graphql-clients.md` — GraphQL schemas/operations/fragments, client caches, pagination, generated GraphQL types
-- `database-migrations.md` — migrations, schema changes, backfills, data repairs, indexes, rollbacks
-- `background-jobs-queues.md` — workers, queues, retries, scheduled jobs, async processors, idempotent jobs
-- `auth-permissions.md` — authentication, authorization, roles, scopes, permissions, tenant boundaries
-- `accessibility.md` — interactive UI, semantics, keyboard behavior, focus, labels, contrast, assistive technology
-- `localization.md` — locale files, translation keys, pluralization, user-visible copy across languages
-- `code-structure-boundaries.md` — broad structural changes, module seams, accidental hubs, large functions/files, wrong-fit abstractions
+- `grpc-protobuf.md`: `.proto` files, protobuf/gRPC config, generated RPC clients/servers, RPC schema evolution
+- `graphql-clients.md`: `.graphql`/`.gql` files, GraphQL schemas/operations/fragments, client caches, pagination, generated GraphQL types
+- `database-migrations.md`: migration files, schema changes, indexes, constraints, backfills, data repairs, rollbacks for operational databases
+- `background-jobs-queues.md`: workers, queues, retries, scheduled jobs, async processors, idempotent jobs, orchestration DAGs (Airflow, Dagster, and similar)
+- `auth-permissions.md`: authentication, authorization, roles, scopes, permissions, tenant boundaries
+- `accessibility.md`: interactive UI, semantics, keyboard behavior, focus, labels, contrast, assistive technology
+- `localization.md`: locale files, translation keys, pluralization, user-visible copy across languages
+- `code-structure-boundaries.md`: broad structural changes, module seams, accidental hubs, large functions/files, wrong-fit abstractions
+- `sql-semantics.md`: `.sql` files or embedded SQL query strings in application code, in any repo
+- `dbt-transformations.md`: `dbt_project.yml`, `models/`, `macros/`, `snapshots/`, `seeds/`, dbt schema/properties `.yml` files, dbt mentioned in PR context
+- `warehouse-cost-performance.md`: models or queries against a cloud warehouse (Snowflake, BigQuery, Redshift, Databricks), clustering/partitioning config, large-table or full-refresh changes
+
+Packs compose. A typical dbt PR loads `dbt-transformations.md` plus `sql-semantics.md`, adding `warehouse-cost-performance.md` when large or costly models change.
 
 ## Review Deduplication
 
@@ -273,7 +278,7 @@ Do not commit any cache files.
 7. If diff-equivalence deduplication says this is the same effective diff and same startup context as a previous review, remove the in-progress reaction and stop without posting a review.
 8. Fetch the head/base refs into the shared store, add the per-run worktree (see Setup), gather full PR context, discover remote context, and cache discovered remote context.
 9. Load only the lens files named by that profile.
-10. Load any clearly relevant focus packs from `references/focus-packs/`.
+10. Check every focus pack's trigger signals against the changed paths and PR context, and load each pack that matches (see Focus Packs).
 11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
 12. Submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
 13. Remove the exact in-progress reaction created by this run.

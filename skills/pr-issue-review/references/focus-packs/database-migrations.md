@@ -1,6 +1,6 @@
 # Database Migrations Focus Pack
 
-Load when changed files or PR context mention migrations, schema changes, indexes, constraints, backfills, data repair, data deletion, retention, or storage format changes.
+Load when changed files or PR context mention migrations, schema changes, indexes, constraints, backfills, data repair, data deletion, retention, or storage format changes. This pack covers operational databases: application migrations, live schema, and production data. For dbt or warehouse transformation-layer changes, use the dbt transformations and warehouse cost and performance packs instead.
 
 Look for:
 
