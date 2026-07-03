@@ -134,6 +134,8 @@ mkdir -p "$repo_dir"
 git init "$repo_dir" 2>/dev/null
 git -C "$repo_dir" remote add origin <repo-url> 2>/dev/null \
   || git -C "$repo_dir" remote set-url origin <repo-url>
+find "$tmp_root/.runs" -mindepth 1 -maxdepth 1 -mtime +0 \
+  -exec rm -rf {} + 2>/dev/null              # reap run dirs abandoned >24h ago by crashed runs
 git -C "$repo_dir" worktree prune            # reap bookkeeping for worktrees left by crashed runs
 ```
 
@@ -153,13 +155,19 @@ git -C "$repo_dir" fetch --no-tags --depth=1 origin \
 
 The leading `+` only allows the local temp ref to be refreshed after a PR force-push. It must never be used as permission to push to the remote.
 
-Add a per-run detached worktree, keyed on the run rather than the PR so two concurrent runs on the same PR do not collide on the path. Remove it on exit and prune its bookkeeping:
+Add a per-run detached worktree, keyed on the run rather than the PR so two concurrent runs on the same PR do not collide on the path:
 
 ```bash
 mkdir -p "$tmp_root/.runs"
 wt="$(mktemp -u "$tmp_root/.runs/<number>-XXXXXX")"   # unique per run, outside repo_dir
 git -C "$repo_dir" worktree add --detach "$wt" refs/remotes/origin/pr-<number>
-trap 'git -C "$repo_dir" worktree remove --force "$wt" 2>/dev/null; git -C "$repo_dir" worktree prune' EXIT
+```
+
+Do not set an EXIT trap to remove the worktree. The review spans many separate shell invocations, and an EXIT trap fires when its own invocation exits, which would delete the worktree moments after creating it. Remove the worktree explicitly as the last step of the run (see Review Procedure and Automation Behavior); runs that crash before cleanup are covered by the startup sweep and prune above:
+
+```bash
+git -C "$repo_dir" worktree remove --force "$wt" 2>/dev/null
+git -C "$repo_dir" worktree prune
 ```
 
 Use `$wt` as the working directory and the scratch root for this run's ephemeral files (see Context Cache). Exploration is ref-based (`git -C "$repo_dir" show refs/remotes/origin/pr-<number>:<path>`, `git grep`, `git diff`), so it reads from the shared store and does not depend on the checkout; the worktree exists to isolate per-run scratch and working state, not to enable reads.

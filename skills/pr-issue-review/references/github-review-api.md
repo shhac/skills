@@ -128,7 +128,7 @@ After submitting the review, or before exiting after a diff-equivalence skip/fai
 ```bash
 if [ -n "${reaction_id:-}" ]; then
   gh api --method DELETE \
-    "repos/<owner>/<repo>/reactions/$reaction_id" \
+    "repos/<owner>/<repo>/issues/<number>/reactions/$reaction_id" \
     --silent || true
 fi
 ```

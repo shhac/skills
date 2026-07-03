@@ -72,22 +72,38 @@ Patch hashes are a fallback. They are usually good enough for same-diff detectio
 
 The diff alone is not enough. A PR can keep the same patch while the stated issue, acceptance criteria, or review conversation changes.
 
-Build a startup context fingerprint from lightweight metadata available before full review:
+The fingerprint must be byte-identical across runs that see the same context, so never assemble or serialize the payload by hand: model-side serialization varies run to run and a varying hash silently defeats the dedup. Compute it with exactly this command:
 
-- PR title
-- PR body
-- base branch name
-- head branch name
-- issue comments and review summaries visible in startup metadata, excluding reviews/comments from this skill
-- closing issue references if already fetched in startup metadata
+```bash
+gh pr view <number> --repo <owner>/<repo> \
+  --json title,body,baseRefName,headRefName,closingIssuesReferences,comments,reviews \
+| jq -Sc '{
+    title, body,
+    base: .baseRefName, head: .headRefName,
+    issues: [.closingIssuesReferences[]? | .number],
+    comments: [.comments[]?
+      | select(.body | test("^🦎(🍃|⚖️|🔎|⚔️)") | not)
+      | {a: .author.login, b: .body}],
+    reviews: [.reviews[]?
+      | select(.body | test("^🦎(🍃|⚖️|🔎|⚔️)") | not)
+      | {a: .author.login, s: .state, b: .body}]
+  }' \
+| shasum -a 256
+```
 
-Normalize by using stable JSON key order when possible. Hash the normalized payload with SHA-256 and store it as:
+Use the first field as:
 
 ```text
 sha256:<hash>
 ```
 
-Keep previous reviews from this skill out of the context fingerprint. They are parsed separately for deduplication metadata; including them in the context hash would make this skill's own review change the fingerprint on every later run.
+Guard the fetch: if the `gh pr view` call fails, the pipeline still "succeeds" by hashing empty input to `e3b0c442...`, and because that hash is identical across all failures it could wrongly match a prior failed run and skip a review that was needed. Confirm the `gh` call exited zero and produced JSON before hashing; on failure use `context=unknown`, which never matches.
+
+The recipe encodes deliberate design constraints; preserve them if it ever changes:
+
+- No timestamps, IDs, or commit SHAs. Rebases, merge refreshes, and time passing must not move the fingerprint; editing the title, body, or a comment must.
+- Reviews and comments from this skill are excluded by their lizard marker, not by author login, so the fingerprint is stable no matter which account runs the skill and this skill's own reviews never change it on later runs. This skill's reviews are parsed separately for deduplication metadata.
+- Arrays stay in API (chronological) order; `-S` sorts object keys only. Do not sort or filter the arrays beyond the marker exclusion.
 
 If the context fingerprint differs, continue with review even when the diff fingerprint matches.
 
