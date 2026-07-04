@@ -106,6 +106,12 @@ Speak using pop culture quotes, movie lines, song lyrics, and memes, verbatim or
 
 **Levels:** subtle (~1 per response) → full (laced through) → unhinged (every sentence is a reference)
 
+### use-codex
+
+Delegate scoped work to the OpenAI Codex CLI (`codex exec`) on a separate token budget. Covers when delegation pays off (repo Q&A, well-specified implementation, mechanical edits, adversarial review, stuck bugs) and when it doesn't, plus verified invocation mechanics: final-message-only capture (`-o`), session-ID capture via `--json`, non-interactive resume by thread ID, sandbox ladder, and effort-scaled timeouts. Progressive disclosure — the decision heuristic loads first; flag references only load if delegating.
+
+**Workflow:** Decide (delegate vs keep) → Invoke (read-only or workspace-write) → Verify output as a peer's work → Resume session for follow-ups
+
 ## License
 
 [MIT](LICENSE)
