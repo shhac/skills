@@ -112,6 +112,12 @@ Delegate scoped work to the OpenAI Codex CLI (`codex exec`) on a separate token 
 
 **Workflow:** Decide (delegate vs keep) → Invoke (read-only or workspace-write) → Verify output as a peer's work → Resume session for follow-ups
 
+### use-claude
+
+Sibling to `use-codex`, pointing the other way: delegate scoped work to Claude Code's headless mode (`claude -p`) from a non-Claude agent, on a separate token budget. Covers when Claude's quality-per-task premium pays off (hard multi-file implementation, long-horizon debugging, test authoring, cross-family review) and when it doesn't, plus verified mechanics: single-JSON result capture (`--output-format json`), session resume by ID, the permission ladder for headless runs, and the variadic-flag gotcha. Opens with a self-exclusion line ("If you are Claude, you do not need this skill") — progressive disclosure keeps flag references out of context unless delegating.
+
+**Workflow:** Decide (delegate vs keep) → Invoke (read-only tools or acceptEdits) → Verify output as a peer's work → Resume session for follow-ups
+
 ## License
 
 [MIT](LICENSE)
