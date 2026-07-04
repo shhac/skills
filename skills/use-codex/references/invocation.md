@@ -105,6 +105,8 @@ For long jobs, prefer `run_in_background: true` on the Bash call and read the `-
 ## Failure modes
 
 - Exit code is non-zero on errors; the `-o` file is not written if the run fails — check for the file's existence before reading. With `--json`, prefer detecting `turn.failed` / `error` events over exit-code taxonomy (codes beyond zero/non-zero are undocumented).
-- "Reading additional input from stdin..." in output means `</dev/null` was forgotten.
+- "Reading additional input from stdin..." in output means `</dev/null` was forgotten. (A benign copy of this line can appear even with the redirect — it is only a problem if the run hangs.)
+- "Not inside a trusted directory and --skip-git-repo-check was not specified." — `-C` points at a non-git directory (common when spanning multiple repos from a parent dir); add `--skip-git-repo-check`. Note this error goes to stderr, so under the canonical `2>/dev/null` the run fails silently: exit 1, no `-o` file.
+- General debugging move: when a run exits non-zero with no `-o` file, re-run once without `2>/dev/null` to see the real error.
 - Unrecognized-flag errors on `resume` usually mean a flag (like `-s`) that only `exec` accepts.
 - Auth problems: `codex doctor` diagnoses install/auth/config health.

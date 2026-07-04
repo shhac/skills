@@ -34,6 +34,7 @@ Then read `/tmp/codex-out.txt` — it contains only the final message; all inter
 
 - Model: `gpt-5.5` (default; there is no `gpt-5.5-codex`). `gpt-5.4-mini` for quick subtasks.
 - Sandbox: `read-only` for questions/review; `workspace-write` when Codex should edit files (then review the diff before trusting it).
+- If `-C` targets a directory that is not itself a git repo (e.g. a parent dir spanning several repos), add `--skip-git-repo-check` — without it the run fails, and silently so under `2>/dev/null` (exit 1, no output file).
 - To capture a session ID for follow-ups: add `--json`, take `thread_id` from the first stdout line; resume with `codex exec resume <thread-id> "follow-up"`.
 
 Full flag reference, session-ID capture/resume details, structured output, and gotchas (stdin, resume flag differences, failure modes): `references/invocation.md`.
