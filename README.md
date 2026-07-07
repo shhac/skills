@@ -66,6 +66,12 @@ Convert raster images (photos, illustrations, AI-generated art) into high-qualit
 
 **Workflow:** Analyze → Decompose → Build Features (parallel) → Align → Composite → Deliver
 
+### create-profile-atlas
+
+Create or extend generated profile/portrait emoji atlases for Slack-style custom emoji. Generates chroma-keyed pixel/profile/person/mascot emoji sets, splits them into transparent PNGs, validates 48px readability, packages manifests/previews/zips, and can optionally upload custom emoji to Slack.
+
+**Workflow:** Collect references → Generate atlas → Inspect → Split & clean → Validate → Package / Upload
+
 ### dotfiles-mac
 
 Create, update, or apply a macOS dotfiles repo using GNU Stow and plain git. Audits your system (Homebrew, shell, git, SSH, GPG, app configs, Claude/AI configs, macOS defaults), lets you pick what to track, and generates a stow-based repo with an idempotent setup script.

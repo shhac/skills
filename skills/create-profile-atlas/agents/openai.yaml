@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Profile Atlas"
+  short_description: "Generate and split profile emoji atlases"
+  default_prompt: "Use $create-profile-atlas to create a pixel profile emoji atlas from my reference image."
