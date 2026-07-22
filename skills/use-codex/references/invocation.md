@@ -35,7 +35,6 @@ Additional useful flags:
 - `-i <image>` — attach image(s) to the prompt.
 - `--add-dir <dir>` — extra writable directories alongside the workspace.
 - `--search` — enable live web search for the agent.
-- `-a never` / `--ask-for-approval never` — no approval prompts (exec is already non-interactive; only needed if a config profile sets a stricter policy).
 - `--full-auto` is **deprecated** — use `--sandbox workspace-write` instead.
 
 ## Models and reasoning effort
