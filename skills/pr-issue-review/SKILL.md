@@ -26,7 +26,7 @@ If the caller does not specify profile, choose one at review start from PR metad
 
 1. If the most recent previous review on this PR from this skill has a profile marker, match that profile.
 2. If the PR appears AI-authored, malicious-looking, or high-risk, use `aggressive`.
-3. If someone else has already submitted a GitHub review, excluding CI/check annotations and non-review issue comments, use `assertive`.
+3. If someone else has already submitted a GitHub review, excluding CI/check annotations, non-review issue comments, and reviews that appear to come from automated reviewers (see Other Automated Reviewers), use `assertive`.
 4. Otherwise use `aggressive`.
 
 By design `aggressive` is the default reviewer for unspecified PRs (rules 2 and 4); `assertive` is reached only as continuity when a non-skill human review already exists (rule 3). The profile descriptions above rank strictness; they do not imply `assertive` is the common fallback.
@@ -98,6 +98,9 @@ Trigger signals per pack:
 - `sql-semantics.md`: `.sql` files or embedded SQL query strings in application code, in any repo
 - `dbt-transformations.md`: `dbt_project.yml`, `models/`, `macros/`, `snapshots/`, `seeds/`, dbt schema/properties `.yml` files, dbt mentioned in PR context
 - `warehouse-cost-performance.md`: models or queries against a cloud warehouse (Snowflake, BigQuery, Redshift, Databricks), clustering/partitioning config, large-table or full-refresh changes
+- `injection-untrusted-input.md`: changed code interpolating external or user-supplied data into queries, commands, paths, HTML, URLs, headers, logs, or deserialization, in any repo
+- `infra-iac.md`: Terraform/CloudFormation/CDK/Helm/Kubernetes/Docker files, environment-tier config, scaling/capacity values, IAM or security-group changes
+- `cicd-workflows.md`: CI pipeline configs, GitHub Actions workflows, deploy scripts, action/runner configuration
 
 Packs compose. A typical dbt PR loads `dbt-transformations.md` plus `sql-semantics.md`, adding `warehouse-cost-performance.md` when large or costly models change.
 
@@ -122,6 +125,33 @@ Every submitted review must include the hidden metadata described there so futur
   - `suggestion` fenced blocks when the author can accept a quick fix directly
 - Do not require broad pattern changes. If a different pattern would be better, mention it as optional context, not as a blocker.
 - Be stack-aware. If this PR appears to be one part of a stacked or multi-PR solution, judge whether it is a coherent step and state what seems deferred to companion PRs.
+
+## Deferred Work Is Not A Safety Argument
+
+An author's "deferred", "out of scope", "follow-up", or "intentional for now" label documents a risk; it does not make the merged state safe. Judge deferrals by the safety of the merged state, not the author's intent:
+
+- When a deferred item leaves the merged surface with a live auth gap, a permission enforced only in the client while the server accepts the write, a tenant-isolation hole, a data-loss or silent-failure path, or an unguarded read-then-write race, that is a `⚠️ P1`. Keep it, and say explicitly: "the PR body defers this, but the merged state is unsafe until the follow-up lands." A tracked reference does not clear a P1.
+- For deferred items below P1: if the author gives an explicit reference to where the deferral is tracked (a linked follow-up PR, issue, or ticket), record the finding as `ℹ️ FYI` citing that reference and do not withhold approval over it. An untracked "we'll do it later" keeps its graded severity.
+- Accept deferral freely for items that are safe-if-never-done: cleanups, extra coverage, polish.
+
+## Revert PRs
+
+If the PR is a revert of a previously merged PR (title, body, or a diff that inverts a merged change), the review question narrows to: does this cleanly restore the prior state, and does anything still depend on the reverted change? Two findings stay first-class:
+
+- An unclean or partial revert that does not actually restore the prior state: `⚠️ P1`.
+- Reverted behavior that surviving descendant PRs or dependent code will reintroduce or break on: `⚠️ P1`.
+
+Quality and coverage asks that would improve on the pre-revert state (new tests, cleanups, hygiene) ride along as `ℹ️ FYI` and never withhold approval: a revert restoring a previously-shipped state does not owe new hygiene.
+
+## Other Automated Reviewers
+
+Other AI reviewers may have reviewed this PR from other accounts (look for 🦎 branding, `lizard:v1`-style hidden metadata, or bot-named review bodies). Rules:
+
+- They are context, not this skill. Never count their reviews for this skill's head-SHA/diff-equivalence deduplication or persona rotation; match only this skill's exact opening markers.
+- They do not trigger the "someone else has already submitted a review" profile fallback; that rule is for human reviews.
+- Review independently and completely. Never omit, soften, or defer a finding because a sibling reviewer already raised it or already approved — there is no guarantee any sibling runs on any given PR, so this skill's review must stand alone. Their reviews are context: when your evidence contradicts their verdict or grading, say so explicitly ("their approval cleared hover states; I think the residue on line 32 still regresses dark mode") — an explicit second opinion is the value of running two reviewers.
+
+An "already approved by another bot" PR still gets a full review from this skill; approval by a sibling bot is not approval by a human.
 
 ## Setup
 
@@ -283,6 +313,8 @@ Do not commit any cache files.
 12. Submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
 13. Remove the exact in-progress reaction created by this run.
 
+Allocate scrutiny by blast radius, not by how readable the diff is. Money, auth, data deletion, irreversible migrations, and large multi-domain PRs get the deepest pass: engage the riskiest hunks inline, and verify the PR's central claim yourself rather than restating it. If the PR body itself names a limitation, deliberate gap, or follow-up, the review must acknowledge it and either accept it (as an `ℹ️ FYI` with the watch-out spelled out) or challenge it (see Deferred Work Is Not A Safety Argument). A review of a high-risk PR whose body adds nothing beyond the PR description is a failed review, even when the verdict is right.
+
 ## In-Progress Signal
 
 Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions. It is a best-effort visual cue, not a lock. It does not coordinate concurrent runs: GitHub deduplicates an identical reaction from the same user, so two concurrent runs that add `eyes` get the same reaction ID back, and whichever finishes first removes the shared reaction. Do not rely on it for mutual exclusion or to prevent duplicate reviews (see Automation Behavior on accepted duplicates).
@@ -356,7 +388,9 @@ Always append the hidden metadata line from `references/diff-equivalence.md` as 
 
 Use `Focus checked` to name the main axes applied by the loaded profile and changed area, such as issue fit, local repo guidance, failure modes/scale, user-visible text/localization, batch failure behavior, runtime contracts, testability, or conventions.
 
-If a previous review from this skill exists on the same PR, include `Previous findings` when useful. Summarize what was resolved, what remains open, and what is new at the current head SHA.
+If a previous review from this skill exists on the same PR, include `Previous findings` when useful. Summarize what was resolved, what remains open, and what is new at the current head SHA. Track findings across review cycles by scenario, not wording.
+
+When the author (or another reviewer) has replied to a previous finding from this skill, engage the reply before repeating the finding: either withdraw or downgrade it, crediting the argument ("the enforced formatter makes this unreachable — downgrading"), or state specifically why it stands despite the rebuttal. Re-posting a previous finding unchanged, without acknowledging an outstanding rebuttal, is a review defect.
 
 ### Finding Severity
 
@@ -368,6 +402,15 @@ Prefix actionable findings in the top-level body and inline comments with a seve
 - `💅 P3`: a nit worth landing (naming, local cleanup, or an easy fix that makes the merged code a better example to follow).
 - `💭 P4`: pure preference or alternative; take it or leave it. Never counts against approval in any profile.
 - `ℹ️ FYI`: context, limitation, stack note, or observation with no action implied.
+
+Severity is graded on real-world consequence, not on how correct the finding is. `⚠️ P1` means: merging this plausibly harms users, data, money, security, or an in-flight rollout. If describing the harm requires a scenario the repo's gates already prevent, it is not a P1. Before assigning severity, apply these de-escalations:
+
+- If repo-enforced tooling (formatter, linter, typechecker, codegen, CI gate) makes the failure scenario unrepresentable in committed code, the finding is at most `💭 P4`. Name the tool in the comment.
+- Cosmetic or ephemeral UI states (hover, focus flash, transition frames) are at most `💅 P3`, even when inconsistent with the PR's own goal.
+- A missing-test finding is `🔧 P2` only when the untested path is the behavior this PR exists to deliver or fix; coverage nudges for adjacent or already-indirectly-covered paths are `💅 P3`.
+- A fail-closed regression (users wrongly denied, nothing leaked) is one severity below the equivalent fail-open defect unless it is live and user-facing now.
+
+Profile approval thresholds are unchanged by these rules: the aggressive profile still withholds approval for any `⚠️ P1`, `🔧 P2`, or `💅 P3`. The de-escalations make grading honest; they do not lower the bar.
 
 Use the loaded profile's approval threshold when deciding between `APPROVE` and `COMMENT`. Severity affects that decision and the tone of the review, but it does not change the blocking policy: only `🚨 P0` can use `REQUEST_CHANGES`.
 

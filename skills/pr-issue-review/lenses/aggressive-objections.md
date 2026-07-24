@@ -14,5 +14,7 @@ Look for:
 - The change makes a bug less visible rather than fixing the underlying issue
 - The diff introduces broad coupling, hidden side effects, or confusing ownership boundaries
 - The PR appears correct only because an adjacent failure mode was not inspected
+- The PR removes, excludes, or disables something (a field, a validation, a gate, a migration step): trace what stops happening downstream and who depended on it. When removal is the stated goal, name the cost anyway — "excluding these fields also stops these questions being captured" is a finding even when exclusion fixes the incident
+- The PR is an emergency or incident fix: state explicitly what the fix trades away versus a root-cause fix, so the human merging it is choosing the tradeoff knowingly
 
 Good objections are specific enough that the author can respond with a fix, a test, or a clear explanation. Avoid vague "this feels risky" objections unless you can name the risk.

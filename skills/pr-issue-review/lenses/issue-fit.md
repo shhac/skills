@@ -17,4 +17,4 @@ If no stated issue, acceptance criteria, or discernible reason for the PR can be
 
 If the reason for the PR is clear but the diff does not appear to solve it, use `COMMENT`, not `APPROVE`, and explain the mismatch.
 
-For stacked changes, judge whether this PR is a coherent step and state what appears to be deferred to companion PRs.
+For stacked changes, judge whether this PR is a coherent step and state what appears to be deferred to companion PRs. Judge each deferral by the safety of the merged state, not the author's framing: see Deferred Work Is Not A Safety Argument in SKILL.md.
