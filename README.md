@@ -12,6 +12,12 @@ npx skills add shhac/skills
 
 ## Skills
 
+### firestop
+
+Rapid operational alert triage and incident coordination from a Slack channel, alert, incident, Linear issue, or GitHub reference. Keeps incident communication in the relevant thread, gives every update a concrete next action and owner, re-checks human context before major conclusions, and preserves human control of incident state.
+
+**Workflow:** Orient → Check in → Triage (people + signal + change + impact) → Recommend / act → Human handoff
+
 ### team-solve
 
 Investigate and solve problems using a team of specialist agents. Decomposes a problem into parallel investigation tracks, synthesizes findings, then implements solutions serially (or in parallel when safe).

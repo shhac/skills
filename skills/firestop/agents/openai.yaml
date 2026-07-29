@@ -1,0 +1,7 @@
+interface:
+  display_name: "Firestop"
+  short_description: "Rapid incident triage and coordination"
+  default_prompt: "Use $firestop to investigate this alert and coordinate updates in its Slack thread."
+
+policy:
+  allow_implicit_invocation: false
