@@ -18,14 +18,14 @@ Then read `/tmp/codex-out.txt` — that file contains ONLY the final agent messa
 
 Why each part matters:
 
-| Part | Why |
-|---|---|
-| `-o <file>` / `--output-last-message <file>` | Writes only the final message. Read this file instead of stdout so intermediate agent activity never enters context. |
-| `</dev/null` | `codex exec` always reads stdin and appends it to the prompt. Without this, a wrapper invocation can hang forever or slurp unintended input. |
-| `2>/dev/null` | All intermediate activity (shell calls, reasoning summaries) streams to stderr; stdout carries only the final message. Discard stderr except when debugging a failing invocation. |
-| `--sandbox <mode>` | `read-only` (default choice for questions/reviews), `workspace-write` (delegated implementation), `danger-full-access` (never, outside disposable environments). |
-| `-C <dir>` | Working root for the agent. Prefer this over `cd`. |
-| `-c model_reasoning_effort="..."` | `low` / `medium` / `high` / `xhigh`. Config-file default may be `high` — set explicitly per task. |
+| Part                                         | Why                                                                                                                                                                               |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-o <file>` / `--output-last-message <file>` | Writes only the final message. Read this file instead of stdout so intermediate agent activity never enters context.                                                              |
+| `</dev/null`                                 | `codex exec` always reads stdin and appends it to the prompt. Without this, a wrapper invocation can hang forever or slurp unintended input.                                      |
+| `2>/dev/null`                                | All intermediate activity (shell calls, reasoning summaries) streams to stderr; stdout carries only the final message. Discard stderr except when debugging a failing invocation. |
+| `--sandbox <mode>`                           | `read-only` (default choice for questions/reviews), `workspace-write` (delegated implementation), `danger-full-access` (never, outside disposable environments).                  |
+| `-C <dir>`                                   | Working root for the agent. Prefer this over `cd`.                                                                                                                                |
+| `-c model_reasoning_effort="..."`            | `low` / `medium` / `high` / `xhigh`. Config-file default may be `high` — set explicitly per task.                                                                                 |
 
 Additional useful flags:
 
@@ -41,11 +41,11 @@ Additional useful flags:
 
 There is **no `gpt-5.5-codex`** — the dedicated `-codex` model line ended at 5.3 (now deprecated); the frontier model `gpt-5.5` powers Codex directly.
 
-| Model | Use for |
-|---|---|
-| `gpt-5.5` | Default. Best quality; ~40% fewer output tokens than gpt-5.4 for the same task. |
-| `gpt-5.4-mini` | Quick, responsive subtasks; ~4x more quota headroom on ChatGPT plans. |
-| `gpt-5.3-codex-spark` | Near-instant iteration (ChatGPT Pro-only research preview). |
+| Model                 | Use for                                                                         |
+| --------------------- | ------------------------------------------------------------------------------- |
+| `gpt-5.5`             | Default. Best quality; ~40% fewer output tokens than gpt-5.4 for the same task. |
+| `gpt-5.4-mini`        | Quick, responsive subtasks; ~4x more quota headroom on ChatGPT plans.           |
+| `gpt-5.3-codex-spark` | Near-instant iteration (ChatGPT Pro-only research preview).                     |
 
 Reasoning effort: `minimal | low | medium | high | xhigh` via `-c model_reasoning_effort="..."`. CLI default is `medium`, but `~/.codex/config.toml` may override it — set it explicitly per task rather than relying on the default. Use `low`/`medium` for lookups and mechanical work, `high`+ for gnarly implementation.
 
@@ -87,11 +87,11 @@ codex exec resume <THREAD_ID> \
 Codex emits nothing to stdout until done (without `--json`), so give the Bash call a generous timeout scaled to reasoning effort:
 
 | Effort | Timeout |
-|---|---|
-| low | 150s |
-| medium | 300s |
-| high | 600s |
-| xhigh | 1200s |
+| ------ | ------- |
+| low    | 150s    |
+| medium | 300s    |
+| high   | 600s    |
+| xhigh  | 1200s   |
 
 For long jobs, prefer `run_in_background: true` on the Bash call and read the `-o` file when it completes, rather than blocking.
 
