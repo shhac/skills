@@ -28,12 +28,46 @@ When an incident has a communication surface, such as a Slack incident channel:
 
 - Reply in the relevant alert or incident thread by default.
 - Do not create a competing root post when a suitable thread already exists.
-- If no suitable thread exists and communication is requested, create one short
-  root post that states the work being started and directs updates to its thread.
+- If no suitable thread exists, create one short root post that states the work
+  being started and directs updates to its thread.
 - Broadcast to the channel only to escalate for help, a decision, or urgent
   awareness; or when the investigation is finished. Point broadcasts to the
   thread rather than repeating its details.
 - Stop posting immediately when asked to do so.
+
+## Post before investigating
+
+Read the immediate thread so the opening post does not duplicate what is
+already there, then post before starting substantive work. Do not wait to be
+asked to communicate, and do not wait until there is an answer. Silence reads
+as nobody being on it, and it causes responders to duplicate the work already
+underway. Skip this only when asked to stay quiet or when there is no
+communication surface, and say so in the final report.
+
+This is a post, not a request for permission. Never wait for a reply, an
+acknowledgement, or approval before starting. Investigating is read-only and
+needs no authorization: the authority rules below govern impactful actions, not
+looking. Post, then begin the triage loop immediately.
+
+Post again, without being asked, whenever any of these becomes true:
+
+- The working assessment changes: severity, suspected cause, or blast radius.
+- Something is learned that a responder would act on now, even if unconfirmed.
+- A slow step is starting, such as a delegated precedent search or a long query.
+  Say what is being waited on.
+- A decision, an authorization, or help is needed. Post the request and keep
+  working the other tracks; do not idle waiting for the reply.
+- Roughly ten minutes or one full triage track has passed with no post.
+- The investigation is stopping, per the handoff below.
+
+Do not wait for certainty. An interim update carrying a hypothesis that is
+explicitly labelled as one is more useful than silence. Having enough material
+for a useful interim update means that update is already overdue: post it, then
+carry on investigating.
+
+These interim updates are thread replies, so they cost the channel nothing. The
+restraint above applies to channel broadcasts, not to keeping the thread
+current.
 
 Make each substantive thread reply actionable:
 
@@ -51,8 +85,9 @@ Run the following tracks in parallel when useful:
 
 1. **People:** Identify the active owner and read the latest coordination
    context. Re-check the channel after each meaningful finding and before every
-   major conclusion. Human statements about ongoing work outrank telemetry-only
-   inference.
+   major conclusion, and post back to the thread on the triggers above. Reading
+   the channel without also reporting into it is half the track. Human
+   statements about ongoing work outrank telemetry-only inference.
 2. **Signal:** Confirm alert state, trend, affected service or operation, error,
    and time window. Separate expected validation failures from unexpected volume
    or impact.
@@ -60,9 +95,29 @@ Run the following tracks in parallel when useful:
    scheduled or batch work.
 4. **Impact:** Look for customer impact, not merely non-zero errors. State what
    is observed and what remains unknown.
+5. **Precedent:** Search for earlier occurrences of the same alert, error, or
+   symptom, and for how each was resolved. Look in resolved incidents, closed
+   tickets, earlier alert threads in the channel, and postmortems. Report the
+   closest match, what actually fixed it, and whether that fix is still in
+   place.
+
+Precedent is slow, read-only, and only its conclusion matters. When the
+environment provides background agents, dispatch this track to one at the start
+of triage and keep working the live tracks while it runs. Give it the alert
+name, error text, service, and time window, and ask for a short answer: closest
+prior occurrence, what resolved it, and whether the same conditions hold now.
+Where no such mechanism exists, run it after the live tracks rather than ahead
+of them.
+
+Precedent is a lead, not a diagnosis. A matching past incident raises a
+hypothesis; it never confirms one, and it never authorizes an action. “We
+rolled back last time” is not authority to roll back now. Label prior art as
+prior art when reporting it, and treat a responder’s account of current work as
+outranking it.
 
 Do not call an alert “noise” just because an error type is expected. Confirm the
-operator intent, scope, and recovery before making that assessment.
+operator intent, scope, and recovery before making that assessment. A prior
+occurrence that turned out to be benign is not evidence that this one is.
 
 ## Recommend and act clearly
 
