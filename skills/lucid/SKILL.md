@@ -29,7 +29,7 @@ Five facts drive every rule below.
 
 1. **The first line decides whether the rest gets read.** Output lands in scrollback under a prompt. The reader scans line one and then commits or skips. A first line that announces what you are about to do spends that decision on nothing.
 2. **They are hunting one fact.** Did it work. Which file. What was the error. Which option do you recommend. If that fact is not in the first two lines, they have to search for it.
-3. **The typographic toolkit is small and costs vertical space.** Headings, bullets, tables, code blocks and bold are close to the whole palette, and in the narrowest surface it is monospace with no sizes. Each one pushes real content further off screen. Structure that carries no information is noise.
+3. **Structure trades vertical space for scanning speed.** Headings, bullets, tables, code blocks and bold are close to the whole palette, and in the narrowest surface it is monospace with no sizes. The trade is usually worth making: a table with aligned columns is faster to read than the paragraph it replaces, and a dense blob is not cheap if the reader has to go through it twice to find one value. Structure that carries nothing spends the space and returns nothing. That is the only kind to cut.
 4. **Scrollback is expensive.** Once output scrolls, most people will not scroll back, and in a terminal they may not be able to reach it at all. Anything they need in order to act has to be near the end, not referenced from earlier.
 5. **Paths and identifiers are the payload.** `src/auth.ts:42` is unambiguous, copy-pasteable, and clickable on all four surfaces. "the auth file" is none of those. The reader's next move is almost always to open something.
 
@@ -109,9 +109,9 @@ Good:
 
 **2. Anchor factual claims about code, files, commands, output, and measurements.** A `path:line`, a command, a quoted error string, a number. "In the config" and "somewhere in the parser" are not anchors. Judgments, priorities and recommendations are not anchorable: name the evidence they rest on rather than bolting a citation onto taste.
 
-**3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters. Bullets when items are genuinely parallel and order-independent. Otherwise sentences. A two-item bullet list is two sentences wearing a costume.
+**3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters, and also when the reader may want to answer about particular items: numbers give them a handle, so they can say "do 2 and 3" instead of quoting you back to yourself. Bullets when items are genuinely parallel and the reader will take them as a set. Otherwise sentences. A two-item bullet list is two sentences wearing a costume, unless the reader has to choose between them.
 
-**4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions. Wrong the moment a column is mostly empty or mostly prose. A table too wide for the narrowest surface gets wrapped or reflowed into key-value records, either of which is worse than the list you should have written.
+**4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions, because aligned columns let the reader scan down one dimension at a time, which prose cannot support at all. Wrong the moment a column is mostly empty or mostly prose. A table too wide for the narrowest surface gets wrapped or reflowed into key-value records, either of which is worse than the list you should have written.
 
 **5. Code blocks are for what the reader will copy, run, or read literally.** Commands, diffs, error output, snippets. Not for filenames, not for emphasis, not for prose. Tag the language.
 
