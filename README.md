@@ -18,24 +18,6 @@ Rapid operational alert triage and incident coordination from a Slack channel, a
 
 **Workflow:** Orient → Post opening update → Triage (people + signal + change + impact + precedent) → Recommend / act → Human handoff
 
-### team-solve
-
-Investigate and solve problems using a team of specialist agents. Decomposes a problem into parallel investigation tracks, synthesizes findings, then implements solutions serially (or in parallel when safe).
-
-**Workflow:** Investigate → Discuss → Implement → Validate
-
-### orchestrate-subagents
-
-Activate orchestrator mode for complex multi-task work using sub-agents. Delegates aggressively, coordinates via gitignored scratch files, and keeps the main context window clean.
-
-**Workflow:** Analyze → Spawn → Coordinate → Collect
-
-### multi-review
-
-Review code changes from multiple specialist perspectives in parallel. Spawns five reviewer agents — security, performance, correctness, test coverage, and edge/ripple — then synthesizes into a unified review.
-
-**Reviewers:** Security, Performance, Correctness, Test Coverage, Edge & Ripple
-
 ### pr-issue-review
 
 Review a GitHub pull request against its stated issue using the `passive`, `neutral`, `assertive`, or `aggressive` profile. Statically reads the PR diff, metadata, comments, and discovered Linear/Slack/Notion/GitHub context; caches fetched context under the temporary checkout's untracked `.ai-cache/`; then loads the chosen profile, a reviewer persona (voice only, caller-selectable), review lenses, and any matching focus packs before leaving an emoji-marked GitHub review with severity-tagged findings, a concise top-level rationale, targeted inline comments, and suggestion blocks for quick wins. Designed for automated review loops: never runs code, usually approves or comments, and only blocks malicious-looking changes.
@@ -147,6 +129,28 @@ Delegate scoped work to the OpenAI Codex CLI (`codex exec`) on a separate token 
 Sibling to `use-codex`, pointing the other way: delegate scoped work to Claude Code's headless mode (`claude -p`) from a non-Claude agent, on a separate token budget. Covers when Claude's quality-per-task premium pays off (hard multi-file implementation, long-horizon debugging, test authoring, cross-family review) and when it doesn't, plus verified mechanics: single-JSON result capture (`--output-format json`), session resume by ID, the permission ladder for headless runs, and the variadic-flag gotcha. Opens with a self-exclusion line ("If you are Claude, you do not need this skill") — progressive disclosure keeps flag references out of context unless delegating.
 
 **Workflow:** Decide (delegate vs keep) → Invoke (read-only tools or acceptEdits) → Verify output as a peer's work → Resume session for follow-ups
+
+## Deprecated
+
+Kept for reference under `deprecated/`, prefixed `dep-`. Not distributed by skills.sh and not installed by `npx skills add`.
+
+### dep-multi-review
+
+Review code changes from multiple specialist perspectives in parallel. Spawns five reviewer agents — security, performance, correctness, test coverage, and edge/ripple — then synthesizes into a unified review.
+
+**Reviewers:** Security, Performance, Correctness, Test Coverage, Edge & Ripple
+
+### dep-orchestrate-subagents
+
+Activate orchestrator mode for complex multi-task work using sub-agents. Delegates aggressively, coordinates via gitignored scratch files, and keeps the main context window clean.
+
+**Workflow:** Analyze → Spawn → Coordinate → Collect
+
+### dep-team-solve
+
+Investigate and solve problems using a team of specialist agents. Decomposes a problem into parallel investigation tracks, synthesizes findings, then implements solutions serially (or in parallel when safe).
+
+**Workflow:** Investigate → Discuss → Implement → Validate
 
 ## License
 

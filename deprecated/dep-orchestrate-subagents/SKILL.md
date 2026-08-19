@@ -1,5 +1,5 @@
 ---
-name: orchestrate-subagents
+name: dep-orchestrate-subagents
 description: Activate orchestrator mode for complex multi-task work using subagents. Use when you need to coordinate multiple independent Task subagents to accomplish work while keeping the main context window clean.
 ---
 

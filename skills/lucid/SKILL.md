@@ -1,6 +1,6 @@
 ---
 name: lucid
-description: Shape every chat response so the reader gets all the information without waffle and without it buried in prose. Not a brevity skill: nothing is cut except padding. Apply to every response by default, and on request via /lucid. Stays active until "stop lucid" or "normal mode", including on routine tool turns, long syntheses, and plans, which is where output shape degrades first.
+description: 'Shape every chat response so the reader gets all the information without waffle and without it buried in prose. Not a brevity skill: nothing is cut except padding. Apply to every response by default, and on request via /lucid. Stays active until "stop lucid" or "normal mode", including on routine tool turns, long syntheses, and plans, which is where output shape degrades first.'
 ---
 
 # Lucid

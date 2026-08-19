@@ -1,5 +1,5 @@
 ---
-name: team-solve
+name: dep-team-solve
 description: Investigate and solve problems using a team of specialist agents. Use when facing complex, multi-faceted problems that benefit from parallel research and structured implementation.
 ---
 

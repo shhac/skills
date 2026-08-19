@@ -8,6 +8,9 @@ A collection of reusable Claude Code skills distributed via [skills.sh](https://
 skills/
   <skill-name>/
     SKILL.md          # Skill definition with YAML frontmatter
+deprecated/
+  dep-<skill-name>/
+    SKILL.md          # Retired skill, kept for reference, not distributed
 scripts/
   <skill-name>/       # Optional per-skill maintenance scripts
     README.md         # Run instructions for the scripts
