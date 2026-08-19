@@ -28,7 +28,7 @@ The exception is a document type with a real convention or a supplied template. 
 
 ## What has to be present
 
-**PR description.** Why this exists, in the first two lines, framed as the user or business outcome rather than a diff summary. The risk. Rollout notes if there are any. Follow-ups. Decisions deliberately not taken.
+**PR description.** Why this exists, in the first two lines, framed as the user or business outcome rather than a diff summary. The risk, and what you think should happen about it. Rollout notes if there are any. Follow-ups. Decisions deliberately not taken.
 
 No "what changed" section. The commits and the diff already say that, and a bullet list of changes goes stale the moment someone pushes a fixup.
 
@@ -57,7 +57,7 @@ State confidence as what you checked, not as an adverb. "Confirmed against three
 
 **README.** What it is, in one line. How to run it. Then everything else.
 
-**Status update.** The state now. What changed since last time. What is blocked and on whom. What is next. Written for someone who did not read the last one.
+**Status update.** The state now. What changed since last time. What is blocked and on whom. What is next. Written for someone who did not read the last one. Where a claim from the last one turned out to be wrong, name the claim and what replaced it: anyone who did read it is still acting on it.
 
 Bad:
 
@@ -83,20 +83,22 @@ Good:
 
 **5. The first sentence of every section carries that section.** Skimmers read exactly that sentence. Write it so the section could be collapsed behind it.
 
-**6. Numbers beat adjectives.** "1 in 40 orders" beats "a lot of orders". "adds 600ms" beats "slightly slower". If you do not have the number, say you do not have it.
+**6. Numbers beat adjectives, where you have the number.** "1 in 40 orders" beats "a lot of orders". "adds 600ms" beats "slightly slower". Where you do not have it, say so. Never estimate one into existence to satisfy this rule: a fabricated duration or percentage reads as measured, and in a document it outlives the conversation that would have corrected it.
 
 **7. Two levels of nesting, maximum.** Deeper means the structure is doing work the prose should do.
 
-**8. Tables for genuinely tabular comparison only.** Three or more rows, two or more stable dimensions, no prose in the cells.
+**8. Number anything the reader will reference.** Open questions, rejected alternatives, follow-ups, migration steps. A reviewer can then comment "on 3" instead of quoting a paragraph back at you or guessing at "the second bullet". Count is not the test: two open questions earn numbers as readily as six.
 
-**9. Name what you deliberately did not do.** Scope you cut, options you rejected, follow-ups you are leaving. Reviewers spend most of their questions here, and answering them up front is the cheapest edit in the document.
+**9. Tables for genuinely tabular comparison only.** Three or more rows, two or more stable dimensions, no prose in the cells.
 
-**10. No decorative emoji, no em dashes.** Sentence case for headings, unless a proper name, a document title, or a supplied template requires otherwise. Use periods, colons, parentheses, semicolons, or commas in place of em dashes.
+**10. Name what you deliberately did not do.** Scope you cut, options you rejected, follow-ups you are leaving. Reviewers spend most of their questions here, and answering them up front is the cheapest edit in the document.
+
+**11. No decorative emoji, no em dashes.** Sentence case for headings, unless a proper name, a document title, or a supplied template requires otherwise. Use periods, colons, parentheses, semicolons, or commas in place of em dashes.
 
 ## What survives the cut
 
-1. **Reproduction, migration, and rollback steps.** Someone will follow them under pressure. They stay complete.
-2. **Risks and caveats.** Cutting one to tighten prose is the edit most likely to cause harm.
+1. **Reproduction, migration, and rollback steps.** Someone will follow them under pressure. They stay complete, and each one is the command itself rather than the name of the action: "run the migration" is not a step, `npm run migrate:up -- 007` is.
+2. **Risks and caveats.** Cutting one to tighten prose is the edit most likely to cause harm. State each with a position on it: a risk reported as a neutral fact leaves the reader to work out for themselves whether it blocks the decision, which is the judgment they came to you for.
 3. **Precision in legal, security, medical, and financial text.** Preserve exact quantities, scope, and force-bearing words such as "must", "never", and "all".
 4. **Register the audience needs.** A README for external users and an internal RFC do not want the same tone. The rules hold, the voice follows the reader.
 5. **A supplied template.** If the repo, the team, or the user gave you a structure, fill it rather than replacing it.
