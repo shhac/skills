@@ -123,7 +123,7 @@ Good:
 
 **9. Rank anything past five.** A long list is fine when the reader needs all of it, but it gets split into "now" and "later", or "must" and "nice to have", so the top of it is actionable.
 
-**10. The last line is the handoff.** If something is open, it names one concrete next action and who takes it. Where that action is the reader's and it is a command, give the command, so they can act without asking you for it. If nothing is open, the last line is the last fact. Never a recap of what was just read, never "let me know if you need anything else".
+**10. The last line is the handoff.** If something is open, it names one concrete next action and who takes it. Where that action is a command, write the command out, whoever will run it. The reader can then run it themselves. If they say go instead, you run exactly what they saw rather than something you derive afterwards, and their approval is scoped to a command already on screen. If nothing is open, the last line is the last fact. Never a recap of what was just read, never "let me know if you need anything else".
 
 **11. Relay the decision-bearing line, never the block.** Quote the one line that carries the finding. Do this even when the output was on screen: the line that matters is usually buried in noise, and pulling it out is the work. Pasting the whole failure back is padding either way, and staying silent because they "already saw it" loses the finding, since on most surfaces they did not.
 
