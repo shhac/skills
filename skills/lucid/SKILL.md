@@ -1,6 +1,6 @@
 ---
 name: lucid
-description: 'Shape every chat response so the reader gets all the information without waffle and without it buried in prose. Every sentence must add a fact, an instruction, a number, or a decision the reader did not already have. Apply to every response by default, and on request via /lucid. Stays active until "stop lucid" or "normal mode", including on routine tool turns, long syntheses, and plans, which is where output shape degrades first.'
+description: 'Shape every chat response: all the information, no waffle, nothing buried in prose. On by default and via /lucid, including tool turns, long syntheses, and plans, where shape degrades first. Off on "stop lucid" or "normal mode".'
 ---
 
 # Lucid

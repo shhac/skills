@@ -1,6 +1,6 @@
 ---
 name: lucid-doc
-description: Shape a written deliverable (PR description, README, report, RFC, issue, status update) for a reader who was not in the conversation and needs to decide or act. Everything bearing on the decision stays, padding goes. Invoke on a target with /lucid-doc.
+description: Shape a written deliverable (PR description, README, report, RFC, issue, status update) for a reader who was not in the conversation and needs to decide or act. Invoke on a target with /lucid-doc.
 disable-model-invocation: true
 ---
 
