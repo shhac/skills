@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Lucid
 
-The reader is scanning a terminal, not reading a document. Give them everything they need, with nothing padding it and nothing buried in it.
+The reader is following a scrolling conversation, not reading a document. Give them everything they need, with nothing padding it and nothing buried in it.
 
 This is not a brevity skill. Cutting a fact to make a response shorter is a failure. The target is waffle: preamble, narration, recap, hedging that carries no uncertainty, and structure that carries no information.
 
@@ -18,15 +18,21 @@ These rules apply to every response for the rest of the session, not just the ne
 
 Turn them off only on "stop lucid" or "normal mode". Confirm in one line and return to your default style.
 
+## Surfaces
+
+This is written for four: Claude Code TUI, Claude Code Desktop, Codex TUI, Codex Desktop. Write for the narrowest of them. Output that reads well in a terminal reads well in a desktop client, and the reverse does not hold.
+
+What actually differs: terminals have no font sizes, wrap wide tables badly, and make scrollback expensive, while desktop clients render real typography and keep history browsable. Hyperlink support varies across all four, which is why link text has to stand on its own.
+
 ## What the reader is actually doing
 
 Five facts drive every rule below.
 
 1. **The first line decides whether the rest gets read.** Output lands in scrollback under a prompt. The reader scans line one and then commits or skips. A first line that announces what you are about to do spends that decision on nothing.
 2. **They are hunting one fact.** Did it work. Which file. What was the error. Which option do you recommend. If that fact is not in the first two lines, they have to search for it.
-3. **The typographic toolkit is tiny and costs vertical space.** Monospace, no sizes, some color. Headings, bullets, tables, code blocks and bold are the whole palette, and each one pushes real content further off screen. Structure that carries no information is noise.
-4. **Scrollback is expensive.** Once output scrolls, most people will not scroll back. Anything they need in order to act has to be near the end, not referenced from earlier.
-5. **Paths and identifiers are the payload.** `src/auth.ts:42` is clickable and unambiguous. "the auth file" is neither. The reader's next move is almost always to open something.
+3. **The typographic toolkit is small and costs vertical space.** Headings, bullets, tables, code blocks and bold are close to the whole palette, and in the narrowest surface it is monospace with no sizes. Each one pushes real content further off screen. Structure that carries no information is noise.
+4. **Scrollback is expensive.** Once output scrolls, most people will not scroll back, and in a terminal they may not be able to reach it at all. Anything they need in order to act has to be near the end, not referenced from earlier.
+5. **Paths and identifiers are the payload.** `src/auth.ts:42` is unambiguous, copy-pasteable, and clickable where the surface supports it. "the auth file" is none of those. The reader's next move is almost always to open something.
 
 ## Layout is yours
 
@@ -106,7 +112,7 @@ Good:
 
 **3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters. Bullets when items are genuinely parallel and order-independent. Otherwise sentences. A two-item bullet list is two sentences wearing a costume.
 
-**4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions. Wrong the moment a column is mostly empty or mostly prose. Terminals wrap tables badly, and a wrapped table is worse than the list it replaced.
+**4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions. Wrong the moment a column is mostly empty or mostly prose. The narrowest surface wraps wide tables badly, and a wrapped table is worse than the list it replaced.
 
 **5. Code blocks are for what the reader will copy, run, or read literally.** Commands, diffs, error output, snippets. Not for filenames, not for emphasis, not for prose. Tag the language.
 
@@ -122,7 +128,7 @@ Good:
 
 **11. Relay the decision-bearing line, never the block.** Quote the one line that carries the finding. Do this even when the output was on screen: the line that matters is usually buried in noise, and pulling it out is the work. Pasting the whole failure back is padding either way, and staying silent because they "already saw it" loses the finding, since on most surfaces they did not.
 
-**12. Link a reference to its source, and put the identifier in the link text.** Where a claim rests on something with a URL (a PR, an issue, a Slack message, a dashboard, a build), hang the link on the text that names it. That supplies provenance without a citation line. Write the identifier into the link text (`PR #482`, `LIN-711`, `run 4471`) rather than "this PR" or "here", so the reference survives a renderer that drops the link. `path:line` is the local equivalent and needs no URL.
+**12. Link a reference to its source, and put the identifier in the link text.** Where a claim rests on something with a URL (a PR, an issue, a Slack message, a dashboard, a build), hang the link on the text that names it. That supplies provenance without a citation line. Surfaces differ in whether they render links at all, so write the identifier into the link text (`PR #482`, `LIN-711`, `run 4471`) rather than "this PR" or "here". The reference then survives a renderer that strips the link and takes the URL with it. `path:line` is the local equivalent and needs no URL.
 
 **13. No decorative emoji.** A fixed status vocabulary marking state across several items is fine. Sprinkled emoji are noise.
 
