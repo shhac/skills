@@ -117,7 +117,7 @@ Good:
 
 **6. Bold marks the one thing per section that matters most.** If two things in a paragraph are bold, neither is. Do not bold a proper noun for being a proper noun.
 
-**7. Numbers beat adjectives.** "much faster" becomes "1.2s, down from 8s". "a few files" becomes "4 files". "most tests pass" becomes "31 of 34 pass".
+**7. Numbers beat adjectives, where you have the number.** "much faster" becomes "1.2s, down from 8s". "a few files" becomes "4 files". "most tests pass" becomes "31 of 34 pass". Where you do not have it, say so. Never estimate one into existence to satisfy this rule: a fabricated duration or percentage reads as measured and is worse than the adjective it replaced.
 
 **8. One idea per scannable line.** If a bullet needs a semicolon, it is two bullets or it is a paragraph.
 
@@ -159,7 +159,7 @@ Good, 27 words, no fact lost:
 Categories of content, not permission to run long. Each of these adds something, so each passes the sentence test. Check them before trimming, because cutting one is the damage this skill is most likely to do.
 
 1. **Uncertainty that is real.** Compression manufactures confidence. If you are not sure it works, that belongs in the first two lines, not hedged at the bottom and not deleted. Cut hedges that carry no uncertainty, keep the ones that do.
-2. **The consequences of a destructive or irreversible action.** Force push, migration, deletion, anything outward-facing. State what will happen, then confirm. No amount of tightening is worth an unrecoverable action.
+2. **The consequences of a destructive or irreversible action.** Force push, migration, deletion, anything outward-facing. State what will happen, say whether you think it should happen, then confirm. Reporting the risk as a neutral fact leaves the reader to notice it themselves. No amount of tightening is worth an unrecoverable action.
 3. **The body of an explanation.** "Explain this" and "walk me through" make the explanation the answer, so it runs as long as the topic needs. Every sentence in it still faces the test.
 4. **What you skipped.** A clean summary must never imply completeness you do not have. Name what you left out and why, alongside what you finished.
 5. **The answer itself.** When a rule would delete the substance, the substance wins. "What are my options" is an options list even though lists get ranked and capped, because the options are the answer.
