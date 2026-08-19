@@ -128,7 +128,7 @@ Shape every chat response so a human scanning a terminal gets all the informatio
 
 ### lucid-doc
 
-Sibling to `lucid`, pointed at written deliverables: PR descriptions, READMEs, reports, RFCs, issues, status updates. The reader was not in the conversation, is deciding something, and skims before reading, so load-bearing context gets inlined instead of linked, headings make claims instead of naming categories, and no section restates what the diff or the code already says. Includes the "could this paragraph appear unchanged in another project's document" test. Reproduction steps, risks, and legal or security precision are exempt from trimming.
+Sibling to `lucid`, pointed at written deliverables: PR descriptions, READMEs, reports, RFCs, issues, status updates. The reader was not in the conversation, needs to decide or act, and skims before reading, so load-bearing context gets inlined instead of linked, headings make claims instead of naming categories, and no section restates what the diff or the code already says. Includes the "could this paragraph appear unchanged in another project's document" test. Reproduction steps, risks, and legal or security precision are exempt from trimming.
 
 **Example:** `/lucid-doc` on a PR description draft
 

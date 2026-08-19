@@ -1,12 +1,12 @@
 ---
 name: lucid-doc
-description: Shape a written deliverable (PR description, README, report, RFC, issue, status update) for a reader who was not in the conversation and is deciding something. Everything bearing on the decision stays, padding goes. Invoke on a target with /lucid-doc.
+description: Shape a written deliverable (PR description, README, report, RFC, issue, status update) for a reader who was not in the conversation and needs to decide or act. Everything bearing on the decision stays, padding goes. Invoke on a target with /lucid-doc.
 disable-model-invocation: true
 ---
 
 # Lucid doc
 
-A document is read by someone who was not in the room, is deciding something, and will skim before they read. Give them everything that bears on the decision, with nothing padding it and nothing buried in it.
+A document is read by someone who was not in the room, needs to decide or act, and will skim before they read. Give them everything that bears on the decision, with nothing padding it and nothing buried in it.
 
 This is not a brevity skill. Cutting a risk, a caveat, or a reproduction step to tighten the prose is the one edit here that can cause real harm. The target is waffle: restated diffs, category headings, context that lives behind a link, and paragraphs that would fit any project.
 
@@ -15,7 +15,7 @@ Invoke this on a target: a draft, a file, or the thing you are about to write. I
 ## What the reader is actually doing
 
 1. **They were not in the conversation.** Every load-bearing fact has to be in the document. A link is additional reading, never the context itself. If you cite a ticket, a thread, or a dashboard, inline the one sentence that matters.
-2. **They are deciding something.** Approve or not. Adopt or not. Do this or do something else. Name the decision early, and say what you recommend.
+2. **They need to decide or act.** Approve or not, adopt or not, or just run the thing. Name the decision or the action early, and where there is a decision, say what you recommend.
 3. **They skim before they read, and many never stop skimming.** Headings and the first sentence of each section are the skim path. If the argument is not on that path, it is not in the document.
 4. **It gets re-read later, out of context, after the code has moved.** Anything that duplicates the diff rots within weeks. Anything that duplicates the code was always redundant.
 5. **Real typography renders here.** Headings, nesting, and tables work properly, which makes over-structuring cheap and therefore common. A nested bullet tree is not an argument.
@@ -57,7 +57,19 @@ State confidence as what you checked, not as an adverb. "Confirmed against three
 
 **README.** What it is, in one line. How to run it. Then everything else.
 
-**Status update.** The state now. What changed since last time. What is blocked and on whom. What is next.
+**Status update.** The state now. What changed since last time. What is blocked and on whom. What is next. Written for someone who did not read the last one.
+
+Bad:
+
+> Good progress this week! The team has been working hard on the checkout retry work and things are moving along nicely. We ran into a few challenges but are working through them.
+
+Good:
+
+> Checkout retry is behind the flag on staging, off in production. Since last week: retry logic merged, staging soak started Tuesday, no 503s recovered yet because staging gets no real provider failures.
+>
+> Blocked: needs a production canary to get real signal, which needs Priya's sign-off on the flag rollout.
+>
+> Next: canary at 1% once signed off, decide on full rollout after 48 hours.
 
 ## Rules
 
@@ -79,7 +91,7 @@ State confidence as what you checked, not as an adverb. "Confirmed against three
 
 **9. Name what you deliberately did not do.** Scope you cut, options you rejected, follow-ups you are leaving. Reviewers spend most of their questions here, and answering them up front is the cheapest edit in the document.
 
-**10. No decorative emoji, no title case, no em dashes.** Use periods, colons, parentheses, semicolons, or commas in place of em dashes.
+**10. No decorative emoji, no em dashes.** Sentence case for headings, unless a proper name, a document title, or a supplied template requires otherwise. Use periods, colons, parentheses, semicolons, or commas in place of em dashes.
 
 ## What is not waffle
 

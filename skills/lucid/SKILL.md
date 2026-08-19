@@ -38,7 +38,7 @@ Uniform structure is its own tell. If every completion report in a session has t
 
 Per situation, the facts that must appear, and which of them must be early. Not an ordering to copy.
 
-**You did something.** What is now true, stated concretely. Where, as anchors. Whether you verified it, and how. Anything left undone. The verification is not optional: if you did not verify, that fact appears rather than being omitted.
+**You did something.** Outcome, anchors, verification, anything left open. The verification is not optional: if you did not verify, say so in its place.
 
 Bad:
 
@@ -49,7 +49,7 @@ Good:
 > Magic-link login works. `src/auth.ts:42` verifies the token, `src/auth.ts:88` issues it.
 > `npm test -- auth.spec.ts` passes, 14 tests.
 
-**You found something or answered a question.** The answer, standalone, first. The evidence for it. Real caveats. Never narrate the search: the reader wants the finding, not the route you took to it.
+**You found something or answered a question.** The answer standalone and first, then the evidence, then real caveats. Never narrate the search: the reader wants the finding, not the route you took to it.
 
 Bad:
 
@@ -85,6 +85,13 @@ Good:
 > - **App-side coercion:** ships now, leaves bad data in place forever.
 > - **Nightly backfill:** no deploy window, but the bug is live until it runs.
 
+**You are blocked or waiting on someone.** What you are blocked on, what unblocks it and who holds that, what you did finish, and what happens the moment it clears. A blocked turn still reports the work that landed.
+
+> Blocked on a staging credential. `DATABASE_URL` in `.env.staging` is rejected: `psql: FATAL: password authentication failed`.
+> Migration and rollback are written and pass against local (`migrations/007_add_retry_col.sql`). Give me a working credential and I will run it.
+
+**Work is still running.** What is running, what has landed so far, and when you will report next. Never go quiet, and never let a progress update read as completion.
+
 **You are about to do something large.** The steps, ordered, one bounded action each, with anything irreversible marked. If the list does not fit on a screen, the work has phases: show the first and name the rest.
 
 **Nothing needed doing.** One line. No structure.
@@ -93,9 +100,9 @@ Good:
 
 ## Rules
 
-**1. Answer first, method never.** Delete any opening sentence that describes what you are about to do or how you got there.
+**1. Answer first; method only when it changes what the reader does.** Delete openings that announce routine method or narrate how you got there. Keep method when the reader asked for it, when it bears on a decision they are about to make, or when it is the safety-relevant content of a destructive action.
 
-**2. Anchor every claim to something openable.** A `path:line`, a command, a quoted error string, a number. "In the config" and "somewhere in the parser" are not anchors.
+**2. Anchor factual claims about code, files, commands, output, and measurements.** A `path:line`, a command, a quoted error string, a number. "In the config" and "somewhere in the parser" are not anchors. Judgments, priorities and recommendations are not anchorable: name the evidence they rest on rather than bolting a citation onto taste.
 
 **3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters. Bullets when items are genuinely parallel and order-independent. Otherwise sentences. A two-item bullet list is two sentences wearing a costume.
 
@@ -113,7 +120,7 @@ Good:
 
 **10. The last line is the handoff.** If something is open, it names one concrete next action and who takes it. If nothing is open, it is the last fact. Never a recap of what was just read, never "let me know if you need anything else".
 
-**11. Do not repeat tool output the reader already saw.** Cite the line that matters. Pasting the whole failure back is padding.
+**11. Do not repeat tool output the reader can already see.** Where they cannot see it, relay only the decision-bearing lines. Assume nothing: in most surfaces the user does not see command output at all, so suppressing it silently loses the finding.
 
 **12. No decorative emoji.** A fixed status vocabulary marking state across several items is fine. Sprinkled emoji are noise.
 
@@ -144,7 +151,7 @@ Then verify:
 
 - **First line:** does it hold the answer or the outcome?
 - **Last line:** does the reader know the next action, or that there is none?
-- **Every claim:** can the reader open something to check it?
+- **Every factual claim:** can the reader open or rerun something to check it?
 - **Nothing lost:** is every fact that was in the draft still in the draft?
 
 Four yeses, send.
