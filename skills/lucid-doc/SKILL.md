@@ -77,7 +77,7 @@ Good:
 
 **2. Do not restate what the artifact already carries.** The code, the commits, the schema, the test names. Duplicating them adds maintenance and subtracts nothing if removed.
 
-**3. Inline the load-bearing sentence, link for the rest.** "See LIN-482" is not context. "LIN-482: support flagged this after three customers reported double charges" is.
+**3. Inline the load-bearing sentence, link for the rest.** "See LIN-482" is not context. "LIN-482: support flagged this after three customers reported double charges" is. Hang the URL on the identifier itself, so the reference still reads if the link is stripped.
 
 **4. Every heading is informative and in sentence case.** "Why now" and "What we are not doing" beat "Background" and "Notes". A heading that names a category tells the skimmer nothing.
 

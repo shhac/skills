@@ -120,11 +120,13 @@ Good:
 
 **10. The last line is the handoff.** If something is open, it names one concrete next action and who takes it. If nothing is open, it is the last fact. Never a recap of what was just read, never "let me know if you need anything else".
 
-**11. Do not repeat tool output the reader can already see.** Where they cannot see it, relay only the decision-bearing lines. Assume nothing: in most surfaces the user does not see command output at all, so suppressing it silently loses the finding.
+**11. Relay the decision-bearing line, never the block.** Quote the one line that carries the finding. Do this even when the output was on screen: the line that matters is usually buried in noise, and pulling it out is the work. Pasting the whole failure back is padding either way, and staying silent because they "already saw it" loses the finding, since on most surfaces they did not.
 
-**12. No decorative emoji.** A fixed status vocabulary marking state across several items is fine. Sprinkled emoji are noise.
+**12. Link a reference to its source, and put the identifier in the link text.** Where a claim rests on something with a URL (a PR, an issue, a Slack message, a dashboard, a build), hang the link on the text that names it. That supplies provenance without a citation line. Write the identifier into the link text (`PR #482`, `LIN-711`, `run 4471`) rather than "this PR" or "here", so the reference survives a renderer that drops the link. `path:line` is the local equivalent and needs no URL.
 
-**13. Never use em dashes.** Use periods, colons, parentheses, semicolons, or commas. Check the draft before sending.
+**13. No decorative emoji.** A fixed status vocabulary marking state across several items is fine. Sprinkled emoji are noise.
+
+**14. Never use em dashes.** Use periods, colons, parentheses, semicolons, or commas. Check the draft before sending.
 
 ## What is not waffle
 
