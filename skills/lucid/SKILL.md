@@ -1,7 +1,6 @@
 ---
 name: lucid
-description: Shape every chat response so the reader gets all the information without waffle and without it buried in prose. Not a brevity skill: nothing is cut except padding. Invoke with /lucid. Stays active every response until "stop lucid" or "normal mode", including on routine tool turns, long syntheses, and plans, which is where output shape degrades first.
-disable-model-invocation: true
+description: Shape every chat response so the reader gets all the information without waffle and without it buried in prose. Not a brevity skill: nothing is cut except padding. Apply to every response by default, and on request via /lucid. Stays active until "stop lucid" or "normal mode", including on routine tool turns, long syntheses, and plans, which is where output shape degrades first.
 ---
 
 # Lucid
@@ -22,7 +21,7 @@ Turn them off only on "stop lucid" or "normal mode". Confirm in one line and ret
 
 This is written for four: Claude Code TUI, Claude Code Desktop, Codex TUI, Codex Desktop. Write for the narrowest of them. Output that reads well in a terminal reads well in a desktop client, and the reverse does not hold.
 
-What actually differs: terminals have no font sizes, wrap wide tables badly, and make scrollback expensive, while desktop clients render real typography and keep history browsable. Hyperlink support varies across all four, which is why link text has to stand on its own.
+All four render markdown tables and turn labeled links into clickable labels, and all four make `path:line` clickable. What differs is width and history: terminals have no font sizes, make scrollback expensive, and reflow or wrap a table that does not fit, while desktop clients render real typography and keep history browsable. So the constraint on tables is width, and the constraint on links is label quality, not support.
 
 ## What the reader is actually doing
 
@@ -32,7 +31,7 @@ Five facts drive every rule below.
 2. **They are hunting one fact.** Did it work. Which file. What was the error. Which option do you recommend. If that fact is not in the first two lines, they have to search for it.
 3. **The typographic toolkit is small and costs vertical space.** Headings, bullets, tables, code blocks and bold are close to the whole palette, and in the narrowest surface it is monospace with no sizes. Each one pushes real content further off screen. Structure that carries no information is noise.
 4. **Scrollback is expensive.** Once output scrolls, most people will not scroll back, and in a terminal they may not be able to reach it at all. Anything they need in order to act has to be near the end, not referenced from earlier.
-5. **Paths and identifiers are the payload.** `src/auth.ts:42` is unambiguous, copy-pasteable, and clickable where the surface supports it. "the auth file" is none of those. The reader's next move is almost always to open something.
+5. **Paths and identifiers are the payload.** `src/auth.ts:42` is unambiguous, copy-pasteable, and clickable on all four surfaces. "the auth file" is none of those. The reader's next move is almost always to open something.
 
 ## Layout is yours
 
@@ -112,7 +111,7 @@ Good:
 
 **3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters. Bullets when items are genuinely parallel and order-independent. Otherwise sentences. A two-item bullet list is two sentences wearing a costume.
 
-**4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions. Wrong the moment a column is mostly empty or mostly prose. The narrowest surface wraps wide tables badly, and a wrapped table is worse than the list it replaced.
+**4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions. Wrong the moment a column is mostly empty or mostly prose. A table too wide for the narrowest surface gets wrapped or reflowed into key-value records, either of which is worse than the list you should have written.
 
 **5. Code blocks are for what the reader will copy, run, or read literally.** Commands, diffs, error output, snippets. Not for filenames, not for emphasis, not for prose. Tag the language.
 
@@ -128,7 +127,7 @@ Good:
 
 **11. Relay the decision-bearing line, never the block.** Quote the one line that carries the finding. Do this even when the output was on screen: the line that matters is usually buried in noise, and pulling it out is the work. Pasting the whole failure back is padding either way, and staying silent because they "already saw it" loses the finding, since on most surfaces they did not.
 
-**12. Link a reference to its source, and put the identifier in the link text.** Where a claim rests on something with a URL (a PR, an issue, a Slack message, a dashboard, a build), hang the link on the text that names it. That supplies provenance without a citation line. Surfaces differ in whether they render links at all, so write the identifier into the link text (`PR #482`, `LIN-711`, `run 4471`) rather than "this PR" or "here". The reference then survives a renderer that strips the link and takes the URL with it. `path:line` is the local equivalent and needs no URL.
+**12. Link a reference to its source, and put the identifier in the link text.** Where a claim rests on something with a URL (a PR, an issue, a Slack message, a dashboard, a build), hang the link on the text that names it. That supplies provenance without spending a line on a citation. The rendered link shows its text and hides the URL, so the text is the whole reference: write `PR #482`, `LIN-711`, `run 4471`, never "this PR" or "here". `path:line` is the local equivalent and needs no URL.
 
 **13. No decorative emoji.** A fixed status vocabulary marking state across several items is fine. Sprinkled emoji are noise.
 

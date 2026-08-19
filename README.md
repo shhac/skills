@@ -124,7 +124,7 @@ Shape every chat response so a human scanning a terminal gets all the informatio
 
 **Example:** `/lucid`
 
-**Scope:** chat responses only, persistent until "stop lucid" or "normal mode", never self-invoked
+**Scope:** chat responses only, on by default, until "stop lucid" or "normal mode"
 
 **Surfaces:** Claude Code TUI and Desktop, Codex TUI and Desktop. Written for the narrowest of them.
 
