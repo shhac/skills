@@ -118,6 +118,22 @@ Speak using pop culture quotes, movie lines, song lyrics, and memes, verbatim or
 
 **Levels:** subtle (~1 per response) → full (laced through) → unhinged (every sentence is a reference)
 
+### lucid
+
+Shape every chat response so a human scanning a terminal gets all the information without waffle and without it buried in prose. Not a brevity skill: cutting a fact to shorten a response is the failure mode it guards against hardest. Every rule derives from five facts about how terminal output is actually read (the first line decides whether the rest gets read, the reader is hunting one specific fact, structure costs vertical space, scrollback is expensive, paths are the payload). Constrains what must be present and what must be cut, and deliberately does not prescribe layout, since uniform structure is its own tell. A "what is not waffle" section protects real uncertainty, destructive-action detail, requested explanations, and admissions of skipped work from the trimming pass.
+
+**Example:** `/lucid`
+
+**Scope:** chat responses only, persistent until "stop lucid" or "normal mode", never self-invoked
+
+### lucid-doc
+
+Sibling to `lucid`, pointed at written deliverables: PR descriptions, READMEs, reports, RFCs, issues, status updates. The reader was not in the conversation, is deciding something, and skims before reading, so load-bearing context gets inlined instead of linked, headings make claims instead of naming categories, and no section restates what the diff or the code already says. Includes the "could this paragraph appear unchanged in another project's document" test. Reproduction steps, risks, and legal or security precision are exempt from trimming.
+
+**Example:** `/lucid-doc` on a PR description draft
+
+**Scope:** invoked on a target document, never automatic
+
 ### use-codex
 
 Delegate scoped work to the OpenAI Codex CLI (`codex exec`) on a separate token budget. Covers when delegation pays off (repo Q&A, well-specified implementation, mechanical edits, adversarial review, stuck bugs) and when it doesn't, plus verified invocation mechanics: final-message-only capture (`-o`), session-ID capture via `--json`, non-interactive resume by thread ID, sandbox ladder, and effort-scaled timeouts. Progressive disclosure — the decision heuristic loads first; flag references only load if delegating.
