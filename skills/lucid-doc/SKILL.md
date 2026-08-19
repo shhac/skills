@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 A document is read by someone who was not in the room, needs to decide or act, and will skim before they read. Give them everything that bears on the decision, with nothing padding it and nothing buried in it.
 
-This is not a brevity skill. Cutting a risk, a caveat, or a reproduction step to tighten the prose is the one edit here that can cause real harm. The target is waffle: restated diffs, category headings, context that lives behind a link, and paragraphs that would fit any project.
+Every sentence must add a fact, a reason, a number, or a step the reader did not already have. Sentences that fail that test are waffle and get cut: restated diffs, category headings, context left behind a link, paragraphs that would fit any project. Length is what falls out of the test, not a target. The one edit that causes real harm is cutting a risk, a caveat, or a reproduction step to tighten prose, so those are listed below.
 
 Invoke this on a target: a draft, a file, or the thing you are about to write. It is not a session mode, and it does not change how you talk in chat.
 
@@ -93,7 +93,7 @@ Good:
 
 **10. No decorative emoji, no em dashes.** Sentence case for headings, unless a proper name, a document title, or a supplied template requires otherwise. Use periods, colons, parentheses, semicolons, or commas in place of em dashes.
 
-## What is not waffle
+## What survives the cut
 
 1. **Reproduction, migration, and rollback steps.** Someone will follow them under pressure. They stay complete.
 2. **Risks and caveats.** Cutting one to tighten prose is the edit most likely to cause harm.
