@@ -1,13 +1,13 @@
 # Codex CLI invocation reference
 
-Verified against codex-cli 0.138.0 (local). Re-verify flags with `codex exec --help` if behaviour seems off — the CLI moves fast.
+Verified against codex-cli 0.144.5 (local). Re-verify flags with `codex exec --help` if behaviour seems off — the CLI moves fast.
 
 ## Canonical one-shot invocation
 
 ```bash
 codex exec \
-  -m gpt-5.5 \
-  -c model_reasoning_effort="medium" \
+  -m gpt-5.6-terra \
+  -c model_reasoning_effort="high" \
   --sandbox read-only \
   -C /path/to/repo \
   -o /tmp/codex-out.txt \
@@ -25,7 +25,7 @@ Why each part matters:
 | `2>/dev/null`                                | All intermediate activity (shell calls, reasoning summaries) streams to stderr; stdout carries only the final message. Discard stderr except when debugging a failing invocation. |
 | `--sandbox <mode>`                           | `read-only` (default choice for questions/reviews), `workspace-write` (delegated implementation), `danger-full-access` (never, outside disposable environments).                  |
 | `-C <dir>`                                   | Working root for the agent. Prefer this over `cd`.                                                                                                                                |
-| `-c model_reasoning_effort="..."`            | `low` / `medium` / `high` / `xhigh`. Config-file default may be `high` — set explicitly per task.                                                                                 |
+| `-c model_reasoning_effort="..."`            | `low` / `medium` / `high` / `xhigh`, plus `max` / `ultra` on the 5.6 line. Config-file default may differ — set explicitly per task.                                              |
 
 Additional useful flags:
 
@@ -39,15 +39,27 @@ Additional useful flags:
 
 ## Models and reasoning effort
 
-There is **no `gpt-5.5-codex`** — the dedicated `-codex` model line ended at 5.3 (now deprecated); the frontier model `gpt-5.5` powers Codex directly.
+There is **no `-codex` suffix** on any current model — the dedicated `-codex` line ended at 5.3; the general agentic models power Codex directly.
 
-| Model                 | Use for                                                                         |
-| --------------------- | ------------------------------------------------------------------------------- |
-| `gpt-5.5`             | Default. Best quality; ~40% fewer output tokens than gpt-5.4 for the same task. |
-| `gpt-5.4-mini`        | Quick, responsive subtasks; ~4x more quota headroom on ChatGPT plans.           |
-| `gpt-5.3-codex-spark` | Near-instant iteration (ChatGPT Pro-only research preview).                     |
+| Model                 | Use for                                                                                  |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `gpt-5.6-terra`       | **Default.** Balanced agentic coding model for everyday work.                            |
+| `gpt-5.6-sol`         | Frontier tier. Hardest problems, deep review, gnarly multi-file implementation.          |
+| `gpt-5.6-luna`        | Fast and affordable. Quick subtasks where latency matters more than depth.               |
+| `gpt-5.4-mini`        | Smallest and cheapest. Simple lookups; most quota headroom on ChatGPT plans.             |
+| `gpt-5.3-codex-spark` | Ultra-fast iteration. ChatGPT-only (`supported_in_api: false`), 128k context.            |
 
-Reasoning effort: `minimal | low | medium | high | xhigh` via `-c model_reasoning_effort="..."`. CLI default is `medium`, but `~/.codex/config.toml` may override it — set it explicitly per task rather than relying on the default. Use `low`/`medium` for lookups and mechanical work, `high`+ for gnarly implementation.
+Reasoning effort via `-c model_reasoning_effort="..."`. Supported levels differ by model:
+
+| Model line                        | Levels                                       | CLI default |
+| --------------------------------- | -------------------------------------------- | ----------- |
+| `gpt-5.6-terra` / `gpt-5.6-sol`   | `low` `medium` `high` `xhigh` `max` `ultra`  | `medium` (terra), `low` (sol) |
+| `gpt-5.6-luna`                    | `low` `medium` `high` `xhigh` `max`          | `medium`    |
+| `gpt-5.5` / `gpt-5.4` / `-mini`   | `low` `medium` `high` `xhigh`                | `medium`    |
+
+There is no `minimal`. `ultra` is maximum reasoning *with automatic task delegation*, so it can spawn sub-agents and cost far more than `max`. `~/.codex/config.toml` may override the default, so set effort explicitly per task. Use `low`/`medium` for lookups and mechanical work, `high` for review and real implementation, `xhigh`+ only when `high` has already failed.
+
+The authoritative local list is `~/.codex/models_cache.json` (fields: `slug`, `supported_reasoning_levels`, `default_reasoning_level`, `context_window`). The interactive `codex models` picker needs a TTY and cannot be read from a wrapper.
 
 ## Capturing the session ID
 

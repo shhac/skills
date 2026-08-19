@@ -33,6 +33,6 @@ Evidence-based as of mid-2026 (OpenAI announcements, Terminal-Bench/SWE-bench re
 
 ## Cost/limits notes
 
-- ChatGPT-plan limits are 5-hour windows plus weekly caps, shared across local + cloud (Plus roughly 15–80 gpt-5.5 messages per window; Pro tiers 5–20x that). `gpt-5.4-mini` has ~4x the headroom.
-- With `CODEX_API_KEY` set, usage bills at standard API rates (gpt-5.5: $5/$30 per 1M in/out) instead of plan quota.
+- ChatGPT-plan limits are 5-hour windows plus weekly caps, shared across local + cloud (Plus roughly 15–80 frontier-model messages per window; Pro tiers 5–20x that). `gpt-5.6-luna` and `gpt-5.4-mini` stretch considerably further.
+- With `CODEX_API_KEY` set, usage bills at standard API rates instead of plan quota; check current per-model pricing rather than assuming (gpt-5.5 was $5/$30 per 1M in/out).
 - Even a trivial `codex exec` costs ~30k input tokens on Codex's side (system prompt + tools) — don't delegate one-liner questions Claude can answer from context already in hand.

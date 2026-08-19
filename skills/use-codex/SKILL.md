@@ -24,15 +24,15 @@ Full rationale, evidence, and cost/limits: `references/task-fit.md`. **If the de
 ## Quick start
 
 ```bash
-codex exec -m gpt-5.5 -c model_reasoning_effort="medium" \
+codex exec -m gpt-5.6-terra -c model_reasoning_effort="high" \
   --sandbox read-only -C /path/to/repo \
   -o /tmp/codex-out.txt \
   "<self-contained prompt with all context Codex needs>" </dev/null 2>/dev/null
 ```
 
-Then read `/tmp/codex-out.txt` — it contains only the final message; all intermediate activity is discarded so tokens aren't double-spent. Scale the Bash timeout to effort (medium ≈ 300s, high ≈ 600s) or run in background; Codex prints nothing until done.
+Then read `/tmp/codex-out.txt` — it contains only the final message; all intermediate activity is discarded so tokens aren't double-spent. Scale the Bash timeout to effort (medium ≈ 300s, high ≈ 600s, xhigh/max longer) or run in background; Codex prints nothing until done.
 
-- Model: `gpt-5.5` (default; there is no `gpt-5.5-codex`). `gpt-5.4-mini` for quick subtasks.
+- Model: `gpt-5.6-terra` (default, balanced). `gpt-5.6-sol` for the hardest problems, `gpt-5.6-luna` or `gpt-5.4-mini` for quick subtasks. There is no `-codex` suffix on any current model.
 - Sandbox: `read-only` for questions/review; `workspace-write` when Codex should edit files (then review the diff before trusting it).
 - If `-C` targets a directory that is not itself a git repo (e.g. a parent dir spanning several repos), add `--skip-git-repo-check` — without it the run fails, and silently so under `2>/dev/null` (exit 1, no output file).
 - To capture a session ID for follow-ups: add `--json`, take `thread_id` from the first stdout line; resume with `codex exec resume <thread-id> "follow-up"`.
