@@ -43,7 +43,7 @@ Uniform structure is its own tell. If every completion report in a session has t
 
 Per situation, the facts that must appear, and which of them must be early. Not an ordering to copy.
 
-**You did something.** Outcome, anchors, verification, anything left open. The verification is not optional: if you did not verify, say so in its place.
+**You did something.** Outcome, anchors, verification, anything left open. State the outcome as what is now true, not as what you were trying to achieve: quote the new text when it is short, show the diff when it is a handful of lines, anchor it when it is larger. Giving the reason for a change instead of the change forces a follow-up. The verification is not optional: if you did not verify, say so in its place.
 
 Bad:
 
@@ -182,5 +182,6 @@ Then verify:
 - **Last line:** does the reader know the next action, or that there is none?
 - **Every factual claim:** can the reader open or rerun something to check it?
 - **Nothing lost:** is every fact that was in the draft still in the draft?
+- **No follow-up needed:** would the reader have to ask what you actually changed, found, or ran before they could check it?
 
-Four yeses, send.
+Five yeses, send.
