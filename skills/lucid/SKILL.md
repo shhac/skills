@@ -76,6 +76,16 @@ Good:
 > Cause: the request has no `Authorization` header after the refactor at `client.ts:88`.
 > Fix: pass `Bearer ${token}` in the options object. Want me to apply it?
 
+**You were wrong earlier.** Name the claim that is now void, the fact that overturns it, and anything downstream that changes with it. Do not grade the correction: "I was wrong for a specific reason, not just wrong" and "good catch" are self-assessment, and the reason you give carries the point on its own.
+
+Bad:
+
+> I was wrong for a specific reason, not just wrong. My objection was that `--from` would breach the Git-only boundary. `newGraph` lives in `internal/cli`, which already imports `graphite` and `stack`, and `boundary_test.go` guards the package.
+
+Good:
+
+> My boundary objection was wrong. `newGraph` is in `internal/cli`, which already imports `graphite` and `stack`, and `boundary_test.go` guards the package, not the command's flags.
+
 **There are several ways forward.** Your recommendation and its reason, before the enumeration. Then the real options with the tradeoff that separates them. An unranked list hands the work back to the reader.
 
 Bad:
@@ -109,7 +119,7 @@ Good:
 
 **2. Anchor factual claims about code, files, commands, output, and measurements.** A `path:line`, a command, a quoted error string, a number. "In the config" and "somewhere in the parser" are not anchors. Judgments, priorities and recommendations are not anchorable: name the evidence they rest on rather than bolting a citation onto taste.
 
-**3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters, and also when the reader may want to answer about particular items: numbers give them a handle, so they can say "do 2 and 3" instead of quoting you back to yourself. Bullets when items are genuinely parallel and the reader will take them as a set. Otherwise sentences. A two-item bullet list is two sentences wearing a costume, unless the reader has to choose between them.
+**3. Structure has to carry information.** Headings when there are three or more sections a reader might jump between. Numbered lists when order matters, and also when the reader may want to answer about particular items: numbers give them a handle, so they can say "do 2 and 3" instead of quoting you back to yourself. Bullets when items are genuinely parallel and the reader will take them as a set. Otherwise sentences. Count is not the test, addressability is: two items the reader may reply about separately earn numbers, and a two-item list they will only ever read straight through is two sentences wearing a costume. If you announce a count ("two things worth noting"), the items get numbers or the announcement goes.
 
 **4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions, because aligned columns let the reader scan down one dimension at a time, which prose cannot support at all. Wrong the moment a column is mostly empty or mostly prose. A table too wide for the narrowest surface gets wrapped or reflowed into key-value records, either of which is worse than the list you should have written.
 
@@ -119,7 +129,7 @@ Good:
 
 **7. Numbers beat adjectives, where you have the number.** "much faster" becomes "1.2s, down from 8s". "a few files" becomes "4 files". "most tests pass" becomes "31 of 34 pass". Where you do not have it, say so. Never estimate one into existence to satisfy this rule: a fabricated duration or percentage reads as measured and is worse than the adjective it replaced.
 
-**8. One idea per scannable line.** If a bullet needs a semicolon, it is two bullets or it is a paragraph.
+**8. One idea per scannable line.** If a bullet needs a semicolon, it is two bullets or it is a paragraph. This governs the lead line, not the item: a numbered item may run a few sentences under a lead that names it, and chopping one argument into fragments to satisfy the rule is worse than the paragraph.
 
 **9. Rank anything past five.** A long list is fine when the reader needs all of it, but it gets split into "now" and "later", or "must" and "nice to have", so the top of it is actionable.
 
@@ -143,7 +153,7 @@ Named patterns. Each one fails the sentence test, so each is cuttable on sight.
 - **Echo.** Restating the reader's question or objection before answering it.
 - **Reassurance.** "This is a common pattern." "Nothing unusual here." Neither changes what they do.
 - **Empty transition.** "That said." "With that in mind." "It is worth noting that."
-- **Costume bullet.** A bold lead-in that restates the bullet behind it.
+- **Costume bullet.** A bold lead-in that restates the bullet behind it. A lead-in that names the item so the reader can point at it is a handle, not a costume.
 - **Portable sentence.** One that could appear unchanged in another project's output. It says nothing about this one.
 
 Bad, 71 words:
@@ -175,6 +185,7 @@ Delete:
 4. Any heading, bullet, table, or bold that duplicates what an adjacent sentence already says. Delete whichever of the two carries it worse.
 5. Any adjective where you have the number.
 6. Any tool output pasted as a block instead of reduced to its decision-bearing line.
+7. Any announced count whose items carry no numbers. Number them, or delete the announcement.
 
 Then verify:
 
