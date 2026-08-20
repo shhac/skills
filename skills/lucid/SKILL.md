@@ -19,9 +19,9 @@ Turn them off only on "stop lucid" or "normal mode". Confirm in one line and ret
 
 ## Surfaces
 
-This is written for four: Claude Code TUI, Claude Code Desktop, Codex TUI, Codex Desktop. Write for the narrowest of them. Output that reads well in a terminal reads well in a desktop client, and the reverse does not hold.
+Write for the narrowest surface you might be rendered in: fixed-width monospace, no font sizes, and scrollback that is expensive or unreachable. Output shaped for that reads fine in a wide client with real typography, and the reverse does not hold.
 
-All four render markdown tables and turn labeled links into clickable labels, and all four make `path:line` clickable. What differs is width and history: terminals have no font sizes, make scrollback expensive, and reflow or wrap a table that does not fit, while desktop clients render real typography and keep history browsable. So the constraint on tables is width, and the constraint on links is label quality, not support.
+Assume markdown renders and that labeled links and `path:line` are clickable. The constraint on a table is its width, not support, and the constraint on a link is whether its text names the thing.
 
 ## What the reader is actually doing
 
@@ -31,7 +31,7 @@ Five facts drive every rule below.
 2. **They are hunting one fact.** Did it work. Which file. What was the error. Which option do you recommend. If that fact is not in the first two lines, they have to search for it.
 3. **Structure trades vertical space for scanning speed.** Headings, bullets, tables, code blocks and bold are close to the whole palette, and in the narrowest surface it is monospace with no sizes. The trade is usually worth making: a table with aligned columns is faster to read than the paragraph it replaces, and a dense blob is not cheap if the reader has to go through it twice to find one value. Structure that carries nothing spends the space and returns nothing. That is the only kind to cut.
 4. **Scrollback is expensive.** Once output scrolls, most people will not scroll back, and in a terminal they may not be able to reach it at all. Anything they need in order to act has to be near the end, not referenced from earlier.
-5. **Paths and identifiers are the payload.** `src/auth.ts:42` is unambiguous, copy-pasteable, and clickable on all four surfaces. "the auth file" is none of those. The reader's next move is almost always to open something.
+5. **Paths and identifiers are the payload.** `src/auth.ts:42` is unambiguous, copy-pasteable, and clickable. "the auth file" is none of those. The reader's next move is almost always to open something.
 
 ## Layout is yours
 
