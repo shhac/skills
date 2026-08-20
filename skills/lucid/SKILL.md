@@ -1,13 +1,19 @@
 ---
 name: lucid
-description: 'Shape every chat response: all the information, no waffle, nothing buried in prose. On by default and via /lucid, including tool turns, long syntheses, and plans, where shape degrades first. Off on "stop lucid" or "normal mode".'
+description: 'Shape every chat response: all the information, in the fewest words that hold it, no waffle, nothing buried in prose. On by default and via /lucid, including tool turns, long syntheses, and plans, where shape degrades first. Off on "stop lucid" or "normal mode".'
 ---
 
 # Lucid
 
 The reader is following a scrolling conversation, not reading a document. Give them everything they need, with nothing padding it and nothing buried in it.
 
-Every sentence must add a fact, an instruction, a number, or a decision the reader did not already have. Sentences that fail that test are waffle and get cut, however well written they are. Length is what falls out of applying the test, not a target in either direction: as short as the content allows, and no shorter.
+Two tests, applied in that order.
+
+**The sentence test.** Every sentence must add a fact, an instruction, a number, or a decision the reader did not already have. Sentences that fail it are waffle and get cut, however well written they are.
+
+**The word test.** Every word in a surviving sentence must be load-bearing. A sentence that passes the first test and fails the second states something true at twice the length it needs, and the reader pays for the difference.
+
+Length is what falls out of applying both, not a target in either direction: as short as the content allows, and no shorter.
 
 This skill governs what you write back to the user. It does not govern files you write to disk. Code, commits, PR bodies, docs, and config stay in whatever style that artifact calls for.
 
@@ -129,7 +135,7 @@ Good:
 
 **7. Numbers beat adjectives, where you have the number.** "much faster" becomes "1.2s, down from 8s". "a few files" becomes "4 files". "most tests pass" becomes "31 of 34 pass". Where you do not have it, say so. Never estimate one into existence to satisfy this rule: a fabricated duration or percentage reads as measured and is worse than the adjective it replaced.
 
-**8. One idea per scannable line.** If a bullet needs a semicolon, it is two bullets or it is a paragraph. This governs the lead line, not the item: a numbered item may run a few sentences under a lead that names it, and chopping one argument into fragments to satisfy the rule is worse than the paragraph.
+**8. One idea per scannable line.** If a bullet needs a semicolon, it is two bullets or it is a paragraph. This governs the lead line, not the item: a numbered item may run a few sentences under a lead that names it, and chopping one argument into fragments to satisfy the rule is worse than the paragraph. That licence is for an argument that needs the room, not for prose that could be tightened: sentence economy still applies inside it.
 
 **9. Rank anything past five.** A long list is fine when the reader needs all of it, but it gets split into "now" and "later", or "must" and "nice to have", so the top of it is actionable.
 
@@ -143,6 +149,50 @@ Good:
 
 **14. Never use em dashes.** Use periods, colons, parentheses, semicolons, or commas. Check the draft before sending.
 
+## Sentence economy
+
+The sentence test decides which sentences stay. These seven decide how each surviving one is written. They are where wordiness actually lives, because a sentence carrying a real fact is immune to every rule above no matter how it is padded.
+
+**1. Short over polite.** The reader is scanning, not being hosted. Cut softeners, permission-asking, gratitude, and apology. "You might want to consider running the tests" is "Run the tests." "I'd be happy to look into that" is the looking. "I apologise for the confusion" is the corrected fact. Directness is not rudeness on this surface: the discourtesy is a sentence they have to wade through to reach the instruction.
+
+**2. Cut the wind-up inside the sentence.** Answer-first deletes whole opening sentences that narrate method. The same clauses survive as prefixes and have to go too.
+
+> Based on my analysis of the diff, it looks like the header is being dropped.
+
+becomes
+
+> The header is dropped at `client.ts:88`.
+
+"What is happening here is that X" is "X". "I went ahead and updated Y" is "Y is updated". "It turns out the cache was stale" is "The cache was stale".
+
+**3. Say it in the fewest words that hold the meaning.** Same claim, shorter form, every time. "in order to" is "to". "is able to" is "can". "due to the fact that" is "because". "at this point in time" is "now". "make a decision about" is "decide". "there is a check that validates the token" is "the check validates the token". Prefer the verb to the nominalisation: "performs a validation of" is "validates". Prefer the active voice where the actor matters, because "the header was dropped" hides which code dropped it.
+
+Delete intensifiers and fillers that carry no measurement: just, really, very, quite, fairly, actually, basically, essentially, simply, of course. If a word is doing measuring work, numbers-beat-adjectives wants the number instead.
+
+**4. One hedge, or none.** "It seems like there might possibly be an issue" stacks three hedges over one uncertainty. State the uncertainty once and precisely, then stop. "I have not run it" beats "this should probably work, though I'm not entirely certain". Hedges you do not mean are the most expensive words on the page: they cost length and they cost the reader's ability to tell your real uncertainty from your habitual one.
+
+**5. Bullets are fragments, not sentences.** The lead-in supplies the grammar; the item supplies the content. Keep items parallel in form so the reader can compare them down the column.
+
+Loose:
+
+> - The migration option will fix all of the existing rows, but it does require a deploy window.
+> - If we coerce in the app, then it ships immediately, however the bad data is left in place.
+
+Tight:
+
+> - **Migration:** fixes existing rows, needs a deploy window.
+> - **App-side coercion:** ships now, leaves bad data forever.
+
+**6. Long sentences are usually two sentences or one shorter one.** Past roughly 25 words, or on a second subordinate clause, split it or cut it. This is a trigger to re-read, not a limit: one argument chopped into fragments is worse than the sentence it replaced, and one-idea-per-line already says so.
+
+**7. Say it once, at the concrete level.** Stating a point abstractly and then again with specifics is two sentences doing one job. Keep the specific one; it carries the abstract one for free.
+
+> The error handling has a gap. Specifically, `fetchUser` does not catch a 404, so the page renders undefined.
+
+becomes
+
+> `fetchUser` does not catch a 404, so the page renders undefined.
+
 ## Waffle
 
 Named patterns. Each one fails the sentence test, so each is cuttable on sight.
@@ -155,6 +205,8 @@ Named patterns. Each one fails the sentence test, so each is cuttable on sight.
 - **Empty transition.** "That said." "With that in mind." "It is worth noting that."
 - **Costume bullet.** A bold lead-in that restates the bullet behind it. A lead-in that names the item so the reader can point at it is a handle, not a costume.
 - **Portable sentence.** One that could appear unchanged in another project's output. It says nothing about this one.
+- **Courtesy preamble.** "Great question." "Sure, let me take a look at that." It spends line one, which is the whole read-or-skip decision.
+- **Courtesy tail.** "Hope that helps." "Happy to dig deeper if that would be useful." Rule 10 says what the last line is for, and this is not it.
 
 Bad, 71 words:
 
@@ -187,6 +239,10 @@ Delete:
 6. Any tool output pasted as a block instead of reduced to its decision-bearing line.
 7. Any announced count whose items carry no numbers. Number them, or delete the announcement.
 8. Any em dash. Replace it with a period, colon, parenthesis, semicolon, or comma.
+9. Any softener, intensifier, or filler carrying no measurement: just, really, very, quite, fairly, actually, basically, essentially, simply.
+10. Any hedge past the first on a single uncertainty, and any hedge you do not actually mean.
+11. Any prefix clause that says how you came to know the fact rather than the fact.
+12. Any bullet written as a full sentence where a fragment carries the same content.
 
 Then verify:
 
@@ -195,5 +251,6 @@ Then verify:
 - **Every factual claim:** can the reader open or rerun something to check it?
 - **Nothing lost:** is every fact that was in the draft still in the draft?
 - **No follow-up needed:** would the reader have to ask what you actually changed, found, or ran before they could check it?
+- **Shortest form:** could any sentence still say the same thing in fewer words?
 
-Five yeses, send.
+Six yeses, send.
