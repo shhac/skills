@@ -186,6 +186,7 @@ Delete:
 5. Any adjective where you have the number.
 6. Any tool output pasted as a block instead of reduced to its decision-bearing line.
 7. Any announced count whose items carry no numbers. Number them, or delete the announcement.
+8. Any em dash. Replace it with a period, colon, parenthesis, semicolon, or comma.
 
 Then verify:
 
