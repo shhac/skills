@@ -13,7 +13,7 @@ baseRefName,headRefName,headRefOid,\
 files,reviews,comments,latestReviews,closingIssuesReferences
 ```
 
-Then fetch previous reviews from this skill as shown below. If exact head-SHA deduplication does not skip the PR, add the in-progress reaction before checking diff equivalence or fetching the full context.
+Then fetch previous reviews from this skill as shown below, add the in-progress reaction, and only then compute the fingerprints in `diff-equivalence.md`.
 
 ## Fetch Full PR Metadata
 
@@ -93,7 +93,7 @@ gh api "repos/<owner>/<repo>/pulls/<number>/reviews" --paginate \
              submitted_at,
              metadata: (
                try ($body
-                    | capture("<!-- pr-issue-review:v1 profile=(?<profile>[^ ]+) head=(?<head>[^ ]+) diff=(?<diff>[^ ]+) context=(?<context>[^ ]+) -->"))
+                    | capture("<!-- pr-issue-review:v2 profile=(?<profile>[^ ]+) head=(?<head>[^ ]+) diff=(?<diff>[^ ]+) intent=(?<intent>[^ ]+) convo=(?<convo>[^ ]+) -->"))
                catch null
              )
            }]'
@@ -101,15 +101,15 @@ gh api "repos/<owner>/<repo>/pulls/<number>/reviews" --paginate \
 
 Marker to profile: `🦎🍃` passive, `🦎⚖️` neutral, `🦎🔎` assertive, `🦎⚔️` aggressive. The leading lizard marks the review as coming from this skill.
 
-Exact head-SHA skip rule for automation: if this list contains an entry whose `marker` matches the selected profile and whose `commit_id` equals the PR's current `headRefOid`, this skill has already reviewed this head with this profile; skip unless explicitly rerun.
+A `v1` stamp (`diff=` and `context=`) yields no `intent`/`convo` capture. Treat both as `unknown`, which never matches, so a `v1` stamp cannot authorize a skip.
 
-Diff-equivalence skip rule for automation: after adding the in-progress reaction, use `references/diff-equivalence.md` to compute current `diff` and `context` fingerprints. If a previous review's hidden metadata has the same selected `profile`, same non-`unknown` `diff`, and same non-`unknown` `context`, remove the reaction and stop without posting another review.
+Skip rule for automation: after adding the in-progress reaction, use `references/diff-equivalence.md` to compute the current `diff`, `intent`, and `convo` fingerprints. If a previous review's hidden metadata has the same selected `profile` and all three non-`unknown` fingerprints match, remove the reaction and stop without posting another review. If only `convo` differs, run a targeted re-review (SKILL.md, Targeted Re-Review). There is no separate head-SHA skip: `commit_id` is still useful for reporting which head a previous review covered, but it does not decide the skip on its own.
 
 Persona selection uses this same list: the count of entries whose `marker` matches the selected profile is the review count in the persona index formula in SKILL.md's Review Persona section.
 
 ## Add and Remove the In-Progress Reaction
 
-Immediately after exact head-SHA deduplication decides the run might perform a review, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before diff-equivalence checks, full diff review, remote context discovery, cache writes, or source exploration. The diff-equivalence check may then do only the minimal shallow fetch needed to compute the fingerprint:
+Once profile and persona are selected, add an `eyes` reaction to the PR issue and keep the returned reaction ID. Do this before computing fingerprints, full diff review, remote context discovery, cache writes, or source exploration. All three fingerprints come from `gh` metadata, so nothing is fetched before the reaction exists:
 
 ```bash
 reaction_id="$(gh api --method POST \
@@ -143,7 +143,7 @@ Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr co
 {
   "commit_id": "<headRefOid>",
   "event": "COMMENT",
-  "body": "🦎⚔️ Iris: One loose thread made eye contact. 🤔\n\nWhy:\n- ⚠️ P1: ...\n\n<!-- pr-issue-review:v1 profile=aggressive head=<headRefOid> diff=<diff-fingerprint> context=<context-fingerprint> -->",
+  "body": "🦎⚔️ Iris: One loose thread made eye contact. 🤔\n\nWhy:\n- ⚠️ P1: ...\n\n<!-- pr-issue-review:v2 profile=aggressive head=<headRefOid> diff=<diff-fingerprint> intent=<intent-fingerprint> convo=<convo-fingerprint> -->",
   "comments": [
     {
       "path": "src/records/filter.ts",

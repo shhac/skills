@@ -72,7 +72,7 @@ The caller may specify any profile and persona combination, such as `aggressive`
 
 If the caller does not specify a persona, select one deterministically from the candidate personas listed by the loaded profile file, in their listed order:
 
-1. Count the previous reviews on this PR from this skill whose opening marker matches the selected profile, across all head SHAs, not only the current head. This is the same review set already fetched for head-SHA dedup; dismissed or deleted reviews that no longer appear in the GitHub reviews API do not count.
+1. Count the previous reviews on this PR from this skill whose opening marker matches the selected profile, across all head SHAs, not only the current head. This is the same review set already fetched for deduplication; dismissed or deleted reviews that no longer appear in the GitHub reviews API do not count.
 2. Persona index = (PR number + that count) modulo the number of candidates.
 
 This gives different PRs different first reviewers and a fresh voice on each repeat review of the same PR. Do not carry the previous review's persona forward by continuity; the formula already decides, and a persona change between passes is intended.
@@ -106,9 +106,11 @@ Packs compose. A typical dbt PR loads `dbt-transformations.md` plus `sql-semanti
 
 ## Review Deduplication
 
-Use `references/diff-equivalence.md` when deciding whether a changed head SHA still represents a diff already reviewed by this skill.
+Use `references/diff-equivalence.md` when deciding whether a PR still represents work already reviewed by this skill. It compares three independent channels: `diff` (the code), `intent` (title, body, base ref, closing issues), and `convo` (human comments, review bodies, thread replies, and thread resolution).
 
-Every submitted review must include the hidden metadata described there so future automation can identify equivalent rebases or merge-refreshes without posting another review.
+There is no separate head-SHA short circuit. An unchanged head SHA is only the case where `diff` matches; whether that skips depends on `intent` and `convo` too. Skipping on the SHA alone is what makes an author's reply to a finding invisible.
+
+Every submitted review must include the hidden metadata described there so future runs can identify equivalent rebases or merge-refreshes without posting another review.
 
 ## Core Rules
 
@@ -147,7 +149,7 @@ Quality and coverage asks that would improve on the pre-revert state (new tests,
 
 Other AI reviewers may have reviewed this PR from other accounts (look for 🦎 branding, `lizard:v1`-style hidden metadata, or bot-named review bodies). Rules:
 
-- They are context, not this skill. Never count their reviews for this skill's head-SHA/diff-equivalence deduplication or persona rotation; match only this skill's exact opening markers.
+- They are context, not this skill. Never count their reviews for this skill's deduplication or persona rotation; match only this skill's exact opening markers. Their comments are human-authored and do move the `convo` fingerprint, which is correct: a sibling reviewer raising a point is a reason to look again.
 - They do not trigger the "someone else has already submitted a review" profile fallback; that rule is for human reviews.
 - Review independently and completely. Never omit, soften, or defer a finding because a sibling reviewer already raised it or already approved — there is no guarantee any sibling runs on any given PR, so this skill's review must stand alone. Their reviews are context: when your evidence contradicts their verdict or grading, say so explicitly ("their approval cleared hover states; I think the residue on line 32 still regresses dark mode") — an explicit second opinion is the value of running two reviewers.
 
@@ -174,10 +176,10 @@ find "$tmp_root/.runs" -mindepth 1 -maxdepth 1 -mtime +0 \
 git -C "$repo_dir" worktree prune            # reap bookkeeping for worktrees left by crashed runs
 ```
 
-After startup metadata has been fetched, exact head-SHA deduplication has decided this head/profile might need review, and the in-progress reaction has been added, defer fetching until needed:
+After startup metadata has been fetched and the in-progress reaction has been added, defer fetching until needed:
 
-- The diff-equivalence fingerprint in `references/diff-equivalence.md` is computed from `gh pr diff` and needs no checkout, so do not fetch refs just to deduplicate.
-- Only if diff-equivalence deduplication does not skip the PR, shallow-fetch the base/head refs needed for static inspection and surrounding file reads.
+- All three fingerprints in `references/diff-equivalence.md` are computed from `gh` metadata and need no checkout, so do not fetch refs just to deduplicate.
+- Only if deduplication does not skip the PR, shallow-fetch the base/head refs needed for static inspection and surrounding file reads.
 
 Fetch the PR head, and the base when needed, into the shared store under PR-scoped ref names. Concurrent runs fetching into the same store can occasionally collide on `FETCH_HEAD.lock`; retry the fetch once on that error rather than aborting the run:
 
@@ -302,10 +304,10 @@ Do not commit any cache files.
 1. Fetch only the lightweight startup metadata needed for profile selection, previous-review detection, and skip/deduplication: PR number/title/body/author/refs/head SHA/branch names, review summaries, issue comments, changed file names, and existing reviews from this skill.
 2. Select review profile and load exactly one file from `profiles/`.
 3. Select and load exactly one persona file (see Review Persona).
-4. If exact head-SHA deduplication shows this `{head SHA, profile}` was already reviewed, stop without adding a reaction.
-5. Add the in-progress reaction described below and store the returned reaction ID for cleanup.
-6. Read `references/diff-equivalence.md`, compute the current diff and startup context fingerprints, and compare them with hidden metadata from prior reviews by this skill on the same PR/profile.
-7. If diff-equivalence deduplication says this is the same effective diff and same startup context as a previous review, remove the in-progress reaction and stop without posting a review.
+4. Add the in-progress reaction described below and store the returned reaction ID for cleanup.
+5. Read `references/diff-equivalence.md` and compute all three current fingerprints (`diff`, `intent`, `convo`), comparing them with hidden metadata from prior reviews by this skill on the same PR/profile.
+6. If all three match, remove the in-progress reaction and stop without posting a review.
+7. If only `convo` moved, run a targeted re-review (see Targeted Re-Review) instead of the full procedure, then go to step 12.
 8. Fetch the head/base refs into the shared store, add the per-run worktree (see Setup), gather full PR context, discover remote context, and cache discovered remote context.
 9. Load only the lens files named by that profile.
 10. Check every focus pack's trigger signals against the changed paths and PR context, and load each pack that matches (see Focus Packs).
@@ -315,12 +317,51 @@ Do not commit any cache files.
 
 Allocate scrutiny by blast radius, not by how readable the diff is. Money, auth, data deletion, irreversible migrations, and large multi-domain PRs get the deepest pass: engage the riskiest hunks inline, and verify the PR's central claim yourself rather than restating it. If the PR body itself names a limitation, deliberate gap, or follow-up, the review must acknowledge it and either accept it (as an `ℹ️ FYI` with the watch-out spelled out) or challenge it (see Deferred Work Is Not A Safety Argument). A review of a high-risk PR whose body adds nothing beyond the PR description is a failed review, even when the verdict is right.
 
+## Targeted Re-Review
+
+When deduplication finds that `diff` and `intent` are unchanged and only `convo` moved, the PR's code and stated claim are exactly what a previous review already judged. Someone has replied, resolved a thread, or commented. The useful work is to re-judge the standing findings against what was said, not to derive the whole PR again.
+
+Enter this mode only when all of these hold. Otherwise run the full procedure:
+
+- `diff` and `intent` both matched a previous review at the selected profile.
+- `convo` did not match.
+- That previous review's findings are still recoverable from its body and this skill's inline comments.
+
+Do:
+
+- Read the previous review body, this skill's inline comments, and every human reply, resolution, and comment that is new since it.
+- For each standing finding, reach one of: **withdrawn** (the rebuttal is right; credit it), **downgraded** (partly right; restate at the lower severity), **stands** (say specifically why it survives the rebuttal, addressing the argument rather than repeating the finding), or **resolved** (the author fixed or addressed it).
+- Reply in the thread where the argument was made, so the author sees the answer where they asked. Every reply carries the inline comment marker.
+- Post one review carrying the top-level body and the hidden metadata stamp, exactly as a full review does.
+
+Do not:
+
+- Re-derive findings the previous review already made, or re-read the diff looking for new ones.
+- Load the full lens set, run focus-pack discovery, fetch remote context, or create a worktree. This mode needs the PR metadata, the conversation, and the previous review.
+- Withhold a withdrawal because it makes the earlier review look wrong. A finding the author has correctly refuted is a finding to drop, and dropping it plainly is the point of this mode.
+
+Escalate to a full review instead if the conversation implicates code the previous review never examined, or if a reply claims a fix that would have moved `diff` but did not.
+
+The verdict follows the profile's usual approval threshold, recomputed over the findings that still stand. Withdrawing the last blocking finding means this pass can approve.
+
+Use the normal top-level shape with the profile marker and the rotated persona, but keep it to the revisited findings:
+
+```markdown
+<emoji marker> <Persona>: <short verdict about where the findings landed>.
+
+Why:
+- ⚠️ P1 (withdrawn): <finding>. <credit to the argument that refuted it>.
+- 🔧 P2 (stands): <finding>. <why the rebuttal does not settle it>. See inline.
+
+<!-- pr-issue-review:v2 profile=<profile> head=<headRefOid> diff=<diff-fingerprint> intent=<intent-fingerprint> convo=<convo-fingerprint> -->
+```
+
 ## In-Progress Signal
 
 Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API supports reactions. It is a best-effort visual cue, not a lock. It does not coordinate concurrent runs: GitHub deduplicates an identical reaction from the same user, so two concurrent runs that add `eyes` get the same reaction ID back, and whichever finishes first removes the shared reaction. Do not rely on it for mutual exclusion or to prevent duplicate reviews (see Automation Behavior on accepted duplicates).
 
-- Add the reaction after exact head-SHA deduplication decides this head/profile was not already reviewed.
-- Add the reaction before diff-equivalence deduplication, including any minimal shallow fetch needed only to compute the fingerprint.
+- Add the reaction after profile and persona selection, before computing any fingerprint.
+- Fingerprints need no checkout, so nothing is fetched before the reaction exists.
 - Do not wait for full diff review, remote context discovery, cache writes, or surrounding-source exploration before adding the reaction.
 - Store the reaction ID returned by GitHub in run-local state (in `$wt`), not a shared path.
 - After submitting the review, remove only the exact reaction ID created by this run.
@@ -377,7 +418,7 @@ Notes:
 
 </details>
 
-<!-- pr-issue-review:v1 profile=<profile> head=<headRefOid> diff=<diff-fingerprint> context=<context-fingerprint> -->
+<!-- pr-issue-review:v2 profile=<profile> head=<headRefOid> diff=<diff-fingerprint> intent=<intent-fingerprint> convo=<convo-fingerprint> -->
 ```
 
 Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. Keep line 1 and `Why:` visible. If a finding has a stable diff position, put the evidence and recommended next step inline and reference it briefly from the top-level body. For top-level-only findings, keep the finding sentence short and put the action on an indented `Recommendation:` line under that bullet so the recommendation is easy to scan without adding another section. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
@@ -521,10 +562,10 @@ When running in a loop for PRs requesting the user's review:
 
 1. Select the review profile from the explicit caller request or fallback rules above.
 2. Identify previous reviews from this skill by their emoji markers, hidden metadata, and `commit_id` from the GitHub reviews API.
-3. Skip without adding a reaction if a review from this skill already exists for the current head SHA and selected profile, unless explicitly rerun.
-4. Add the in-progress reaction immediately after exact head-SHA deduplication decides this PR/head/profile might need review.
-5. Run the diff-equivalence check from `references/diff-equivalence.md`; if it finds the same effective diff and same startup context as a previous review on this PR/profile, remove the in-progress reaction and stop without posting a review.
-6. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR normally receives one review per `{head SHA, profile}` unless diff-equivalence deduplication suppresses a rebase or merge-refresh duplicate.
+3. Add the in-progress reaction once profile and persona are selected.
+4. Run the deduplication check from `references/diff-equivalence.md`. Skip only when `diff`, `intent`, and `convo` all match a previous review on this PR/profile, unless explicitly rerun; on a skip, remove the in-progress reaction and stop without posting.
+5. When only `convo` moved, run a targeted re-review rather than a full pass (see Targeted Re-Review). An unchanged head SHA is not by itself a reason to skip.
+6. Treat `passive`, `neutral`, `assertive`, and `aggressive` as separate review profiles; a PR normally receives one review per distinct `{diff, intent, convo, profile}` combination.
 7. Deduplication is best-effort, not a barrier. Under parallel execution two runs on the same `{PR, head SHA, profile}` can both pass the read-then-act dedup checks and both post a review. Accept this. Failing open (an occasional duplicate review) is preferable to failing closed (skipping a genuinely changed PR because a prior run left stale state); do not add locking that could strand a PR unreviewed.
 8. Reuse the shared per-repo object store and its `.ai-cache/context/` cache across runs; use a fresh per-run worktree for working state and ephemera.
 9. Refresh PR metadata and diff every run; reuse cached remote context only when its freshness header passes the `source_updated_at`/TTL check in Context Cache.
