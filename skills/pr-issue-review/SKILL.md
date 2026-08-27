@@ -458,9 +458,28 @@ Evidence: the linked issue mentions archived records, but this filter only keeps
 Impact: the PR can still miss the records the user asked to recover.
 
 </details>
+
+<!-- pr-issue-review:inline -->
 ````
 
 Keep inline findings action-first. Do not hide the severity, finding title, `**Recommendation:**` line, or `suggestion` block inside collapsed sections. For short comments, skip `<details>` and keep the evidence/impact inline. If the recommendation is exact, local, and safe enough for GitHub to apply directly, put the `suggestion` block immediately after the recommendation. If the fix is not that clear, use a visible `**Recommendation:**` line without a suggestion block.
+
+#### Inline Comment Marker
+
+Every inline comment body from this skill must end with this hidden marker as its final line:
+
+```html
+<!-- pr-issue-review:inline -->
+```
+
+This is not decoration. The conversation fingerprint in `references/diff-equivalence.md` hashes human review-thread replies to decide whether the discussion has moved since the last review. The account running this skill is an ordinary user account, so GitHub reports it as a `User` and not a `Bot`: nothing in the API distinguishes this skill's inline comments from a human's. Without the marker, every inline comment this skill posts moves the conversation fingerprint, which triggers another review, which posts another comment.
+
+Rules:
+
+- Keep it as the final line of every inline comment body, including comments carrying a `suggestion` block.
+- Detection is a literal substring test for `pr-issue-review:inline`. It is deliberately unversioned, so the marker stays stable when the top-level metadata format is versioned.
+- Do not put findings, severity, or private context inside it.
+- Never resolve a review thread. Resolution state feeds the conversation fingerprint, so resolving this skill's own thread would self-trigger the same loop the marker exists to prevent.
 
 Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope. If a finding cannot be anchored cleanly to a changed line, keep it in the top-level body with the same severity, visible recommended next step, and enough evidence/impact to justify the finding.
 

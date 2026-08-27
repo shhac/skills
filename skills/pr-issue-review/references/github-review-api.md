@@ -149,7 +149,7 @@ Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr co
       "path": "src/records/filter.ts",
       "line": 42,
       "side": "RIGHT",
-      "body": "⚠️ P1 — Archived records are still excluded here.\n\n**Recommendation:** ...\n\n```suggestion\nreturn records.filter((record) => record.active || record.archived)\n```"
+      "body": "⚠️ P1 — Archived records are still excluded here.\n\n**Recommendation:** ...\n\n```suggestion\nreturn records.filter((record) => record.active || record.archived)\n```\n\n<!-- pr-issue-review:inline -->"
     },
     {
       "path": "src/records/filter.test.ts",
@@ -157,7 +157,7 @@ Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr co
       "start_side": "RIGHT",
       "line": 14,
       "side": "RIGHT",
-      "body": "🔧 P2 — ..."
+      "body": "🔧 P2 — ...\n\n<!-- pr-issue-review:inline -->"
     }
   ]
 }
@@ -195,6 +195,8 @@ Payload rules:
 - `event` is `APPROVE`, `COMMENT`, or `REQUEST_CHANGES`. Omitting it creates a pending (unsubmitted) review; always set it.
 - `commit_id` should be the `headRefOid` that was actually reviewed, so the review attaches to the right head even if the author pushes mid-review.
 - `body` must start with the exact emoji marker as its first characters.
+- `body` must end with the hidden metadata line from `diff-equivalence.md`.
+- Every inline comment body must end with `<!-- pr-issue-review:inline -->` (see SKILL.md, Inline Comment Marker). This is what keeps the conversation fingerprint from treating this skill's own comments as new discussion and re-triggering forever.
 - `comments` may be an empty array or omitted when there are no inline findings.
 
 Inline comment rules:
