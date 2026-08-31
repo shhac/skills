@@ -16,7 +16,7 @@ Invoke this on a target: a draft, a file, or the thing you are about to write. I
 
 1. **They were not in the conversation.** Every load-bearing fact has to be in the document. A link is additional reading, never the context itself. If you cite a ticket, a thread, or a dashboard, inline the one sentence that matters.
 2. **They need to decide or act.** Approve or not, adopt or not, or just run the thing. Name the decision or the action early, and where there is a decision, say what you recommend.
-3. **They skim before they read, and many never stop skimming.** Headings and the first sentence of each section are the skim path. If the argument is not on that path, it is not in the document.
+3. **They skim before they read, and many never stop skimming.** Headings and the first sentence of each section are the skim path. If the argument is not on that path, it is not in the document. Some are not choosing to skim: ADHD and dyslexia make paragraph mass a barrier rather than a speed bump, so structure is a floor rather than a trade. Advanced vocabulary is not the problem and does not want simplifying, since a precise uncommon word is one word where its plain-language gloss is six.
 4. **It gets re-read later, out of context, after the code has moved.** Anything that duplicates the diff rots within weeks. Anything that duplicates the code was always redundant.
 5. **Real typography renders here.** Headings, nesting, and tables work properly, which makes over-structuring cheap and therefore common. A nested bullet tree is not an argument.
 
@@ -99,6 +99,8 @@ Informative headings are also what let you cross-reference by name. Refer to a s
 
 **12. No time-relative words.** "Currently", "now", "recently", "new", "soon", "at present". The document is read at an unknown later date, by which point these are false with nothing marking them stale. Anchor to something that stays true: a version, a date, or the change itself. "Currently retries twice" is "before this change, retried twice" or "retried twice as of v2.3".
 
+**13. No paragraph past four sentences or five lines of solid text.** Split it, or convert it into the list it is already describing. Whatever survives, its first sentence carries it (rule 5). A run of clipped fragments is not a wall and does not count against this.
+
 ## What survives the cut
 
 1. **Reproduction, migration, and rollback steps.** Someone will follow them under pressure. They stay complete, and each one is the command itself rather than the name of the action: "run the migration" is not a step, `npm run migrate:up -- 007` is.
@@ -120,5 +122,6 @@ Then delete:
 5. Any heading that names a category instead of making a claim.
 6. Any time-relative word: currently, now, recently, new, soon.
 7. Any cross-reference by position rather than by section name: above, below, the following.
+8. Any paragraph past four sentences or five lines of solid text. Clipped fragments are exempt.
 
 Then verify nothing that bears on the decision was lost in the trimming.
