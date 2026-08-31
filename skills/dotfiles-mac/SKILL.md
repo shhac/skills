@@ -1,6 +1,6 @@
 ---
 name: dotfiles-mac
-description: Create, update, or apply a macOS dotfiles repo. Use when the user wants to back up their system configuration, set up a new Mac from dotfiles, capture current configs into an existing dotfiles repo, or manage dotfiles with GNU Stow.
+description: 'Create, update, or apply a macOS dotfiles repo with GNU Stow. Use to back up system configuration, capture current configs, or set up a new Mac.'
 ---
 
 # Dotfiles Mac

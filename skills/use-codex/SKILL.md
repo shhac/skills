@@ -1,6 +1,6 @@
 ---
 name: use-codex
-description: This skill should be used when considering delegating a coding task to the OpenAI Codex CLI — codebase exploration/Q&A, well-specified implementation, mechanical edits at scale, second-opinion or adversarial review, or bugs stuck after 2+ attempts. Codex spends ChatGPT quota instead of Claude tokens and its models are token-economical. Invoked for "use codex", "ask codex", "delegate to codex", "codex exec", "second opinion", or when offloading token-heavy scoped work.
+description: 'Delegate a coding task to the OpenAI Codex CLI: codebase Q&A, well-specified implementation, mechanical edits at scale, adversarial second opinions, or bugs stuck after 2+ attempts. Spends ChatGPT quota instead of Claude tokens. Use on "use codex", "ask codex", "codex exec", "second opinion", or to offload token-heavy scoped work.'
 ---
 
 # Use Codex

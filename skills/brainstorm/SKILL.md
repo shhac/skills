@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Brainstorm competing solutions to a problem using parallel agents. Use when you need to explore multiple different approaches to the same problem, compare trade-offs, and choose the best path forward. Spawns parallel proposer agents who each design an independent solution, then peer-review each other's work before a structured comparison.
+description: 'Explore competing solutions to a problem with parallel proposer agents who each design an independent approach, peer-review each other, then compare trade-offs. Use when the best path forward is unclear and worth several designs.'
 ---
 
 # Brainstorm

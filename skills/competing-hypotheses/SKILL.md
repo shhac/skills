@@ -1,6 +1,6 @@
 ---
 name: competing-hypotheses
-description: Debug problems by investigating multiple hypotheses in parallel. Use when you have a bug, unexpected behaviour, or mystery where the root cause is unclear. Spawns parallel investigator agents each pursuing a different theory, then compares evidence to identify the most likely cause and fix.
+description: 'Debug by investigating rival theories in parallel, then comparing evidence to identify the likeliest root cause and fix. Use for a bug or mystery where the cause is unclear.'
 ---
 
 # Competing Hypotheses

@@ -1,6 +1,6 @@
 ---
 name: sync-fork
-description: Sync a forked repository with its upstream. Fetches both remotes, shows divergence, resets shared branches to upstream, re-merges local-only branches, cleans up branches already merged upstream, and pushes. Use when upstream has accepted PRs or moved ahead and you need to bring your fork in line.
+description: 'Bring a fork in line with upstream: show divergence, reset shared branches, re-merge local-only ones, prune branches already merged upstream, and push. Use when upstream has moved ahead or accepted your PRs.'
 ---
 
 # Sync Fork

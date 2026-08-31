@@ -1,6 +1,6 @@
 ---
 name: use-claude
-description: This skill should be used when a non-Claude agent (e.g. Codex) is considering delegating a coding task to Claude Code's headless mode (claude -p) — hard long-horizon bug fixing, implementation where first-pass completeness matters more than token cost, test authoring, or a cross-model-family second opinion on a plan or diff. Claude Code spends an Anthropic subscription/API budget instead of the caller's tokens. Invoked for "use claude", "ask claude", "delegate to claude", "claude -p", or "second opinion from claude".
+description: 'For non-Claude agents (e.g. Codex) delegating to Claude Code headless mode: long-horizon bug fixing, implementation where first-pass completeness beats token cost, test authoring, or a cross-family second opinion. Spends an Anthropic budget, not the caller''s tokens. Use on "use claude", "ask claude", "claude -p", or "second opinion from claude".'
 ---
 
 # Use Claude

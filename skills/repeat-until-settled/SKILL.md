@@ -1,6 +1,6 @@
 ---
 name: repeat-until-settled
-description: Repeatedly invokes a target skill until its output settles — meaning the target makes no further substantive changes or recommendations. Detects cycles (oscillation between two or more states) and stalls (inner skill keeps recommending but changes don't land) and handles each appropriately. Optionally chains to a follow-up skill after settling. Use when one pass of a skill is rarely enough and each pass tends to uncover more work until eventually there's none — e.g. "repeat-until-settled improve-code-structure then release".
+description: 'Re-invoke a target skill until its output settles (no further substantive changes), handling oscillation and stalls, then optionally chain to a follow-up skill. Use when one pass is rarely enough, e.g. "repeat-until-settled improve-code-structure then release".'
 ---
 
 # Repeat Until Settled

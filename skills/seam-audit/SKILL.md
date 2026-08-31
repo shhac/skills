@@ -1,6 +1,6 @@
 ---
 name: seam-audit
-description: Audit a codebase's module boundaries — enumerate modules, map their seams (import edges between modules), produce a layered topology diagram, and classify each module as narrow, hub-by-design, or accidental hub (with separate flags for cycles, layer violations, and uncertain import graphs). Outputs a diagram plus a flagged-for-review list; does not change code. Use when assessing whether abstractions live at the right boundaries, before/after a refactor to verify the boundaries improved, or when an unfamiliar codebase needs an architectural map. Not for intra-module refactoring (see improve-code-structure), bug hunting, or feature work.
+description: 'Map a codebase''s module boundaries: enumerate modules, chart the import edges between them, and produce a layered topology diagram plus a review list of accidental hubs, cycles, and layer violations. Read-only. Use when assessing whether abstractions sit at the right boundaries, verifying a refactor improved them, or mapping an unfamiliar codebase. Not for intra-module refactoring, bug hunting, or feature work.'
 ---
 
 # Seam Audit

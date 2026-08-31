@@ -1,6 +1,6 @@
 ---
 name: ask-me-about
-description: Extract and sharpen the user's mental model of an idea, concept, design, or plan through targeted questioning. Use when the user wants to articulate something they're thinking about, says "ask me about", or wants to be interviewed about a topic. Not for simple clarifying questions — use this when the topic deserves a dedicated interview.
+description: 'Interview the user to extract and sharpen their mental model of an idea, design, or plan. Use on "ask me about", or when a topic deserves a dedicated interview rather than a clarifying question.'
 ---
 
 # Ask Me About

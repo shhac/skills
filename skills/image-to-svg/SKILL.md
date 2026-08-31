@@ -1,6 +1,6 @@
 ---
 name: image-to-svg
-description: Convert raster images (photos, illustrations, AI-generated art) into high-quality SVG recreations. Breaks the image into isolated features, builds each as a standalone SVG layer, then composites them. Use when the user wants to recreate an image as SVG, create vector versions of artwork, or extract specific elements from images as scalable graphics.
+description: 'Recreate a raster image as SVG by isolating features, building each as a standalone layer, then compositing. Use to vectorize photos, illustrations, or AI art, or to extract specific elements as scalable graphics.'
 ---
 
 # Image to SVG

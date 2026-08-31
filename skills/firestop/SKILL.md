@@ -1,6 +1,6 @@
 ---
 name: firestop
-description: Rapidly triage an operational alert or suspected incident from a Slack channel, alert, incident, Linear issue, or GitHub reference. Use when asked to investigate a fire, determine what is happening, coordinate incident updates, assess production impact, or recommend a safe next action.
+description: 'Triage an operational alert or suspected incident from a Slack, alert, incident, Linear, or GitHub reference. Use when asked to investigate a fire, assess production impact, coordinate updates, or recommend a safe next action.'
 ---
 
 # Firestop

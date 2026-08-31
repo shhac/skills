@@ -1,6 +1,6 @@
 ---
 name: improve-code-structure
-description: Analyzes and improves code structure — decomposes long functions and files, reduces complexity, extracts shared patterns, reframes complexity so whole branches or layers disappear, flags abstractions that don't fit (thin wrappers, over-generalization, reinvented helpers), assesses test coverage on critical paths, and cleans up dead, unreachable, or orphaned code that accumulates as a side effect of refactoring. Use when the user wants to refactor for clarity, split large files, reduce nesting, DRY up code, simplify an over-engineered or wrong-fit abstraction, replace a reinvented helper with the repo's canonical one, improve testability, or sweep for dead code after restructuring. Not for feature changes, bug fixes, or performance optimization — this is structural refactoring only.
+description: 'Structural refactoring only: decompose long functions and files, reduce nesting, extract shared patterns, replace ill-fitting abstractions (thin wrappers, over-generalization, reinvented helpers), check coverage on critical paths, and sweep dead code. Use when the user wants to refactor for clarity, simplify an over-engineered abstraction, improve testability, or clean up after restructuring. Not for features, bug fixes, or performance.'
 ---
 
 # Improve Code Structure

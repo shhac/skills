@@ -1,6 +1,6 @@
 ---
 name: restack
-description: Manage stacked branches — rebase cascades, detect landed PRs, show stack status. Use when branches are stacked (B on A on main), trunk has advanced, a mid-stack branch changed, or a PR has landed and descendants need rebasing. Lightweight alternative to Graphite that infers the stack from git history.
+description: 'Manage stacked branches without Graphite: rebase cascades, detect landed PRs, show stack status, inferring the stack from git history. Use when trunk advanced, a mid-stack branch changed, or a PR landed and descendants need rebasing.'
 ---
 
 # Restack

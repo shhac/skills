@@ -1,6 +1,6 @@
 ---
 name: create-profile-atlas
-description: Create or extend generated profile/portrait emoji atlases for Slack-style custom emoji. Use when making a first-run or extension set of pixel/profile/person/mascot emoji, generating a chroma-key atlas, splitting it into individual transparent PNGs, fixing green-screen/background artifacts, validating emoji-size readability, creating manifests/previews/zips, or optionally uploading custom emoji with agent-slack.
+description: 'Generate profile/portrait emoji atlases for Slack-style custom emoji. Use when making or extending a pixel/person/mascot emoji set, chroma-keying and splitting an atlas into transparent PNGs, fixing green-screen artifacts, checking emoji-size readability, or building manifests, previews, and zips.'
 ---
 
 # Create Profile Atlas
