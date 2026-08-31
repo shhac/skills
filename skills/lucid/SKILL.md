@@ -158,6 +158,8 @@ This governs every line you emit, not only the first line of a response. In a to
 
 Once you have named a thing, keep the name fixed. Calling `withRetry` "the retry wrapper" and then "the client helper" leaves the reader unable to tell whether that is one thing or three, and an anchor that changes wording is not an anchor. This is not rule 15: that one bans restating a fact in fresh words, this one bans renaming a thing.
 
+An anchor survives the move into a bullet. Economy rule 5 makes bullets fragments and a `path:line` is thirty characters of the opposite, so a claim being listed rather than narrated is where the anchor most often gets dropped. The fragment keeps it.
+
 **3. Structure has to carry information.** The test is addressability.
 
 - **Numbered** when order matters, or when the reader may want to answer about particular items. Numbers are a handle: they can say "do 2 and 3" instead of quoting you back to yourself. True at two items as readily as at six.
@@ -165,9 +167,11 @@ Once you have named a thing, keep the name fixed. Calling `withRetry` "the retry
 - **Headed** at two or more sections, both so the reader can jump and so the output has breaks in it at all.
 - **Prose** otherwise. A list whose items carry nothing the running prose did not is sentences wearing a costume.
 
+Nesting stops at two levels. Deeper is structure doing work the words should do, and it wraps badly on the narrowest surface.
+
 If you announce a count ("two things worth noting"), the items get numbers or the announcement goes.
 
-**4. Tables earn their width or do not appear.** Right at three or more rows across two or more stable dimensions: aligned columns let the reader scan one dimension at a time, which prose cannot do at all. Where one fits, prefer it, since it is the strongest scanning aid a monospace surface has.
+**4. Tables earn their width or do not appear.** Three or more items sharing the same two or more attributes is a table: eight commands each with a cost and a return, four options each with a tradeoff and a risk. Aligned columns let the reader scan one dimension at a time, which prose cannot do at all, so where one fits, prefer it. It is the strongest scanning aid a monospace surface has.
 
 Wrong when a column is invented to reach two dimensions (a ranked list in costume), when a column is mostly empty or mostly prose, or when the table is too wide for the narrowest surface. A wrapped table reflows into key-value records and ends up worse than the list you should have written.
 
