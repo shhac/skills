@@ -77,9 +77,11 @@ Good:
 
 **2. Do not restate what the artifact already carries.** The code, the commits, the schema, the test names. Duplicating them adds maintenance and subtracts nothing if removed.
 
-**3. Inline the load-bearing sentence, link for the rest.** "See LIN-482" is not context. "LIN-482: support flagged this after three customers reported double charges" is. Hang the URL on the identifier itself, so the reference still reads if the link is stripped.
+**3. Inline the load-bearing sentence, link for the rest.** "See LIN-482" is not context. "LIN-482: support flagged this after three customers reported double charges" is. Hang the URL on the identifier itself, so the reference still reads if the link is stripped. Inlined context survives the move into a bullet: a bulleted claim is terse and its one load-bearing sentence is the first thing dropped to keep it so.
 
 **4. Every heading is informative and in sentence case.** "Why now" and "What we are not doing" beat "Background" and "Notes". A heading that names a category tells the skimmer nothing.
+
+Any run past about four paragraphs wants one. Headings are the skim path, so an unbroken run is a stretch of the document the skimmer never sees at all.
 
 Informative headings are also what let you cross-reference by name. Refer to a section by its heading, never by position: "above", "below" and "the following" break when sections are reordered, quoted in isolation, or read by a screen reader.
 
@@ -91,7 +93,7 @@ Informative headings are also what let you cross-reference by name. Refer to a s
 
 **8. Number anything the reader will reference.** Open questions, rejected alternatives, follow-ups, migration steps. A reviewer can then comment "on 3" instead of quoting a paragraph back at you or guessing at "the second bullet". Count is not the test: two open questions earn numbers as readily as six.
 
-**9. Tables for genuinely tabular comparison only.** Three or more rows, two or more stable dimensions, no prose in the cells.
+**9. Prefer a table wherever the comparison is genuinely tabular.** Three or more items sharing two or more attributes, no prose in the cells. Real typography renders here, so a table costs less than it does in a terminal and buys more: it is the strongest thing on the skim path after the headings.
 
 **10. Name what you deliberately did not do.** Scope you cut, options you rejected, follow-ups you are leaving. Reviewers spend most of their questions here, and answering them up front is the cheapest edit in the document.
 
@@ -100,6 +102,12 @@ Informative headings are also what let you cross-reference by name. Refer to a s
 **12. No time-relative words.** "Currently", "now", "recently", "new", "soon", "at present". The document is read at an unknown later date, by which point these are false with nothing marking them stale. Anchor to something that stays true: a version, a date, or the change itself. "Currently retries twice" is "before this change, retried twice" or "retried twice as of v2.3".
 
 **13. No paragraph past four sentences or five lines of solid text.** Split it, or convert it into the list it is already describing. Whatever survives, its first sentence carries it (rule 5). A run of clipped fragments is not a wall and does not count against this.
+
+**14. Three or more items in a series is a list.** A skimmer reads the shape before the words, so a series buried inside a sentence is a series they never see. This is the one place a document should deliberately run longer than its prose equivalent.
+
+**15. Repeat the noun rather than reach for a pronoun.** A document is excerpted, quoted back in a review comment, and read out of order, so "this", "that" and "it" lose their antecedent in ways they never do in a conversation. Name the file, the value, or the decision again.
+
+**16. Emphasis is bold, and one thing per section carries it.** If two things in a paragraph are bold, neither is. Italics run to a word or two, since a long italic run is harder to read and measurably so for dyslexic readers, and all-caps strips the word-shape cues that let a word be recognised at a glance. Nothing carries meaning by formatting alone: a reader who misses the bold still gets the point from the words.
 
 ## What survives the cut
 
@@ -123,5 +131,9 @@ Then delete:
 6. Any time-relative word: currently, now, recently, new, soon.
 7. Any cross-reference by position rather than by section name: above, below, the following.
 8. Any paragraph past four sentences or five lines of solid text. Clipped fragments are exempt.
+9. Any series of three or more items left running inside a sentence.
+10. Any run past four paragraphs with no heading breaking it.
+11. Any pronoun whose antecedent is not the nearest preceding noun.
+12. Any italic run past two words, and any all-caps emphasis.
 
 Then verify nothing that bears on the decision was lost in the trimming.
