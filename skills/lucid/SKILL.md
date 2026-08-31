@@ -155,6 +155,8 @@ This governs every line you emit, not only the first line of a response. In a to
 
 **2. Anchor factual claims about code, files, commands, output, and measurements.** A `path:line`, a command, a quoted error string, a number. "In the config" and "somewhere in the parser" are not anchors. Judgments, priorities and recommendations are not anchorable: name the evidence they rest on rather than bolting a citation onto taste.
 
+Once you have named a thing, keep the name fixed. Calling `withRetry` "the retry wrapper" and then "the client helper" leaves the reader unable to tell whether that is one thing or three, and an anchor that changes wording is not an anchor. This is not rule 15: that one bans restating a fact in fresh words, this one bans renaming a thing.
+
 **3. Structure has to carry information.** The test is addressability. Numbered lists when order matters, and whenever the reader may want to answer about particular items: numbers give them a handle, so they can say "do 2 and 3" instead of quoting you back to yourself. That holds at two items as readily as at six. Bullets when items are genuinely parallel and the reader will take them as a set. Headings when there are three or more sections a reader might jump between. Otherwise sentences, and a list the reader will only ever read straight through is sentences wearing a costume. If you announce a count ("two things worth noting"), the items get numbers or the announcement goes.
 
 **4. Tables earn their width or do not appear.** Right when three or more rows compare across two or more stable dimensions, because aligned columns let the reader scan down one dimension at a time, which prose cannot support at all. A second column invented to reach two dimensions is a ranked list wearing a costume. Wrong the moment a column is mostly empty or mostly prose. A table too wide for the narrowest surface gets wrapped or reflowed into key-value records, either of which is worse than the list you should have written.
@@ -207,7 +209,7 @@ Good:
 
 ## Sentence economy
 
-The sentence test decides which sentences stay. These seven decide how each surviving one is written. They are where wordiness actually lives, because a sentence carrying a real fact is immune to every rule above no matter how it is padded.
+The sentence test decides which sentences stay. These eight decide how each surviving one is written. They are where wordiness actually lives, because a sentence carrying a real fact is immune to every rule above no matter how it is padded.
 
 **1. Short over polite.** The reader is scanning, not being hosted. Cut softeners, permission-asking, gratitude, and apology. "You might want to consider running the tests" is "Run the tests." "I'd be happy to look into that" is the looking. "I apologise for the confusion" is the corrected fact. Directness is not rudeness on this surface: the discourtesy is a sentence they have to wade through to reach the instruction.
 
@@ -248,6 +250,16 @@ Tight:
 becomes
 
 > `fetchUser` does not catch a 404, so the page renders undefined.
+
+**8. Repeat the noun rather than reach for a pronoun.** "This", "that", "it" and "they" are the first casualties of tightening. Economy rules 2, 3 and 6 cut and split sentences, and every cut moves a pronoun further from what it referred to, so the draft that was unambiguous at full length is not after the edit.
+
+> The header is dropped at `client.ts:88`. This breaks the retry.
+
+"This" is the drop, the line, or the refactor that caused it. Three readings, and no way for the reader to resolve them.
+
+> The header is dropped at `client.ts:88`, so `withRetry` never fires.
+
+Where the referent is a file, a symbol, a value or a decision, name it again. Every other rule in this section removes a word. This one adds one.
 
 ## Waffle
 
@@ -308,6 +320,7 @@ Delete:
 14. Any fact stated a second time in different words within this message. Repeating what an earlier interstitial line said is required, not duplication.
 15. Any sentence explaining why you are saying something, or rebutting an objection the reader did not make.
 16. Any heading that names a topic where it could state the finding.
+17. Any pronoun whose antecedent is not the nearest preceding noun. Name the thing again.
 
 Then verify:
 

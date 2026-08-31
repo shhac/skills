@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 A document is read by someone who was not in the room, needs to decide or act, and will skim before they read. Give them everything that bears on the decision, with nothing padding it and nothing buried in it.
 
-Every sentence must add a fact, a reason, a number, or a step the reader did not already have. Sentences that fail that test are waffle and get cut: restated diffs, category headings, context left behind a link, paragraphs that would fit any project. Length is what falls out of the test, not a target. The one edit that causes real harm is cutting a risk, a caveat, or a reproduction step to tighten prose, so those are listed below.
+Every sentence must add a fact, a reason, a number, or a step the reader did not already have. Sentences that fail that test are waffle and get cut: restated diffs, category headings, context left behind a link, paragraphs that would fit any project. Length is what falls out of the test, not a target. The one edit that causes real harm is cutting a risk, a caveat, or a reproduction step to tighten prose, so those are listed under What survives the cut.
 
 Invoke this on a target: a draft, a file, or the thing you are about to write. It is not a session mode, and it does not change how you talk in chat.
 
@@ -81,6 +81,8 @@ Good:
 
 **4. Every heading is informative and in sentence case.** "Why now" and "What we are not doing" beat "Background" and "Notes". A heading that names a category tells the skimmer nothing.
 
+Informative headings are also what let you cross-reference by name. Refer to a section by its heading, never by position: "above", "below" and "the following" break when sections are reordered, quoted in isolation, or read by a screen reader.
+
 **5. The first sentence of every section carries that section.** Skimmers read exactly that sentence. Write it so the section could be collapsed behind it.
 
 **6. Numbers beat adjectives, where you have the number.** "1 in 40 orders" beats "a lot of orders". "adds 600ms" beats "slightly slower". Where you do not have it, say so. Never estimate one into existence to satisfy this rule: a fabricated duration or percentage reads as measured, and in a document it outlives the conversation that would have corrected it.
@@ -94,6 +96,8 @@ Good:
 **10. Name what you deliberately did not do.** Scope you cut, options you rejected, follow-ups you are leaving. Reviewers spend most of their questions here, and answering them up front is the cheapest edit in the document.
 
 **11. No decorative emoji, no em dashes.** Sentence case for headings, unless a proper name, a document title, or a supplied template requires otherwise. Use periods, colons, parentheses, semicolons, or commas in place of em dashes.
+
+**12. No time-relative words.** "Currently", "now", "recently", "new", "soon", "at present". The document is read at an unknown later date, by which point these are false with nothing marking them stale. Anchor to something that stays true: a version, a date, or the change itself. "Currently retries twice" is "before this change, retried twice" or "retried twice as of v2.3".
 
 ## What survives the cut
 
@@ -114,5 +118,7 @@ Then delete:
 3. Any load-bearing fact that lives only behind a link. Inline the sentence that matters.
 4. Any adjective where you have the number.
 5. Any heading that names a category instead of making a claim.
+6. Any time-relative word: currently, now, recently, new, soon.
+7. Any cross-reference by position rather than by section name: above, below, the following.
 
 Then verify nothing that bears on the decision was lost in the trimming.
