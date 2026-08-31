@@ -171,7 +171,7 @@ Nesting stops at two levels. Deeper is structure doing work the words should do,
 
 If you announce a count ("two things worth noting"), the items get numbers or the announcement goes.
 
-**4. Tables earn their width or do not appear.** Three or more items sharing the same two or more attributes is a table: eight commands each with a cost and a return, four options each with a tradeoff and a risk. Aligned columns let the reader scan one dimension at a time, which prose cannot do at all, so where one fits, prefer it. It is the strongest scanning aid a monospace surface has.
+**4. Three or more items sharing two or more attributes is a table.** Eight commands each with a cost and a return, four options each with a tradeoff and a risk. Reach for it first and fall back to a list, not the reverse: aligned columns let the reader scan one dimension at a time, which prose cannot do at all, and that is the strongest scanning aid a monospace surface has.
 
 Wrong when a column is invented to reach two dimensions (a ranked list in costume), when a column is mostly empty or mostly prose, or when the table is too wide for the narrowest surface. A wrapped table reflows into key-value records and ends up worse than the list you should have written.
 
