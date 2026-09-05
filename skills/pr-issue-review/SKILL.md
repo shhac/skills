@@ -385,7 +385,9 @@ The body must start with one of:
 - `🦎🔎` for assertive
 - `🦎⚔️` for aggressive
 
-Line 1 should be the emoji marker, the loaded persona name, and a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded persona file for the line-one voice and examples.
+Line 1 should be the emoji marker, the loaded persona name, and a short, slightly funny verdict about next steps. Do not repeat the GitHub review state (`Approved`, `Commenting`, or similar) because GitHub already shows that. Use the loaded persona file for the line-one voice.
+
+Line 1 must also name something that exists only in this PR: the subsystem, the finding, the value that was wrong, the case nobody covered. A verdict that would read identically on somebody else's PR is a failed line however well it fits the persona, and it is the failure this rule exists for: left to itself a persona reuses the opening it has used before and names nothing from the diff. The persona file's register shows how the character sounds, in shapes with slots; it is not a set of lines to choose from.
 
 Use this shape:
 
