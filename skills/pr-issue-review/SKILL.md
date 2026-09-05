@@ -400,6 +400,8 @@ Why:
   Recommendation: <recommended next step for this top-level-only finding>.
 - ℹ️ FYI: <context-only note, if useful>.
 
+✅ **Good to go**: no changes requested. Commenting rather than approving because approval is not available to me on this PR.
+
 <details>
 <summary>Review context</summary>
 
@@ -437,6 +439,28 @@ Use `Focus checked` to name the main axes applied by the loaded profile and chan
 If a previous review from this skill exists on the same PR, include `Previous findings` when useful. Summarize what was resolved, what remains open, and what is new at the current head SHA. Track findings across review cycles by scenario, not wording.
 
 When the author (or another reviewer) has replied to a previous finding from this skill, engage the reply before repeating the finding: either withdraw or downgrade it, crediting the argument ("the enforced formatter makes this unreachable — downgrading"), or state specifically why it stands despite the rebuttal. Re-posting a previous finding unchanged, without acknowledging an outstanding rebuttal, is a review defect.
+
+### Withheld Approval
+
+Sometimes the review reaches an approval and cannot cast it, because something outside this skill permits comments only on this PR. Left unsaid, that review is indistinguishable from one that found the change wanting: the author sees comments, no approval, and reasonably reads hesitation into it.
+
+When, and ONLY when, both of these hold, close the `Why:` block with the line below, verbatim:
+
+- the review's own verdict is an approval, with nothing being asked of the author, and
+- approving is not available on this PR
+
+```markdown
+✅ **Good to go**: no changes requested. Commenting rather than approving because approval is not available to me on this PR.
+```
+
+Fixed wording, not the persona's. It is a status signal rather than a voice, so it reads the same on every review and stays greppable; line 1 already carries the character.
+
+The conditions are narrow on purpose:
+
+- An `ℹ️ FYI` note is compatible with it, since an FYI asks for nothing. Any finding that asks the author to change, check, or justify something is not, whatever its severity. If you would not have clicked approve, the line does not belong.
+- When approval IS available and the review approves, approve. The line is not a substitute for the verdict, and it must never appear on a review that could have been an approval and was not.
+- Never say WHY approval is unavailable, or guess at it. The restriction arrives without a reason, deliberately: any reason it could give would say something about who is running the reviewer and how they have configured it. "Not available to me on this PR" is the whole of what may be said.
+- Never imply GitHub is showing an approval. The review state is COMMENT and the line says the assessment, not the state.
 
 ### Finding Severity
 
@@ -554,6 +578,8 @@ For `suggestion` blocks:
 - `APPROVE`: The PR appears to solve the stated issue and all findings are within the loaded profile's approval threshold.
 - `COMMENT`: The PR may be incomplete, ambiguous, or has findings above the loaded profile's approval threshold.
 - `REQUEST_CHANGES`: Only for malicious-looking or intentionally dangerous changes.
+
+Decide the verdict from the change, then cast what is available. Where an `APPROVE` cannot be cast because approving is not available on this PR, the event becomes `COMMENT` and the body says so (see Withheld Approval); the assessment itself does not soften to match what can be submitted.
 
 If the only reason not to approve is a failing or pending CI check that is itself a merge blocker, use `APPROVE` and mention that the PR should be good to go once CI is fixed. Do not duplicate branch protection by withholding approval for CI alone.
 
