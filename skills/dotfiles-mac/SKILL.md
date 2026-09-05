@@ -486,8 +486,48 @@ Every operation is safe to re-run:
 - Keyrings and trust databases
 - Files matching: `id_*`, `*.key`, `*.pem`, `*.p12`, `private-keys-v1.d/`, `*.kbx`, `trustdb.gpg`, `.env*`
 - Files containing token prefixes: `ghp_`, `gho_`, `ghs_`, `github_pat_`, `sk-`, `npm_`, `xoxb-`, `xoxp-`, `xoxe-`, `AKIA`, `AIza`, `glpat-`, `pypi-`, `sk_live_`, `pk_live_`, `rk_live_`, `SG.`, `dop_v1_`
-- Files containing: `token`, `secret`, `password` values
 - Files containing `-----BEGIN.*PRIVATE KEY-----` headers
+- Files whose secret-named fields hold a **real value**
+
+**Judge the value, not the key name.** A field called `token` or `password` does
+not by itself make a file unsafe. Many modern CLIs (commonly Go and Rust ones)
+keep the real secret in the OS keychain and leave a placeholder in the config —
+literal sentinels like `__KEYCHAIN__`, `keychain:`, `<stored>`, or a sibling
+`keychain_managed: true` flag. Such files are portable configuration and are
+usually the *most* valuable thing to track, because they carry profile names,
+hostnames, and account IDs that are tedious to rebuild by hand.
+
+Before excluding a config file, check what the secret-named fields actually
+contain:
+
+```bash
+# Show secret-named fields and whether they hold a value or a placeholder
+python3 - "$FILE" <<'PY'
+import json, sys
+KEYS = ("password","token","secret","key","cookie","passphrase","credential")
+def walk(n, t=()):
+    if isinstance(n, dict):
+        for k, v in n.items(): walk(v, t + (k,))
+    elif isinstance(n, list):
+        for i, v in enumerate(n): walk(v, t + (str(i),))
+    elif isinstance(n, str) and t and any(x in t[-1].lower() for x in KEYS):
+        print(f"{'.'.join(t)} = {'PLACEHOLDER' if not n or n.isupper() or n.startswith('__') else f'VALUE ({len(n)} chars)'}")
+walk(json.load(open(sys.argv[1])))
+PY
+```
+
+Read the output, don't gate on it — it flags names, and some secret-sounding
+fields hold references rather than secrets. `connections.<name>.credential`
+naming a credential *alias* to look up is a common shape, as are `key` fields
+holding a config key name. Judge each hit.
+
+If every hit is a placeholder or a reference, the file is safe to track in
+plaintext. If any holds a real value, exclude it, encrypt it, or split it per
+the mixed-content rule below.
+
+Be aware that a file safe today is not guaranteed safe tomorrow — a future
+version of the tool could start storing a token inline. If you track such files,
+re-run the check on every capture rather than trusting a one-off audit.
 
 **For files with mixed content** (safe config + embedded secrets):
 - Suggest splitting into tracked config + gitignored `.local` override
@@ -515,6 +555,11 @@ Unlike transparent git encryption, age uses an explicit encrypt/decrypt model:
 - Encrypted files have `.age` extension and ARE committed to git
 - Decrypted counterparts are gitignored
 - `setup.sh` finds `.age` files, prompts for password, decrypts them (strips `.age` extension), then stows
+
+This works for files nothing rewrites — SSH keys, GPG keys, static rc files. It
+does **not** work for config a running tool writes back to. See *Tool-managed
+config cannot be stowed* under Gotchas before stowing anything an application
+owns.
 
 ```
 ssh/
@@ -572,13 +617,106 @@ fi
 
 ### Caveats
 
-- **Password strength matters** — recommend a strong passphrase, store it in a password manager
-- **Unrecoverable if lost** — if the password is lost, encrypted files cannot be recovered
-- **Non-deterministic encryption** — each encryption produces different ciphertext. This is normal (age uses a random salt). Only re-encrypt when content actually changes, otherwise git sees a diff on every encryption even if the plaintext is identical.
+- **Password strength matters** — recommend a strong passphrase, store it in a password manager. If the repo is public this is a hard requirement, not advice: see *Publishing encrypted files* under Gotchas.
+- **Unrecoverable if lost** — if the password is lost, encrypted files cannot be recovered. Have the user prove they can decrypt before they depend on it.
+- **Non-deterministic encryption** — each encryption produces different ciphertext. This is normal (age uses a random salt). Only re-encrypt when content actually changes, otherwise git sees a diff on every encryption even if the plaintext is identical. See *Archiving and encrypting reproducibly* under Gotchas for how to detect "actually changed" correctly.
 - **Always use `-j batchpass`** — `age -p` prompts interactively on TTY and cannot be scripted. The batchpass plugin reads `AGE_PASSPHRASE` from the environment.
 - **Unset passphrase after use** — always `unset AGE_PASSPHRASE` when done to avoid leaking the passphrase to child processes
 
 ---
+
+---
+
+## Gotchas
+
+Hard-won failures. Each is silent — the command succeeds and the damage shows up
+later — so check for them rather than waiting for a report.
+
+### Tool-managed config cannot be stowed
+
+Any application that writes its config **atomically** — temp file in the same
+directory, then `rename()` over the target — destroys a stow symlink the first
+time it saves. `rename()` replaces the symlink; it does not follow it. This is
+the normal safe-write pattern, so assume it for anything a running program owns:
+CLI tools that store profiles or credentials, editors, browsers, most Go and
+Rust tools.
+
+The second-order effect is worse than the broken link. Once the symlink is a
+regular file, the next stow run sees a conflict, backs up the *live* file, and
+relinks to the now-stale repo copy — silently reverting every change the user
+made since. They lose real configuration and nothing reports it.
+
+Verify before stowing anything an application writes:
+
+```bash
+# after stowing, make the app save its config, then:
+[ -L ~/.config/<tool>/config.json ] && echo "symlink survived" || echo "REPLACED — do not stow this"
+```
+
+For these files use **copy-in/copy-out** instead of stow: an explicit command
+that copies repo → `$HOME` on apply, and `$HOME` → repo on capture. State this
+plainly in the repo's README, because it is the one place the usual "edit the
+symlink, edit the repo" rule does not hold.
+
+Static configs the user edits by hand (`.zshrc`, `.gitconfig`, `.tmux.conf`) are
+unaffected — stow them normally.
+
+### Silent fallbacks that look like success
+
+A setup script that defaults to a safe-sounding value when a required setting is
+missing will report success having done nothing. On a new machine that is the
+difference between a restored config and an empty one, reported identically.
+
+Prefer: ask when interactive, fail with the valid options when not, and warn
+when a step completes having changed nothing.
+
+### A check that always fails gets ignored
+
+Any drift or health check that cannot reach a clean state trains the user to
+skip its output — which defeats every other check it prints alongside. If a
+warning cannot be resolved, fix the underlying declaration or silence it
+explicitly with a recorded reason. Two common causes on macOS:
+
+- **`mas` vs `cask` vs manual installs.** A `mas` entry for an app installed
+  from the web (or a `cask` entry for one installed by hand) can never be
+  satisfied, because `brew bundle` only sees what it installed. Either adopt the
+  existing install (`brew install --cask <name> --adopt`) or drop the entry.
+- **Re-encrypting unchanged content.** See below.
+
+### Archiving and encrypting reproducibly
+
+If the repo bundles or encrypts files, every default in the chain is
+non-deterministic, so a no-op capture produces a diff:
+
+- **age emits different ciphertext every run.** Gate re-encryption on the
+  *plaintext* changing — commit a hash beside the blob and compare.
+- **Hash file contents, not the archive.** Tar embeds mtimes, modes and uid/gid,
+  and bsdtar (macOS) differs from GNU tar (Linux), so an archive hash reports
+  drift when nothing changed. Restoring files and `chmod`-ing them is enough to
+  break it. Hash a sorted list of `(content hash, relative path)` instead.
+- **`COPYFILE_DISABLE=1` is required on macOS.** Otherwise bsdtar silently
+  embeds AppleDouble (`._*`) members for extended attributes — invisible to
+  `tar tf`, and they change the bytes.
+- **`tar czf` is non-deterministic**; gzip stamps its own mtime. Use
+  `tar cf - | gzip -n`.
+
+### Publishing encrypted files
+
+If the dotfiles repo is public, encrypted blobs are archived permanently by
+forks, clones, and third-party mirrors. A later passphrase compromise
+retroactively decrypts every historical blob, and re-encrypting does not
+unpublish the old ones — there is no rotation path.
+
+Confirm the repo's visibility before proposing encrypted secrets, and if it is
+public, say this plainly rather than implying encryption makes it safe. Prefer a
+private repo for anything sensitive. Where a public repo is the deliberate
+choice, require a generated passphrase and check the user can actually unlock
+the bootstrap file *before* they rely on it — discovering a wrong passphrase on
+a new machine is discovering it too late.
+
+Note also that per-file `.age` publishes its filenames. If the file *names*
+disclose something (which services an organisation uses, say), bundle before
+encrypting so only the archive name is visible.
 
 ## `.gitignore` Template
 
