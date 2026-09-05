@@ -165,7 +165,9 @@ Do not use `gh pr review` (top-level body only, no inline comments) or `gh pr co
 
 Do not hand-write this JSON. The review body and inline comment bodies are multi-line markdown containing newlines, double quotes, and triple backticks; pasting them straight into a JSON string (or a heredoc) produces invalid JSON and the POST fails. Assemble the payload with `jq`, which escapes every string for you. Write each body to its own file so newlines and backticks survive verbatim, load them with `--rawfile`, and supply structural fields with `--arg`/`--argjson`:
 
-Write these scratch files under this run's worktree (`$wt`), never a shared per-repo path, so concurrent runs cannot overwrite each other's payload between build and POST:
+Write these scratch files under this run's worktree (`$wt`), never a shared per-repo path, so concurrent runs cannot overwrite each other's payload between build and POST.
+
+Write them with `printf` or a quoted heredoc, from a shell variable holding the body. Never build a body file with a patch- or diff-based file-writing tool: those formats prefix every added line with `+`, and a marker surviving into line 1 puts a literal `+` in front of the emoji marker on the posted review. That is a one-character corruption which passes every check here, because the JSON is valid, the POST succeeds, and the review reads correctly to the model that wrote it.
 
 ```bash
 printf '%s' "$review_body"   > "$wt/body.md"
@@ -188,6 +190,15 @@ gh api --method POST "repos/<owner>/<repo>/pulls/<number>/reviews" \
   --input "$wt/review-payload.json"
 ```
 
+Check the body file before that POST, not after. A submitted review cannot be withdrawn (see Correcting A Submitted Review), so the only place a corrupted body is cheap to catch is while it is still a file:
+
+```bash
+head -c 4 "$wt/body.md" | grep -q '^🦎' || { echo "body does not start with the marker" >&2; exit 1; }
+tail -n 1 "$wt/body.md" | grep -q '^<!-- pr-issue-review:v2 ' || { echo "body does not end with the metadata line" >&2; exit 1; }
+```
+
+Both are `exit 1`, not a warning. Posting a review whose first line is wrong costs a permanent duplicate on the PR; stopping costs one retry.
+
 Add one `--rawfile`/comment object per inline finding; use `--argjson comments "$json"` if you build the comments array separately. For an approval with no inline comments, set `event: "APPROVE"` and `comments: []`.
 
 Payload rules:
@@ -206,6 +217,30 @@ Inline comment rules:
 - For a multi-line comment, set `start_line`/`start_side` for the first line of the range and `line`/`side` for the last; the whole range must be contiguous changed lines in one hunk.
 - Every anchor must be a line that is part of the PR diff. Anchoring to an unchanged or out-of-diff line fails the whole POST with HTTP 422.
 - `suggestion` blocks replace exactly the commented line or range, and only work on `RIGHT`-side anchors. Build and verify every suggestion with the protocol below.
+
+## Correcting A Submitted Review
+
+A submitted review cannot be deleted. `DELETE /repos/{owner}/{repo}/pulls/{number}/reviews/{review_id}` deletes only a review that was never submitted; against a submitted one it fails with:
+
+```
+gh: Can not delete a non-pending pull request review (HTTP 422)
+```
+
+So never repair a bad review by deleting it and posting a replacement. That sequence leaves BOTH on the PR: the delete fails, the second POST succeeds, and the author sees the same review twice with no way to tell which one is current.
+
+Edit it in place instead. `PUT` updates the body of an existing review. Check the exit status: a failed `PUT` means the wrong text is still live, and a command chained after it with `;` runs as though the repair worked, which is exactly how one malformed review becomes two permanent ones.
+
+```bash
+printf '%s' "$corrected_body" > "$wt/body.md"
+jq -n --rawfile body "$wt/body.md" '{body: $body}' > "$wt/review-update.json"
+gh api --method PUT "repos/<owner>/<repo>/pulls/<number>/reviews/<review_id>" \
+  --input "$wt/review-update.json" \
+  || { echo "review update failed; the old body is still live" >&2; exit 1; }
+```
+
+`--silent || true` is right for the in-progress reaction above, where a 404 means another run already removed a shared cosmetic marker and nothing is lost. It is wrong for anything that repairs review content.
+
+`PUT` replaces the review summary body only. It cannot change `event` (an APPROVE stays an approval), `commit_id`, or the inline comments, which are edited through their own endpoints. When the wrong thing is the VERDICT rather than the wording, dismiss the review with `PUT .../reviews/<review_id>/dismissals` (required body parameter: `message`) and post a fresh one. Dismissal is visible on the PR, which is the honest outcome when a verdict changes, and on a protected branch it needs a repository administrator or someone listed as able to dismiss reviews, so it can fail for permissions where `PUT` on the body does not.
 
 ## Suggestion Block Protocol
 

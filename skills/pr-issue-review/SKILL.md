@@ -312,8 +312,11 @@ Do not commit any cache files.
 9. Load only the lens files named by that profile.
 10. Check every focus pack's trigger signals against the changed paths and PR context, and load each pack that matches (see Focus Packs).
 11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
-12. Submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
-13. Remove the exact in-progress reaction created by this run.
+12. Verify the assembled review body before posting: it must begin with the profile's emoji marker and end with the hidden metadata line (see `references/github-review-api.md`, Submit One Review With Inline Comments). Stop and rebuild the body rather than posting one that fails either check.
+13. Submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
+14. Remove the exact in-progress reaction created by this run.
+
+A submitted review is permanent: GitHub deletes only unsubmitted reviews, so a second review posted to replace a bad one leaves both on the PR. If a review is already submitted and wrong, correct it in place with `PUT` (see `references/github-review-api.md`, Correcting A Submitted Review); post a second review only when there is genuinely new content to add.
 
 Allocate scrutiny by blast radius, not by how readable the diff is. Money, auth, data deletion, irreversible migrations, and large multi-domain PRs get the deepest pass: engage the riskiest hunks inline, and verify the PR's central claim yourself rather than restating it. If the PR body itself names a limitation, deliberate gap, or follow-up, the review must acknowledge it and either accept it (as an `ℹ️ FYI` with the watch-out spelled out) or challenge it (see Deferred Work Is Not A Safety Argument). A review of a high-risk PR whose body adds nothing beyond the PR description is a failed review, even when the verdict is right.
 
