@@ -400,7 +400,7 @@ Why:
   Recommendation: <recommended next step for this top-level-only finding>.
 - ℹ️ FYI: <context-only note, if useful>.
 
-✅ **Good to go**: no changes requested. Commenting rather than approving because approval is not available to me on this PR.
+<the Good to go line, ONLY when the review would have approved and was told it may not; omitted on every other review. See Withheld Approval for the exact wording>
 
 <details>
 <summary>Review context</summary>
@@ -442,12 +442,16 @@ When the author (or another reviewer) has replied to a previous finding from thi
 
 ### Withheld Approval
 
-Sometimes the review reaches an approval and cannot cast it, because something outside this skill permits comments only on this PR. Left unsaid, that review is indistinguishable from one that found the change wanting: the author sees comments, no approval, and reasonably reads hesitation into it.
+**Approval is available by default.** The normal review either approves or has something to say, and this section does not apply to it. What follows is for the uncommon case where something outside this skill has told you, in this run, that you may only comment on this PR.
+
+That case needs saying out loud, because a review that would have approved and was not allowed to looks exactly like one that found the change wanting: the author sees comments, no approval, and reasonably reads hesitation into it.
 
 When, and ONLY when, both of these hold, close the `Why:` block with the line below, verbatim:
 
 - the review's own verdict is an approval, with nothing being asked of the author, and
-- approving is not available on this PR
+- you were explicitly told in this run that you may not approve this PR
+
+The second condition needs positive evidence: an actual instruction, in the prompt you were given, forbidding approval. Never infer one from silence, from the profile, from the repo, from a previous review on this PR having been a comment, or from your own uncertainty about whether approval is yours to give. Absent such an instruction you may approve, and this line must not appear.
 
 ```markdown
 ✅ **Good to go**: no changes requested. Commenting rather than approving because approval is not available to me on this PR.
@@ -461,6 +465,7 @@ The conditions are narrow on purpose:
 - When approval IS available and the review approves, approve. The line is not a substitute for the verdict, and it must never appear on a review that could have been an approval and was not.
 - Never say WHY approval is unavailable, or guess at it. The restriction arrives without a reason, deliberately: any reason it could give would say something about who is running the reviewer and how they have configured it. "Not available to me on this PR" is the whole of what may be said.
 - Never imply GitHub is showing an approval. The review state is COMMENT and the line says the assessment, not the state.
+- Posting the line where no restriction exists is the worse error, worse than omitting it where one does. It invents a constraint that was never placed on the review and tells the author their approval was blocked when nothing blocked it. When in doubt about whether you were restricted, you were not: leave the line out.
 
 ### Finding Severity
 
