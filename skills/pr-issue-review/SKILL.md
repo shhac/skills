@@ -314,7 +314,7 @@ Do not commit any cache files.
 10. Check every focus pack's trigger signals against the changed paths and PR context, and load each pack that matches (see Focus Packs).
 11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
 12. Verify the assembled review body before posting: it must begin with the profile's emoji marker and end with the hidden metadata line (see `references/github-review-api.md`, Submit One Review With Inline Comments). Stop and rebuild the body rather than posting one that fails either check.
-13. Submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
+13. Post any thread replies owed to standing conversations (see Thread Replies), then submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
 14. Remove the exact in-progress reaction created by this run.
 
 A submitted review is permanent: GitHub deletes only unsubmitted reviews, so a second review posted to replace a bad one leaves both on the PR. If a review is already submitted and wrong, correct it in place with `PUT` (see `references/github-review-api.md`, Correcting A Submitted Review); post a second review only when there is genuinely new content to add.
@@ -335,7 +335,7 @@ Do:
 
 - Read the previous review body, this skill's inline comments, and every human reply, resolution, and comment that is new since it.
 - For each standing finding, reach one of: **withdrawn** (the rebuttal is right; credit it), **downgraded** (partly right; restate at the lower severity), **stands** (say specifically why it survives the rebuttal, addressing the argument rather than repeating the finding), or **resolved** (the author fixed or addressed it).
-- Reply in the thread where the argument was made, so the author sees the answer where they asked. Every reply carries the inline comment marker.
+- Reply in the thread where the argument was made, so the author sees the answer where they asked (see Thread Replies). Every reply carries the inline comment marker.
 - Post one review carrying the top-level body and the hidden metadata stamp, exactly as a full review does.
 
 Do not:
@@ -375,7 +375,7 @@ Use a PR-level `eyes` reaction as the in-progress signal when the GitHub API sup
 
 ## Review Output
 
-Submit a GitHub review, not a loose collection of unrelated comments. Use a single review submission carrying the top-level body and all inline comments, as shown in `references/github-review-api.md`.
+Submit a GitHub review, not a loose collection of unrelated comments. Use a single review submission carrying the top-level body and all inline comments, as shown in `references/github-review-api.md`. Replies into existing threads are the one exception: they cannot ride inside a review submission, and they are answers to a conversation rather than new findings (see Thread Replies).
 
 ### Top-Level Review Body
 
@@ -430,6 +430,8 @@ Notes:
 ```
 
 Keep it concise. Treat the top-level body as a severity-ordered index and confidence summary, not the primary home for detailed findings. Keep line 1 and `Why:` visible. If a finding has a stable diff position, put the evidence and recommended next step inline and reference it briefly from the top-level body. For top-level-only findings, keep the finding sentence short and put the action on an indented `Recommendation:` line under that bullet so the recommendation is easy to scan without adding another section. If there are no meaningful concerns, say that the PR appears to solve the stated issue and why.
+
+Link every comment the body points at. When a finding, a withdrawal, or a line of context refers to something already on this PR (a previous review from this skill, an inline thread, a reply, an issue comment, another reviewer's note), cite it as a markdown link to that comment's permalink, never as "see my earlier comment" or "as noted above". On a PR carrying a hundred comments, an unlinked reference is a search the reader has to run. The same rule holds inside inline comments and thread replies. The one exception is this review's own inline comments: they do not exist until the submission POST returns, so `See inline comments.` stays as it is. Getting a permalink is in `references/github-review-api.md`, Permalinks To Existing Comments.
 
 Use one `<details>` block titled `Review context` for supporting audit-trail sections when they are non-trivial: `Focus checked`, `Context checked`, `Previous findings`, and `Notes`. Skip the `<details>` block when the review is already short. Do not hide actionable findings, inline findings, or suggestion blocks inside collapsed sections.
 
@@ -559,6 +561,22 @@ Rules:
 - Never resolve a review thread. Resolution state feeds the conversation fingerprint, so resolving this skill's own thread would self-trigger the same loop the marker exists to prevent.
 
 Avoid inline comments for broad preferences or speculative rewrites. The loaded profile determines whether style, convention, naming, or decomposition nits are in scope. If a finding cannot be anchored cleanly to a changed line, keep it in the top-level body with the same severity, visible recommended next step, and enough evidence/impact to justify the finding.
+
+### Thread Replies
+
+A finding and the author's answer to it are one conversation. Continue it in the thread where it started, not in the next review body and not in a new comment on the same line. The author reads the response under the argument they made, and the next reader sees how the finding ended without reconstructing it from two reviews.
+
+Reply in the thread when:
+
+- The author rebutted, questioned, or disputed a finding from this skill. Lead with where it landed, in the vocabulary of Targeted Re-Review: withdrawn, downgraded, stands, or resolved.
+- The author says they have fixed it, and the code agrees or does not.
+- Another reviewer's thread carries a claim this review's evidence contradicts.
+
+Keep replies short: the verdict first, then the one line of reasoning that earned it. Do not restate the finding, which sits directly above the reply, and do not repeat the recommendation the author has already read and answered.
+
+A new finding is not a reply. It belongs in this run's review submission as a fresh inline comment, where it carries a severity, an anchor, and a bearing on the verdict.
+
+Two rules from Inline Comment Marker hold for replies unchanged: every reply ends with `<!-- pr-issue-review:inline -->`, and this skill never resolves a thread. A reply is a separate POST from the review submission, so post replies first and keep each returned permalink, then submit the review whose body can link to them. Mechanics are in `references/github-review-api.md`, Reply In An Existing Comment Thread.
 
 ### GitHub Inline Comment Positioning
 

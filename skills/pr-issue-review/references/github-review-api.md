@@ -218,6 +218,62 @@ Inline comment rules:
 - Every anchor must be a line that is part of the PR diff. Anchoring to an unchanged or out-of-diff line fails the whole POST with HTTP 422.
 - `suggestion` blocks replace exactly the commented line or range, and only work on `RIGHT`-side anchors. Build and verify every suggestion with the protocol below.
 
+## Reply In An Existing Comment Thread
+
+A reply continues a review-comment thread that already exists. It is a separate POST from the review submission: the reviews endpoint takes no `in_reply_to` field, so a reply cannot ride along in the `comments` array.
+
+Reply to the thread's ROOT comment id. GitHub accepts only a top-level review comment here; replies to a reply are not supported and fail. A thread's root is the comment whose `in_reply_to_id` is absent, and every later comment in that thread carries the root's id in that field. Group the threads and read their roots:
+
+```bash
+gh api "repos/<owner>/<repo>/pulls/<number>/comments" --paginate \
+  --jq '[.[] | {id, root: (.in_reply_to_id // .id), path, line,
+                author: .user.login, url: .html_url, body}]
+        | group_by(.root)[]
+        | {root: .[0].root, path: .[0].path, line: .[0].line,
+           comments: [.[] | {author, url, body}]}'
+```
+
+Build the reply body through a file and `jq`, exactly as review bodies are built, never as inline JSON:
+
+```bash
+printf '%s' "$reply_body" > "$wt/reply.md"
+jq -n --rawfile body "$wt/reply.md" '{body: $body}' > "$wt/reply-payload.json"
+
+gh api --method POST \
+  "repos/<owner>/<repo>/pulls/<number>/comments/<root_comment_id>/replies" \
+  --input "$wt/reply-payload.json" \
+  --jq '.html_url'
+```
+
+Rules:
+
+- The reply body ends with `<!-- pr-issue-review:inline -->`, like any inline comment from this skill. Without it the reply moves the conversation fingerprint, and the skill re-triggers on its own words (`diff-equivalence.md`, Conversation Fingerprint).
+- Keep the `html_url` the POST returns. That is the permalink the top-level review body links to.
+- Post replies before submitting the review, so the body can link them and the author meets the answer before the summary that references it.
+- A reply posts immediately and cannot be batched, previewed, or edited into the review. Send one per thread, and expect secondary rate limiting if many go out back to back.
+- Never resolve the thread afterwards (SKILL.md, Inline Comment Marker).
+- `POST /repos/<owner>/<repo>/pulls/<number>/comments` with an `in_reply_to` field is the same operation by another route, and it ignores every other body parameter when that field is set. Prefer the `/replies` path, whose failure modes are clearer.
+
+## Permalinks To Existing Comments
+
+Every comment object carries its own permalink in `html_url`. Use that value verbatim. Do not assemble a URL from an id and a guessed anchor: the prefix differs per comment type, and a wrong one lands the reader at the top of the page with no error to say so.
+
+| what | endpoint | anchor shape |
+| --- | --- | --- |
+| inline review comment or reply | `/repos/<owner>/<repo>/pulls/<number>/comments` | `#discussion_r<id>` |
+| top-level review body | `/repos/<owner>/<repo>/pulls/<number>/reviews` | `#pullrequestreview-<id>` |
+| non-review issue comment | `/repos/<owner>/<repo>/issues/<number>/comments` | `#issuecomment-<id>` |
+
+Collect the candidates a review might cite in one pass, alongside the fetches already made for deduplication:
+
+```bash
+gh api "repos/<owner>/<repo>/pulls/<number>/comments" --paginate \
+  --jq '.[] | {url: .html_url, author: .user.login, path, line,
+               first_line: (.body | split("\n")[0])}'
+```
+
+The inline comments submitted with a review are created by that same POST, so they have no `html_url` until it returns; reference those as `See inline comments.` instead (SKILL.md, Top-Level Review Body). The POST response does carry the review's own `html_url`, which is the right link for a later review referring back to this one.
+
 ## Correcting A Submitted Review
 
 A submitted review cannot be deleted. `DELETE /repos/{owner}/{repo}/pulls/{number}/reviews/{review_id}` deletes only a review that was never submitted; against a submitted one it fails with:
