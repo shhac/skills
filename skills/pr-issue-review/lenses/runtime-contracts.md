@@ -7,6 +7,7 @@ Look for:
 - Type assertions, casts, or unchecked conversions where runtime validation or guards are needed
 - The same identifier/value shaped differently across read/write or caller/callee paths
 - Inputs that drift from the documented, generated, or observed API/schema contract
+- Consumer compatibility beyond the changed module: apply Shared Contract Consumer Coverage in SKILL.md. Additive enum/union changes can break exhaustive maps or silently fall through unchanged adapters even when the wire format remains compatible.
 - Request, route, config, or environment values used without checking their runtime shape
 - Lifecycle or closure risks when callbacks, contexts, transactions, sessions, or handles can outlive the values they captured
 - Deferred or concurrent work — promises, futures, async tasks, callbacks, goroutines, threads, or background jobs — started without being awaited, joined, or otherwise tracked, so a failure is swallowed or the work can be dropped before it completes

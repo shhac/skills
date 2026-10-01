@@ -7,6 +7,7 @@ Look for:
 - Breaking schema changes: reused field/tag numbers, deleted fields without reserved numbers/names, changed field types, scalar/repeated changes, renamed enum values used for interchange, or newly required fields.
 - Rollout/version-skew risks where clients and servers might not deploy together or might roll back independently.
 - Enum evolution problems: missing unspecified/default value, reused enum numbers, or aliases/removals that old clients cannot handle.
+- Source compatibility of generated enums: apply Shared Contract Consumer Coverage in SKILL.md, tracing exhaustive maps and adapters in downstream services. A fresh enum number can be wire-compatible while consumers fail to compile or handle the new value.
 - RPC robustness gaps: missing/changed deadlines, cancellation behavior, retries, idempotency, streaming/backpressure, or error/status mapping.
 - Storage/API coupling where one message shape is reused for long-term storage and external RPC contracts despite different evolution needs.
 - Generated-code/package options that can collide with hand-written code or other generated packages.

@@ -7,7 +7,7 @@ description: 'Review a GitHub PR statically (diff, metadata, comments, linked is
 
 Review a GitHub pull request with one primary question:
 
-> Does this solve the stated issue?
+> Does this solve the stated issue without breaking consumers of the changed behavior or contracts?
 
 This is a focused, context-aware review for PRs that ask for the user's review. It is not a full multi-perspective review or refactor audit.
 
@@ -229,6 +229,19 @@ Use GitHub metadata and static file reads only. Useful sources:
 
 Do not run CI locally. Existing CI output may be read if GitHub exposes it as logs or check summaries, but do not trigger or rerun jobs.
 
+## Shared Contract Consumer Coverage
+
+Apply this check in every profile when a PR changes a shared enum, union, schema, generated type/client, exported interface, or other contract used outside the changed module. A small additive diff can have a large consumer footprint. Wire compatibility and source compatibility are separate questions.
+
+Before deciding the verdict:
+
+1. Search the repository at the PR head for the changed contract and its consumers, including import aliases, re-exports, and mirrored representations. Search the contract/type name and neighboring existing members, not only the newly added member: a broken consumer may never mention the new value. Use static repository search or file APIs; do not run project code.
+2. Inspect affected consumers outside the diff: exhaustive maps (`Record<Enum, ...>` and equivalents), switches/matches, validators, serializers, adapters, and registries. For an added variant, check both source completeness and what happens when the producer actually emits it. A default branch that drops, nulls, or rejects the value can hide a runtime gap while compiling successfully.
+3. Compare that consumer footprint with the evidence from existing CI and reported tests. When checks are scoped or path-filtered, read their logs, summaries, or scope configuration to establish which consumers were checked. Passing producer tests, round-trip tests, code generation, or wire-compatibility checks do not establish downstream compatibility. Do not assume a build graph includes reverse dependencies.
+4. Record the consumer groups inspected and the verified CI scope in `Review context`; name any material coverage limit. If consumer discovery reveals another domain, revisit focus-pack triggers for that context. Unknown CI scope alone is not a finding, but it cannot dismiss a concrete consumer defect or support a claim that all affected consumers passed.
+
+Stop at consumers affected by the changed contract; this is not a general repository audit. A newly broken consumer is part of the PR's correctness even when its file is unchanged or outside the author's stated scope. Grade the actual impact, and use a changed contract line or a top-level finding to explain the missing consumer update.
+
 ## Discover Remote Context After the Reaction
 
 Look for references in PR title, body, branch, comments, and review comments:
@@ -312,7 +325,7 @@ Do not commit any cache files.
 8. Fetch the head/base refs into the shared store, add the per-run worktree (see Setup), gather full PR context, discover remote context, and cache discovered remote context.
 9. Load only the lens files named by that profile.
 10. Check every focus pack's trigger signals against the changed paths and PR context, and load each pack that matches (see Focus Packs).
-11. Apply the profile's posture to the loaded lenses and focus packs, and the persona's voice to line 1.
+11. Apply the profile's posture to the loaded lenses and focus packs, including Shared Contract Consumer Coverage when triggered, and the persona's voice to line 1.
 12. Verify the assembled review body before posting: it must begin with the profile's emoji marker and end with the hidden metadata line (see `references/github-review-api.md`, Submit One Review With Inline Comments). Stop and rebuild the body rather than posting one that fails either check.
 13. Post any thread replies owed to standing conversations (see Thread Replies), then submit one GitHub review with a top-level body, hidden review metadata, and any useful inline comments.
 14. Remove the exact in-progress reaction created by this run.
@@ -483,7 +496,7 @@ Prefix actionable findings in the top-level body and inline comments with a seve
 
 Severity is graded on real-world consequence, not on how correct the finding is. `⚠️ P1` means: merging this plausibly harms users, data, money, security, or an in-flight rollout. If describing the harm requires a scenario the repo's gates already prevent, it is not a P1. Before assigning severity, apply these de-escalations:
 
-- If repo-enforced tooling (formatter, linter, typechecker, codegen, CI gate) makes the failure scenario unrepresentable in committed code, the finding is at most `💭 P4`. Name the tool in the comment.
+- If repo-enforced tooling (formatter, linter, typechecker, codegen, CI gate) makes the failure scenario unrepresentable in committed code, the finding is at most `💭 P4`. Name the tool and establish that its enforced scope covers the affected consumer. A type error in an unchecked consumer is a concrete regression, not evidence that the typechecker prevents the regression.
 - Cosmetic or ephemeral UI states (hover, focus flash, transition frames) are at most `💅 P3`, even when inconsistent with the PR's own goal.
 - A missing-test finding is `🔧 P2` only when the untested path is the behavior this PR exists to deliver or fix; coverage nudges for adjacent or already-indirectly-covered paths are `💅 P3`.
 - A fail-closed regression (users wrongly denied, nothing leaked) is one severity below the equivalent fail-open defect unless it is live and user-facing now.
@@ -493,7 +506,7 @@ Profile approval thresholds are unchanged by these rules: the aggressive profile
 
 Use the loaded profile's approval threshold when deciding between `APPROVE` and `COMMENT`. Severity affects that decision and the tone of the review, but it does not change the blocking policy: only `🚨 P0` can use `REQUEST_CHANGES`.
 
-Failing or pending CI that is already a merge blocker does not count as a review finding for profile approval thresholds. If CI is the only reason not to approve, approve and mention that the PR should be good to go once CI is fixed.
+Failing or pending CI that is already a merge blocker does not count as a review finding for profile approval thresholds. If CI is the only reason not to approve, approve and mention that the PR should be good to go once CI is fixed. This exception covers CI status alone; an independently established consumer regression remains a finding even if CI could detect it. Passing scoped CI does not clear an omitted consumer.
 
 Example top-level finding bullets:
 
