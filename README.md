@@ -12,6 +12,14 @@ npx skills add shhac/skills
 
 ## Skills
 
+### full-send
+
+Complete an assigned task autonomously, delegating investigation, implementation, and verification to parallel agents. Caps concurrency at 10 unless the user specifies otherwise, respecting lower session limits. Makes recommended decisions, consults an independent agent when uncertain, and arranges short rechecks for temporary blockers. Includes separate Codex and Claude Code guides for concurrency and cross-agent plan audits.
+
+**Invocation:** manual only: `/full-send` in Claude Code or `$full-send` in Codex.
+
+**Workflow:** Establish outcome → Audit plan → Delegate in parallel → Resolve decisions / retry blockers → Verify → Summarize results and decisions
+
 ### firestop
 
 Rapid operational alert triage and incident coordination from a Slack channel, alert, incident, Linear issue, or GitHub reference. Keeps incident communication in the relevant thread, posts an opening update before investigating and keeps posting as it goes rather than going quiet until it has an answer, gives every update a concrete next action and owner, re-checks human context before major conclusions, and preserves human control of incident state.

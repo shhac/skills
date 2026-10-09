@@ -1,0 +1,7 @@
+interface:
+  display_name: "Full Send"
+  short_description: "Complete assigned work autonomously with agents"
+  default_prompt: "Use $full-send to complete this task autonomously with parallel agents and summarize the results and decisions."
+
+policy:
+  allow_implicit_invocation: false
