@@ -128,7 +128,7 @@ Sibling to `lucid`, pointed at written deliverables: PR descriptions, READMEs, r
 
 ### use-codex
 
-Delegate scoped work to the OpenAI Codex CLI (`codex exec`) on a separate token budget. Covers when delegation pays off (repo Q&A, well-specified implementation, mechanical edits, adversarial review, stuck bugs) and when it doesn't, plus verified invocation mechanics: final-message-only capture (`-o`), session-ID capture via `--json`, non-interactive resume by thread ID, sandbox ladder, and effort-scaled timeouts. Progressive disclosure — the decision heuristic loads first; flag references only load if delegating.
+Delegate scoped work to the OpenAI Codex CLI (`codex exec`) with GPT-6.1 Sol at high reasoning by default. Covers repo Q&A, well-specified implementation, mechanical edits, second opinions, and stuck bugs. The invocation reference covers sandbox selection, final-message capture (`-o`), JSONL events, and resuming or forking a session by ID.
 
 **Workflow:** Decide (delegate vs keep) → Invoke (read-only or workspace-write) → Verify output as a peer's work → Resume session for follow-ups
 

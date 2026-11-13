@@ -5,7 +5,7 @@ description: 'Delegate a coding task to the OpenAI Codex CLI: codebase Q&A, well
 
 # Use Codex
 
-**If you are Codex, you do not need this skill — stop reading and proceed however you otherwise would.** Delegating to yourself gains nothing; this skill exists for *other* agents delegating scoped work to the Codex CLI (`codex exec`, non-interactive). It runs on a separate token budget (ChatGPT plan / OpenAI API) with token-economical models, and provides an independent second perspective.
+**If you are already Codex, proceed with your normal workflow.** Use this skill from another agent to delegate scoped work to the non-interactive Codex CLI (`codex exec`) using ChatGPT quota or OpenAI API billing.
 
 ## Should this go to Codex?
 
@@ -17,28 +17,27 @@ Delegate when the task is **scoped and the answer/diff is all that matters**:
 - Second-opinion / adversarial review of a plan or diff
 - A bug stuck after 2+ failed attempts (different model, different angle)
 
-Keep in Claude: ambiguous/underspecified work, architecture & decomposition, long multi-turn efforts needing session memory, user-facing synthesis. Don't delegate one-liners answerable from context already in hand (each Codex call has ~30k tokens of fixed overhead on its side).
+Keep the user conversation, unresolved design decisions, and questions you can answer from existing context in the current session. For a handoff that needs more context, see [task fit](references/task-fit.md).
 
-Full rationale, evidence, and cost/limits: `references/task-fit.md`. **If the decision is "don't delegate", stop here** — no need to read further.
+## Run Codex
 
-## Quick start
+Default to **GPT-6.1 Sol with high reasoning**. Supply the repo path as `repo_dir` and a self-contained task as `prompt`. Include the relevant files, expected output, and how to verify it.
 
 ```bash
-codex exec -m gpt-5.6-terra -c model_reasoning_effort="high" \
-  --sandbox read-only -C /path/to/repo \
-  -o /tmp/codex-out.txt \
-  "<self-contained prompt with all context Codex needs>" </dev/null 2>/dev/null
+run_dir=$(mktemp -d) &&
+  codex exec -m gpt-6.1-sol -c 'model_reasoning_effort="high"' \
+    --sandbox read-only -C "$repo_dir" \
+    -o "$run_dir/final.txt" "$prompt" \
+    </dev/null > /dev/null 2>"$run_dir/progress.log" &&
+  cat "$run_dir/final.txt"
 ```
 
-Then read `/tmp/codex-out.txt` — it contains only the final message; all intermediate activity is discarded so tokens aren't double-spent. Scale the Bash timeout to effort (medium ≈ 300s, high ≈ 600s, xhigh/max longer) or run in background; Codex prints nothing until done.
+- Use `read-only` for questions and reviews. Select `workspace-write` when delegated edits are in scope and account for any existing changes in the working tree.
+- For a long run, use the shell tool's background execution when available. Check the exit status before reading the result. Inspect `progress.log` if the run stalls or fails.
+- Add `--skip-git-repo-check` when intentionally running outside a Git repository.
 
-- Model: `gpt-5.6-terra` (default, balanced). `gpt-5.6-sol` for the hardest problems, `gpt-5.6-luna` or `gpt-5.4-mini` for quick subtasks. There is no `-codex` suffix on any current model.
-- Sandbox: `read-only` for questions/review; `workspace-write` when Codex should edit files (then review the diff before trusting it).
-- If `-C` targets a directory that is not itself a git repo (e.g. a parent dir spanning several repos), add `--skip-git-repo-check` — without it the run fails, and silently so under `2>/dev/null` (exit 1, no output file).
-- To capture a session ID for follow-ups: add `--json`, take `thread_id` from the first stdout line; resume with `codex exec resume <thread-id> "follow-up"`.
-
-Full flag reference, session-ID capture/resume details, structured output, and gotchas (stdin, resume flag differences, failure modes): `references/invocation.md`.
+See the [invocation reference](references/invocation.md) for JSONL events, session resume and fork, structured output, and troubleshooting.
 
 ## After it returns
 
-Treat the output as a peer's work, not an authority's: verify claims against the code, run tests on any diff, and report to the user which parts came from Codex.
+Verify claims against the code. Review the diff and run relevant checks for any edits. Tell the user which work Codex contributed.
